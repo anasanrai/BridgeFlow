@@ -15,7 +15,7 @@ export function Logo({ className = "h-8 w-auto" }: LogoProps) {
       className={`${className} transition-all duration-300`}
       style={{
         filter: theme === "dark" 
-          ? "brightness(2) contrast(1.1) drop-shadow(0 0 6px rgba(28, 160, 242, 0.4))" 
+          ? "brightness(10) contrast(0.9) drop-shadow(0 0 4px rgba(28, 160, 242, 0.3))" 
           : "none",
       }}
     />
