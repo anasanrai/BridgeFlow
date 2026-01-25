@@ -12,11 +12,12 @@ export function Logo({ className = "h-8 w-auto" }: LogoProps) {
     <img 
       src={logoImage} 
       alt="BridgeFlow" 
-      className={`${className} transition-all duration-300 ${
-        theme === "dark" 
-          ? "brightness-110 contrast-110" 
-          : "brightness-100"
-      }`}
+      className={`${className} transition-all duration-300`}
+      style={{
+        filter: theme === "dark" 
+          ? "brightness(1.2) drop-shadow(0 0 8px rgba(28, 160, 242, 0.3))" 
+          : "brightness(0.9) contrast(1.1)",
+      }}
     />
   );
 }
