@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Mail, ArrowUpRight } from "lucide-react";
-import logoImage from "@assets/New_02_1769317320002.png";
+import { Logo } from "@/components/logo";
 
 const footerLinks = {
   company: [
@@ -21,11 +21,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center mb-4" data-testid="link-footer-logo">
-              <img 
-                src={logoImage} 
-                alt="BridgeFlow" 
-                className="h-8 w-auto"
-              />
+              <Logo className="h-8 w-auto" />
             </Link>
             <p className="text-muted-foreground max-w-md mb-6">
               We design automation systems that actually run your business. 

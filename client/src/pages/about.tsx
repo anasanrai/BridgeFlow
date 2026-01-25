@@ -1,7 +1,10 @@
 import { Link } from "wouter";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { GradientBackground } from "@/components/gradient-background";
+import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
 import { 
   ArrowRight,
   Quote,
@@ -77,10 +80,14 @@ const timeline = [
 export default function About() {
   return (
     <div className="min-h-screen pt-24">
-      <section className="py-16 lg:py-24">
+      <GradientBackground variant="hero" className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
               <Badge variant="outline" className="mb-4">About</Badge>
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">
                 Built on execution,{" "}
@@ -95,30 +102,39 @@ export default function About() {
                 Founded by Ansan Rai, BridgeFlow is built on the belief that automation 
                 isn't about tools. It's about accountability, flow, and execution.
               </p>
-            </div>
+            </motion.div>
             
-            <Card className="p-8 bg-card border-card-border glow-primary">
-              <Quote className="w-10 h-10 text-primary/30 mb-4" />
-              <blockquote className="text-2xl font-medium mb-6 leading-relaxed">
-                "If it doesn't run without me, it's not a system."
-              </blockquote>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="font-bold text-primary">AR</span>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Card className="p-8 bg-card border-card-border glow-primary">
+                <Quote className="w-10 h-10 text-primary/30 mb-4" />
+                <blockquote className="text-2xl font-medium mb-6 leading-relaxed">
+                  "If it doesn't run without me, it's not a system."
+                </blockquote>
+                <div className="flex items-center gap-3">
+                  <motion.div 
+                    className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <span className="font-bold text-primary">AR</span>
+                  </motion.div>
+                  <div>
+                    <div className="font-medium">Ansan Rai</div>
+                    <div className="text-sm text-muted-foreground">Founder, BridgeFlow Agency</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-medium">Ansan Rai</div>
-                  <div className="text-sm text-muted-foreground">Founder, BridgeFlow Agency</div>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </GradientBackground>
 
-      <section className="py-20 lg:py-28 bg-card/30 border-y border-border">
+      <GradientBackground variant="section" className="py-20 lg:py-28 border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+          <AnimatedSection className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               Our core values
             </h2>
@@ -126,33 +142,38 @@ export default function About() {
               These aren't aspirational statements. They're the principles we apply 
               to every project, every day.
             </p>
-          </div>
+          </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {values.map((value, index) => (
-              <Card 
-                key={index} 
-                className="p-6 bg-card border-card-border hover-elevate"
-                data-testid={`card-value-${index}`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                    <value.icon className="w-6 h-6 text-accent" />
+              <AnimatedCard key={index} delay={index * 0.1}>
+                <Card 
+                  className="p-6 bg-card border-card-border h-full"
+                  data-testid={`card-value-${index}`}
+                >
+                  <div className="flex items-start gap-4">
+                    <motion.div 
+                      className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0"
+                      whileHover={{ scale: 1.1, backgroundColor: "hsl(var(--accent) / 0.2)" }}
+                    >
+                      <value.icon className="w-6 h-6 text-accent" />
+                    </motion.div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">{value.title}</h3>
+                      <p className="text-muted-foreground">{value.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2">{value.title}</h3>
-                    <p className="text-muted-foreground">{value.description}</p>
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </AnimatedCard>
             ))}
           </div>
         </div>
-      </section>
+      </GradientBackground>
 
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+      <section className="py-20 lg:py-28 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-primary/5" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <AnimatedSection className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               Why BridgeFlow is different
             </h2>
@@ -160,7 +181,7 @@ export default function About() {
               We're not another automation agency. Here's what sets us apart 
               from generic services.
             </p>
-          </div>
+          </AnimatedSection>
           
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -174,9 +195,13 @@ export default function About() {
             
             <div className="space-y-3">
               {differentiators.map((item, index) => (
-                <div 
+                <motion.div 
                   key={index} 
                   className="grid grid-cols-2 gap-4"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
                   data-testid={`differentiator-row-${index}`}
                 >
                   <Card className="p-4 bg-accent/5 border-accent/20">
@@ -185,16 +210,16 @@ export default function About() {
                   <Card className="p-4 bg-muted/50 border-border">
                     <p className="text-sm text-muted-foreground">{item.them}</p>
                   </Card>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-card/30 border-y border-border">
+      <GradientBackground variant="section" className="py-20 lg:py-28 border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+          <AnimatedSection className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               Vision & Roadmap
             </h2>
@@ -202,90 +227,86 @@ export default function About() {
               BridgeFlow is building toward a future where operational excellence 
               is accessible to every business.
             </p>
-          </div>
+          </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {timeline.map((item, index) => (
-              <Card 
-                key={index} 
-                className={`p-6 ${index === 0 ? 'bg-primary/5 border-primary/20' : 'bg-card border-card-border'}`}
-                data-testid={`card-timeline-${index}`}
-              >
-                <Badge variant={index === 0 ? "default" : "secondary"} className="mb-4">
-                  {item.phase}
-                </Badge>
-                <h3 className="font-semibold text-xl mb-2">{item.title}</h3>
-                <p className="text-muted-foreground">{item.description}</p>
-              </Card>
+              <AnimatedCard key={index} delay={index * 0.1}>
+                <Card 
+                  className={`p-6 h-full ${index === 0 ? 'bg-primary/5 border-primary/20' : 'bg-card border-card-border'}`}
+                  data-testid={`card-timeline-${index}`}
+                >
+                  <Badge variant={index === 0 ? "default" : "secondary"} className="mb-4">
+                    {item.phase}
+                  </Badge>
+                  <h3 className="font-semibold text-xl mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground">{item.description}</p>
+                </Card>
+              </AnimatedCard>
             ))}
           </div>
           
-          <div className="mt-12 text-center">
+          <AnimatedSection delay={0.3} className="mt-12 text-center">
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Agency work validates features, use cases, and pricing—creating a natural 
               migration path from custom services to scalable products.
             </p>
-          </div>
+          </AnimatedSection>
         </div>
-      </section>
+      </GradientBackground>
 
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+      <section className="py-20 lg:py-28 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <AnimatedSection className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               Our commitment
             </h2>
-          </div>
+          </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center" data-testid="commitment-0">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <Target className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2">Solve Real Pain</h3>
-              <p className="text-sm text-muted-foreground">
-                We focus on operational challenges that actually matter to your business.
-              </p>
-            </div>
-            <div className="text-center" data-testid="commitment-1">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <Lightbulb className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2">Create Leverage</h3>
-              <p className="text-sm text-muted-foreground">
-                Systems that multiply your team's capacity, not just automate tasks.
-              </p>
-            </div>
-            <div className="text-center" data-testid="commitment-2">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2">Build Assets</h3>
-              <p className="text-sm text-muted-foreground">
-                Turn AI into a business asset, not a toy or experiment.
-              </p>
-            </div>
+            {[
+              { icon: Target, title: "Solve Real Pain", description: "We focus on operational challenges that actually matter to your business." },
+              { icon: Lightbulb, title: "Create Leverage", description: "Systems that multiply your team's capacity, not just automate tasks." },
+              { icon: Shield, title: "Build Assets", description: "Turn AI into a business asset, not a toy or experiment." },
+            ].map((item, index) => (
+              <AnimatedSection key={index} delay={index * 0.1} className="text-center">
+                <motion.div 
+                  className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4"
+                  whileHover={{ scale: 1.1, backgroundColor: "hsl(var(--primary) / 0.2)" }}
+                  data-testid={`commitment-${index}`}
+                >
+                  <item.icon className="w-8 h-8 text-primary" />
+                </motion.div>
+                <h3 className="font-semibold mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.description}</p>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-primary/5 border-t border-primary/10">
+      <GradientBackground variant="cta" className="py-20 lg:py-28 border-t border-primary/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Let's build something that works
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            If you value execution over promises and want automation systems 
-            built with engineering discipline, let's talk.
-          </p>
-          <Link href="/contact">
-            <Button size="lg" className="gap-2" data-testid="button-about-cta">
-              Start a Conversation
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
+          <AnimatedSection>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Let's build something that works
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              If you value execution over promises and want automation systems 
+              built with engineering discipline, let's talk.
+            </p>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link href="/contact">
+                <Button size="lg" className="gap-2 shadow-lg shadow-primary/25" data-testid="button-about-cta">
+                  Start a Conversation
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          </AnimatedSection>
         </div>
-      </section>
+      </GradientBackground>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import logoImage from "@assets/New_02_1769317320002.png";
+import { Logo } from "@/components/logo";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -23,11 +23,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-16 gap-4">
           <Link href="/" className="flex items-center" data-testid="link-home-logo">
-            <img 
-              src={logoImage} 
-              alt="BridgeFlow" 
-              className="h-8 w-auto"
-            />
+            <Logo className="h-8 w-auto" />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
