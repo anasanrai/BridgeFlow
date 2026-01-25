@@ -5,19 +5,29 @@ interface LogoProps {
   className?: string;
 }
 
-export function Logo({ className = "h-8 w-auto" }: LogoProps) {
+export function Logo({ className = "h-8" }: LogoProps) {
   const { theme } = useTheme();
 
   return (
-    <img 
-      src={logoImage} 
-      alt="BridgeFlow" 
-      className={`${className} transition-all duration-300`}
-      style={{
-        filter: theme === "dark" 
-          ? "brightness(10) contrast(0.9) drop-shadow(0 0 4px rgba(28, 160, 242, 0.3))" 
-          : "none",
-      }}
-    />
+    <div className={`flex items-center gap-2 ${className}`}>
+      <img 
+        src={logoImage} 
+        alt="BridgeFlow" 
+        className="h-full w-auto object-contain"
+        style={{
+          clipPath: "inset(0 65% 0 0)",
+          marginRight: "-1rem",
+        }}
+      />
+      <span 
+        className="font-semibold text-lg tracking-tight transition-colors duration-300"
+        style={{
+          color: theme === "dark" ? "#ffffff" : "#1a1a2e",
+          fontFamily: "'Inter', 'Plus Jakarta Sans', sans-serif",
+        }}
+      >
+        BridgeFlow
+      </span>
+    </div>
   );
 }
