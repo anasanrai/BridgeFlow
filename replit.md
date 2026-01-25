@@ -1,7 +1,7 @@
 # BridgeFlow Agency Website
 
 ## Overview
-A professional agency website for BridgeFlow Agency, an AI Automation & Workflow Engineering company. Built with React, Express, and Tailwind CSS with a premium dark theme design.
+A professional agency website for BridgeFlow Agency, an AI Automation & Workflow Engineering company. Built with React, Express, and Tailwind CSS featuring a premium dark theme design with light mode support.
 
 ## Current State
 The website is fully functional with:
@@ -10,6 +10,8 @@ The website is fully functional with:
 - How It Works page with 6-step delivery process
 - About page with founder story, values, and differentiators
 - Contact page with lead qualification form
+- Dark/Light theme toggle with localStorage persistence
+- BridgeFlow logo integrated in navigation and footer
 
 ## Project Architecture
 
@@ -19,7 +21,7 @@ The website is fully functional with:
 - **Styling**: Tailwind CSS with custom design tokens
 - **UI Components**: Shadcn/ui components
 - **State Management**: TanStack React Query for server state
-- **Theme**: Dark/Light mode with ThemeProvider
+- **Theme**: Dark/Light mode with ThemeProvider and localStorage sync
 
 ### Backend (server/)
 - **Framework**: Express.js
@@ -27,11 +29,12 @@ The website is fully functional with:
 - **API**: RESTful endpoints for contact form
 
 ### Key Files
-- `client/src/App.tsx` - Main app component with routing
+- `client/src/App.tsx` - Main app component with routing and ThemeProvider
 - `client/src/index.css` - Design system tokens (colors, spacing)
-- `client/src/components/` - Shared components (Navigation, Footer, ThemeProvider)
+- `client/src/components/` - Shared components (Navigation, Footer, ThemeProvider, ThemeToggle)
 - `client/src/pages/` - Page components (Home, Solutions, HowItWorks, About, Contact)
 - `server/routes.ts` - API endpoints
+- `server/storage.ts` - In-memory storage with contact submissions
 - `shared/schema.ts` - Data schemas and Zod validation
 
 ## Design System
@@ -41,6 +44,12 @@ The website is fully functional with:
 - Primary: Sky blue (`203 89% 53%`)
 - Accent: Emerald green (`165 82% 40%`)
 - Cards: Slightly elevated navy (`222 22% 11%`)
+
+### Colors (Light Theme)
+- Background: Light gray (`220 16% 96%`)
+- Primary: Sky blue (`203 89% 53%`)
+- Accent: Emerald green (`165 82% 40%`)
+- Cards: White (`0 0% 100%`)
 
 ### Typography
 - Sans: Inter, Plus Jakarta Sans
@@ -64,13 +73,18 @@ Submit a contact/consultation request.
 }
 ```
 
+### GET /api/contact
+Retrieve all contact submissions (for admin use).
+
 ## Recent Changes
-- Initial implementation with all 5 pages
-- Dark/light theme toggle with localStorage persistence
-- Contact form with validation and submission handling
+- January 2026: Initial implementation with all 5 pages
+- January 2026: Dark/light theme toggle with ThemeProvider and localStorage persistence
+- January 2026: Contact form with validation and submission handling
+- January 2026: Integrated BridgeFlow logo (gold B mark with text)
 
 ## User Preferences
 - Premium, execution-focused design (no AI hype)
-- Dark professional palette
+- Dark professional palette with light mode option
 - Clean typography and system diagram visuals
 - Direct, non-hype tone of voice
+- BridgeFlow logo with gold B mark

@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Zap } from "lucide-react";
+import { Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import logoImage from "@assets/New_02_1769317320002.png";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -21,13 +22,12 @@ export function Navigation() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-16 gap-4">
-          <Link href="/" className="flex items-center gap-2 group" data-testid="link-home-logo">
-            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
-              <Zap className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="font-semibold text-lg tracking-tight">
-              BridgeFlow
-            </span>
+          <Link href="/" className="flex items-center" data-testid="link-home-logo">
+            <img 
+              src={logoImage} 
+              alt="BridgeFlow" 
+              className="h-8 w-auto"
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">

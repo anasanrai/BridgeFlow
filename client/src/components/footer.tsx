@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Zap, Mail, ArrowUpRight } from "lucide-react";
+import { Mail, ArrowUpRight } from "lucide-react";
+import logoImage from "@assets/New_02_1769317320002.png";
 
 const footerLinks = {
   company: [
@@ -19,13 +20,12 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4" data-testid="link-footer-logo">
-              <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
-                <Zap className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="font-semibold text-lg tracking-tight">
-                BridgeFlow
-              </span>
+            <Link href="/" className="flex items-center mb-4" data-testid="link-footer-logo">
+              <img 
+                src={logoImage} 
+                alt="BridgeFlow" 
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="text-muted-foreground max-w-md mb-6">
               We design automation systems that actually run your business. 
