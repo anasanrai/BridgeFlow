@@ -139,15 +139,15 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
               >
-                Respond to Leads in{" "}
-                <span className="text-gradient-gold">
+                <span className="block sm:inline">Respond to Leads in{" "}</span>
+                <span className="text-gradient-gold whitespace-nowrap">
                   <TypewriterText 
                     texts={["60 Seconds", "24/7"]}
                     speed={100}
                     pauseDuration={3000}
                   />
                 </span>
-                {" "}And Book More Appointments
+                <span className="block sm:inline">{" "}And Book More Appointments</span>
               </motion.h1>
               
               <motion.div
