@@ -68,10 +68,19 @@ export function TypewriterText({
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
     const currentFullText = texts[currentTextIndex];
+    
+    if (isPaused) {
+      const pauseTimer = setTimeout(() => {
+        setIsPaused(false);
+        setIsDeleting(true);
+      }, pauseDuration);
+      return () => clearTimeout(pauseTimer);
+    }
     
     const timeout = setTimeout(() => {
       if (!isDeleting) {
@@ -79,7 +88,7 @@ export function TypewriterText({
           setDisplayText(currentFullText.substring(0, currentCharIndex + 1));
           setCurrentCharIndex(prev => prev + 1);
         } else {
-          setTimeout(() => setIsDeleting(true), pauseDuration);
+          setIsPaused(true);
         }
       } else {
         if (currentCharIndex > 0) {
@@ -93,7 +102,7 @@ export function TypewriterText({
     }, isDeleting ? speed / 2 : speed);
 
     return () => clearTimeout(timeout);
-  }, [currentCharIndex, isDeleting, currentTextIndex, texts, speed, pauseDuration]);
+  }, [currentCharIndex, isDeleting, isPaused, currentTextIndex, texts, speed, pauseDuration]);
 
   return (
     <span className={className}>
@@ -199,5 +208,111 @@ export function InfiniteMarquee({
         {children}
       </motion.div>
     </div>
+  );
+}
+
+interface TiltCardProps {
+  children: React.ReactNode;
+  className?: string;
+  tiltAmount?: number;
+}
+
+export function TiltCard({ children, className = "", tiltAmount = 10 }: TiltCardProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const mouseX = e.clientX - centerX;
+    const mouseY = e.clientY - centerY;
+    
+    const rotateXValue = (mouseY / (rect.height / 2)) * -tiltAmount;
+    const rotateYValue = (mouseX / (rect.width / 2)) * tiltAmount;
+    
+    setRotateX(rotateXValue);
+    setRotateY(rotateYValue);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{
+        rotateX,
+        rotateY,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 20
+      }}
+      style={{
+        transformStyle: "preserve-3d",
+        perspective: "1000px"
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+interface ParallaxShapeProps {
+  color?: "primary" | "accent";
+  size?: "sm" | "md" | "lg";
+  className?: string;
+  speed?: number;
+  shape?: "circle" | "square" | "triangle";
+}
+
+export function ParallaxShape({ 
+  color = "primary", 
+  size = "md", 
+  className = "",
+  speed = 1,
+  shape = "circle"
+}: ParallaxShapeProps) {
+  const sizeClasses = {
+    sm: "w-16 h-16",
+    md: "w-24 h-24",
+    lg: "w-32 h-32"
+  };
+
+  const colorClasses = {
+    primary: "bg-primary/20",
+    accent: "bg-accent/20"
+  };
+
+  const shapeClasses = {
+    circle: "rounded-full",
+    square: "rounded-lg rotate-45",
+    triangle: "clip-triangle"
+  };
+
+  return (
+    <motion.div
+      className={`absolute blur-2xl ${sizeClasses[size]} ${colorClasses[color]} ${shapeClasses[shape]} ${className}`}
+      animate={{
+        y: [0, -20 * speed, 0],
+        x: [0, 10 * speed, 0],
+        scale: [1, 1.05, 1],
+        opacity: [0.5, 0.7, 0.5]
+      }}
+      transition={{
+        duration: 6 / speed,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
   );
 }

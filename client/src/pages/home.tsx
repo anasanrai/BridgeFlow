@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GradientBackground } from "@/components/gradient-background";
 import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
-import { GlowingText } from "@/components/animated-text";
+import { GlowingText, TypewriterText, AnimatedCounter, InfiniteMarquee, TiltCard, ParallaxShape } from "@/components/animated-text";
 import { useSEO } from "@/hooks/use-seo";
 import dashboardImage from "@assets/Final_Hero_1769540604311.png";
 import { 
@@ -112,8 +112,14 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <GradientBackground variant="hero" className="pt-28 pb-16 lg:pt-36 lg:pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <GradientBackground variant="hero" className="pt-28 pb-16 lg:pt-36 lg:pb-24 relative overflow-hidden">
+        {/* Parallax floating shapes */}
+        <ParallaxShape color="primary" size="lg" speed={0.8} className="top-20 left-10 opacity-40" />
+        <ParallaxShape color="accent" size="md" speed={1.2} shape="square" className="top-40 right-20 opacity-30" />
+        <ParallaxShape color="primary" size="sm" speed={1.5} className="bottom-20 left-1/4 opacity-50" />
+        <ParallaxShape color="accent" size="lg" speed={0.6} className="bottom-10 right-1/3 opacity-25" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <motion.div
@@ -137,6 +143,19 @@ export default function Home() {
                 <GlowingText color="gold" className="text-gradient-gold">60 Seconds</GlowingText>, <GlowingText color="gold" className="text-gradient-gold">24/7</GlowingText> And Book More Appointments
               </motion.h1>
               
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="text-xl sm:text-2xl text-primary font-medium mb-4 h-8"
+              >
+                <TypewriterText 
+                  texts={["Lead Automation", "AI Agents", "CRM Integration", "Smart Follow-ups", "Appointment Booking"]}
+                  speed={80}
+                  pauseDuration={2500}
+                />
+              </motion.div>
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -216,6 +235,84 @@ export default function Home() {
           </div>
         </div>
       </GradientBackground>
+
+      {/* Animated Stats Section */}
+      <section className="py-12 border-y border-border/50 bg-card/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="space-y-2"
+            >
+              <div className="text-3xl sm:text-4xl font-bold text-primary">
+                <AnimatedCounter value={500} suffix="+" duration={2} />
+              </div>
+              <p className="text-sm text-muted-foreground">Happy Clients</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="space-y-2"
+            >
+              <div className="text-3xl sm:text-4xl font-bold text-accent">
+                <AnimatedCounter value={60} suffix="s" duration={1.5} />
+              </div>
+              <p className="text-sm text-muted-foreground">Avg. Response Time</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="space-y-2"
+            >
+              <div className="text-3xl sm:text-4xl font-bold text-primary">
+                <AnimatedCounter value={99} suffix="%" duration={2} />
+              </div>
+              <p className="text-sm text-muted-foreground">System Uptime</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="space-y-2"
+            >
+              <div className="text-3xl sm:text-4xl font-bold text-accent">
+                <AnimatedCounter value={24} suffix="/7" duration={1.5} />
+              </div>
+              <p className="text-sm text-muted-foreground">Always Available</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Integration Marquee */}
+      <section className="py-10 bg-background overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+          <p className="text-center text-sm text-muted-foreground uppercase tracking-wider">
+            Integrates with your favorite tools
+          </p>
+        </div>
+        <InfiniteMarquee speed={25} direction="left" className="py-4">
+          <div className="flex items-center gap-12">
+            {["Salesforce", "HubSpot", "Zapier", "Slack", "Gmail", "Twilio", "Calendly", "Stripe", "n8n", "Make"].map((tool, index) => (
+              <div 
+                key={index}
+                className="flex items-center gap-2 px-6 py-3 rounded-lg bg-card/50 border border-border/50 whitespace-nowrap"
+              >
+                <Zap className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-muted-foreground">{tool}</span>
+              </div>
+            ))}
+          </div>
+        </InfiniteMarquee>
+      </section>
 
       {/* Why Choose BridgeFlow */}
       <section className="py-20 lg:py-28 bg-card/30">

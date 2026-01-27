@@ -404,6 +404,11 @@
     }
   }
 
+  /* Triangle clip path for parallax shapes */
+  .clip-triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
   /* Subtle background gradient animation */
   .bg-gradient-animated {
     background: linear-gradient(
