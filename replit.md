@@ -84,7 +84,30 @@ Submit a contact/consultation request.
 ### GET /api/contact
 Retrieve all contact submissions (for admin use).
 
+## Animation System
+The website includes a comprehensive animation system for a "live" feel:
+
+### CSS Animations (index.css)
+- `.text-gradient-animated`: Shimmer effect on gradient text headings
+- `.card-glow`: Subtle box-shadow glow on hover (no layout shift)
+- `.animate-float`: Floating animation for background orbs
+- `.animate-pulse-glow`: Pulsing glow using pseudo-element with opacity/transform
+- `.animate-breathe`: Slow breathing scale animation
+
+### Components
+- `LiveStatus`: Pulsing green dot with status text (client/src/components/live-status.tsx)
+- `FloatingOrb`: Framer Motion animated background decorative elements
+- `AnimatedSection`/`AnimatedCard`: Fade-in animations on scroll
+
+### Applied Locations
+- All hero headings use `.text-gradient-animated` 
+- Service/pricing cards use `.card-glow`
+- Home hero has floating orbs and LiveStatus indicator
+- Contact page has LiveStatus and FloatingOrb on form card
+- Icon containers use Framer Motion spring-based hover effects
+
 ## Recent Changes
+- January 2026: Added interactive animation system (text shimmer, card glow, floating orbs, LiveStatus)
 - January 2026: Initial implementation with all 6 pages
 - January 2026: Dark/light theme toggle with ThemeProvider and localStorage persistence
 - January 2026: Homepage redesign with dashboard mockup and "60-second response" messaging
