@@ -19,13 +19,14 @@ export type User = typeof users.$inferSelect;
 
 export const contactSubmissions = pgTable("contact_submissions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  phone: text("phone").notNull(),
   email: text("email").notNull(),
-  company: text("company"),
-  businessSize: text("business_size").notNull(),
-  operationalPain: text("operational_pain").notNull(),
-  goals: text("goals").notNull(),
-  message: text("message"),
+  interest: text("interest").notNull(),
+  budgetRange: text("budget_range").notNull(),
+  contactMethod: text("contact_method").notNull(),
+  bestTime: text("best_time").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -33,13 +34,22 @@ export const insertContactSchema = createInsertSchema(contactSubmissions).omit({
   id: true,
   createdAt: true,
 }).extend({
+  firstName: z.string().min(2, "First name is required"),
+  lastName: z.string().min(2, "Last name is required"),
+  phone: z.string().min(7, "Please enter a valid phone number"),
   email: z.string().email("Please enter a valid email address"),
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  businessSize: z.enum(["solo", "2-10", "11-50", "50+"], {
-    required_error: "Please select your business size",
+  interest: z.enum(["lead-automation", "ai-agents", "crm-automation", "full-system", "consultation"], {
+    required_error: "Please select what you're looking for",
   }),
-  operationalPain: z.string().min(10, "Please describe your operational challenges"),
-  goals: z.string().min(10, "Please describe your goals"),
+  budgetRange: z.enum(["under-1k", "1k-3k", "3k-5k", "5k-10k", "10k-plus"], {
+    required_error: "Please select your budget range",
+  }),
+  contactMethod: z.enum(["email", "phone", "sms", "whatsapp"], {
+    required_error: "Please select your preferred contact method",
+  }),
+  bestTime: z.enum(["morning", "afternoon", "evening", "anytime"], {
+    required_error: "Please select the best time to reach you",
+  }),
 });
 
 export type InsertContact = z.infer<typeof insertContactSchema>;

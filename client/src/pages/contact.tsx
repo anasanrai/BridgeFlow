@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -29,36 +28,59 @@ import { AnimatedSection } from "@/components/animated-section";
 import { insertContactSchema, type InsertContact } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { 
-  Mail, 
   CheckCircle2, 
   Clock, 
   FileCheck, 
   MessageSquare,
-  Loader2
+  Loader2,
+  Sparkles
 } from "lucide-react";
 
-const businessSizeOptions = [
-  { value: "solo", label: "Solo / Freelancer" },
-  { value: "2-10", label: "2-10 employees" },
-  { value: "11-50", label: "11-50 employees" },
-  { value: "50+", label: "50+ employees" },
+const interestOptions = [
+  { value: "lead-automation", label: "Lead Response Automation" },
+  { value: "ai-agents", label: "AI Agents (Support, Sales, Ops)" },
+  { value: "crm-automation", label: "CRM & Pipeline Automation" },
+  { value: "full-system", label: "Full System Build" },
+  { value: "consultation", label: "Just want a consultation" },
+];
+
+const budgetOptions = [
+  { value: "under-1k", label: "Under $1,000" },
+  { value: "1k-3k", label: "$1,000 - $3,000" },
+  { value: "3k-5k", label: "$3,000 - $5,000" },
+  { value: "5k-10k", label: "$5,000 - $10,000" },
+  { value: "10k-plus", label: "$10,000+" },
+];
+
+const contactMethodOptions = [
+  { value: "email", label: "Email" },
+  { value: "phone", label: "Phone Call" },
+  { value: "sms", label: "SMS / Text" },
+  { value: "whatsapp", label: "WhatsApp" },
+];
+
+const bestTimeOptions = [
+  { value: "morning", label: "Morning (9am - 12pm)" },
+  { value: "afternoon", label: "Afternoon (12pm - 5pm)" },
+  { value: "evening", label: "Evening (5pm - 8pm)" },
+  { value: "anytime", label: "Anytime" },
 ];
 
 const expectations = [
   {
     icon: Clock,
     title: "Response Time",
-    description: "We respond within 24-48 hours on business days.",
+    description: "We respond within 24 hours.",
   },
   {
     icon: FileCheck,
     title: "What to Expect",
-    description: "A brief discovery call to understand your needs and determine fit.",
+    description: "A free audit call to understand your needs.",
   },
   {
     icon: MessageSquare,
-    title: "No Obligation",
-    description: "Exploratory conversations are always free. No pressure, no sales tactics.",
+    title: "No Pressure",
+    description: "No obligation. You'll get a free automation map.",
   },
 ];
 
@@ -69,13 +91,14 @@ export default function Contact() {
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
       email: "",
-      company: "",
-      businessSize: undefined,
-      operationalPain: "",
-      goals: "",
-      message: "",
+      interest: undefined,
+      budgetRange: undefined,
+      contactMethod: undefined,
+      bestTime: undefined,
     },
   });
 
@@ -87,8 +110,8 @@ export default function Contact() {
     onSuccess: () => {
       setIsSubmitted(true);
       toast({
-        title: "Message sent",
-        description: "We'll be in touch within 24-48 hours.",
+        title: "Request received!",
+        description: "We'll be in touch within 24 hours.",
       });
     },
     onError: (error: Error) => {
@@ -123,7 +146,7 @@ export default function Contact() {
               transition={{ delay: 0.2 }}
               className="text-3xl sm:text-4xl font-bold mb-4"
             >
-              Thank you for reaching out
+              Thank you for reaching out!
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -131,7 +154,7 @@ export default function Contact() {
               transition={{ delay: 0.3 }}
               className="text-lg text-muted-foreground mb-8"
             >
-              We've received your message and will be in touch within 24-48 hours. 
+              We've received your request and will be in touch within 24 hours. 
               Keep an eye on your inbox for our response.
             </motion.p>
             <motion.div
@@ -143,9 +166,9 @@ export default function Contact() {
                 <h3 className="font-medium mb-4">What happens next?</h3>
                 <ol className="space-y-3">
                   {[
-                    "We review your submission and assess the fit.",
-                    "You'll receive an email with next steps or a link to schedule a discovery call.",
-                    "On the call, we'll discuss your operations and explore potential solutions.",
+                    "We review your submission and prepare for your call.",
+                    "You'll receive a calendar link to book your free audit.",
+                    "On the call, we'll map out your automation opportunities.",
                   ].map((step, index) => (
                     <motion.li
                       key={index}
@@ -179,15 +202,17 @@ export default function Contact() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Badge variant="outline" className="mb-4">Contact</Badge>
+              <Badge variant="outline" className="mb-4 gap-2">
+                <Sparkles className="w-3 h-3" />
+                Free Consultation
+              </Badge>
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-                Let's discuss your{" "}
-                <span className="text-gradient">automation needs</span>
+                Book Your Free{" "}
+                <span className="text-gradient">Automation Audit</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                This is a premium, execution-focused service. Tell us about your 
-                operations, challenges, and goals—and we'll determine if BridgeFlow 
-                is the right fit.
+                Tell us about your business and we'll create a custom automation 
+                map—whether or not you work with us. No obligation.
               </p>
               
               <div className="space-y-6 mb-8">
@@ -200,8 +225,8 @@ export default function Contact() {
                     transition={{ delay: 0.2 + index * 0.1 }}
                     data-testid={`expectation-${index}`}
                   >
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-5 h-5 text-primary" />
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-5 h-5 text-accent" />
                     </div>
                     <div>
                       <h3 className="font-medium mb-1">{item.title}</h3>
@@ -210,23 +235,6 @@ export default function Contact() {
                   </motion.div>
                 ))}
               </div>
-              
-              <motion.div 
-                className="flex items-center gap-2 text-muted-foreground"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                <Mail className="w-5 h-5" />
-                <span>Or email directly: </span>
-                <a 
-                  href="mailto:hello@bridgeflow.agency" 
-                  className="text-foreground hover:text-primary transition-colors"
-                  data-testid="link-email-direct"
-                >
-                  hello@bridgeflow.agency
-                </a>
-              </motion.div>
             </motion.div>
             
             <motion.div
@@ -235,22 +243,20 @@ export default function Contact() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Card className="p-6 sm:p-8 bg-card border-card-border">
-                <h2 className="text-xl font-semibold mb-6">Request a Consultation</h2>
-                
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <FormField
                         control={form.control}
-                        name="name"
+                        name="firstName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Name *</FormLabel>
+                            <FormLabel>First Name *</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="Your name" 
+                                placeholder="First Name" 
                                 {...field} 
-                                data-testid="input-name"
+                                data-testid="input-first-name"
                               />
                             </FormControl>
                             <FormMessage />
@@ -260,68 +266,17 @@ export default function Contact() {
                       
                       <FormField
                         control={form.control}
-                        name="email"
+                        name="lastName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email *</FormLabel>
+                            <FormLabel>Last Name *</FormLabel>
                             <FormControl>
                               <Input 
-                                type="email" 
-                                placeholder="you@company.com" 
+                                placeholder="Last Name" 
                                 {...field}
-                                data-testid="input-email"
+                                data-testid="input-last-name"
                               />
                             </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="company"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Company</FormLabel>
-                            <FormControl>
-                              <Input 
-                                placeholder="Company name" 
-                                {...field}
-                                value={field.value || ""}
-                                data-testid="input-company"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="businessSize"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Business Size *</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger data-testid="select-business-size">
-                                  <SelectValue placeholder="Select size" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {businessSizeOptions.map((option) => (
-                                  <SelectItem 
-                                    key={option.value} 
-                                    value={option.value}
-                                    data-testid={`option-${option.value}`}
-                                  >
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -330,16 +285,16 @@ export default function Contact() {
                     
                     <FormField
                       control={form.control}
-                      name="operationalPain"
+                      name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Current Operational Challenges *</FormLabel>
+                          <FormLabel>Phone *</FormLabel>
                           <FormControl>
-                            <Textarea 
-                              placeholder="What manual processes, workflow bottlenecks, or tool integration issues are you facing?"
-                              className="min-h-[100px] resize-none"
+                            <Input 
+                              type="tel"
+                              placeholder="Phone Number" 
                               {...field}
-                              data-testid="textarea-pain"
+                              data-testid="input-phone"
                             />
                           </FormControl>
                           <FormMessage />
@@ -349,16 +304,16 @@ export default function Contact() {
                     
                     <FormField
                       control={form.control}
-                      name="goals"
+                      name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Automation Goals *</FormLabel>
+                          <FormLabel>Email *</FormLabel>
                           <FormControl>
-                            <Textarea 
-                              placeholder="What outcomes are you hoping to achieve? Time savings, reduced errors, faster response times?"
-                              className="min-h-[100px] resize-none"
+                            <Input 
+                              type="email" 
+                              placeholder="Email Address" 
                               {...field}
-                              data-testid="textarea-goals"
+                              data-testid="input-email"
                             />
                           </FormControl>
                           <FormMessage />
@@ -368,19 +323,115 @@ export default function Contact() {
                     
                     <FormField
                       control={form.control}
-                      name="message"
+                      name="interest"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Additional Context</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder="Anything else you'd like us to know?"
-                              className="min-h-[80px] resize-none"
-                              {...field}
-                              value={field.value || ""}
-                              data-testid="textarea-message"
-                            />
-                          </FormControl>
+                          <FormLabel>What are you looking for? *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger data-testid="select-interest">
+                                <SelectValue placeholder="What are you looking to do?" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {interestOptions.map((option) => (
+                                <SelectItem 
+                                  key={option.value} 
+                                  value={option.value}
+                                  data-testid={`option-interest-${option.value}`}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="budgetRange"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Budget Range *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger data-testid="select-budget">
+                                <SelectValue placeholder="Your Budget Range" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {budgetOptions.map((option) => (
+                                <SelectItem 
+                                  key={option.value} 
+                                  value={option.value}
+                                  data-testid={`option-budget-${option.value}`}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="contactMethod"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Preferred Contact Method *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger data-testid="select-contact-method">
+                                <SelectValue placeholder="How should we contact you?" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {contactMethodOptions.map((option) => (
+                                <SelectItem 
+                                  key={option.value} 
+                                  value={option.value}
+                                  data-testid={`option-contact-${option.value}`}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="bestTime"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Best Time to Contact *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger data-testid="select-best-time">
+                                <SelectValue placeholder="Best Time to Reach You" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {bestTimeOptions.map((option) => (
+                                <SelectItem 
+                                  key={option.value} 
+                                  value={option.value}
+                                  data-testid={`option-time-${option.value}`}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -390,24 +441,25 @@ export default function Contact() {
                       <Button 
                         type="submit" 
                         size="lg" 
-                        className="w-full shadow-lg shadow-primary/20"
+                        className="w-full bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg"
                         disabled={mutation.isPending}
                         data-testid="button-submit-contact"
                       >
                         {mutation.isPending ? (
                           <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Sending...
+                            Submitting...
                           </>
                         ) : (
-                          "Submit Request"
+                          "Get Started"
                         )}
                       </Button>
                     </motion.div>
                     
                     <p className="text-xs text-muted-foreground text-center">
-                      By submitting, you agree to a brief discovery conversation. 
-                      No spam, no pressure.
+                      <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+                      {" | "}
+                      <a href="#" className="text-primary hover:underline">Terms of Service</a>
                     </p>
                   </form>
                 </Form>
