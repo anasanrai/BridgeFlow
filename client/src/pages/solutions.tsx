@@ -170,7 +170,7 @@ export default function Solutions() {
             <Badge variant="outline" className="mb-4">Solutions</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">
               Automation systems built for{" "}
-              <span className="text-gradient">real operations</span>
+              <span className="text-gradient-animated">real operations</span>
             </h1>
             <p className="text-xl text-muted-foreground">
               Not feature lists. Not tool demos. Solutions designed around your 
@@ -189,13 +189,17 @@ export default function Solutions() {
             {targetCustomers.map((customer, index) => (
               <AnimatedCard key={index} delay={index * 0.1}>
                 <Card 
-                  className="p-6 bg-card border-card-border"
+                  className="p-6 bg-card border-card-border card-glow"
                   data-testid={`card-customer-${index}`}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <motion.div 
+                      className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
                       <customer.icon className="w-6 h-6 text-primary" />
-                    </div>
+                    </motion.div>
                     <div>
                       <h3 className="font-semibold">{customer.title}</h3>
                       <p className="text-sm text-muted-foreground">{customer.description}</p>

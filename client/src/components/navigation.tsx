@@ -33,10 +33,10 @@ export function Navigation() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className={`${
+                  className={`transition-colors duration-200 ${
                     location === link.href
                       ? "text-foreground bg-muted"
-                      : "text-muted-foreground"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                   data-testid={`link-nav-${link.label.toLowerCase().replace(/\s/g, "-")}`}
                 >

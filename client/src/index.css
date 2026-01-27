@@ -247,6 +247,187 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
   }
 
+  /* Animated shimmer gradient text */
+  .text-gradient-animated {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 25%,
+      hsl(var(--primary)) 50%,
+      hsl(var(--accent)) 75%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* Floating animation */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Pulse glow animation - uses opacity and transform for performance */
+  .animate-pulse-glow {
+    position: relative;
+  }
+
+  .animate-pulse-glow::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background: linear-gradient(90deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3));
+    z-index: -1;
+    opacity: 0.5;
+    animation: pulseGlowOpacity 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlowOpacity {
+    0%, 100% { 
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.6;
+      transform: scale(1.02);
+    }
+  }
+
+  /* Breathing/pulsing scale animation */
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* Glow ring animation */
+  .animate-glow-ring {
+    position: relative;
+  }
+
+  .animate-glow-ring::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
+    background-size: 200% 200%;
+    animation: glowRing 3s linear infinite;
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  @keyframes glowRing {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Card hover glow effect - uses only box-shadow, no layout shift */
+  .card-glow {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .card-glow:hover {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.15), 
+                0 4px 20px hsl(var(--primary) / 0.1);
+  }
+
+  /* Icon bounce on hover */
+  .icon-bounce:hover {
+    animation: iconBounce 0.5s ease;
+  }
+
+  @keyframes iconBounce {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(0.95); }
+    75% { transform: scale(1.1); }
+  }
+
+  /* Live indicator dot */
+  .live-dot {
+    position: relative;
+  }
+
+  .live-dot::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: hsl(var(--accent));
+    border-radius: 50%;
+    animation: livePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% { 
+      transform: scale(1.5);
+      opacity: 0.5;
+    }
+  }
+
+  /* Subtle background gradient animation */
+  .bg-gradient-animated {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--primary) / 0.03) 25%,
+      hsl(var(--accent) / 0.03) 50%,
+      hsl(var(--primary) / 0.03) 75%,
+      hsl(var(--background)) 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Underline reveal animation */
+  .underline-reveal {
+    position: relative;
+    display: inline-block;
+  }
+
+  .underline-reveal::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+    transition: width 0.3s ease;
+  }
+
+  .underline-reveal:hover::after {
+    width: 100%;
+  }
+
   .glow-primary {
     box-shadow: 0 0 40px rgba(14, 165, 233, 0.15);
   }

@@ -97,7 +97,7 @@ export default function About() {
               <Badge variant="outline" className="mb-4">About</Badge>
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">
                 Built on execution,{" "}
-                <span className="text-gradient">not promises</span>
+                <span className="text-gradient-animated">not promises</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-6">
                 BridgeFlow Agency exists to bridge the gap between strategy and execution. 

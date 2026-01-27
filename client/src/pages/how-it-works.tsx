@@ -168,7 +168,7 @@ export default function HowItWorks() {
             <Badge variant="outline" className="mb-4">Process</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">
               How we build systems that{" "}
-              <span className="text-gradient">actually work</span>
+              <span className="text-gradient-animated">actually work</span>
             </h1>
             <p className="text-xl text-muted-foreground">
               A systematic, engineering-driven approach to automation. 

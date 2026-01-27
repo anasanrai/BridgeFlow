@@ -36,6 +36,7 @@ import {
   Loader2,
   Sparkles
 } from "lucide-react";
+import { LiveStatus, FloatingOrb } from "@/components/live-status";
 
 const interestOptions = [
   { value: "lead-automation", label: "Lead Response Automation" },
@@ -214,26 +215,31 @@ export default function Contact() {
               </Badge>
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">
                 Book Your Free{" "}
-                <span className="text-gradient">Automation Audit</span>
+                <span className="text-gradient-animated">Automation Audit</span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl text-muted-foreground mb-6">
                 Tell us about your business and we'll create a custom automation 
                 map—whether or not you work with us. No obligation.
               </p>
+              <LiveStatus text="We typically respond within 24 hours" className="mb-8" />
               
               <div className="space-y-6 mb-8">
                 {expectations.map((item, index) => (
                   <motion.div 
                     key={index} 
-                    className="flex items-start gap-4"
+                    className="flex items-start gap-4 group"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 + index * 0.1 }}
                     data-testid={`expectation-${index}`}
                   >
-                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <motion.div 
+                      className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
                       <item.icon className="w-5 h-5 text-accent" />
-                    </div>
+                    </motion.div>
                     <div>
                       <h3 className="font-medium mb-1">{item.title}</h3>
                       <p className="text-sm text-muted-foreground">{item.description}</p>
@@ -248,7 +254,9 @@ export default function Contact() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Card className="p-6 sm:p-8 bg-card border-card-border">
+              <Card className="p-6 sm:p-8 bg-card border-card-border card-glow relative overflow-visible">
+                <FloatingOrb color="primary" size="sm" className="absolute -top-8 -right-8 z-0" delay={0} />
+                <FloatingOrb color="accent" size="sm" className="absolute -bottom-6 -left-6 z-0" delay={2} />
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

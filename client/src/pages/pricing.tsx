@@ -136,7 +136,7 @@ export default function Pricing() {
             <Badge variant="outline" className="mb-4">Pricing</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">
               Transparent pricing for{" "}
-              <span className="text-gradient">real results</span>
+              <span className="text-gradient-animated">real results</span>
             </h1>
             <p className="text-xl text-muted-foreground">
               Investment aligned with outcomes. No hourly billing, no hidden fees. 
@@ -153,7 +153,7 @@ export default function Pricing() {
             {pricingTiers.map((tier, index) => (
               <AnimatedCard key={tier.id} delay={index * 0.1}>
                 <Card 
-                  className={`p-6 h-full flex flex-col ${
+                  className={`p-6 h-full flex flex-col card-glow ${
                     tier.popular 
                       ? "bg-primary/5 border-primary/30 ring-1 ring-primary/20" 
                       : "bg-card border-card-border"
@@ -161,7 +161,7 @@ export default function Pricing() {
                   data-testid={`card-pricing-${tier.id}`}
                 >
                   {tier.popular && (
-                    <Badge className="self-start mb-4 bg-primary text-primary-foreground">
+                    <Badge className="self-start mb-4 bg-primary text-primary-foreground animate-pulse-glow">
                       Most Popular
                     </Badge>
                   )}
@@ -182,7 +182,10 @@ export default function Pricing() {
                   </div>
                   
                   <div className="mb-4">
-                    <div className="text-2xl font-bold text-accent">{tier.price}</div>
+                    <motion.div 
+                      className="text-2xl font-bold text-accent"
+                      whileHover={{ scale: 1.02 }}
+                    >{tier.price}</motion.div>
                     <div className="text-sm text-muted-foreground">{tier.priceNote}</div>
                   </div>
                   

@@ -133,7 +133,7 @@ export default function Home() {
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
               >
                 Respond to Leads in{" "}
-                <span className="text-gradient">60 Seconds</span>, 24/7 And Book More Appointments
+                <span className="text-gradient-animated">60 Seconds</span>, 24/7 And Book More Appointments
               </motion.h1>
               
               <motion.p
@@ -209,8 +209,8 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
               </div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-accent/20 rounded-full blur-3xl" />
-              <div className="absolute -top-4 -left-4 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-accent/20 rounded-full blur-3xl animate-float" />
+              <div className="absolute -top-4 -left-4 w-32 h-32 bg-primary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }} />
             </motion.div>
           </div>
         </div>
@@ -233,10 +233,11 @@ export default function Home() {
               <AnimatedSection key={index} delay={index * 0.1} className="text-center">
                 <motion.div 
                   className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5"
-                  whileHover={{ scale: 1.1, backgroundColor: "hsl(var(--primary) / 0.2)" }}
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                   data-testid={`icon-why-${index}`}
                 >
-                  <item.icon className="w-8 h-8 text-primary" />
+                  <item.icon className="w-8 h-8 text-primary transition-all group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]" />
                 </motion.div>
                 <h3 className="font-semibold text-xl mb-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.description}</p>
@@ -262,14 +263,15 @@ export default function Home() {
             {whatWeSetUp.map((item, index) => (
               <AnimatedCard key={index} delay={index * 0.1}>
                 <Card 
-                  className="p-6 bg-card border-card-border h-full text-center group hover-elevate"
+                  className="p-6 bg-card border-card-border h-full text-center group card-glow"
                   data-testid={`card-setup-${index}`}
                 >
                   <motion.div 
                     className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 transition-colors"
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <item.icon className="w-7 h-7 text-accent" />
+                    <item.icon className="w-7 h-7 text-accent transition-transform group-hover:scale-110" />
                   </motion.div>
                   <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
                   <p className="text-muted-foreground text-sm">{item.description}</p>
@@ -300,10 +302,14 @@ export default function Home() {
                   {index < howItWorks.length - 1 && (
                     <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-px bg-gradient-to-r from-primary/40 to-transparent" />
                   )}
-                  <Card className="p-6 bg-card border-card-border h-full">
-                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl mb-4">
+                  <Card className="p-6 bg-card border-card-border h-full card-glow">
+                    <motion.div 
+                      className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl mb-4"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
                       {step.step}
-                    </div>
+                    </motion.div>
                     <h3 className="font-semibold text-xl mb-2">{step.title}</h3>
                     <p className="text-muted-foreground">{step.description}</p>
                   </Card>
@@ -330,7 +336,7 @@ export default function Home() {
             {afterYouBook.map((item, index) => (
               <AnimatedCard key={index} delay={index * 0.1}>
                 <Card 
-                  className="p-6 bg-card border-card-border h-full"
+                  className="p-6 bg-card border-card-border h-full card-glow"
                   data-testid={`card-after-${index}`}
                 >
                   <div className="flex items-start gap-4">
@@ -363,11 +369,14 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <AnimatedCard delay={0}>
-              <Card className="p-8 bg-card border-card-border h-full">
+              <Card className="p-8 bg-card border-card-border h-full card-glow">
                 <div className="mb-6">
                   <p className="text-sm font-medium text-muted-foreground mb-1">Setup Fee</p>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-accent">$1,500</span>
+                    <motion.span 
+                      className="text-4xl font-bold text-accent"
+                      whileHover={{ scale: 1.05 }}
+                    >$1,500</motion.span>
                     <span className="text-muted-foreground">one-time</span>
                   </div>
                 </div>
@@ -402,14 +411,17 @@ export default function Home() {
             </AnimatedCard>
             
             <AnimatedCard delay={0.1}>
-              <Card className="p-8 bg-primary/5 border-primary/30 ring-1 ring-primary/20 h-full relative">
-                <Badge className="absolute -top-3 left-8 bg-primary text-primary-foreground">
+              <Card className="p-8 bg-primary/5 border-primary/30 ring-1 ring-primary/20 h-full relative card-glow">
+                <Badge className="absolute -top-3 left-8 bg-primary text-primary-foreground animate-pulse-glow">
                   Recommended
                 </Badge>
                 <div className="mb-6">
                   <p className="text-sm font-medium text-muted-foreground mb-1">Monthly Service</p>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-accent">$297</span>
+                    <motion.span 
+                      className="text-4xl font-bold text-gradient-animated"
+                      whileHover={{ scale: 1.05 }}
+                    >$297</motion.span>
                     <span className="text-muted-foreground">/mo</span>
                   </div>
                 </div>
