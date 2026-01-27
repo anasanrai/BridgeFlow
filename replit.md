@@ -89,24 +89,38 @@ The website includes a comprehensive animation system for a "live" feel:
 
 ### CSS Animations (index.css)
 - `.text-gradient-animated`: Shimmer effect on gradient text headings
+- `.text-gradient-gold`: Golden shimmer effect for key metrics (60 Seconds, 24/7)
 - `.card-glow`: Subtle box-shadow glow on hover (no layout shift)
 - `.animate-float`: Floating animation for background orbs
 - `.animate-pulse-glow`: Pulsing glow using pseudo-element with opacity/transform
 - `.animate-breathe`: Slow breathing scale animation
+- `.clip-triangle`: Triangle clip path for parallax shapes
 
-### Components
+### Animation Components (client/src/components/animated-text.tsx)
+- `TypewriterText`: Rotating tagline with typing effect and blinking cursor
+- `AnimatedCounter`: Count-up animation from 0 to target value, triggers when in view
+- `InfiniteMarquee`: Horizontal scrolling text/logo banner (infinite loop)
+- `GlowingText`: Text with animated glow effect (supports gold variant)
+- `ParallaxShape`: Floating decorative shapes with opacity/transform animations
+- `TiltCard`: 3D tilt effect on hover (available but not used for simplicity)
+
+### Other Components
 - `LiveStatus`: Pulsing green dot with status text (client/src/components/live-status.tsx)
 - `FloatingOrb`: Framer Motion animated background decorative elements
 - `AnimatedSection`/`AnimatedCard`: Fade-in animations on scroll
 
 ### Applied Locations
+- Hero section: TypewriterText cycles through service names, ParallaxShape floating orbs
+- Stats section: AnimatedCounter for 500+ clients, 60s response, 99% uptime, 24/7 availability
+- Integration section: InfiniteMarquee with Salesforce, HubSpot, Zapier, etc.
+- Hero highlights: GlowingText with gold variant for "60 Seconds" and "24/7"
 - All hero headings use `.text-gradient-animated` 
 - Service/pricing cards use `.card-glow`
-- Home hero has floating orbs and LiveStatus indicator
 - Contact page has LiveStatus and FloatingOrb on form card
 - Icon containers use Framer Motion spring-based hover effects
 
 ## Recent Changes
+- January 2026: Enhanced animation system with TypewriterText, AnimatedCounter, InfiniteMarquee, GlowingText, ParallaxShape
 - January 2026: Added interactive animation system (text shimmer, card glow, floating orbs, LiveStatus)
 - January 2026: Initial implementation with all 6 pages
 - January 2026: Dark/light theme toggle with ThemeProvider and localStorage persistence
