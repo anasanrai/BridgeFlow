@@ -199,15 +199,27 @@ export default function Home() {
                 className="flex flex-col sm:flex-row items-start gap-4"
               >
                 <Link href="/contact">
-                  <Button size="lg" className="gap-2 shadow-lg shadow-primary/20" data-testid="button-hero-book-audit">
-                    Book Free Automation Audit
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  >
+                    <Button size="lg" className="gap-2 shadow-lg shadow-primary/20 transition-shadow hover:shadow-xl hover:shadow-primary/30" data-testid="button-hero-book-audit">
+                      Book Free Automation Audit
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </motion.div>
                 </Link>
-                <Button variant="outline" size="lg" className="gap-2" data-testid="button-hero-watch-demo">
-                  <Play className="w-4 h-4" />
-                  Watch 90-Second Demo
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Button variant="outline" size="lg" className="gap-2 transition-shadow hover:shadow-lg" data-testid="button-hero-watch-demo">
+                    <Play className="w-4 h-4" />
+                    Watch 90-Second Demo
+                  </Button>
+                </motion.div>
               </motion.div>
               
               <motion.p
@@ -615,15 +627,27 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/contact">
-                <Button size="lg" className="gap-2" data-testid="button-final-cta">
-                  Book a Free Automation Audit
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Button size="lg" className="gap-2 shadow-lg shadow-primary/20 transition-shadow hover:shadow-xl hover:shadow-primary/30" data-testid="button-final-cta">
+                    Book a Free Automation Audit
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </motion.div>
               </Link>
-              <Button variant="outline" size="lg" className="gap-2" data-testid="button-final-demo">
-                <Play className="w-4 h-4" />
-                Watch 90-Second Demo
-              </Button>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <Button variant="outline" size="lg" className="gap-2 transition-shadow hover:shadow-lg" data-testid="button-final-demo">
+                  <Play className="w-4 h-4" />
+                  Watch 90-Second Demo
+                </Button>
+              </motion.div>
             </div>
           </AnimatedSection>
         </div>
