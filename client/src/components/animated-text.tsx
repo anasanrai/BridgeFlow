@@ -144,9 +144,10 @@ interface GlowingTextProps {
   children: React.ReactNode;
   className?: string;
   color?: "primary" | "gold";
+  showCursor?: boolean;
 }
 
-export function GlowingText({ children, className = "", color = "primary" }: GlowingTextProps) {
+export function GlowingText({ children, className = "", color = "primary", showCursor = false }: GlowingTextProps) {
   const glowColors = color === "gold" 
     ? {
         subtle: "0 0 10px hsl(45 93% 47% / 0.5), 0 0 20px hsl(38 92% 60% / 0.3)",
@@ -174,6 +175,13 @@ export function GlowingText({ children, className = "", color = "primary" }: Glo
       }}
     >
       {children}
+      {showCursor && (
+        <motion.span
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
+          className="inline-block w-[3px] h-[0.85em] bg-current ml-0.5 align-middle"
+        />
+      )}
     </motion.span>
   );
 }
