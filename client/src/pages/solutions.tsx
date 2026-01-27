@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GradientBackground } from "@/components/gradient-background";
 import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
+import { useSEO } from "@/hooks/use-seo";
 import { 
   ArrowRight,
   Search,
@@ -151,6 +152,11 @@ const targetCustomers = [
 ];
 
 export default function Solutions() {
+  useSEO({
+    title: "Solutions",
+    description: "Explore BridgeFlow's automation services: Foundation audits, Implementation builds, Productized systems, and Retainer support packages.",
+  });
+
   return (
     <div className="min-h-screen pt-24">
       <GradientBackground variant="hero" className="py-16 lg:py-24">

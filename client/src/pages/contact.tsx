@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { useSEO } from "@/hooks/use-seo";
 import {
   Form,
   FormControl,
@@ -85,6 +86,11 @@ const expectations = [
 ];
 
 export default function Contact() {
+  useSEO({
+    title: "Contact",
+    description: "Book your free automation audit. Tell us about your business and get a custom automation map—no obligation.",
+  });
+
   const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
 

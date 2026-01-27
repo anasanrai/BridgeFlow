@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GradientBackground } from "@/components/gradient-background";
 import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
+import { useSEO } from "@/hooks/use-seo";
 import dashboardImage from "@assets/Final_Hero_1769540604311.png";
 import { 
   ArrowRight, 
@@ -102,6 +103,11 @@ const afterYouBook = [
 ];
 
 export default function Home() {
+  useSEO({
+    title: "AI Automation & Workflow Engineering",
+    description: "Respond to leads in 60 seconds. BridgeFlow builds AI-powered automation systems that capture, qualify, and follow up with leads 24/7.",
+  });
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -198,6 +204,8 @@ export default function Home() {
                   src={dashboardImage} 
                   alt="BridgeFlow Dashboard showing lead pipeline and automation metrics"
                   className="w-full h-auto"
+                  loading="eager"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
               </div>

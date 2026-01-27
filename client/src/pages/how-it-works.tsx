@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GradientBackground } from "@/components/gradient-background";
 import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
+import { useSEO } from "@/hooks/use-seo";
 import { 
   ArrowRight,
   Search,
@@ -149,6 +150,11 @@ const principles = [
 ];
 
 export default function HowItWorks() {
+  useSEO({
+    title: "How It Works",
+    description: "Our 6-step delivery process: Discovery, Design, Build, Test, Deploy, and Support. See how we build reliable automation systems.",
+  });
+
   return (
     <div className="min-h-screen pt-24">
       <GradientBackground variant="hero" className="py-16 lg:py-24">

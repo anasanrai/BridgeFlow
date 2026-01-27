@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GradientBackground } from "@/components/gradient-background";
 import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
+import { useSEO } from "@/hooks/use-seo";
 import { 
   ArrowRight,
   Quote,
@@ -78,6 +79,11 @@ const timeline = [
 ];
 
 export default function About() {
+  useSEO({
+    title: "About",
+    description: "Meet BridgeFlow Agency. We build production-grade automation systems with engineering discipline. Learn our story and values.",
+  });
+
   return (
     <div className="min-h-screen pt-24">
       <GradientBackground variant="hero" className="py-16 lg:py-24">

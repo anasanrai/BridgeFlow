@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GradientBackground } from "@/components/gradient-background";
 import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
+import { useSEO } from "@/hooks/use-seo";
 import { 
   ArrowRight,
   CheckCircle2,
@@ -117,6 +118,11 @@ const faqs = [
 ];
 
 export default function Pricing() {
+  useSEO({
+    title: "Pricing",
+    description: "Transparent pricing for AI automation services. From $300 audits to full system builds. No hidden fees, no surprises.",
+  });
+
   return (
     <div className="min-h-screen pt-24">
       <GradientBackground variant="hero" className="py-16 lg:py-24">
