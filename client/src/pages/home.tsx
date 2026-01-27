@@ -2,305 +2,233 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { GradientBackground } from "@/components/gradient-background";
-import { AnimatedSection, AnimatedCard, AnimatedText } from "@/components/animated-section";
+import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
+import dashboardImage from "@assets/Final_Hero_1769540604311.png";
 import { 
   ArrowRight, 
   Zap, 
-  GitBranch, 
-  Database, 
-  Bot, 
-  Settings, 
-  CheckCircle2,
-  ArrowUpRight,
-  Workflow,
-  Shield,
+  Clock,
+  MessageSquare,
   BarChart3,
-  Layers
+  Users,
+  Bot,
+  Calendar,
+  FileText,
+  CheckCircle2,
+  Play,
+  Search,
+  Map,
+  ThumbsUp,
+  Sparkles
 } from "lucide-react";
 
-const problems = [
+const whyChoose = [
   {
-    icon: Layers,
-    title: "Fragmented Tools",
-    description: "CRM, email, forms, AI, task management—all disconnected, creating data silos and manual work.",
+    icon: Clock,
+    title: "Fast Response",
+    description: "Auto-reply and route leads instantly, no waiting. Your leads get responses within 60 seconds, 24/7.",
   },
   {
-    icon: GitBranch,
-    title: "Manual Follow-ups",
-    description: "Human dependency on repetitive tasks means dropped balls, missed opportunities, and inconsistent execution.",
-  },
-  {
-    icon: Database,
-    title: "No Single Source of Truth",
-    description: "Information scattered across platforms makes decision-making slow and error-prone.",
-  },
-  {
-    icon: Bot,
-    title: "AI Without Execution",
-    description: "Plenty of AI demos and hype, but no production-grade systems that actually run reliably.",
-  },
-];
-
-const methodology = [
-  {
-    step: "01",
-    title: "Discovery",
-    description: "We audit your current operations, identify friction points, and map your workflow dependencies.",
-  },
-  {
-    step: "02",
-    title: "Design",
-    description: "We architect a custom automation system aligned to your specific business processes and goals.",
-  },
-  {
-    step: "03",
-    title: "Deploy",
-    description: "We build, test, and deploy production-grade systems with full documentation and training.",
-  },
-];
-
-const solutions = [
-  {
-    icon: Workflow,
-    title: "Workflow Automation",
-    description: "n8n-based automation systems that connect your tools and eliminate manual processes.",
-    features: ["Lead management", "Client onboarding", "Reporting automation"],
-  },
-  {
-    icon: Bot,
-    title: "AI Operations",
-    description: "Intelligent agents for support, ops, sales, and research that work reliably at scale.",
-    features: ["Customer support AI", "Sales assistants", "Research automation"],
-  },
-  {
-    icon: Database,
-    title: "CRM & Internal Ops",
-    description: "Streamlined internal operations with proper data flows and automated handoffs.",
-    features: ["Sales pipeline automation", "Team coordination", "Task management"],
-  },
-  {
-    icon: Settings,
-    title: "API Integrations",
-    description: "Connect any platform—Supabase, Notion, Slack, WhatsApp, Stripe, and more.",
-    features: ["Custom integrations", "Data synchronization", "Webhook orchestration"],
-  },
-];
-
-const differentiators = [
-  {
-    icon: Zap,
-    title: "Execution-First",
-    description: "Not AI demos. Production systems that run your business.",
-  },
-  {
-    icon: Shield,
-    title: "System Ownership",
-    description: "Documented, transferable workflows you fully own.",
+    icon: MessageSquare,
+    title: "Persistent Follow-Up",
+    description: "Sequences that ping until they reply or stop. Never let a qualified lead slip through the cracks.",
   },
   {
     icon: BarChart3,
-    title: "Measurable ROI",
-    description: "Clear metrics on time saved and revenue impact.",
+    title: "Clear Tracking",
+    description: "Dashboards and reporting so you see every lead status. Know exactly what's happening in your pipeline.",
+  },
+];
+
+const whatWeSetUp = [
+  {
+    icon: Users,
+    title: "Lead Capture",
+    description: "Forms, landing pages, and tracking to capture leads from multiple sources.",
+  },
+  {
+    icon: Zap,
+    title: "Instant Response",
+    description: "SMS + email auto-reply within seconds, not hours or days.",
+  },
+  {
+    icon: Bot,
+    title: "Follow-Up Sequences",
+    description: "Multi-step follow-up over time until they book or opt out.",
+  },
+  {
+    icon: Calendar,
+    title: "Pipeline & Booking",
+    description: "Clear pipeline, booking links, and reminders to move leads to appointments.",
+  },
+];
+
+const howItWorks = [
+  {
+    step: "1",
+    title: "Audit & Strategy",
+    description: "We review your flow, respond times, and pain points. Identify quick wins and automation opportunities.",
+  },
+  {
+    step: "2",
+    title: "Build & Launch",
+    description: "We set up automations, pipelines, and AI. Everything is configured, tested, and deployed.",
+  },
+  {
+    step: "3",
+    title: "Optimize & Scale",
+    description: "We provide refinements and continuous improvements. Your system gets better over time.",
+  },
+];
+
+const afterYouBook = [
+  {
+    icon: Search,
+    title: "Book Your Free Audit",
+    description: "Choose a time that works for you. We'll get to know your business and current lead flow.",
+  },
+  {
+    icon: Map,
+    title: "We Map Your Automation",
+    description: "We review your flow, respond times, and identify automations that will generate quick wins.",
+  },
+  {
+    icon: ThumbsUp,
+    title: "You Decide (No Pressure)",
+    description: "If it's a fit, we start. If not—no worries. You'll get a clear automation map either way.",
   },
 ];
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <GradientBackground variant="hero" className="pt-32 pb-20 lg:pt-40 lg:pb-32">
+      {/* Hero Section */}
+      <GradientBackground variant="hero" className="pt-28 pb-16 lg:pt-36 lg:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
-            >
-              <Zap className="w-4 h-4" />
-              AI Automation & Workflow Engineering
-            </motion.div>
-            
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
-            >
-              We design automation systems that{" "}
-              <span className="text-gradient">actually run</span>{" "}
-              your business
-            </motion.h1>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
-            >
-              Bridge the gap between strategy and execution with production-grade 
-              workflows, intelligent AI agents, and systems built for operational reliability.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
-            >
-              <Link href="/contact">
-                <Button size="lg" className="gap-2 shadow-lg shadow-primary/20" data-testid="button-hero-book-audit">
-                  Book a System Audit
-                  <ArrowRight className="w-4 h-4" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Badge variant="outline" className="mb-6 gap-2">
+                  <Sparkles className="w-3 h-3" />
+                  AI-Powered Automation
+                </Badge>
+              </motion.div>
+              
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
+              >
+                Respond to Leads in{" "}
+                <span className="text-gradient">60 Seconds</span>, 24/7 And Book More Appointments
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-lg text-muted-foreground mb-6"
+              >
+                BridgeFlow delivers an end-to-end AI framework to capture leads, respond instantly by SMS and email, and route conversations—without manual work.
+              </motion.p>
+              
+              <motion.ul
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="space-y-2 mb-8"
+              >
+                <li className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
+                  <span>Instant SMS and email responses in under 60 seconds</span>
+                </li>
+                <li className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
+                  <span>A smart AI conversation assistant that books appointments</span>
+                </li>
+                <li className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
+                  <span>Automatic follow-up—no leads left behind</span>
+                </li>
+              </motion.ul>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="flex flex-col sm:flex-row items-start gap-4"
+              >
+                <Link href="/contact">
+                  <Button size="lg" className="gap-2 shadow-lg shadow-primary/20" data-testid="button-hero-book-audit">
+                    Book Free Automation Audit
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+                <Button variant="outline" size="lg" className="gap-2" data-testid="button-hero-watch-demo">
+                  <Play className="w-4 h-4" />
+                  Watch 90-Second Demo
                 </Button>
-              </Link>
-              <Link href="/how-it-works">
-                <Button variant="outline" size="lg" className="gap-2" data-testid="button-hero-learn-more">
-                  See How It Works
-                  <ArrowUpRight className="w-4 h-4" />
-                </Button>
-              </Link>
+              </motion.div>
+              
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="text-sm text-muted-foreground mt-4"
+              >
+                Free 30-minute audit. No pitch—just a custom automation map for you.
+              </motion.p>
+            </div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative"
+            >
+              <div className="relative rounded-xl overflow-hidden shadow-2xl shadow-primary/10 border border-border/50">
+                <img 
+                  src={dashboardImage} 
+                  alt="BridgeFlow Dashboard showing lead pipeline and automation metrics"
+                  className="w-full h-auto"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
+              </div>
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-accent/20 rounded-full blur-3xl" />
+              <div className="absolute -top-4 -left-4 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
             </motion.div>
           </div>
         </div>
       </GradientBackground>
 
-      <GradientBackground variant="section" className="py-20 lg:py-28">
+      {/* Why Choose BridgeFlow */}
+      <section className="py-20 lg:py-28 bg-card/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection className="max-w-3xl mx-auto text-center mb-16">
+          <AnimatedSection className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              The operational reality most businesses face
+              Why Businesses Choose BridgeFlow
             </h2>
-            <p className="text-lg text-muted-foreground">
-              Tools that don't talk to each other. AI promises that don't deliver. 
-              Your team stuck in the middle, doing manual work.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Strategic automation built to respond faster, follow up longer, and book more appointments—without manual work.
             </p>
           </AnimatedSection>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {problems.map((problem, index) => (
-              <AnimatedCard key={index} delay={index * 0.1}>
-                <Card 
-                  className="p-6 bg-card border-card-border h-full"
-                  data-testid={`card-problem-${index}`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-destructive/10 flex items-center justify-center flex-shrink-0">
-                      <problem.icon className="w-6 h-6 text-destructive" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">{problem.title}</h3>
-                      <p className="text-muted-foreground">{problem.description}</p>
-                    </div>
-                  </div>
-                </Card>
-              </AnimatedCard>
-            ))}
-          </div>
-        </div>
-      </GradientBackground>
-
-      <section className="py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/3 to-background" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <AnimatedSection className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              The BridgeFlow methodology
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              A systematic approach to building automation systems that work. 
-              No shortcuts. No guesswork. Just engineering discipline.
-            </p>
-          </AnimatedSection>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {methodology.map((step, index) => (
-              <AnimatedCard key={index} delay={index * 0.15}>
-                <div 
-                  className="relative"
-                  data-testid={`step-methodology-${index}`}
-                >
-                  {index < methodology.length - 1 && (
-                    <div className="hidden lg:block absolute top-12 left-1/2 w-full h-px bg-gradient-to-r from-primary/30 to-transparent" />
-                  )}
-                  <div className="relative bg-card border border-card-border rounded-lg p-6">
-                    <motion.div 
-                      className="text-5xl font-bold text-primary/20 mb-4"
-                      whileHover={{ scale: 1.1, color: "hsl(var(--primary))" }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {step.step}
-                    </motion.div>
-                    <h3 className="font-semibold text-xl mb-2">{step.title}</h3>
-                    <p className="text-muted-foreground">{step.description}</p>
-                  </div>
-                </div>
-              </AnimatedCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <GradientBackground variant="section" className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Core solutions
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Custom-designed, outcome-driven automation systems aligned to your business workflows.
-            </p>
-          </AnimatedSection>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {solutions.map((solution, index) => (
-              <AnimatedCard key={index} delay={index * 0.1}>
-                <Card 
-                  className="p-6 bg-card border-card-border h-full group"
-                  data-testid={`card-solution-${index}`}
-                >
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <solution.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-xl mb-2">{solution.title}</h3>
-                  <p className="text-muted-foreground mb-4">{solution.description}</p>
-                  <ul className="space-y-2">
-                    {solution.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <CheckCircle2 className="w-4 h-4 text-accent" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              </AnimatedCard>
-            ))}
-          </div>
-          
-          <AnimatedSection delay={0.4} className="text-center mt-12">
-            <Link href="/solutions">
-              <Button variant="outline" size="lg" className="gap-2" data-testid="button-view-all-solutions">
-                View All Solutions
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-          </AnimatedSection>
-        </div>
-      </GradientBackground>
-
-      <section className="py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-primary/5" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {differentiators.map((item, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {whyChoose.map((item, index) => (
               <AnimatedSection key={index} delay={index * 0.1} className="text-center">
                 <motion.div 
-                  className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4"
-                  whileHover={{ scale: 1.1, backgroundColor: "hsl(var(--accent) / 0.2)" }}
-                  transition={{ duration: 0.2 }}
-                  data-testid={`differentiator-${index}`}
+                  className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5"
+                  whileHover={{ scale: 1.1, backgroundColor: "hsl(var(--primary) / 0.2)" }}
+                  data-testid={`icon-why-${index}`}
                 >
-                  <item.icon className="w-8 h-8 text-accent" />
+                  <item.icon className="w-8 h-8 text-primary" />
                 </motion.div>
                 <h3 className="font-semibold text-xl mb-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.description}</p>
@@ -310,27 +238,268 @@ export default function Home() {
         </div>
       </section>
 
-      <GradientBackground variant="cta" className="py-20 lg:py-28 border-t border-b border-primary/10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <AnimatedSection>
+      {/* What BridgeFlow Sets Up For You */}
+      <GradientBackground variant="section" className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Ready to build systems that actually work?
+              What BridgeFlow Sets Up For You
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A complete automation foundation designed to capture, respond, and convert leads automatically.
+            </p>
+          </AnimatedSection>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {whatWeSetUp.map((item, index) => (
+              <AnimatedCard key={index} delay={index * 0.1}>
+                <Card 
+                  className="p-6 bg-card border-card-border h-full text-center group hover-elevate"
+                  data-testid={`card-setup-${index}`}
+                >
+                  <motion.div 
+                    className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <item.icon className="w-7 h-7 text-accent" />
+                  </motion.div>
+                  <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm">{item.description}</p>
+                </Card>
+              </AnimatedCard>
+            ))}
+          </div>
+        </div>
+      </GradientBackground>
+
+      {/* How BridgeFlow Works */}
+      <section className="py-20 lg:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/3 to-background" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <AnimatedSection className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              How BridgeFlow Works
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A simple, proven process designed to remove guesswork and deliver results.
+            </p>
+          </AnimatedSection>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {howItWorks.map((step, index) => (
+              <AnimatedCard key={index} delay={index * 0.15}>
+                <div className="relative" data-testid={`step-how-${index}`}>
+                  {index < howItWorks.length - 1 && (
+                    <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-px bg-gradient-to-r from-primary/40 to-transparent" />
+                  )}
+                  <Card className="p-6 bg-card border-card-border h-full">
+                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl mb-4">
+                      {step.step}
+                    </div>
+                    <h3 className="font-semibold text-xl mb-2">{step.title}</h3>
+                    <p className="text-muted-foreground">{step.description}</p>
+                  </Card>
+                </div>
+              </AnimatedCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What Happens After You Book */}
+      <section className="py-20 lg:py-28 bg-card/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              What Happens After You Book
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A simple, no-pressure process designed to give you clarity before you commit.
+            </p>
+          </AnimatedSection>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {afterYouBook.map((item, index) => (
+              <AnimatedCard key={index} delay={index * 0.1}>
+                <Card 
+                  className="p-6 bg-card border-card-border h-full"
+                  data-testid={`card-after-${index}`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-6 h-6 text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                      <p className="text-muted-foreground">{item.description}</p>
+                    </div>
+                  </div>
+                </Card>
+              </AnimatedCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Simple, Transparent Pricing Preview */}
+      <GradientBackground variant="section" className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Everything you need to capture, respond, and close leads on autopilot.
+            </p>
+          </AnimatedSection>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <AnimatedCard delay={0}>
+              <Card className="p-8 bg-card border-card-border h-full">
+                <div className="mb-6">
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Setup Fee</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-accent">$1,500</span>
+                    <span className="text-muted-foreground">one-time</span>
+                  </div>
+                </div>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Complete funnel/landing page</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>CRM + Pipeline Configuration</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Automated 60-second follow-up</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>AI Assistant + Booking System</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Full documentation & training</span>
+                  </li>
+                </ul>
+                <Link href="/contact">
+                  <Button className="w-full" data-testid="button-pricing-setup">
+                    Get Started
+                  </Button>
+                </Link>
+              </Card>
+            </AnimatedCard>
+            
+            <AnimatedCard delay={0.1}>
+              <Card className="p-8 bg-primary/5 border-primary/30 ring-1 ring-primary/20 h-full relative">
+                <Badge className="absolute -top-3 left-8 bg-primary text-primary-foreground">
+                  Recommended
+                </Badge>
+                <div className="mb-6">
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Monthly Service</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-accent">$297</span>
+                    <span className="text-muted-foreground">/mo</span>
+                  </div>
+                </div>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Platform access + maintenance</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>AI agent updates & optimization</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Ongoing support and improvements</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Monthly performance reports</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Priority response times</span>
+                  </li>
+                </ul>
+                <Link href="/contact">
+                  <Button className="w-full" data-testid="button-pricing-monthly">
+                    Get Started
+                  </Button>
+                </Link>
+              </Card>
+            </AnimatedCard>
+          </div>
+          
+          <AnimatedSection delay={0.3} className="text-center mt-8">
+            <p className="text-muted-foreground text-sm mb-4">
+              Add-on options available: AI SMS setup + $500/month, ongoing launches $100 per month per funnel.
+            </p>
+            <Link href="/pricing">
+              <Button variant="outline" className="gap-2" data-testid="button-view-all-pricing">
+                View Full Pricing Details
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </AnimatedSection>
+        </div>
+      </GradientBackground>
+
+      {/* Book Your Free Audit CTA */}
+      <section className="py-20 lg:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-primary/5" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+          <AnimatedSection>
+            <FileText className="w-12 h-12 text-primary mx-auto mb-6" />
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Book Your Free Automation Audit
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a system audit to discover how automation can transform your operations. 
-              No AI hype—just practical solutions with measurable impact.
+              Tell us a bit about your business. You'll get a clear automation 
+              map—whether or not you work with us. No obligation.
             </p>
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Link href="/contact">
-                <Button size="lg" className="gap-2 shadow-lg shadow-primary/25" data-testid="button-cta-book-audit">
-                  Request Consultation
+                <Button size="lg" className="gap-2 shadow-lg shadow-primary/25" data-testid="button-audit-cta">
+                  Book Free Audit
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
             </motion.div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Free, no obligation. We respond within 24 hours.
+            </p>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Final CTA Banner */}
+      <GradientBackground variant="cta" className="py-16 lg:py-20 border-t border-primary/10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <AnimatedSection>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+              Turn More Leads Into Booked Appointments — Automatically
+            </h2>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Your leads are waiting. Stop losing them to slow response times and manual follow-up.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/contact">
+                <Button size="lg" className="gap-2" data-testid="button-final-cta">
+                  Book a Free Automation Audit
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Button variant="outline" size="lg" className="gap-2" data-testid="button-final-demo">
+                <Play className="w-4 h-4" />
+                Watch 90-Second Demo
+              </Button>
+            </div>
           </AnimatedSection>
         </div>
       </GradientBackground>
