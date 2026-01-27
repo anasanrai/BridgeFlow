@@ -134,17 +134,28 @@ export function PulsingText({ children, className = "" }: PulsingTextProps) {
 interface GlowingTextProps {
   children: React.ReactNode;
   className?: string;
+  color?: "primary" | "gold";
 }
 
-export function GlowingText({ children, className = "" }: GlowingTextProps) {
+export function GlowingText({ children, className = "", color = "primary" }: GlowingTextProps) {
+  const glowColors = color === "gold" 
+    ? {
+        subtle: "0 0 10px hsl(45 93% 47% / 0.5), 0 0 20px hsl(38 92% 60% / 0.3)",
+        bright: "0 0 20px hsl(45 93% 47% / 0.8), 0 0 40px hsl(38 92% 60% / 0.5)"
+      }
+    : {
+        subtle: "0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)",
+        bright: "0 0 20px hsl(var(--primary) / 0.8), 0 0 40px hsl(var(--primary) / 0.5)"
+      };
+
   return (
     <motion.span
       className={`inline-block relative ${className}`}
       animate={{
         textShadow: [
-          "0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)",
-          "0 0 20px hsl(var(--primary) / 0.8), 0 0 40px hsl(var(--primary) / 0.5)",
-          "0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)"
+          glowColors.subtle,
+          glowColors.bright,
+          glowColors.subtle
         ]
       }}
       transition={{
