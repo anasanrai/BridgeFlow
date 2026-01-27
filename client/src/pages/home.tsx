@@ -140,7 +140,14 @@ export default function Home() {
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
               >
                 Respond to Leads in{" "}
-                <GlowingText color="gold" className="text-gradient-gold" showCursor>60 Seconds</GlowingText>, <GlowingText color="gold" className="text-gradient-gold" showCursor>24/7</GlowingText> And Book More Appointments
+                <span className="text-gradient-gold inline-block min-w-[200px] sm:min-w-[280px]">
+                  <TypewriterText 
+                    texts={["60 Seconds", "24/7"]}
+                    speed={100}
+                    pauseDuration={3000}
+                  />
+                </span>
+                {" "}And Book More Appointments
               </motion.h1>
               
               <motion.div
