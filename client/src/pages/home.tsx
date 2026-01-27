@@ -140,7 +140,7 @@ export default function Home() {
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
               >
                 Respond to Leads in{" "}
-                <span className="text-gradient-gold inline-block min-w-[200px] sm:min-w-[280px]">
+                <span className="text-gradient-gold">
                   <TypewriterText 
                     texts={["60 Seconds", "24/7"]}
                     speed={100}
