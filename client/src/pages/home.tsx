@@ -133,7 +133,7 @@ export default function Home() {
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
               >
                 Respond to Leads in{" "}
-                <span className="text-gradient-animated">60 Seconds</span>, 24/7 And Book More Appointments
+                <span className="text-gradient-animated">60 Seconds</span>, <span className="text-gradient-animated">24/7</span> And Book More Appointments
               </motion.h1>
               
               <motion.p
