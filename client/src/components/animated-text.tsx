@@ -17,10 +17,12 @@ export function AnimatedCounter({
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [count, setCount] = useState(0);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || hasAnimated.current) return;
     
+    hasAnimated.current = true;
     let startTime: number;
     let animationFrame: number;
     
@@ -33,6 +35,8 @@ export function AnimatedCounter({
       
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
+      } else {
+        setCount(value);
       }
     };
     
