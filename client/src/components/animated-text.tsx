@@ -6,13 +6,17 @@ interface AnimatedCounterProps {
   suffix?: string;
   duration?: number;
   className?: string;
+  oscillate?: boolean;
+  range?: number;
 }
 
-export function AnimatedCounter({ 
-  value, 
-  suffix = "", 
+export function AnimatedCounter({
+  value,
+  suffix = "",
   duration = 2,
-  className = "" 
+  className = "",
+  oscillate = false,
+  range = 5
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -20,34 +24,47 @@ export function AnimatedCounter({
   const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!isInView || hasAnimated.current) return;
-    
-    hasAnimated.current = true;
+    if (!isInView) return;
+
     let startTime: number;
     let animationFrame: number;
-    
+
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
-      
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      setCount(Math.floor(easeOutQuart * value));
-      
-      if (progress < 1) {
+
+      if (!hasAnimated.current) {
+        const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentBase = Math.floor(easeOutQuart * value);
+
+        if (progress < 1) {
+          setCount(currentBase);
+          animationFrame = requestAnimationFrame(animate);
+        } else {
+          setCount(value);
+          hasAnimated.current = true;
+          if (oscillate) {
+            startTime = timestamp; // Reset for oscillation
+            animationFrame = requestAnimationFrame(animate);
+          }
+        }
+      } else if (oscillate) {
+        const elapsed = (timestamp - startTime) / 1000;
+        // Oscillate around 'value' using a sine wave
+        const offset = Math.sin(elapsed * 2) * range;
+        setCount(Math.max(0, Math.floor(value + offset)));
         animationFrame = requestAnimationFrame(animate);
-      } else {
-        setCount(value);
       }
     };
-    
+
     animationFrame = requestAnimationFrame(animate);
-    
+
     return () => {
       if (animationFrame) {
         cancelAnimationFrame(animationFrame);
       }
     };
-  }, [isInView, value, duration]);
+  }, [isInView, value, duration, oscillate, range]);
 
   return (
     <span ref={ref} className={className}>
@@ -63,8 +80,8 @@ interface TypewriterTextProps {
   pauseDuration?: number;
 }
 
-export function TypewriterText({ 
-  texts, 
+export function TypewriterText({
+  texts,
   className = "",
   speed = 100,
   pauseDuration = 2000
@@ -77,7 +94,7 @@ export function TypewriterText({
 
   useEffect(() => {
     const currentFullText = texts[currentTextIndex];
-    
+
     if (isPaused) {
       const pauseTimer = setTimeout(() => {
         setIsPaused(false);
@@ -85,7 +102,7 @@ export function TypewriterText({
       }, pauseDuration);
       return () => clearTimeout(pauseTimer);
     }
-    
+
     const timeout = setTimeout(() => {
       if (!isDeleting) {
         if (currentCharIndex < currentFullText.length) {
@@ -129,11 +146,11 @@ export function PulsingText({ children, className = "" }: PulsingTextProps) {
   return (
     <motion.span
       className={`inline-block ${className}`}
-      animate={{ 
+      animate={{
         scale: [1, 1.02, 1],
         opacity: [1, 0.9, 1]
       }}
-      transition={{ 
+      transition={{
         duration: 2,
         repeat: Infinity,
         ease: "easeInOut"
@@ -152,15 +169,15 @@ interface GlowingTextProps {
 }
 
 export function GlowingText({ children, className = "", color = "primary", showCursor = false }: GlowingTextProps) {
-  const glowColors = color === "gold" 
+  const glowColors = color === "gold"
     ? {
-        subtle: "0 0 10px hsl(45 93% 47% / 0.5), 0 0 20px hsl(38 92% 60% / 0.3)",
-        bright: "0 0 20px hsl(45 93% 47% / 0.8), 0 0 40px hsl(38 92% 60% / 0.5)"
-      }
+      subtle: "0 0 10px hsl(45 93% 47% / 0.5), 0 0 20px hsl(38 92% 60% / 0.3)",
+      bright: "0 0 20px hsl(45 93% 47% / 0.8), 0 0 40px hsl(38 92% 60% / 0.5)"
+    }
     : {
-        subtle: "0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)",
-        bright: "0 0 20px hsl(var(--primary) / 0.8), 0 0 40px hsl(var(--primary) / 0.5)"
-      };
+      subtle: "0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)",
+      bright: "0 0 20px hsl(var(--primary) / 0.8), 0 0 40px hsl(var(--primary) / 0.5)"
+    };
 
   return (
     <motion.span
@@ -197,8 +214,8 @@ interface InfiniteMarqueeProps {
   className?: string;
 }
 
-export function InfiniteMarquee({ 
-  children, 
+export function InfiniteMarquee({
+  children,
   speed = 30,
   direction = "left",
   className = ""
@@ -241,10 +258,10 @@ export function TiltCard({ children, className = "", tiltAmount = 10 }: TiltCard
     const centerY = rect.top + rect.height / 2;
     const mouseX = e.clientX - centerX;
     const mouseY = e.clientY - centerY;
-    
+
     const rotateXValue = (mouseY / (rect.height / 2)) * -tiltAmount;
     const rotateYValue = (mouseX / (rect.width / 2)) * tiltAmount;
-    
+
     setRotateX(rotateXValue);
     setRotateY(rotateYValue);
   };
@@ -287,9 +304,9 @@ interface ParallaxShapeProps {
   shape?: "circle" | "square" | "triangle";
 }
 
-export function ParallaxShape({ 
-  color = "primary", 
-  size = "md", 
+export function ParallaxShape({
+  color = "primary",
+  size = "md",
   className = "",
   speed = 1,
   shape = "circle"

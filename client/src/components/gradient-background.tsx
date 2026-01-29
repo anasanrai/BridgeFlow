@@ -6,23 +6,38 @@ interface GradientBackgroundProps {
   className?: string;
 }
 
-export function GradientBackground({ 
-  variant = "section", 
-  children, 
-  className = "" 
+export function GradientBackground({
+  variant = "section",
+  children,
+  className = ""
 }: GradientBackgroundProps) {
   if (variant === "hero") {
     return (
       <div className={`relative overflow-hidden ${className}`}>
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <motion.div
-          className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full"
+          className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full blur-3xl opacity-20"
           style={{
-            background: "radial-gradient(circle, hsl(var(--primary) / 0.08) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)",
           }}
           animate={{
-            x: [0, 30, 0],
-            y: [0, -20, 0],
+            scale: [1, 1.1, 1],
+            opacity: [0.15, 0.25, 0.15],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full blur-3xl opacity-10"
+          style={{
+            background: "radial-gradient(circle, hsl(var(--accent)) 0%, transparent 70%)",
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{
             duration: 15,
@@ -30,22 +45,7 @@ export function GradientBackground({
             ease: "easeInOut",
           }}
         />
-        <motion.div
-          className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(var(--accent) / 0.06) 0%, transparent 70%)",
-          }}
-          animate={{
-            x: [0, -20, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <div className="absolute inset-0 grid-pattern opacity-20" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03]" />
         <div className="relative z-10">{children}</div>
       </div>
     );

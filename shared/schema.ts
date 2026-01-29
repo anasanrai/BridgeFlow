@@ -54,3 +54,16 @@ export const insertContactSchema = createInsertSchema(contactSubmissions).omit({
 
 export type InsertContact = z.infer<typeof insertContactSchema>;
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;
+
+export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertNewsletterSchema = createInsertSchema(newsletterSubscribers).pick({
+  email: true,
+});
+
+export type InsertNewsletter = z.infer<typeof insertNewsletterSchema>;
+export type NewsletterSubscriber = typeof newsletterSubscribers.$inferSelect;

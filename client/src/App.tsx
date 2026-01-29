@@ -12,18 +12,24 @@ import Solutions from "@/pages/solutions";
 import Pricing from "@/pages/pricing";
 import HowItWorks from "@/pages/how-it-works";
 import About from "@/pages/about";
+import Demos from "@/pages/demos";
 import Contact from "@/pages/contact";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import TermsOfService from "@/pages/terms-of-service";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/demos" component={Demos} />
       <Route path="/solutions" component={Solutions} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/how-it-works" component={HowItWorks} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/terms-of-service" component={TermsOfService} />
       <Route component={NotFound} />
     </Switch>
   );
