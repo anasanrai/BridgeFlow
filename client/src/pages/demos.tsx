@@ -199,16 +199,7 @@ export default function Demos() {
                                             />
                                         </div>
                                     </CarouselItem>
-                                    <CarouselItem>
-                                        <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur ring-1 ring-white/10 group aspect-video">
-                                            <div className="absolute inset-0 bg-gradient-to-bl from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                            <img
-                                                src="/assets/ghl-workflow.png"
-                                                alt="GoHighLevel Workflow Builder"
-                                                className="w-full h-full object-contain transform transition-transform duration-700 group-hover:scale-[1.02]"
-                                            />
-                                        </div>
-                                    </CarouselItem>
+
                                 </CarouselContent>
                                 {/* Removed manual arrows for a cleaner auto-slide experience */}
                             </Carousel>

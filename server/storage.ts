@@ -1,7 +1,5 @@
-import { users, contactSubmissions, newsletterSubscribers, type User, type InsertUser, type ContactSubmission, type InsertContact, type NewsletterSubscriber, type InsertNewsletter } from "@shared/schema";
+import { type User, type InsertUser, type ContactSubmission, type InsertContact, type NewsletterSubscriber, type InsertNewsletter } from "@shared/schema";
 import { randomUUID } from "crypto";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -10,37 +8,6 @@ export interface IStorage {
   createContactSubmission(contact: InsertContact): Promise<ContactSubmission>;
   getContactSubmissions(): Promise<ContactSubmission[]>;
   createNewsletterSubscriber(subscriber: InsertNewsletter): Promise<NewsletterSubscriber>;
-}
-
-export class DatabaseStorage implements IStorage {
-  async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user;
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db.insert(users).values(insertUser).returning();
-    return user;
-  }
-
-  async createContactSubmission(insertContact: InsertContact): Promise<ContactSubmission> {
-    const [contact] = await db.insert(contactSubmissions).values(insertContact).returning();
-    return contact;
-  }
-
-  async getContactSubmissions(): Promise<ContactSubmission[]> {
-    return await db.select().from(contactSubmissions).orderBy(contactSubmissions.createdAt);
-  }
-
-  async createNewsletterSubscriber(subscriber: InsertNewsletter): Promise<NewsletterSubscriber> {
-    const [newSubscriber] = await db.insert(newsletterSubscribers).values(subscriber).returning();
-    return newSubscriber;
-  }
 }
 
 export class MemStorage implements IStorage {
@@ -100,6 +67,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = process.env.DATABASE_URL
-  ? new DatabaseStorage()
-  : new MemStorage();
+export const storage = new MemStorage();

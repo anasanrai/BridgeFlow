@@ -138,21 +138,8 @@ The website includes a comprehensive animation system for a "live" feel:
 
 ### Prerequisites
 - Node.js 20+
-- PostgreSQL 16+ (or Docker)
 
-### Setup with Docker (Recommended)
-This project is configured with Docker Compose to spin up a PostgreSQL database and the application automatically.
-
-1. **Clone the repository**
-2. **Start the stack**
-   ```bash
-   docker-compose up -d
-   ```
-   This will start:
-   - App on `http://localhost:5001`
-   - PostgreSQL on `localhost:5432`
-
-### Setup Manual (Without Docker)
+### Setup
 
 1. **Install dependencies**
    ```bash
@@ -160,15 +147,26 @@ This project is configured with Docker Compose to spin up a PostgreSQL database 
    ```
 
 2. **Configure Environment**
-   Copy `.env.example` to `.env` and update the database credentials if needed.
+   Copy `.env.example` to `.env` and update if needed.
    ```bash
    cp .env.example .env
    ```
+   
+   Optional: Configure SMTP settings in `.env` to enable email notifications for contact form submissions.
 
 3. **Start Development Server**
    ```bash
    npm run dev
    ```
+   
+   The application will be available at `http://localhost:5001`
+
+4. **Build for Production**
+   ```bash
+   npm run build
+   npm start
+   ```
+
 
 ## BridgeFlow Agency Identity
 - **Logo**: Gold 'B' mark with BridgeFlow Logotype
