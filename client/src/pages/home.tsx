@@ -107,8 +107,8 @@ import PageTransition from "@/components/page-transition";
 
 export default function Home() {
   useSEO({
-    title: "AI Automation & Workflow Engineering",
-    description: "Respond to leads in 60 seconds. BridgeFlow builds AI-powered automation systems that capture, qualify, and follow up with leads 24/7.",
+    title: "AI Real Estate Automation Agency | BridgeFlow Agency",
+    description: "Stop losing leads to slow response times. BridgeFlow builds GoHighLevel Austin Realtor automation and AI systems that capture, qualify, and follow up in <60 seconds, 24/7/365.",
   });
 
   return (
@@ -142,28 +142,32 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight"
                 >
-                  <span className="block">Respond to Leads in</span>
+                  <span className="block">Stop Losing Leads to</span>
+                  <span className="block text-gradient-animated">Slow Response Times</span>
+                  <span className="block mt-2">Automate Speed-to-Lead in</span>
                   <span className="block text-gradient-gold whitespace-nowrap">
                     <TypewriterText
-                      texts={["60 Seconds", "24/7"]}
+                      texts={["<60 Seconds", "Real-Time"]}
                       speed={100}
                       pauseDuration={3000}
                     />
                   </span>
-                  <span className="block">And Book More Appointments</span>
                 </motion.h1>
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.15 }}
-                  className="text-xl sm:text-2xl text-primary font-medium mb-4 h-8"
+                  className="text-xl sm:text-2xl text-accent font-medium mb-4 h-8"
                 >
-                  <TypewriterText
-                    texts={["Lead Automation", "AI Agents", "CRM Integration", "Smart Follow-ups", "Appointment Booking"]}
-                    speed={80}
-                    pauseDuration={2500}
-                  />
+                  Automating Real Estate Lead Flow in{" "}
+                  <span className="text-primary">
+                    <TypewriterText
+                      texts={["Austin", "Phoenix", "Riyadh"]}
+                      speed={80}
+                      pauseDuration={2500}
+                    />
+                  </span>
                 </motion.div>
 
                 <motion.p
@@ -172,7 +176,7 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="text-lg text-muted-foreground mb-6"
                 >
-                  BridgeFlow delivers an end-to-end AI framework to capture leads, respond instantly by SMS and email, and route conversations—without manual work.
+                  Real estate moves fast. BridgeFlow delivers production-grade automation to capture leads instantly, respond in under 60 seconds via SMS and email, and book appointments—while you focus on closing deals.
                 </motion.p>
 
                 <motion.ul
@@ -207,12 +211,12 @@ export default function Home() {
                       <ArrowRight className="w-4 h-4" />
                     </Button>
                   </Link>
-                  <Link href="/demos#fast-demo">
-                    <Button variant="outline" size="lg" className="button-cta gap-2" data-testid="button-hero-watch-demo">
+                  <a href="https://n8n.n8ngalaxy.com/webhook/real-estate-demo-lead" target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" size="lg" className="button-cta gap-2" data-testid="button-hero-demo">
                       <Play className="w-4 h-4" />
-                      Watch 90-Second Demo
+                      Try Live Demo (Get a Text Now)
                     </Button>
-                  </Link>
+                  </a>
                 </motion.div>
 
                 <motion.p
@@ -230,35 +234,25 @@ export default function Home() {
                     "@context": "https://schema.org",
                     "@type": "ProfessionalService",
                     "name": "BridgeFlow Agency",
+                    "description": "AI Real Estate Automation Agency specializing in GoHighLevel systems for Realtors in Austin, Phoenix, and Riyadh.",
                     "image": "https://bridgeflow.agency/assets/hero-visual.png",
                     "url": "https://bridgeflow.agency",
-                    "telephone": "",
                     "address": {
                       "@type": "PostalAddress",
-                      "addressLocality": "Unaizah",
-                      "addressRegion": "Al Qassim",
-                      "addressCountry": "SA"
+                      "addressLocality": "Austin",
+                      "addressRegion": "TX",
+                      "addressCountry": "US"
                     },
-                    "geo": {
-                      "@type": "GeoCoordinates",
-                      "latitude": 26.0827,
-                      "longitude": 43.9806
-                    },
+                    "areaServed": ["Austin, TX", "Phoenix, AZ", "Riyadh, SA"],
+                    "serviceType": "Real Estate Automation",
                     "openingHoursSpecification": {
                       "@type": "OpeningHoursSpecification",
                       "dayOfWeek": [
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Sunday"
+                        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
                       ],
-                      "opens": "09:00",
-                      "closes": "18:00"
-                    },
-                    "sameAs": [
-                      "https://n8ngalaxy.com"
-                    ]
+                      "opens": "00:00",
+                      "closes": "23:59"
+                    }
                   })}
                 </script>
               </div>
@@ -275,6 +269,7 @@ export default function Home() {
                     alt="BridgeFlow Autonomous Workflow Engine"
                     className="w-full h-auto opacity-100 hover:scale-[1.02] transition-transform duration-700"
                     loading="eager"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
                 </div>
@@ -289,22 +284,20 @@ export default function Home() {
         <section className="py-12 border-b border-white/5 bg-background/50 backdrop-blur-sm overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8">
             <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest opacity-70">
-              Engineered with a modern stack
+              Integrates with Real Estate Tools
             </p>
           </div>
           <InfiniteMarquee speed={30} direction="left" className="opacity-50 hover:opacity-100 transition-opacity">
             <div className="flex items-center gap-16 md:gap-24 px-12">
-              <span className="text-xl font-bold font-sans tracking-tight">Next.js</span>
-              <span className="text-xl font-bold font-sans tracking-tight">TypeScript</span>
-              <span className="text-xl font-bold font-sans tracking-tight">Tailwind CSS</span>
-              <span className="text-xl font-bold font-sans tracking-tight">Framer Motion</span>
-              <span className="text-xl font-bold font-sans tracking-tight">Supabase</span>
-              <span className="text-xl font-bold font-sans tracking-tight">Vercel</span>
+              <span className="text-xl font-bold font-sans tracking-tight">Zillow</span>
+              <span className="text-xl font-bold font-sans tracking-tight">MLS</span>
+              <span className="text-xl font-bold font-sans tracking-tight">Realtor.com</span>
               <span className="text-xl font-bold font-sans tracking-tight">n8n</span>
               <span className="text-xl font-bold font-sans tracking-tight">GoHighLevel</span>
               <span className="text-xl font-bold font-sans tracking-tight">OpenAI API</span>
               <span className="text-xl font-bold font-sans tracking-tight">Claude API</span>
-              <span className="text-xl font-bold font-sans tracking-tight">Hostinger VPS</span>
+              <span className="text-xl font-bold font-sans tracking-tight">Twilio</span>
+              <span className="text-xl font-bold font-sans tracking-tight">Calendly</span>
             </div>
           </InfiniteMarquee>
         </section>
@@ -321,9 +314,9 @@ export default function Home() {
                 className="space-y-2"
               >
                 <div className="text-3xl sm:text-4xl font-bold text-primary">
-                  <AnimatedCounter value={500} suffix="+" duration={2} oscillate={true} range={5} />
+                  100%
                 </div>
-                <p className="text-sm text-muted-foreground">Happy Clients</p>
+                <p className="text-sm text-muted-foreground">Lead Capture Reliability</p>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -333,9 +326,9 @@ export default function Home() {
                 className="space-y-2"
               >
                 <div className="text-3xl sm:text-4xl font-bold text-accent">
-                  <AnimatedCounter value={60} suffix="s" duration={1.5} oscillate={true} range={2} />
+                  &lt;2s
                 </div>
-                <p className="text-sm text-muted-foreground">Avg. Response Time</p>
+                <p className="text-sm text-muted-foreground">Data Synchronization</p>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -345,9 +338,9 @@ export default function Home() {
                 className="space-y-2"
               >
                 <div className="text-3xl sm:text-4xl font-bold text-primary">
-                  <AnimatedCounter value={99} suffix="%" duration={2} oscillate={true} range={0.1} />
+                  24/7/365
                 </div>
-                <p className="text-sm text-muted-foreground">Automation Uptime</p>
+                <p className="text-sm text-muted-foreground">AI Availability</p>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -357,9 +350,9 @@ export default function Home() {
                 className="space-y-2"
               >
                 <div className="text-3xl sm:text-4xl font-bold text-accent">
-                  <AnimatedCounter value={24} suffix="/7" duration={1.5} />
+                  &lt;30s
                 </div>
-                <p className="text-sm text-muted-foreground">Always Available</p>
+                <p className="text-sm text-muted-foreground">Speed-to-Lead Target</p>
               </motion.div>
             </div>
           </div>

@@ -16,6 +16,7 @@ import Demos from "@/pages/demos";
 import Contact from "@/pages/contact";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
+import Audit from "@/pages/audit";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/how-it-works" component={HowItWorks} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
+      <Route path="/audit" component={Audit} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
       <Route component={NotFound} />

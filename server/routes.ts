@@ -32,6 +32,24 @@ export async function registerRoutes(
 
       await storage.createNewsletterSubscriber(result.data);
 
+      // Wire to n8n/GoHighLevel as requested
+      // This hits the engine which tagging/automating the subscriber in GHL
+      try {
+        await fetch("https://n8n.n8ngalaxy.com/webhook/real-estate-demo-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: result.data.email,
+            tag: "Newsletter",
+            type: "newsletter_subscription",
+            source: "website_footer"
+          }),
+        });
+      } catch (e) {
+        console.error("Failed to forward newsletter to GHL/n8n:", e);
+        // We continue since we saved it to local storage
+      }
+
       return res.status(201).json({
         message: "Subscribed successfully"
       });
@@ -39,7 +57,7 @@ export async function registerRoutes(
       console.error("Newsletter subscription error:", error);
       // Handle unique constraint error
       if (error instanceof Error && error.message.includes("unique")) {
-         return res.status(409).json({
+        return res.status(409).json({
           message: "Email already subscribed"
         });
       }
