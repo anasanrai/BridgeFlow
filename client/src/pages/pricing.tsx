@@ -14,110 +14,151 @@ import {
   Boxes,
   RefreshCw,
   Zap,
-  Sparkles
+  Sparkles,
+  Clock,
+  Shield,
+  TrendingUp,
+  Users,
+  Home,
+  Bot,
+  MessageSquare
 } from "lucide-react";
 import { ROICalculator } from "@/components/roi-calculator";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
+// Beta Launch Offer - The Deal Closer
+const betaOffer = {
+  setupPrice: 499,
+  originalPrice: 1500,
+  monthlyPrice: 299,
+  features: [
+    "24/7 AI Lead Response System",
+    "Instant SMS & Email Follow-up",
+    "GoHighLevel CRM Integration",
+    "Lead Scoring & Prioritization",
+    "Automated Appointment Booking",
+    "Custom Response Scripting",
+    "Performance Dashboard",
+    "Dedicated Onboarding Call"
+  ],
+  guarantee: "3-Day Risk-Free Trial: If our AI doesn't catch a lead you would have missed, you pay nothing."
+};
+
+// Full Pricing Tiers (Real Estate Focused)
 const pricingTiers = [
   {
-    id: "foundation",
-    name: "Foundation",
-    tagline: "Start with clarity",
-    price: "$300 – $700",
+    id: "speed-to-lead",
+    name: "Speed-to-Lead Audit",
+    tagline: "Know your gaps",
+    price: "$497",
     priceNote: "one-time",
     icon: Search,
-    description: "Audit your operations and create a blueprint for automation.",
+    description: "Discover exactly where you're losing leads and get a custom automation blueprint.",
     features: [
-      "Workflow Audit & Automation Blueprint",
-      "Tool Stack Rationalization",
-      "AI-Readiness Assessment",
-      "Prioritized opportunity matrix",
-      "ROI projections",
+      "Response Time Analysis",
+      "Lead Source Audit",
+      "Follow-up Gap Assessment",
+      "CRM Health Check",
+      "Priority Action Plan",
+      "ROI Projections",
     ],
-    cta: "Get Started",
+    cta: "Get My Audit",
     popular: false,
+    forWhom: "Solo Agents",
   },
   {
-    id: "implementation",
-    name: "Implementation",
-    tagline: "Build your systems",
-    price: "$1,500 – $5,000+",
-    priceNote: "per project",
-    icon: FileCode2,
-    description: "Custom-built automation systems for your specific workflows.",
+    id: "realtor-os",
+    name: "Realtor OS",
+    tagline: "Your complete system",
+    price: "$2,497",
+    priceNote: "one-time setup",
+    icon: Home,
+    description: "The Ultimate Realtor Operating System. CRM + AI Follow-up + Lead Database, fully automated.",
     features: [
-      "n8n-Based Automation Systems",
-      "AI Agents (support, ops, sales)",
-      "CRM & Internal Ops Automation",
-      "API Integrations (Slack, Notion, etc.)",
-      "Full documentation & training",
-      "30-day support included",
+      "Full GHL CRM Setup",
+      "AI Conversation Bot",
+      "Automated Drip Campaigns",
+      "Appointment Scheduler",
+      "Lead Nurturing Sequences",
+      "Pipeline Automation",
+      "Training & Documentation",
+      "30-Day Support Included",
     ],
-    cta: "Start Project",
+    cta: "Get Realtor OS",
     popular: true,
+    forWhom: "Serious Agents",
   },
   {
-    id: "productized",
-    name: "Productized Systems",
-    tagline: "Proven solutions",
-    price: "$2,000 – $4,000",
-    priceNote: "per system",
-    icon: Boxes,
-    description: "Battle-tested automation systems ready for deployment.",
+    id: "brokerage",
+    name: "Brokerage Build",
+    tagline: "Scale your team",
+    price: "$5,000+",
+    priceNote: "custom project",
+    icon: Users,
+    description: "Custom automation systems for teams of 10+ agents. Full integration with your existing stack.",
     features: [
-      "Lead-to-Close Automation",
-      "AI Operations Assistant",
-      "Client Onboarding Engine",
-      "Pre-configured integrations",
-      "Quick deployment (1-2 weeks)",
-      "Documentation included",
+      "Multi-Agent CRM Setup",
+      "Team Lead Distribution",
+      "Agent Performance Tracking",
+      "Custom API Integrations",
+      "White-Label Options",
+      "Priority Support SLA",
+      "Quarterly Strategy Reviews",
+      "Dedicated Account Manager",
     ],
-    cta: "Choose System",
+    cta: "Schedule Consultation",
     popular: false,
+    forWhom: "Brokerages & Teams",
   },
   {
     id: "retainer",
-    name: "Retainer",
-    tagline: "Ongoing excellence",
-    price: "$300 – $1,000",
+    name: "Growth Partner",
+    tagline: "Ongoing optimization",
+    price: "$499",
     priceNote: "per month",
     icon: RefreshCw,
-    description: "Keep your systems running at peak performance.",
+    description: "Keep your systems running at peak performance while we continuously optimize for better results.",
     features: [
-      "Automation Monitoring",
-      "System Optimization",
-      "AI Updates & Maintenance",
-      "Priority support access",
-      "Monthly performance reports",
-      "99%+ uptime guarantee",
+      "24/7 System Monitoring",
+      "Monthly Optimization Sprints",
+      "AI Response Tuning",
+      "New Campaign Creation",
+      "Performance Reports",
+      "Priority Support Access",
+      "99%+ Uptime Guarantee",
+      "Cancel Anytime",
     ],
-    cta: "Start Retainer",
+    cta: "Become a Partner",
     popular: false,
+    forWhom: "Active Agents",
   },
 ];
 
 const faqs = [
   {
-    question: "How do I know which tier is right for me?",
-    answer: "Start with a Foundation audit if you're unsure. We'll analyze your operations and recommend the best path forward based on your specific needs and goals.",
+    question: "What if I already have a CRM?",
+    answer: "No problem! We work with GoHighLevel (GHL), but can also integrate with your existing CRM like Follow Up Boss, kvCORE, or BoomTown. During your audit, we'll assess the best approach.",
   },
   {
-    question: "What's included in the project pricing?",
-    answer: "All projects include discovery, design, build, testing, deployment, documentation, team training, and 30 days of post-launch support.",
+    question: "How quickly will I see results?",
+    answer: "Most agents see their first AI-handled lead within 24-48 hours of going live. The system starts working immediately, responding to leads while you sleep.",
   },
   {
-    question: "Can I upgrade from a smaller project?",
-    answer: "Absolutely. Many clients start with a Foundation audit, then move to Implementation. Your audit investment applies toward larger projects.",
+    question: "What's included in the $299/month retainer?",
+    answer: "This covers 24/7 AI lead monitoring, GHL hosting costs, system maintenance, and priority support. It's less than the cost of one Zillow Premier Agent lead, but manages ALL your leads.",
   },
   {
-    question: "Do you offer payment plans?",
-    answer: "Yes, for projects over $2,000 we offer milestone-based payments. Typically 50% upfront and 50% on completion.",
+    question: "Do I need to be tech-savvy?",
+    answer: "Not at all. We handle all the technical setup. You'll receive a simple dashboard to monitor your leads and a training session to understand the system. Most agents are comfortable within the first week.",
   },
   {
-    question: "What if the automation doesn't work as expected?",
-    answer: "We stand behind our work. All projects include testing and validation before launch, plus 30 days of support to address any issues.",
+    question: "What if the automation doesn't work for me?",
+    answer: "We offer a 3-day risk-free trial. If our AI doesn't catch a lead you would have missed, you pay nothing for the setup. We're confident because we've seen the results.",
+  },
+  {
+    question: "Can I upgrade or downgrade later?",
+    answer: "Absolutely. Many agents start with the Beta Offer, then upgrade to the full Realtor OS once they see results. Your initial investment applies toward any upgrade.",
   },
 ];
 
@@ -125,37 +166,184 @@ import PageTransition from "@/components/page-transition";
 
 export default function Pricing() {
   useSEO({
-    title: "Pricing",
-    description: "Transparent pricing for AI automation services. From $300 audits to full system builds. No hidden fees, no surprises.",
+    title: "Pricing for Real Estate Agents",
+    description: "AI-powered lead response for Realtors. Setup for $499, managed for $299/month. Never miss another lead. 3-day risk-free trial.",
   });
 
   return (
     <PageTransition>
       <div className="min-h-screen pt-24">
+        {/* Hero Section with Beta Offer */}
         <GradientBackground variant="hero" className="py-16 lg:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              className="max-w-3xl mx-auto text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Badge variant="outline" className="mb-4">Pricing</Badge>
-              <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-                Transparent pricing for{" "}
-                <span className="text-gradient-animated">real results</span>
-              </h1>
-              <p className="text-xl text-muted-foreground">
-                Investment aligned with outcomes. No hourly billing, no hidden fees.
-                Choose the engagement model that fits your needs.
-              </p>
-            </motion.div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left: Value Proposition */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Badge className="mb-4 bg-green-500/20 text-green-400 border-green-500/30">
+                  🚀 Beta Launch Offer — Limited Spots
+                </Badge>
+                <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+                  Stop Losing Leads{" "}
+                  <span className="text-gradient-animated">While You Sleep</span>
+                </h1>
+                <p className="text-xl text-muted-foreground mb-6">
+                  Our AI responds to your leads in under 60 seconds, 24/7. Book more appointments. Close more deals. Never miss another opportunity.
+                </p>
+
+                {/* Trust Indicators */}
+                <div className="flex flex-wrap gap-4 mb-8">
+                  {[
+                    { icon: Clock, text: "< 60s Response" },
+                    { icon: Bot, text: "24/7 AI Active" },
+                    { icon: Shield, text: "Risk-Free Trial" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <item.icon className="w-4 h-4 text-primary" />
+                      <span>{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* The Hook */}
+                <Card className="p-4 bg-accent/10 border-accent/30 mb-6">
+                  <p className="text-sm font-medium text-accent flex items-start gap-2">
+                    <Shield className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <span>{betaOffer.guarantee}</span>
+                  </p>
+                </Card>
+              </motion.div>
+
+              {/* Right: Beta Pricing Card */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <Card className="p-8 bg-card border-primary/30 ring-2 ring-primary/20 shadow-2xl shadow-primary/10 relative overflow-hidden" data-testid="card-beta-offer">
+                  {/* Glow Effect */}
+                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl" />
+                  <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/20 rounded-full blur-3xl" />
+
+                  <div className="relative">
+                    <Badge className="mb-4 bg-primary text-primary-foreground animate-pulse-glow">
+                      Best Value for Solo Agents
+                    </Badge>
+
+                    <h3 className="text-2xl font-bold mb-2">AI Lead Response System</h3>
+                    <p className="text-muted-foreground mb-6">Everything you need to capture and convert more leads, automatically.</p>
+
+                    {/* Pricing */}
+                    <div className="mb-6 p-4 rounded-lg bg-primary/5 border border-primary/10">
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <span className="text-4xl font-bold text-primary">${betaOffer.setupPrice}</span>
+                        <span className="text-lg text-muted-foreground line-through">${betaOffer.originalPrice}</span>
+                        <Badge variant="outline" className="text-green-400 border-green-400/30">Save 67%</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground">One-time setup fee</p>
+
+                      <div className="mt-4 pt-4 border-t border-primary/10">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-2xl font-bold">${betaOffer.monthlyPrice}</span>
+                          <span className="text-muted-foreground">/month</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">24/7 AI monitoring + GHL hosting</p>
+                      </div>
+                    </div>
+
+                    {/* Features */}
+                    <ul className="space-y-3 mb-8">
+                      {betaOffer.features.map((feature, i) => (
+                        <motion.li
+                          key={i}
+                          className="flex items-center gap-3 text-sm"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.4 + i * 0.05 }}
+                        >
+                          <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                          <span>{feature}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+
+                    {/* CTA */}
+                    <Link href="/contact">
+                      <Button size="lg" className="w-full gap-2 button-cta text-lg py-6" data-testid="button-beta-cta">
+                        Claim Your Beta Spot
+                        <ArrowRight className="w-5 h-5" />
+                      </Button>
+                    </Link>
+
+                    <p className="text-center text-xs text-muted-foreground mt-4">
+                      <MessageSquare className="w-3 h-3 inline mr-1" />
+                      We'll reach out within 2 hours to schedule your setup call
+                    </p>
+                  </div>
+                </Card>
+              </motion.div>
+            </div>
           </div>
         </GradientBackground>
 
+        {/* Why This Works Section */}
+        <section className="py-16 lg:py-20 bg-muted/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <AnimatedSection className="text-center mb-12">
+              <Badge variant="outline" className="mb-4">Why Realtors Choose Us</Badge>
+              <h2 className="text-3xl font-bold mb-4">Less Than One Zillow Lead. Manages All Your Leads.</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                At $299/month, you're paying less than the cost of a single lead-gen service — but getting 24/7 coverage for every lead source you have.
+              </p>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              {[
+                {
+                  icon: Clock,
+                  title: "Speed Wins Deals",
+                  description: "Studies show responding in under 5 minutes makes you 100x more likely to connect. Our AI responds in under 60 seconds."
+                },
+                {
+                  icon: TrendingUp,
+                  title: "More Appointments",
+                  description: "Automated follow-up ensures no lead falls through the cracks. Average agents see 40% more booked appointments."
+                },
+                {
+                  icon: Shield,
+                  title: "Zero Risk",
+                  description: "Our 3-day trial proves the value before you commit. If it doesn't work, you don't pay. Simple as that."
+                },
+              ].map((item, index) => (
+                <AnimatedCard key={index} delay={index * 0.1}>
+                  <Card className="p-6 text-center h-full bg-card border-card-border">
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                      <item.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 className="font-semibold mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                  </Card>
+                </AnimatedCard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Full Pricing Tiers */}
         <section className="py-20 lg:py-28 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <AnimatedSection className="text-center mb-12">
+              <Badge variant="outline" className="mb-4">Full Service Menu</Badge>
+              <h2 className="text-3xl font-bold mb-4">Solutions for Every Stage of Your Business</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Whether you're a solo agent or running a brokerage, we have a solution that fits.
+              </p>
+            </AnimatedSection>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {pricingTiers.map((tier, index) => (
                 <AnimatedCard key={tier.id} delay={index * 0.1}>
@@ -171,6 +359,10 @@ export default function Pricing() {
                         Most Popular
                       </Badge>
                     )}
+
+                    <div className="mb-2">
+                      <span className="text-xs text-accent font-medium">{tier.forWhom}</span>
+                    </div>
 
                     <div className="flex items-center gap-3 mb-4">
                       <motion.div
@@ -231,6 +423,7 @@ export default function Pricing() {
           </div>
         </section>
 
+        {/* Value Guarantee */}
         <GradientBackground variant="section" className="py-20 lg:py-28 border-y border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <AnimatedSection className="text-center mb-12">
@@ -243,9 +436,9 @@ export default function Pricing() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               {[
-                { title: "Full Documentation", description: "Every workflow documented for your team to understand and maintain." },
-                { title: "System Ownership", description: "You own everything we build. No vendor lock-in, no recurring platform fees." },
-                { title: "Training & Support", description: "Hands-on training plus 30 days of post-launch support included." },
+                { title: "Full Ownership", description: "You own everything we build. No vendor lock-in, no hidden platform fees." },
+                { title: "White-Glove Setup", description: "We handle everything technical. You just focus on selling homes." },
+                { title: "Ongoing Support", description: "30 days of post-launch support included with every setup. We're here to help." },
               ].map((item, index) => (
                 <AnimatedSection key={index} delay={index * 0.1} className="text-center">
                   <h3 className="font-semibold mb-2">{item.title}</h3>
@@ -263,7 +456,7 @@ export default function Pricing() {
               <Badge variant="outline" className="mb-4">Value Discovery</Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">Calculate Your Automation ROI</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Stop estimating and start quantifying. Use our engine to see exactly how much leverage automation creates for your team.
+                See exactly how much revenue you're leaving on the table with slow lead response times.
               </p>
             </AnimatedSection>
 
@@ -282,12 +475,12 @@ export default function Pricing() {
                   <Sparkles className="w-4 h-4" />
                   <span>Free Resource</span>
                 </div>
-                <h2 className="text-3xl font-bold mb-4">Not ready for a full build?</h2>
+                <h2 className="text-3xl font-bold mb-4">Not ready for automation yet?</h2>
                 <p className="text-lg text-muted-foreground mb-6">
-                  Download our <strong>AI Readiness Checklist</strong>. Learn the 5 signs your operation is ready for automation and how to avoid common pitfalls.
+                  Download our <strong>Realtor Speed-to-Lead Checklist</strong>. Learn the 5 critical response time mistakes that cost agents deals — and how to fix them today.
                 </p>
                 <ul className="space-y-3 mb-8">
-                  {["Tool Stack Audit Template", "Phase 1 Automation High-Wins", "Cost vs. Value Matrix"].map((item, i) => (
+                  {["Response Time Benchmarks", "Lead Source Prioritization", "Follow-up Sequence Templates"].map((item, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
                       <CheckCircle2 className="w-4 h-4 text-primary" />
                       {item}
@@ -301,18 +494,18 @@ export default function Pricing() {
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                     <FileCode2 className="w-24 h-24" />
                   </div>
-                  <h3 className="text-xl font-bold mb-6">Get the Readiness Checklist</h3>
+                  <h3 className="text-xl font-bold mb-6">Get the Free Checklist</h3>
                   <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                     <div className="space-y-2">
                       <Label htmlFor="email">Work Email</Label>
-                      <Input id="email" type="email" placeholder="you@company.com" className="bg-background" />
+                      <Input id="email" type="email" placeholder="you@realestate.com" className="bg-background" />
                     </div>
                     <Button className="w-full gap-2">
                       Send Me the Checklist
                       <ArrowRight className="w-4 h-4" />
                     </Button>
                     <p className="text-[10px] text-center text-muted-foreground italic">
-                      No spam. Just high-leverage automation insights.
+                      No spam. Just actionable tips to close more deals.
                     </p>
                   </form>
                 </Card>
@@ -321,6 +514,7 @@ export default function Pricing() {
           </div>
         </section>
 
+        {/* FAQ Section */}
         <section className="py-20 lg:py-28 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-primary/5" />
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -344,24 +538,32 @@ export default function Pricing() {
           </div>
         </section>
 
+        {/* Final CTA */}
         <GradientBackground variant="cta" className="py-20 lg:py-28 border-t border-primary/10">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <AnimatedSection>
+              <Badge className="mb-4 bg-green-500/20 text-green-400 border-green-500/30">
+                Limited Beta Spots Available
+              </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                Ready to invest in real automation?
+                Ready to Never Miss a Lead Again?
               </h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Book a consultation to discuss your needs. We'll recommend the right
-                engagement model and provide a detailed proposal.
+                Join the beta at $499 setup + $299/month. Start converting leads while your competition sleeps.
               </p>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link href="/contact">
-                  <Button size="lg" className="gap-2 shadow-lg shadow-primary/25" data-testid="button-pricing-cta">
-                    Request a Proposal
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-              </motion.div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link href="/contact">
+                    <Button size="lg" className="gap-2 shadow-lg shadow-primary/25 text-lg px-8 py-6" data-testid="button-pricing-cta">
+                      Claim Your Beta Spot
+                      <ArrowRight className="w-5 h-5" />
+                    </Button>
+                  </Link>
+                </motion.div>
+                <p className="text-sm text-muted-foreground">
+                  or <Link href="/demos" className="text-primary hover:underline">see our automation demos →</Link>
+                </p>
+              </div>
             </AnimatedSection>
           </div>
         </GradientBackground>

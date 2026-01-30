@@ -7,7 +7,7 @@ import { GradientBackground } from "@/components/gradient-background";
 import { AnimatedSection, AnimatedCard } from "@/components/animated-section";
 import { GlowingText, TypewriterText, AnimatedCounter, InfiniteMarquee, TiltCard, ParallaxShape } from "@/components/animated-text";
 import { useSEO } from "@/hooks/use-seo";
-import dashboardImage from "/assets/hero-visual.png";
+import dashboardImage from "../assets/hero-visual.png";
 import {
   ArrowRight,
   Zap,
@@ -271,7 +271,7 @@ export default function Home() {
               >
                 <div className="relative rounded-xl overflow-hidden shadow-2xl shadow-primary/20 border border-border/80 bg-card">
                   <img
-                    src="/assets/hero-visual.png"
+                    src={dashboardImage}
                     alt="BridgeFlow Autonomous Workflow Engine"
                     className="w-full h-auto opacity-100 hover:scale-[1.02] transition-transform duration-700"
                     loading="eager"
@@ -387,7 +387,7 @@ export default function Home() {
           </InfiniteMarquee>
         </section>
 
-        
+
 
         {/* Why Choose BridgeFlow */}
         <section className="py-20 lg:py-28 bg-card/30">

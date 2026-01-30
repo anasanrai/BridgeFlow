@@ -1,6 +1,6 @@
 import { useTheme } from "@/components/theme-provider";
 import { motion } from "framer-motion";
-import bMarkImage from "/assets/logo.png";
+import bMarkImage from "../assets/logo.png";
 
 interface LogoProps {
   className?: string;

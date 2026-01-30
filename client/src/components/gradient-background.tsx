@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import gridSvg from "../assets/grid.svg";
 
 interface GradientBackgroundProps {
   variant?: "hero" | "section" | "cta";
@@ -45,7 +46,10 @@ export function GradientBackground({
             ease: "easeInOut",
           }}
         />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03]" />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{ backgroundImage: `url(${gridSvg})` }}
+        />
         <div className="relative z-10">{children}</div>
       </div>
     );

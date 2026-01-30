@@ -14,6 +14,12 @@ import {
 } from "@/components/ui/carousel";
 import { useSEO } from "@/hooks/use-seo";
 
+import n8nGmailImg from "../assets/n8n-gmail-workflow.png";
+import n8nAiImg from "../assets/n8n-ai-agent-workflow.png";
+import n8nTelegramImg from "../assets/n8n-telegram-bot.png";
+import ghlDashboardImg from "../assets/ghl-pipeline-dashboard.png";
+import ghlWorkflowImg from "../assets/ghl-workflow.png";
+
 export default function Demos() {
     useSEO({
         title: "Live Automation Demos | BridgeFlow Agency",
@@ -79,7 +85,7 @@ export default function Demos() {
                                             <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur ring-1 ring-white/10 group aspect-video">
                                                 <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                                 <img
-                                                    src="/assets/n8n-gmail-workflow.png"
+                                                    src={n8nGmailImg}
                                                     alt="Gmail Automation Workflow with n8n"
                                                     className="w-full h-full object-contain"
                                                 />
@@ -92,7 +98,7 @@ export default function Demos() {
                                             <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur ring-1 ring-white/10 group aspect-video">
                                                 <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                                 <img
-                                                    src="/assets/n8n-ai-agent-workflow.png"
+                                                    src={n8nAiImg}
                                                     alt="AI Agent Workflow Architecture"
                                                     className="w-full h-full object-contain"
                                                 />
@@ -105,7 +111,7 @@ export default function Demos() {
                                             <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur ring-1 ring-white/10 group aspect-video">
                                                 <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                                 <img
-                                                    src="/assets/n8n-telegram-bot.png"
+                                                    src={n8nTelegramImg}
                                                     alt="Telegram Voice Bot Workflow"
                                                     className="w-full h-full object-contain"
                                                 />
@@ -183,7 +189,7 @@ export default function Demos() {
                                         <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur ring-1 ring-white/10 group aspect-video">
                                             <div className="absolute inset-0 bg-gradient-to-bl from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                             <img
-                                                src="/assets/ghl-pipeline-dashboard.png"
+                                                src={ghlDashboardImg}
                                                 alt="GoHighLevel Pipeline Dashboard with Sales Analytics"
                                                 className="w-full h-full object-contain transform transition-transform duration-700 group-hover:scale-[1.02]"
                                             />
@@ -193,7 +199,7 @@ export default function Demos() {
                                         <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur ring-1 ring-white/10 group aspect-video">
                                             <div className="absolute inset-0 bg-gradient-to-bl from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                             <img
-                                                src="/assets/ghl-workflow.png"
+                                                src={ghlWorkflowImg}
                                                 alt="GoHighLevel Workflow Builder - New Lead Welcome Sequence"
                                                 className="w-full h-full object-contain transform transition-transform duration-700 group-hover:scale-[1.02]"
                                             />
