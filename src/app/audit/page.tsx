@@ -1,14 +1,35 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Search, Globe, Zap, ArrowRight, ShieldCheck, BarChart, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, Globe, Zap, ArrowRight, ShieldCheck, BarChart, Loader2, AlertTriangle } from "lucide-react";
+
+const ROTATING_PHRASES = [
+    "Real Estate Deals",
+    "E-commerce Revenue",
+    "Consulting Clients",
+    "SaaS Signups",
+    "Agency Retainers",
+    "Coaching Bookings",
+    "Clinic Appointments",
+    "Law Firm Leads",
+    "Insurance Renewals",
+    "B2B Contracts",
+];
 
 export default function AuditPage() {
     const [url, setUrl] = useState("");
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMsg, setErrorMsg] = useState("");
+    const [phraseIndex, setPhraseIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPhraseIndex((prev) => (prev + 1) % ROTATING_PHRASES.length);
+        }, 2500);
+        return () => clearInterval(interval);
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -53,27 +74,43 @@ export default function AuditPage() {
         <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
             {/* Background Glows */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold-400/10 blur-[120px] -z-10 animate-pulse" />
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] -z-10 animate-pulse" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-red-500/5 blur-[120px] -z-10 animate-pulse" />
 
             <div className="container-max px-4">
                 <div className="max-w-4xl mx-auto text-center mb-16">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-white/10 mb-6"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-red-500/20 mb-6"
                     >
-                        <Search className="w-4 h-4 text-gold-400" />
-                        <span className="text-sm font-medium text-gold-400 uppercase tracking-wider">The &quot;Trojan Horse&quot; Audit</span>
+                        <AlertTriangle className="w-4 h-4 text-red-400" />
+                        <span className="text-sm font-medium text-red-400 uppercase tracking-wider">Revenue Leak Detector</span>
                     </motion.div>
 
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-display font-bold mb-6"
+                        className="text-4xl md:text-6xl font-display font-bold mb-6 leading-tight"
                     >
-                        Stop Losing Real Estate Deals to <br />
-                        <span className="gold-text">Slow Responsiveness</span>
+                        Your{" "}
+                        <span className="relative inline-block min-w-[280px] md:min-w-[420px]">
+                            <AnimatePresence mode="wait">
+                                <motion.span
+                                    key={phraseIndex}
+                                    initial={{ y: 30, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    exit={{ y: -30, opacity: 0 }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    className="gold-text inline-block"
+                                >
+                                    {ROTATING_PHRASES[phraseIndex]}
+                                </motion.span>
+                            </AnimatePresence>
+                            <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-400/40 to-transparent" />
+                        </span>
+                        <br />
+                        Are Dying in Your Inbox
                     </motion.h1>
 
                     <motion.p
@@ -82,8 +119,7 @@ export default function AuditPage() {
                         transition={{ delay: 0.2 }}
                         className="text-xl text-gray-400 max-w-2xl mx-auto"
                     >
-                        Is your website leaking leads? Enter your URL below for a benchmark-setting
-                        <strong className="text-white"> Speed-to-Lead Performance Audit</strong>.
+                        Find out exactly how many leads you&apos;re losing — in <strong className="text-white">60 seconds</strong>. Free.
                     </motion.p>
                 </div>
 
@@ -99,9 +135,9 @@ export default function AuditPage() {
                                 <div className="w-20 h-20 rounded-full gold-gradient flex items-center justify-center mx-auto mb-6">
                                     <Zap className="w-10 h-10 text-navy-950" />
                                 </div>
-                                <h3 className="text-2xl font-bold mb-4">Request Received!</h3>
+                                <h3 className="text-2xl font-bold mb-4">Your Report Is Being Generated!</h3>
                                 <p className="text-gray-400 mb-8">
-                                    Our engine is analyzing your site. You&apos;ll receive your Speed-to-Lead report via email within 24 hours.
+                                    Our engine is scanning your funnel for revenue leaks. You&apos;ll receive your custom report via email within 24 hours.
                                 </p>
                                 <button
                                     onClick={() => setStatus("idle")}
@@ -121,7 +157,7 @@ export default function AuditPage() {
                                             required
                                             value={url}
                                             onChange={(e) => setUrl(e.target.value)}
-                                            placeholder="https://your-agency.com"
+                                            placeholder="https://your-business.com"
                                             className="w-full pl-12 pr-4 py-4 bg-navy-900 border border-white/10 rounded-2xl focus:outline-none focus:border-gold-400/50 transition-colors bg-navy-950/50"
                                         />
                                     </div>
@@ -151,23 +187,23 @@ export default function AuditPage() {
                                 <button
                                     type="submit"
                                     disabled={status === "loading"}
-                                    className="w-full py-4 gold-gradient text-navy-950 font-bold rounded-2xl flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-gold-400/20 transition-all active:scale-95 disabled:opacity-70"
+                                    className="w-full py-4 gold-gradient text-navy-950 font-bold text-lg rounded-2xl flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-gold-400/20 transition-all active:scale-95 disabled:opacity-70"
                                 >
                                     {status === "loading" ? (
                                         <>
                                             <Loader2 className="w-5 h-5 animate-spin" />
-                                            Running Engine...
+                                            Scanning for leaks...
                                         </>
                                     ) : (
                                         <>
-                                            Generate My Custom Audit Report
+                                            Reveal My Revenue Leaks
                                             <ArrowRight className="w-5 h-5" />
                                         </>
                                     )}
                                 </button>
 
-                                <p className="text-center text-xs text-gray-500 italic">
-                                    *Our engine will perform a live speed-to-lead test on your domain.
+                                <p className="text-center text-sm text-gray-500">
+                                    No signup needed. Instant results. Used by <strong className="text-gray-400">500+ businesses</strong> globally.
                                 </p>
                             </form>
                         )}
