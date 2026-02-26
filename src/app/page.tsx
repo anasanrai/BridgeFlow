@@ -220,7 +220,7 @@ export default async function Home() {
                         description="A proven 4-step process to transform your business operations."
                     />
 
-                    <div className="grid md:grid-cols-3 gap-8">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {processSteps.map((step: any, i: number) => (
                             <ScrollReveal key={step.step} delay={i * 0.15}>
                                 <div className="relative text-center">

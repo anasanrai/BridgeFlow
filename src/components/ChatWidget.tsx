@@ -149,7 +149,7 @@ export default function ChatWidget() {
                                 </div>
                                 <div className="flex flex-col gap-1 max-w-[78%]">
                                     <div className={`px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${msg.role === "user"
-                                        ? "bg-gold-400/10 text-white border border-gold-400/10 rounded-tr-sm"
+                                        ? "bg-gold-400/20 text-white border border-gold-400/20 rounded-tr-sm"
                                         : "bg-white/5 text-gray-200 border border-white/5 rounded-tl-sm"
                                         }`}>
                                         {renderContent(msg.content)}
