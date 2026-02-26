@@ -1,7 +1,7 @@
 /**
  * =============================================
  *  ABOUT PAGE DATA — Edit this file to update
- *  team, values, tech stack, and timeline.
+ *  founder, values, tech stack, and timeline.
  *  No code changes needed.
  * =============================================
  */
@@ -11,7 +11,7 @@ export const aboutHero = {
     title: "We bridge the gap between",
     highlight: "business and AI",
     description:
-        "BridgeFlow is an AI-powered automation agency born from a simple belief: every business deserves access to the same automation tools that power Fortune 500 companies — without the enterprise price tag.",
+        "Not a Silicon Valley startup. A self-taught automation engineer from Nepal who got tired of watching businesses drown in manual work.",
 };
 
 export const mission = {
@@ -19,57 +19,115 @@ export const mission = {
     highlight: "mission",
     paragraphs: [
         "We exist to make intelligent automation accessible to every B2B business on the planet. We combine deep AI expertise with battle-tested workflow engineering to deliver systems that don't just work — they transform.",
-        "Our team has collectively built 150+ automation workflows, serving 40+ clients across 15 countries. We're remote-first, AI-native, and obsessed with measurable results.",
+        "Every automation we build is production-grade, documented, and measured by its real impact on your bottom line. No fluff. Ever.",
     ],
 };
 
 export const values = [
     {
         icon: "Target",
+        emoji: "⚡",
         title: "Results-Driven",
-        description: "Every automation we build is measured by its impact on your bottom line.",
+        description:
+            "Every workflow measured by real business impact — not vanity metrics.",
     },
     {
         icon: "Rocket",
+        emoji: "🚀",
         title: "Speed First",
-        description: "We ship fast. Most automations are live within 1-2 weeks of kickoff.",
+        description:
+            "We ship fast. Most automations are live within 1-2 weeks of kickoff.",
     },
     {
         icon: "Heart",
+        emoji: "🤝",
         title: "Client Obsessed",
-        description: "Your success is our success. We maintain a 98% client retention rate.",
+        description:
+            "We treat every client like our only client. Your success is our success.",
     },
     {
         icon: "Lightbulb",
+        emoji: "🤖",
         title: "AI-Native",
-        description: "We don't just use AI — we breathe it. Every solution leverages cutting-edge AI.",
+        description:
+            "We don't just use AI — we breathe it. Every solution leverages cutting-edge AI.",
     },
 ];
 
-/**
- * Team members — update names, roles, and initials here.
- * Initials are shown as avatar text on the page.
- */
 export const team = [
-    { name: "Alex Moreau", role: "CEO & Founder", initials: "AM" },
-    { name: "Priya Sharma", role: "Head of Engineering", initials: "PS" },
-    { name: "James Okonkwo", role: "AI Solutions Architect", initials: "JO" },
-    { name: "Elena Vasquez", role: "Client Success Lead", initials: "EV" },
+    {
+        name: "Anasan Rai",
+        role: "CEO & Founder & AI Automation Engineer",
+        initials: "AR",
+        location: "🇳🇵 Kathmandu, Nepal · Remote-first, Global",
+    },
 ];
+
+export const founderStory = [
+    "Before BridgeFlow, I was carrying boxes on construction sites and delivering food as a senior shopper. Not exactly the typical tech founder story — and that's exactly the point.",
+    "I taught myself n8n, AI automation, and workflow engineering from scratch. No CS degree. No bootcamp. Just curiosity, late nights, and a deep frustration watching businesses waste hundreds of hours every month on work that machines could do in seconds.",
+    "I started teaching AI to non-technical people in my community and realized the gap between businesses that use AI and those that don't is growing every single day. BridgeFlow exists to close that gap.",
+];
+
+export const founderQuote = {
+    text: "I built BridgeFlow because I know what it feels like to do hard, repetitive work. Nobody should be doing manually what a machine can do better.",
+    author: "Anasan Rai, Founder",
+};
 
 export const techStack = [
     { icon: "Workflow", name: "n8n", desc: "Workflow Engine" },
+    { icon: "BarChart3", name: "GoHighLevel", desc: "CRM & Funnels" },
+    { icon: "Network", name: "OpenRouter", desc: "AI Gateway" },
     { icon: "Cpu", name: "OpenAI", desc: "AI Models" },
+    { icon: "Sparkles", name: "GPT-4", desc: "Language Model" },
+    { icon: "Bot", name: "Claude AI", desc: "AI Assistant" },
+    { icon: "Table2", name: "Google Sheets", desc: "Data Management" },
+    { icon: "Mail", name: "Gmail", desc: "Email Automation" },
+    { icon: "MessageSquare", name: "Slack", desc: "Notifications" },
+    { icon: "Webhook", name: "Webhooks", desc: "Event Triggers" },
+    { icon: "Globe", name: "REST APIs", desc: "Integrations" },
+    { icon: "Code2", name: "JavaScript", desc: "Custom Logic" },
+    { icon: "Zap", name: "AI Agents", desc: "Autonomous Tasks" },
     { icon: "Code2", name: "Next.js", desc: "Web Platform" },
     { icon: "Database", name: "PostgreSQL", desc: "Data Layer" },
     { icon: "Globe", name: "Vercel", desc: "Cloud Hosting" },
-    { icon: "Cpu", name: "Claude AI", desc: "AI Assistant" },
 ];
 
 export const milestones = [
-    { year: "2024", title: "Founded", description: "BridgeFlow launched with a mission to democratize automation for B2B businesses." },
-    { year: "2024", title: "First 10 Clients", description: "Delivered 50+ automations across SaaS, e-commerce, and consulting." },
-    { year: "2025", title: "SaaS Launch", description: "Released our first suite of pre-built automation tools for specific verticals." },
-    { year: "2025", title: "Global Expansion", description: "Expanded to serve clients across 15+ countries with a fully remote team." },
-    { year: "2026", title: "AI-First Pivot", description: "Deep integration of GPT-4, Claude, and custom AI models into every workflow." },
+    {
+        year: "'24",
+        title: "The Beginning",
+        description:
+            "Started self-teaching n8n and AI automation from scratch — no degree, no bootcamp, just determination.",
+    },
+    {
+        year: "'24",
+        title: "First Real Workflows",
+        description:
+            "Built first production automation systems for real estate pipelines, agency onboarding and e-commerce.",
+    },
+    {
+        year: "'24",
+        title: "Teaching AI",
+        description:
+            "Started teaching AI tools and automation to non-technical communities in Nepal — bridging the knowledge gap.",
+    },
+    {
+        year: "'25",
+        title: "BridgeFlow Founded",
+        description:
+            "Launched BridgeFlow as a global AI automation agency serving B2B businesses worldwide.",
+    },
+    {
+        year: "NOW",
+        title: "Founding Clients",
+        description:
+            "Onboarding our first founding clients and building N8N Galaxy — our automation SaaS platform. 🚀",
+    },
+    {
+        year: "→",
+        title: "The Vision",
+        description:
+            "Becoming the leading AI automation partner for growing businesses worldwide — starting from Nepal, scaling globally. 🌍",
+    },
 ];
