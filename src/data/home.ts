@@ -19,10 +19,10 @@ export const hero = {
 };
 
 export const stats = [
-    { end: 500, suffix: "+", label: "Enterprise Automations" },
-    { end: 15, suffix: "M", label: "Annual Client Savings" },
-    { end: 99, suffix: ".9%", label: "Automation Uptime" },
-    { end: 12, suffix: "x", label: "Average Client ROI" },
+    { end: 50, suffix: "+", label: "Workflows Built" },
+    { end: 7, suffix: "+", label: "Beta Clients Served" },
+    { end: 10, suffix: "hrs", label: "Saved Per Client Weekly" },
+    { end: 100, suffix: "%", label: "Client Satisfaction" },
 ];
 
 export const servicesOverview = [
