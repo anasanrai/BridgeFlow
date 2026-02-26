@@ -61,7 +61,7 @@ export async function getHomeContent() {
             stats: data.stats || homeData.stats,
             servicesOverview: data.services_overview?.length ? data.services_overview : homeData.servicesOverview,
             processSteps: data.process_steps?.length ? data.process_steps : homeData.processSteps,
-            testimonials: data.testimonials?.length ? data.testimonials : homeData.testimonials,
+
             cta: data.cta || homeData.cta,
             offers: data.offers?.length ? data.offers : homeData.offers,
             demos: data.demos?.length ? data.demos : homeData.demos,
@@ -73,7 +73,7 @@ export async function getHomeContent() {
         stats: homeData.stats,
         servicesOverview: homeData.servicesOverview,
         processSteps: homeData.processSteps,
-        testimonials: homeData.testimonials,
+
         cta: homeData.cta,
         offers: homeData.offers,
         demos: homeData.demos,

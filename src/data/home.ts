@@ -77,30 +77,6 @@ export const processSteps = [
     },
 ];
 
-export const testimonials = [
-    {
-        quote:
-            "BridgeFlow automated our entire lead pipeline. We went from 4 hours of manual work daily to completely hands-off in 2 weeks.",
-        author: "Sarah Chen",
-        role: "VP Operations, TechScale Inc.",
-        rating: 5,
-    },
-    {
-        quote:
-            "The GoHighLevel CRM they set up tripled our appointment bookings. The ROI was immediate — onboarding dropped by 80%.",
-        author: "Marcus Rivera",
-        role: "CEO, GrowthBase",
-        rating: 5,
-    },
-    {
-        quote:
-            "Their AI integration with our CRM was seamless. The team is incredibly responsive and the results speak for themselves.",
-        author: "Aisha Patel",
-        role: "Head of Sales, Nexus Digital",
-        rating: 5,
-    },
-];
-
 export const offers = [
     {
         title: "Free Automation Audit",

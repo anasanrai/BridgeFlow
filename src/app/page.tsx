@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
     const data = await getHomeContent();
-    const { hero, stats, servicesOverview, processSteps, testimonials, cta, offers, demos, affiliateLinks } = data;
+    const { hero, stats, servicesOverview, processSteps, cta, offers, demos, affiliateLinks } = data;
 
     return (
         <>
@@ -281,46 +281,69 @@ export default async function Home() {
                 </div>
             </section>
 
-            {/* Testimonials */}
+            {/* Founding Clients */}
             <section className="section-padding">
                 <div className="container-max">
-                    <SectionHeader
-                        badge="Testimonials"
-                        title="Trusted by"
-                        highlight="industry leaders"
-                        description="Hear from businesses that transformed their operations with BridgeFlow."
-                    />
+                    <div className="max-w-3xl mx-auto text-center">
+                        <ScrollReveal>
+                            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 mb-6">
+                                Limited Offer
+                            </span>
+                        </ScrollReveal>
 
-                    <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-                        {testimonials.map((t: any, i: number) => (
-                            <ScrollReveal key={t.author} delay={i * 0.1}>
-                                <Card className="h-full premium-card">
-                                    <div className="flex gap-1 mb-4">
-                                        {Array.from({ length: t.rating }).map((_, j) => (
-                                            <Star
-                                                key={j}
-                                                className="w-4 h-4 fill-gold-400 text-gold-400"
-                                            />
-                                        ))}
+                        <ScrollReveal delay={0.1}>
+                            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+                                Become a BridgeFlow{" "}
+                                <span className="gold-text">Founding Client</span>
+                            </h2>
+                        </ScrollReveal>
+
+                        <ScrollReveal delay={0.15}>
+                            <p className="text-lg text-gray-400 leading-relaxed mb-12 max-w-2xl mx-auto">
+                                We&apos;re onboarding our first 5 clients at a special founding rate.
+                                Get enterprise-grade automation at startup-friendly pricing — and shape the product with us.
+                            </p>
+                        </ScrollReveal>
+
+                        <ScrollReveal delay={0.2}>
+                            <div className="flex items-center justify-center gap-3 md:gap-4 mb-6">
+                                {[
+                                    { status: "taken", label: "TAKEN" },
+                                    { status: "taken", label: "TAKEN" },
+                                    { status: "open", label: "OPEN" },
+                                    { status: "open", label: "OPEN" },
+                                    { status: "open", label: "OPEN" },
+                                ].map((spot, i) => (
+                                    <div
+                                        key={i}
+                                        className={`flex flex-col items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all ${spot.status === "taken"
+                                            ? "gold-gradient text-navy-950 shadow-lg shadow-gold-400/20"
+                                            : "border-2 border-dashed border-gold-400/30 text-gold-400/70 hover:border-gold-400/60 hover:text-gold-400"
+                                            }`}
+                                    >
+                                        <span className="text-[10px] md:text-xs">{spot.label}</span>
                                     </div>
-                                    <p className="text-gray-300 mb-6 leading-relaxed italic">
-                                        &ldquo;{t.quote}&rdquo;
-                                    </p>
-                                    <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                                        <div className="w-10 h-10 rounded-full gold-gradient flex items-center justify-center text-navy-950 font-bold text-sm">
-                                            {t.author
-                                                .split(" ")
-                                                .map((n: string) => n[0])
-                                                .join("")}
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-sm">{t.author}</div>
-                                            <div className="text-xs text-gray-500">{t.role}</div>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </ScrollReveal>
-                        ))}
+                                ))}
+                            </div>
+                        </ScrollReveal>
+
+                        <ScrollReveal delay={0.25}>
+                            <p className="text-sm text-gold-400/80 font-medium mb-10">
+                                3 of 5 founding spots remaining
+                            </p>
+                        </ScrollReveal>
+
+                        <ScrollReveal delay={0.3}>
+                            <div className="flex flex-col items-center gap-4">
+                                <Button href="/contact" variant="primary" size="lg">
+                                    Claim Your Founding Spot
+                                    <ArrowRight className="w-5 h-5 ml-1" />
+                                </Button>
+                                <p className="text-xs text-gray-600">
+                                    No long-term contracts. Cancel anytime.
+                                </p>
+                            </div>
+                        </ScrollReveal>
                     </div>
                 </div>
             </section>

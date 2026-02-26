@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Home, Save, Loader2, Plus, X, Star, Play, Gift, Zap, Footprints } from "lucide-react";
+import { Home, Save, Loader2, Plus, X, Play, Gift, Zap, Footprints } from "lucide-react";
 
 interface HomeContent {
     id: string;
     hero: { badge: string; title: string; titleLine2: string; highlight: string; description: string; };
     stats: { end: number; suffix: string; label: string; }[];
-    testimonials: { quote: string; author: string; role: string; rating: number; }[];
+
     cta: { title: string; highlight: string; description: string; };
     demos: { title: string; description: string; tags: string[]; }[];
     offers: { title: string; description: string; badge: string; href: string; highlight: boolean; }[];
@@ -15,7 +15,7 @@ interface HomeContent {
     process_steps: { step: string; title: string; description: string; }[];
 }
 
-const blankTestimonial = { quote: "", author: "", role: "", rating: 5 };
+
 const blankStat = { end: 0, suffix: "+", label: "" };
 const blankDemo = { title: "", description: "", tags: [] as string[] };
 const blankOffer = { title: "", description: "", badge: "", href: "/contact", highlight: false };
@@ -67,7 +67,7 @@ export default function HomeAdmin() {
                     method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         hero: { badge: "AI-Powered Automation Agency", title: "Automate your", titleLine2: "Business with", highlight: "AI", description: "" },
-                        stats: [], testimonials: [], cta: { title: "Ready to", highlight: "Automate?", description: "" },
+                        stats: [], cta: { title: "Ready to", highlight: "Automate?", description: "" },
                         demos: [], offers: [], services_overview: [], process_steps: [],
                     }),
                 });
@@ -249,28 +249,6 @@ export default function HomeAdmin() {
                     </div>
                 </div>
 
-                {/* ─── Testimonials ─── */}
-                <div className={CARD}>
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className={SECTION_TITLE}>Testimonials</h2>
-                        <button onClick={() => setContent({ ...content, testimonials: [...(content.testimonials || []), { ...blankTestimonial }] })} className="flex items-center gap-1 text-xs text-gold-400 hover:text-gold-300"><Plus className="w-3 h-3" />Add</button>
-                    </div>
-                    <div className="space-y-4">
-                        {(content.testimonials || []).map((t, i) => (
-                            <div key={i} className="p-4 bg-navy-900/50 rounded-lg border border-white/5">
-                                <div className="flex justify-between mb-3">
-                                    <div className="flex gap-1">{Array.from({ length: 5 }).map((_, s) => <Star key={s} className={`w-4 h-4 cursor-pointer ${s < t.rating ? "text-gold-400 fill-gold-400" : "text-gray-600"}`} onClick={() => { const testimonials = [...(content.testimonials || [])]; testimonials[i] = { ...t, rating: s + 1 }; setContent({ ...content, testimonials }); }} />)}</div>
-                                    <button onClick={() => setContent({ ...content, testimonials: (content.testimonials || []).filter((_, idx) => idx !== i) })} className="p-1 text-gray-500 hover:text-red-400"><X className="w-4 h-4" /></button>
-                                </div>
-                                <textarea value={t.quote} onChange={e => { const testimonials = [...(content.testimonials || [])]; testimonials[i] = { ...t, quote: e.target.value }; setContent({ ...content, testimonials }); }} rows={2} className={TEXTAREA + " mb-2"} placeholder="Quote..." />
-                                <div className="grid grid-cols-2 gap-2">
-                                    <input value={t.author} onChange={e => { const testimonials = [...(content.testimonials || [])]; testimonials[i] = { ...t, author: e.target.value }; setContent({ ...content, testimonials }); }} className="px-3 py-2 bg-navy-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="Author name" />
-                                    <input value={t.role} onChange={e => { const testimonials = [...(content.testimonials || [])]; testimonials[i] = { ...t, role: e.target.value }; setContent({ ...content, testimonials }); }} className="px-3 py-2 bg-navy-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="Role, Company" />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
 
                 {/* ─── CTA ─── */}
                 <div className={CARD}>
