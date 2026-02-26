@@ -26,6 +26,8 @@ export default function IntegrationsAdmin() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [toast, setToast] = useState("");
+    const [n8nWebhookUrl, setN8nWebhookUrl] = useState("");
+    const [savingN8n, setSavingN8n] = useState(false);
 
     const load = useCallback(async () => {
         setLoading(true);
@@ -105,6 +107,28 @@ export default function IntegrationsAdmin() {
             showToast("Webhook saved!");
             load();
         } catch { showToast("Error saving webhook"); } finally { setSaving(false); }
+    };
+
+    const handleSaveN8nWebhook = async () => {
+        if (!n8nWebhookUrl) { showToast("Please enter a webhook URL"); return; }
+        setSavingN8n(true);
+        try {
+            await fetch("/api/admin/content/webhooks", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: "n8n Trojan Horse Audit Pipeline",
+                    url: n8nWebhookUrl,
+                    secret: "",
+                    events: ["audit.requested"],
+                    is_active: true,
+                }),
+            });
+            showToast("✅ n8n webhook saved!");
+            setN8nWebhookUrl("");
+            load();
+        } catch { showToast("❌ Error saving webhook"); }
+        finally { setSavingN8n(false); }
     };
 
     const deleteItem = async (section: string, id: string) => {
@@ -315,15 +339,37 @@ export default function IntegrationsAdmin() {
                     )}
                 </div>
 
-                <div className="mt-8 p-4 bg-blue-500/5 border border-blue-500/10 rounded-xl">
-                    <div className="flex gap-3">
-                        <Zap className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                        <div>
-                            <div className="text-xs font-bold text-white">n8n "Trojan Horse" Integration</div>
-                            <p className="text-[10px] text-gray-500 mt-1 leading-relaxed">
-                                When a user requests a Free Audit, BridgeFlow will trigger your configured webhooks with the site URL and email.
-                                You can catch this in n8n to perform deeper analysis and send the report automatically.
+                <div className="mt-8 p-6 bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-blue-500/15 rounded-xl">
+                    <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                            <Zap className="w-5 h-5 text-blue-400" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="text-sm font-bold text-white mb-1">n8n &quot;Trojan Horse&quot; Audit Pipeline</div>
+                            <p className="text-xs text-gray-400 mb-4 leading-relaxed">
+                                Paste your n8n webhook URL here to activate the Trojan Horse audit pipeline.
+                                When a user requests a Free Audit, BridgeFlow will POST the site URL and email to this webhook.
+                                n8n will then perform a deeper analysis and send the report automatically.
                             </p>
+                            <div className="flex items-center gap-3">
+                                <div className="relative flex-1">
+                                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                    <input
+                                        value={n8nWebhookUrl}
+                                        onChange={(e) => setN8nWebhookUrl(e.target.value)}
+                                        placeholder="https://your-n8n-instance.app.n8n.cloud/webhook/abc123"
+                                        className="w-full pl-10 pr-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-600 focus:border-blue-500/50 focus:outline-none"
+                                    />
+                                </div>
+                                <button
+                                    onClick={handleSaveN8nWebhook}
+                                    disabled={savingN8n}
+                                    className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-lg text-xs disabled:opacity-50"
+                                >
+                                    {savingN8n ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                                    {savingN8n ? "Saving..." : "Save"}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

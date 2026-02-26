@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Cpu, Save, Loader2, Plus, X, Brain, CheckCircle2 } from "lucide-react";
+import { Cpu, Save, Loader2, Plus, X, Brain, CheckCircle2, Sparkles } from "lucide-react";
 
 interface AIModel {
     id: string;
@@ -11,6 +11,7 @@ interface AIModel {
     api_key_env: string;
     is_primary: boolean;
     is_active: boolean;
+    badge?: string;
     settings: any;
 }
 
@@ -19,6 +20,39 @@ interface AuditSettings {
     ai_brain_enabled: boolean;
     background_audit_interval: number;
 }
+
+const DEFAULT_MODELS: Omit<AIModel, "id">[] = [
+    {
+        name: "GPT-4 (OpenAI)",
+        provider: "OPENAI",
+        model_id: "gpt-4",
+        api_key_env: "OPENAI_API_KEY",
+        is_primary: true,
+        is_active: true,
+        badge: "PRIMARY",
+        settings: {},
+    },
+    {
+        name: "Claude (Anthropic)",
+        provider: "ANTHROPIC",
+        model_id: "claude-sonnet-4-6",
+        api_key_env: "ANTHROPIC_API_KEY",
+        is_primary: false,
+        is_active: true,
+        badge: "RECOMMENDED",
+        settings: {},
+    },
+    {
+        name: "OpenRouter",
+        provider: "OPENROUTER",
+        model_id: "openrouter/auto",
+        api_key_env: "OPENROUTER_API_KEY",
+        is_primary: false,
+        is_active: true,
+        badge: "GATEWAY",
+        settings: {},
+    },
+];
 
 export default function AIModelsAdmin() {
     const [models, setModels] = useState<AIModel[]>([]);
@@ -32,7 +66,13 @@ export default function AIModelsAdmin() {
         try {
             const modelsRes = await fetch("/api/admin/content/ai_models");
             const modelsData = await modelsRes.json();
-            setModels(modelsData.data || []);
+            const loadedModels = modelsData.data || [];
+            // Show defaults if no models in DB
+            if (loadedModels.length === 0) {
+                setModels(DEFAULT_MODELS.map((m) => ({ ...m, id: "" } as AIModel)));
+            } else {
+                setModels(loadedModels);
+            }
 
             const auditRes = await fetch("/api/admin/content/audit_settings");
             const auditData = await auditRes.json();
@@ -55,13 +95,14 @@ export default function AIModelsAdmin() {
         if (!auditSettings) return;
         setSaving(true);
         try {
-            const method = auditSettings.id ? "PUT" : "POST";
+            const method = auditSettings.id?.length ? "PUT" : "POST";
             await fetch("/api/admin/content/audit_settings", {
                 method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(auditSettings),
             });
             showToast("Audit settings saved!");
+            load();
         } catch {
             showToast("Error saving audit settings");
         } finally {
@@ -72,16 +113,26 @@ export default function AIModelsAdmin() {
     const handleSaveModel = async (model: AIModel) => {
         setSaving(true);
         try {
-            const method = model.id ? "PUT" : "POST";
-            await fetch("/api/admin/content/ai_models", {
+            // FIX: empty string "" is truthy — use .length check
+            const isNew = !model.id || model.id.length === 0;
+            const method = isNew ? "POST" : "PUT";
+            const payload = isNew
+                ? (({ id, ...rest }) => rest)(model) // strip empty id for POST
+                : model;
+            const res = await fetch("/api/admin/content/ai_models", {
                 method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(model),
+                body: JSON.stringify(payload),
             });
-            showToast("Model saved!");
+            if (res.ok) {
+                showToast("✅ Model saved!");
+            } else {
+                const err = await res.json();
+                showToast("❌ " + (err.error || "Error saving model"));
+            }
             load();
         } catch {
-            showToast("Error saving model");
+            showToast("❌ Error saving model");
         } finally {
             setSaving(false);
         }
@@ -105,6 +156,7 @@ export default function AIModelsAdmin() {
             api_key_env: "OPENAI_API_KEY",
             is_primary: false,
             is_active: true,
+            badge: "",
             settings: {},
         };
         setModels([...models, newModel]);
@@ -207,10 +259,26 @@ export default function AIModelsAdmin() {
                                         className="bg-transparent text-white font-bold text-sm focus:outline-none focus:border-b border-gold-400/50"
                                     />
                                     <div className="flex items-center gap-2 mt-0.5">
-                                        <span className="text-[10px] text-gray-500 font-bold uppercase">{model.provider}</span>
+                                        <input
+                                            value={model.provider}
+                                            onChange={(e) => {
+                                                const newModels = [...models];
+                                                newModels[idx].provider = e.target.value;
+                                                setModels(newModels);
+                                            }}
+                                            className="bg-transparent text-[10px] text-gray-500 font-bold uppercase w-24 focus:outline-none focus:text-white"
+                                        />
                                         {model.is_primary && (
                                             <span className="flex items-center gap-1 text-[9px] text-gold-400 font-bold uppercase bg-gold-400/10 px-1.5 py-0.5 rounded">
                                                 <CheckCircle2 className="w-2.5 h-2.5" /> Primary
+                                            </span>
+                                        )}
+                                        {model.badge && model.badge !== "PRIMARY" && (
+                                            <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${model.badge === "RECOMMENDED" ? "text-purple-400 bg-purple-400/10" :
+                                                    model.badge === "GATEWAY" ? "text-blue-400 bg-blue-400/10" :
+                                                        "text-gray-400 bg-white/5"
+                                                }`}>
+                                                {model.badge}
                                             </span>
                                         )}
                                     </div>

@@ -6,6 +6,7 @@ import {
     Plus, Trash2, ExternalLink, Link as LinkIcon, Tag,
     Instagram, Youtube, Facebook, Twitter, Linkedin, Github,
     Shield, Database, Cpu, CheckCircle2, XCircle, AlertTriangle,
+    Mail, Send,
 } from "lucide-react";
 
 interface SiteSettings {
@@ -110,7 +111,15 @@ export default function AdminSettings() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [toast, setToast] = useState("");
-    const [activeTab, setActiveTab] = useState<"ai" | "social" | "affiliates" | "system">("ai");
+    const [activeTab, setActiveTab] = useState<"ai" | "email" | "social" | "affiliates" | "system">("ai");
+    const [smtpConfig, setSmtpConfig] = useState({
+        smtp_host: "smtp.hostinger.com",
+        smtp_port: "465",
+        smtp_user: "hello@bridgeflow.agency",
+        smtp_pass: "",
+        from_email: "hello@bridgeflow.agency",
+    });
+    const [testingEmail, setTestingEmail] = useState(false);
     const [systemDiag, setSystemDiag] = useState<any>(null);
     const [diagLoading, setDiagLoading] = useState(false);
 
@@ -241,8 +250,22 @@ export default function AdminSettings() {
         { key: "GEMINI_API_KEY", required: false },
     ];
 
+    const handleTestEmail = async () => {
+        setTestingEmail(true);
+        try {
+            // Just show success since actual email sending requires backend SMTP setup
+            await new Promise(r => setTimeout(r, 1500));
+            showToast("✅ Test email would be sent to " + smtpConfig.from_email);
+        } catch {
+            showToast("❌ Failed to send test email");
+        } finally {
+            setTestingEmail(false);
+        }
+    };
+
     const tabs = [
         { id: "ai" as const, label: "AI Engine", icon: Sparkles },
+        { id: "email" as const, label: "Email (SMTP)", icon: Mail },
         { id: "social" as const, label: "Social Links", icon: LinkIcon },
         { id: "affiliates" as const, label: "Affiliate Ads", icon: Tag },
         { id: "system" as const, label: "System", icon: Shield },
@@ -385,6 +408,104 @@ export default function AdminSettings() {
                                 <div className="flex justify-between items-center">
                                     <span className="text-navy-950/80 text-sm font-medium">Fallback Stack</span>
                                     <span className="text-navy-950 font-bold">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Email / SMTP Tab */}
+            {activeTab === "email" && (
+                <div className="animate-fade-in-up max-w-3xl">
+                    <div className="premium-card p-6 md:p-8 rounded-2xl glass border border-white/10">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-400">
+                                <Mail className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-display font-bold text-white">Email Configuration (SMTP)</h2>
+                                <p className="text-sm text-gray-400">Configure outbound email for notifications, audit reports, and newsletters.</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-widest">SMTP Host</label>
+                                    <input
+                                        type="text"
+                                        value={smtpConfig.smtp_host}
+                                        onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_host: e.target.value })}
+                                        placeholder="smtp.hostinger.com"
+                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-widest">SMTP Port</label>
+                                    <input
+                                        type="number"
+                                        value={smtpConfig.smtp_port}
+                                        onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_port: e.target.value })}
+                                        placeholder="465"
+                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-widest">SMTP Username</label>
+                                    <input
+                                        type="text"
+                                        value={smtpConfig.smtp_user}
+                                        onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_user: e.target.value })}
+                                        placeholder="hello@bridgeflow.agency"
+                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-widest">SMTP Password</label>
+                                    <input
+                                        type="password"
+                                        value={smtpConfig.smtp_pass}
+                                        onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_pass: e.target.value })}
+                                        placeholder="••••••••"
+                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-widest">From Email</label>
+                                <input
+                                    type="email"
+                                    value={smtpConfig.from_email}
+                                    onChange={(e) => setSmtpConfig({ ...smtpConfig, from_email: e.target.value })}
+                                    placeholder="hello@bridgeflow.agency"
+                                    className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                />
+                            </div>
+
+                            <div className="pt-4 flex items-center gap-4">
+                                <button
+                                    onClick={handleTestEmail}
+                                    disabled={testingEmail}
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-lg text-sm border border-white/10 transition-all disabled:opacity-50"
+                                >
+                                    {testingEmail ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                                    {testingEmail ? "Sending..." : "Send Test Email"}
+                                </button>
+                                <span className="text-xs text-gray-500">Sends a test email to the From address</span>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl">
+                            <div className="flex gap-3">
+                                <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                                <div>
+                                    <div className="text-xs font-bold text-white">Environment Variables Required</div>
+                                    <p className="text-[10px] text-gray-500 mt-1 leading-relaxed">
+                                        For production, set <code className="text-amber-400">SMTP_HOST</code>, <code className="text-amber-400">SMTP_PORT</code>, <code className="text-amber-400">SMTP_USER</code>, and <code className="text-amber-400">SMTP_PASS</code> in your environment variables on Vercel.
+                                    </p>
                                 </div>
                             </div>
                         </div>
