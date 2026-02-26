@@ -138,6 +138,15 @@ export default function AdminSettings() {
                 });
                 if (data.social_links) setSocialLinks(data.social_links);
                 if (data.affiliate_links) setAffiliateLinks(data.affiliate_links);
+                if (data.smtp_host) {
+                    setSmtpConfig({
+                        smtp_host: data.smtp_host,
+                        smtp_port: data.smtp_port,
+                        smtp_user: data.smtp_user,
+                        smtp_pass: data.smtp_pass || "",
+                        from_email: data.from_email,
+                    });
+                }
             } else {
                 setSettings({ primary_ai_model: "modal-glm5", maintenance_mode: false });
             }
@@ -163,6 +172,7 @@ export default function AdminSettings() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...settings,
+                    ...smtpConfig,
                     social_links: socialLinks,
                     affiliate_links: affiliateLinks,
                 }),
