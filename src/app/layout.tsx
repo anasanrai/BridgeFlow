@@ -28,6 +28,19 @@ export async function generateMetadata(): Promise<Metadata> {
         },
         description: site.description,
         metadataBase: new URL(site.url),
+        keywords: [
+            "AI automation agency",
+            "n8n automation",
+            "GoHighLevel setup",
+            "workflow automation",
+            "B2B automation",
+            "AI integration",
+        ],
+        authors: [{ name: "Anasan Rai" }],
+        creator: "Anasan Rai",
+        alternates: {
+            canonical: site.url,
+        },
         openGraph: {
             type: "website",
             locale: "en_US",
@@ -35,13 +48,14 @@ export async function generateMetadata(): Promise<Metadata> {
             siteName: site.name,
             title: `${site.name} — ${site.tagline}`,
             description: site.description,
-            images: site.logo ? [{ url: site.logo }] : undefined,
+            images: [{ url: "/images/og-home.png" }],
         },
         twitter: {
             card: "summary_large_image",
+            site: "@bridgeflow",
             title: `${site.name} — ${site.tagline}`,
             description: site.description,
-            images: site.logo ? [site.logo] : undefined,
+            images: ["/images/og-home.png"],
         },
         robots: {
             index: true,
