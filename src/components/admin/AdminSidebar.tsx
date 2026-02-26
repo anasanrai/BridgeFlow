@@ -23,6 +23,9 @@ import {
     Settings,
     Shield,
     Terminal,
+    DollarSign,
+    Phone,
+    Search,
 } from "lucide-react";
 import AdminAI from "./AdminAI";
 
@@ -52,8 +55,8 @@ const sidebarLinks = [
         items: [
             { href: "/admin/site", label: "Site Config", icon: Globe },
             { href: "/admin/home", label: "Home Page", icon: Home },
-            { href: "/admin/services", label: "Services", icon: Briefcase },
             { href: "/admin/about", label: "About & Team", icon: Users },
+            { href: "/admin/services", label: "Services", icon: Briefcase },
             { href: "/admin/blog", label: "Blog Posts", icon: FileText },
             { href: "/admin/case-studies", label: "Case Studies", icon: FolderOpen },
         ],

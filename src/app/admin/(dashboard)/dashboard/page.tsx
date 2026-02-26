@@ -28,6 +28,8 @@ import {
     ChevronDown,
     Sparkles,
     Radio,
+    Link2,
+    Settings,
 } from "lucide-react";
 import AnalyticsCharts from "@/components/admin/AnalyticsCharts";
 
@@ -38,6 +40,8 @@ interface DashboardStats {
     team_members: number;
     contacts: number;
     subscribers: number;
+    ai_models: number;
+    webhooks: number;
     recent_activity: Array<{ action: string; section: string; details: string; created_at: string }>;
     telemetry: any[];
 }
@@ -80,6 +84,7 @@ export default function Dashboard() {
             const sections = [
                 "blog_posts", "services", "case_studies", "team_members",
                 "contact_submissions", "newsletter_subscribers", "activity_log", "telemetry",
+                "ai_models", "webhooks",
             ];
             const results = await Promise.all(
                 sections.map((s) => fetch(`/api/admin/content/${s}`).then((r) => r.json()))
@@ -94,6 +99,8 @@ export default function Dashboard() {
                 subscribers: results[5]?.data?.length || 0,
                 recent_activity: (results[6]?.data || []).slice(0, 10),
                 telemetry: results[7]?.data || [],
+                ai_models: results[8]?.data?.length || 0,
+                webhooks: results[9]?.data?.length || 0,
             });
 
             // Check system health
@@ -128,8 +135,8 @@ export default function Dashboard() {
 
     const systemModules = [
         { label: "Database", status: systemHealth.database, icon: Database, detail: "Supabase PostgreSQL" },
-        { label: "AI Engine", status: systemHealth.ai_engine, icon: Cpu, detail: "Modal GLM-5" },
-        { label: "Email", status: systemHealth.smtp, icon: Mail, detail: systemHealth.smtp === "not_configured" ? "Not configured" : "SMTP Active" },
+        { label: "AI Engine", status: systemHealth.ai_engine, icon: Cpu, detail: "GPT-4 + Claude + OpenRouter" },
+        { label: "Email", status: systemHealth.smtp, icon: Mail, detail: systemHealth.smtp === "not_configured" ? "Configure in Settings" : "SMTP Active" },
         { label: "Environment", status: systemHealth.deployment, icon: Server, detail: systemHealth.deployment.toUpperCase() },
     ];
 
@@ -143,12 +150,14 @@ export default function Dashboard() {
     ];
 
     const quickActions = [
-        { label: "New Blog Post", href: "/admin/blog", icon: FileText, desc: "Create content" },
-        { label: "Edit Homepage", href: "/admin/home", icon: Globe, desc: "Update hero & sections" },
+        { label: "Edit Homepage", href: "/admin/home", icon: Globe, desc: "Hero, stats & sections" },
         { label: "View Contacts", href: "/admin/contacts", icon: Mail, desc: `${stats?.contacts || 0} submissions` },
-        { label: "New Case Study", href: "/admin/case-studies", icon: FolderOpen, desc: "Showcase results" },
+        { label: "AI Model Stack", href: "/admin/ai-models", icon: Cpu, desc: `${stats?.ai_models || 0} models` },
+        { label: "Integrations", href: "/admin/integrations", icon: Link2, desc: `${stats?.webhooks || 0} webhooks` },
+        { label: "Platform Settings", href: "/admin/settings", icon: Settings, desc: "AI, SMTP & Social" },
+        { label: "SEO Manager", href: "/admin/seo", icon: Globe, desc: "Meta & sitemaps" },
+        { label: "New Blog Post", href: "/admin/blog", icon: FileText, desc: "Create content" },
         { label: "Manage Team", href: "/admin/about", icon: Users, desc: `${stats?.team_members || 0} members` },
-        { label: "Site Config", href: "/admin/site", icon: Globe, desc: "Branding & links" },
     ];
 
     return (
@@ -250,7 +259,7 @@ export default function Dashboard() {
                         Quick Actions
                     </h2>
                     <p className="text-xs text-gray-500 mb-5">Jump to any section instantly.</p>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         {quickActions.map((action) => (
                             <Link
                                 key={action.label}
@@ -292,10 +301,10 @@ export default function Dashboard() {
                                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group"
                                 >
                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${activity.action === "create"
-                                            ? "bg-emerald-500/10 text-emerald-400"
-                                            : activity.action === "update"
-                                                ? "bg-blue-500/10 text-blue-400"
-                                                : "bg-red-500/10 text-red-400"
+                                        ? "bg-emerald-500/10 text-emerald-400"
+                                        : activity.action === "update"
+                                            ? "bg-blue-500/10 text-blue-400"
+                                            : "bg-red-500/10 text-red-400"
                                         }`}>
                                         {activity.action === "create" ? (
                                             <ChevronUp className="w-4 h-4" />
@@ -311,10 +320,10 @@ export default function Dashboard() {
                                         </p>
                                         <div className="flex items-center gap-2 mt-0.5">
                                             <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded ${activity.action === "create"
-                                                    ? "bg-emerald-500/10 text-emerald-400"
-                                                    : activity.action === "update"
-                                                        ? "bg-blue-500/10 text-blue-400"
-                                                        : "bg-red-500/10 text-red-400"
+                                                ? "bg-emerald-500/10 text-emerald-400"
+                                                : activity.action === "update"
+                                                    ? "bg-blue-500/10 text-blue-400"
+                                                    : "bg-red-500/10 text-red-400"
                                                 }`}>
                                                 {activity.action}
                                             </span>
@@ -354,6 +363,8 @@ export default function Dashboard() {
                         { label: "Blog Posts", count: stats?.blog_posts || 0, icon: FileText, href: "/admin/blog" },
                         { label: "Case Studies", count: stats?.case_studies || 0, icon: FolderOpen, href: "/admin/case-studies" },
                         { label: "Team Members", count: stats?.team_members || 0, icon: Users, href: "/admin/about" },
+                        { label: "AI Models", count: stats?.ai_models || 0, icon: Cpu, href: "/admin/ai-models" },
+                        { label: "Webhooks", count: stats?.webhooks || 0, icon: Link2, href: "/admin/integrations" },
                     ].map((item) => (
                         <Link
                             key={item.label}
