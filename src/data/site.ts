@@ -47,6 +47,8 @@ export const footerLinks = {
     ],
     resources: [
         { label: "Blog", href: "/blog" },
+        { label: "Documentation", href: "/docs" },
+        { label: "API Reference", href: "/api-reference" },
         { label: "AI Calculator", href: "/calculator" },
         { label: "Contact Us", href: "/contact" },
         { label: "Privacy Policy", href: "/privacy-policy" },
