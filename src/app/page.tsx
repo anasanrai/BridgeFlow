@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import Image from "next/image";
+import RotatingHeadline from "@/components/RotatingHeadline";
 import Link from "next/link";
 import {
     ScrollReveal,
@@ -79,11 +80,7 @@ export default async function Home() {
                     </ScrollReveal>
 
                     <ScrollReveal delay={0.1}>
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6 drop-shadow-lg">
-                            {hero.title}{" "}
-                            {hero.titleLine2 && <><br className="hidden sm:block" />{hero.titleLine2} </>}
-                            <span className="gold-text text-glow">{hero.highlight}</span>
-                        </h1>
+                        <RotatingHeadline />
                     </ScrollReveal>
 
                     <ScrollReveal delay={0.2}>
@@ -96,7 +93,6 @@ export default async function Home() {
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Button variant="primary" size="lg" href={hero.ctaPrimary.href}>
                                 {hero.ctaPrimary.text}
-                                <ArrowRight className="w-4 h-4" />
                             </Button>
                             <Button variant="secondary" size="lg" href={hero.ctaSecondary.href}>
                                 {hero.ctaSecondary.text}

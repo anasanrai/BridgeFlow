@@ -11,9 +11,9 @@ export const hero = {
     titleLine2: "Autonomous AI",
     highlight: "Systems",
     description:
-        "We don't just automate; we architect intelligent ecosystems that think, learn, and execute at the speed of light. Experience the 10x multiplier of true AI integration.",
-    ctaPrimary: { text: "Book Discovery Call", href: "/contact" },
-    ctaSecondary: { text: "Explore AI Calculator", href: "/calculator" },
+        "BridgeFlow diagnoses exactly where your business is leaking revenue — then builds AI systems to fix it. Permanently.",
+    ctaPrimary: { text: "Get My Free Audit →", href: "/audit" },
+    ctaSecondary: { text: "See How It Works ↓", href: "/calculator" },
     heroImage: "/images/hero-automation.png",
     heroImageAlt: "Enterprise AI Automation",
 };
