@@ -1,14 +1,14 @@
 export const dynamic = "force-dynamic";
 import { Metadata } from "next";
+import Link from "next/link";
 import { ScrollReveal, SectionHeader, Card } from "@/components/ui";
 import {
     Mail,
     MapPin,
     Phone,
     ArrowRight,
-    Github,
     Linkedin,
-    Twitter,
+    Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import ContactForm from "@/components/ContactForm";
@@ -26,13 +26,6 @@ export async function generateMetadata(): Promise<Metadata> {
         },
     };
 }
-
-const platformIcons: Record<string, any> = {
-    Twitter: Twitter,
-    LinkedIn: Linkedin,
-    GitHub: Github,
-    X: Twitter,
-};
 
 export default async function Contact() {
     const site = await getSiteConfig();
@@ -58,6 +51,13 @@ export default async function Contact() {
         },
     ];
 
+    const trustBadges = [
+        { emoji: "🔒", text: "Secure & Confidential" },
+        { emoji: "⚡", text: "Response within 24hrs" },
+        { emoji: "🌍", text: "Remote-first, Global" },
+        { emoji: "💰", text: "Free Initial Consultation" },
+    ];
+
     return (
         <>
             {/* Hero */}
@@ -77,21 +77,66 @@ export default async function Contact() {
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
                         <p className="max-w-2xl mx-auto text-lg text-gray-400">
-                            Ready to automate? Tell us about your project and we&apos;ll get
-                            back to you within 24 hours with a tailored plan.
+                            Book a free 30-minute strategy call or fill out
+                            the form below. We respond within 24 hours.
                         </p>
                     </ScrollReveal>
                 </div>
             </section>
 
+            {/* Calendly Section */}
+            <section className="section-padding pt-12 pb-6">
+                <div className="container-max max-w-4xl">
+                    <ScrollReveal>
+                        <div className="text-center mb-8">
+                            <h2 className="text-2xl sm:text-3xl font-display font-bold mb-3">
+                                Book a Free{" "}
+                                <span className="gold-text">
+                                    Strategy Call
+                                </span>
+                            </h2>
+                            <p className="text-gray-400">
+                                Pick a time that works for you — no back
+                                and forth emails.
+                            </p>
+                        </div>
+                    </ScrollReveal>
+                    <ScrollReveal delay={0.1}>
+                        <div className="rounded-2xl border border-gold-400/20 overflow-hidden bg-navy-900/30">
+                            <iframe
+                                src="https://calendly.com/raianasan10/30min?hide_gdpr_banner=1&background_color=0a0f1a&text_color=e5e7eb&primary_color=d4a843"
+                                width="100%"
+                                style={{ minHeight: "650px" }}
+                                frameBorder="0"
+                                title="Book a Strategy Call"
+                            />
+                        </div>
+                    </ScrollReveal>
+                </div>
+            </section>
+
+            {/* Divider */}
+            <div className="container-max max-w-4xl py-8">
+                <div className="flex items-center gap-4">
+                    <div className="flex-1 h-px bg-white/10" />
+                    <span className="text-gray-500 text-sm whitespace-nowrap">
+                        — Or fill out the form below —
+                    </span>
+                    <div className="flex-1 h-px bg-white/10" />
+                </div>
+            </div>
+
             {/* Contact Form + Info */}
-            <section className="section-padding pt-12">
+            <section className="section-padding pt-6">
                 <div className="container-max">
                     <div className="grid lg:grid-cols-5 gap-10 lg:gap-16">
                         {/* Form */}
                         <div className="lg:col-span-3">
                             <ScrollReveal>
-                                <Card hover={false} className="!p-8 lg:!p-10">
+                                <Card
+                                    hover={false}
+                                    className="!p-8 lg:!p-10"
+                                >
                                     <ContactForm />
                                 </Card>
                             </ScrollReveal>
@@ -106,7 +151,10 @@ export default async function Contact() {
                                     </h3>
                                     <div className="space-y-5">
                                         {contactInfo.map((info) => (
-                                            <div key={info.label} className="flex items-start gap-4">
+                                            <div
+                                                key={info.label}
+                                                className="flex items-start gap-4"
+                                            >
                                                 <div className="w-10 h-10 rounded-lg gold-gradient flex items-center justify-center flex-shrink-0">
                                                     <info.icon className="w-5 h-5 text-navy-950" />
                                                 </div>
@@ -116,7 +164,9 @@ export default async function Contact() {
                                                     </div>
                                                     {info.href ? (
                                                         <a
-                                                            href={info.href}
+                                                            href={
+                                                                info.href
+                                                            }
                                                             className="text-sm text-white hover:text-gold-400 transition-colors"
                                                         >
                                                             {info.value}
@@ -136,40 +186,48 @@ export default async function Contact() {
                             <ScrollReveal delay={0.2}>
                                 <Card hover={false}>
                                     <h3 className="text-lg font-display font-bold mb-4">
-                                        Follow Us
+                                        Connect With Us
                                     </h3>
                                     <div className="flex gap-3">
-                                        {site.socialLinks
-                                            .filter((s: { platform: string }) => platformIcons[s.platform])
-                                            .map((social: { platform: string, href: string }) => {
-                                                const Icon = platformIcons[social.platform];
-                                                return (
-                                                    <a
-                                                        key={social.platform}
-                                                        href={social.href}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        aria-label={social.platform}
-                                                        className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/30 transition-all"
-                                                    >
-                                                        <Icon className="w-5 h-5" />
-                                                    </a>
-                                                );
-                                            })}
+                                        <a
+                                            href="https://www.linkedin.com/company/bridgeflow-agency"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="LinkedIn"
+                                            className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/30 transition-all"
+                                        >
+                                            <Linkedin className="w-5 h-5" />
+                                        </a>
+                                        <a
+                                            href="mailto:hello@bridgeflow.agency"
+                                            aria-label="Email"
+                                            className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/30 transition-all"
+                                        >
+                                            <Mail className="w-5 h-5" />
+                                        </a>
                                     </div>
                                 </Card>
                             </ScrollReveal>
 
                             <ScrollReveal delay={0.3}>
-                                <Card hover={false} className="!bg-gold-400/5 !border-gold-400/15">
+                                <Card
+                                    hover={false}
+                                    className="!bg-gold-400/5 !border-gold-400/15"
+                                >
                                     <h3 className="text-lg font-display font-bold mb-2">
                                         Free Consultation
                                     </h3>
                                     <p className="text-sm text-gray-400 mb-4">
-                                        Not sure where to start? Book a free 30-minute strategy
-                                        call with one of our automation experts.
+                                        Not sure where to start? Book a
+                                        free 30-minute strategy call with
+                                        one of our automation experts.
                                     </p>
-                                    <Button variant="secondary" size="sm" href="mailto:hello@bridgeflow.agency">
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        href="https://calendly.com/raianasan10/30min"
+                                    >
+                                        <Calendar className="w-3 h-3" />
                                         Book a Call
                                         <ArrowRight className="w-3 h-3" />
                                     </Button>
@@ -177,6 +235,25 @@ export default async function Contact() {
                             </ScrollReveal>
                         </div>
                     </div>
+
+                    {/* Trust Badges */}
+                    <ScrollReveal>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
+                            {trustBadges.map((badge) => (
+                                <div
+                                    key={badge.text}
+                                    className="rounded-xl glass border border-white/10 p-4 text-center"
+                                >
+                                    <span className="text-2xl block mb-2">
+                                        {badge.emoji}
+                                    </span>
+                                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                        {badge.text}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </ScrollReveal>
                 </div>
             </section>
         </>
