@@ -19,6 +19,10 @@ const VALID_SECTIONS = [
     "activity_log",
     "telemetry",
     "page_metadata",
+    "ai_models",
+    "api_tokens",
+    "webhooks",
+    "audit_settings",
 ];
 
 const SORTABLE_SECTIONS = [

@@ -167,20 +167,24 @@ export function Button({
     disabled = false,
 }: ButtonProps) {
     const baseClasses =
-        "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 rounded-full";
+        "inline-flex items-center justify-center gap-2 font-bold rounded-full btn-liquid";
+
+    const buttonStyle = {
+        transition: 'transform 150ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out, opacity 200ms ease-out',
+    };
 
     const variants = {
         primary:
-            "gold-gradient text-navy-950 hover:shadow-lg hover:shadow-gold-400/25 hover:scale-105",
+            "gold-gradient text-navy-950 hover:shadow-[0_0_30px_rgba(230,180,34,0.4)] hover:scale-105 active:scale-95",
         secondary:
-            "border border-gold-400/30 text-gold-400 hover:bg-gold-400/10 hover:border-gold-400/50",
-        ghost: "text-gray-300 hover:text-white hover:bg-white/5",
+            "glass-strong border border-gold-400/30 text-gold-400 hover:bg-gold-400/10 hover:border-gold-400/50 hover:shadow-[0_0_20px_rgba(230,180,34,0.1)] hover:scale-105 active:scale-95",
+        ghost: "text-gray-400 hover:text-white hover:bg-white/5 active:scale-95",
     };
 
     const sizes = {
-        sm: "px-4 py-2 text-xs",
-        md: "px-6 py-2.5 text-sm",
-        lg: "px-8 py-3.5 text-base",
+        sm: "px-4 py-2 text-[10px] uppercase tracking-widest",
+        md: "px-7 py-3 text-xs uppercase tracking-widest",
+        lg: "px-10 py-4 text-sm uppercase tracking-widest",
     };
 
     const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabled ? "opacity-50 cursor-not-allowed" : ""
@@ -188,7 +192,7 @@ export function Button({
 
     if (href) {
         return (
-            <a href={href} className={classes}>
+            <a href={href} className={classes} style={buttonStyle}>
                 {children}
             </a>
         );
@@ -200,6 +204,7 @@ export function Button({
             onClick={onClick}
             disabled={disabled}
             className={classes}
+            style={buttonStyle}
         >
             {children}
         </button>
@@ -215,8 +220,9 @@ interface CardProps {
 export function Card({ children, className = "", hover = true }: CardProps) {
     return (
         <div
-            className={`glass rounded-2xl p-6 lg:p-8 card-glow ${hover ? "card-glow-hover hover:-translate-y-1" : ""
-                } transition-all duration-300 ${className}`}
+            className={`glass rounded-3xl p-6 lg:p-10 premium-card ${hover ? "hover:-translate-y-2" : ""
+                } ${className}`}
+            style={{ transition: 'transform 200ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out' }}
         >
             {children}
         </div>

@@ -7,7 +7,7 @@
 
 export const servicesHero = {
     badge: "Our Services",
-    title: "Automation solutions",
+    title: "Automation solutions at",
     titleBreak: true,
     highlight: "your scale",
     description:
@@ -38,12 +38,14 @@ export const services = [
         description:
             "Full-stack GoHighLevel setup and optimization. We build high-converting funnels, automate follow-ups, and configure your entire CRM pipeline to close deals faster.",
         features: [
-            "CRM pipeline setup & optimization",
-            "Sales funnel design & A/B testing",
-            "Automated SMS/email follow-up sequences",
-            "Appointment booking & calendar integration",
-            "Reputation management & review automation",
-            "White-label sub-account configuration",
+            "Premium CRM pipeline architecture",
+            "Multi-channel marketing automation (SMS, Email, WhatsApp)",
+            "High-converting funnel design & A/B testing",
+            "Advanced reputation management & review automation",
+            "Smart appointment booking & calendar synchronization",
+            "Custom white-label SaaS mode & sub-account snapshots",
+            "Power-dialer & call tracking integration",
+            "Automated client onboarding & retention systems",
         ],
         color: "from-orange-500 to-red-400",
     },

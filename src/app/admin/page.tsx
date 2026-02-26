@@ -47,13 +47,21 @@ export default function AdminLogin() {
             <div className="relative w-full max-w-md mx-4">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <Image
-                        src="/images/logo.png"
-                        alt="BridgeFlow"
-                        width={180}
-                        height={45}
-                        className="h-10 w-auto mx-auto mb-6"
-                    />
+                    <div className="flex items-center justify-center gap-3 mb-6">
+                        <div className="h-12 w-12 rounded-xl overflow-hidden">
+                            <Image
+                                src="/images/logo.png"
+                                alt="B"
+                                width={120}
+                                height={120}
+                                className="w-[200%] h-full object-cover object-left"
+                                priority
+                            />
+                        </div>
+                        <span className="text-2xl font-display font-bold text-gold-400" style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}>
+                            BridgeFlow
+                        </span>
+                    </div>
                     <h1 className="text-2xl font-display font-bold text-white mb-1">
                         Admin Dashboard
                     </h1>

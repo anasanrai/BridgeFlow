@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS site_config (
   location TEXT DEFAULT 'Remote-first, Global',
   copyright TEXT DEFAULT '© 2026 BridgeFlow. All rights reserved.',
   logo TEXT DEFAULT '/images/logo.png',
-  nav_links JSONB DEFAULT '[{"href":"/","label":"Home"},{"href":"/services","label":"Services"},{"href":"/about","label":"About"},{"href":"/case-studies","label":"Case Studies"},{"href":"/blog","label":"Blog"},{"href":"/contact","label":"Contact"}]'::jsonb,
+  nav_links JSONB DEFAULT '[{"href":"/","label":"Home"},{"href":"/services","label":"Services"},{"href":"/pricing","label":"Pricing"},{"href":"/calculator","label":"AI Calculator"},{"href":"/about","label":"About"},{"href":"/case-studies","label":"Case Studies"},{"href":"/blog","label":"Blog"},{"href":"/contact","label":"Contact"}]'::jsonb,
   footer_links JSONB DEFAULT '{}'::jsonb,
   social_links JSONB DEFAULT '[{"platform":"Twitter","href":"#"},{"platform":"LinkedIn","href":"#"},{"platform":"GitHub","href":"#"}]'::jsonb,
   seo_title TEXT,

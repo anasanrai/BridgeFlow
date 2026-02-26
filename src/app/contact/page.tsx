@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Metadata } from "next";
 import { ScrollReveal, SectionHeader, Card } from "@/components/ui";
 import {
@@ -11,7 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import ContactForm from "@/components/ContactForm";
-import { getPageSEO } from "@/lib/supabase-data";
+import { getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
 export async function generateMetadata(): Promise<Metadata> {
     const seo = await getPageSEO("/contact");
@@ -26,28 +27,37 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-const contactInfo = [
-    {
-        icon: Mail,
-        label: "Email",
-        value: "hello@bridgeflow.agency",
-        href: "mailto:hello@bridgeflow.agency",
-    },
-    {
-        icon: MapPin,
-        label: "Location",
-        value: "Remote-first, Global",
-        href: null,
-    },
-    {
-        icon: Phone,
-        label: "Response Time",
-        value: "Within 24 hours",
-        href: null,
-    },
-];
+const platformIcons: Record<string, any> = {
+    Twitter: Twitter,
+    LinkedIn: Linkedin,
+    GitHub: Github,
+    X: Twitter,
+};
 
-export default function Contact() {
+export default async function Contact() {
+    const site = await getSiteConfig();
+
+    const contactInfo = [
+        {
+            icon: Mail,
+            label: "Email",
+            value: site.email || "hello@bridgeflow.agency",
+            href: `mailto:${site.email || "hello@bridgeflow.agency"}`,
+        },
+        {
+            icon: MapPin,
+            label: "Location",
+            value: site.location || "Remote-first, Global",
+            href: null,
+        },
+        {
+            icon: Phone,
+            label: "Response Time",
+            value: "Within 24 hours",
+            href: null,
+        },
+    ];
+
     return (
         <>
             {/* Hero */}
@@ -129,20 +139,23 @@ export default function Contact() {
                                         Follow Us
                                     </h3>
                                     <div className="flex gap-3">
-                                        {[
-                                            { icon: Twitter, label: "Twitter" },
-                                            { icon: Linkedin, label: "LinkedIn" },
-                                            { icon: Github, label: "GitHub" },
-                                        ].map((social) => (
-                                            <a
-                                                key={social.label}
-                                                href="#"
-                                                aria-label={social.label}
-                                                className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/30 transition-all"
-                                            >
-                                                <social.icon className="w-5 h-5" />
-                                            </a>
-                                        ))}
+                                        {site.socialLinks
+                                            .filter((s: { platform: string }) => platformIcons[s.platform])
+                                            .map((social: { platform: string, href: string }) => {
+                                                const Icon = platformIcons[social.platform];
+                                                return (
+                                                    <a
+                                                        key={social.platform}
+                                                        href={social.href}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={social.platform}
+                                                        className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/30 transition-all"
+                                                    >
+                                                        <Icon className="w-5 h-5" />
+                                                    </a>
+                                                );
+                                            })}
                                     </div>
                                 </Card>
                             </ScrollReveal>

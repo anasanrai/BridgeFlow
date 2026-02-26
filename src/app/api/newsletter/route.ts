@@ -44,14 +44,7 @@ export async function POST(req: NextRequest) {
                 );
             }
         } else {
-            // Log to console when newsletter service not configured
-            console.log("=== NEW NEWSLETTER SUBSCRIPTION ===");
-            console.log(`Email: ${email}`);
-            console.log(`Time: ${new Date().toISOString()}`);
-            console.log("===================================");
-            console.log(
-                "TIP: Configure NEWSLETTER_API_KEY and NEWSLETTER_API_URL env vars to connect to your newsletter service."
-            );
+            // TIP: Configure NEWSLETTER_API_KEY and NEWSLETTER_API_URL env vars to connect to your newsletter service.
         }
 
         return NextResponse.json(

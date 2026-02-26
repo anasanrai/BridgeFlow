@@ -30,10 +30,9 @@ export async function getSiteConfig() {
             copyright: data.copyright,
             logo: data.logo,
             og_image: data.og_image,
-            // Always use local source-of-truth for structural navigation
-            navLinks: siteData.navLinks,
-            footerLinks: siteData.footerLinks,
-            socialLinks: siteData.socialLinks,
+            navLinks: (data.nav_links && data.nav_links.length > 0) ? data.nav_links : siteData.navLinks,
+            footerLinks: (data.footer_links && Object.keys(data.footer_links).length > 0) ? data.footer_links : siteData.footerLinks,
+            socialLinks: (data.social_links && data.social_links.length > 0) ? data.social_links : siteData.socialLinks,
         };
     } catch { }
     return {
@@ -58,14 +57,14 @@ export async function getHomeContent() {
         if (!sb) throw new Error("No Supabase");
         const { data } = await sb.from("home_content").select("*").limit(1).single();
         if (data) return {
-            hero: data.hero,
-            stats: data.stats,
-            servicesOverview: data.services_overview,
-            processSteps: data.process_steps,
-            testimonials: data.testimonials,
-            cta: data.cta,
-            offers: homeData.offers,
-            demos: homeData.demos,
+            hero: data.hero || homeData.hero,
+            stats: data.stats || homeData.stats,
+            servicesOverview: data.services_overview?.length ? data.services_overview : homeData.servicesOverview,
+            processSteps: data.process_steps?.length ? data.process_steps : homeData.processSteps,
+            testimonials: data.testimonials?.length ? data.testimonials : homeData.testimonials,
+            cta: data.cta || homeData.cta,
+            offers: data.offers?.length ? data.offers : homeData.offers,
+            demos: data.demos?.length ? data.demos : homeData.demos,
             affiliateLinks: siteData.defaultAffiliateLinks,
         };
     } catch { }
@@ -86,14 +85,34 @@ export async function getServices() {
     try {
         const sb = getPublicClient();
         if (!sb) throw new Error("No Supabase");
-        const [servicesRes, benefitsRes] = await Promise.all([
+        const [servicesRes, benefitsRes, metadataRes] = await Promise.all([
             sb.from("services").select("*").eq("is_active", true).order("sort_order"),
             sb.from("benefits").select("*").order("sort_order"),
+            sb.from("page_metadata").select("*").eq("path", "/services").single(),
         ]);
 
+        // Merge static hero with database metadata if available
+        const hero = {
+            ...servicesData.servicesHero,
+            title: metadataRes.data?.title?.split("|")[0].trim() || servicesData.servicesHero.title,
+            description: metadataRes.data?.description || servicesData.servicesHero.description,
+        };
+
+        let services = servicesRes.data && servicesRes.data.length > 0 ? servicesRes.data : servicesData.services;
+
+        // Ensure GoHighLevel service is always included (from local fallback if missing in DB)
+        const hasGHL = services.some((s: any) => {
+            const t = (s.title || "").toLowerCase();
+            return t.includes("gohighlevel") || t.includes("highlevel") || t.includes("ghl");
+        });
+        if (!hasGHL) {
+            const localGHL = servicesData.services.find((s) => s.title.toLowerCase().includes("gohighlevel"));
+            if (localGHL) services = [localGHL, ...services];
+        }
+
         return {
-            hero: servicesData.servicesHero, // Still using local for now until services_content is added
-            services: servicesRes.data && servicesRes.data.length > 0 ? servicesRes.data : servicesData.services,
+            hero,
+            services,
             benefits: benefitsRes.data && benefitsRes.data.length > 0 ? benefitsRes.data : servicesData.benefits,
         };
     } catch { }
@@ -204,6 +223,25 @@ export async function getCaseStudy(slug: string) {
     return caseStudiesData.caseStudies.find(s => s.slug === slug) || null;
 }
 
+export async function getGeneralPageContent(path: string, fallbackHero: any) {
+    try {
+        const sb = getPublicClient();
+        if (!sb) throw new Error("No Supabase");
+        const { data: metadata } = await sb.from("page_metadata").select("*").eq("path", path).single();
+
+        if (metadata) {
+            return {
+                hero: {
+                    ...fallbackHero,
+                    title: metadata.title?.split("|")[0].trim() || fallbackHero.title,
+                    description: metadata.description || fallbackHero.description,
+                }
+            };
+        }
+    } catch { }
+    return { hero: fallbackHero };
+}
+
 export async function getPageMetadata(path: string) {
     try {
         const sb = getPublicClient();
@@ -281,8 +319,10 @@ export async function getAboutContent() {
             getTechStack(),
         ]);
 
+        const { hero } = await getGeneralPageContent("/about", aboutData.aboutHero);
+
         return {
-            hero: aboutData.aboutHero, // Local for now
+            hero: hero,
             mission: {
                 title: aboutData.mission.title,
                 highlight: aboutData.mission.highlight,

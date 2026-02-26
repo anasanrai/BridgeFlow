@@ -6,23 +6,23 @@
  */
 
 export const hero = {
-    badge: "AI-Powered Automation Agency",
-    title: "Automate your",
-    titleLine2: "Business with",
-    highlight: "AI",
+    badge: "Enterprise AI Orchestration",
+    title: "Scale Your Operations with",
+    titleLine2: "Autonomous AI",
+    highlight: "Systems",
     description:
-        "BridgeFlow helps B2B businesses streamline workflows with AI-powered automation, n8n workflows, and GoHighLevel CRM pipelines — built for global scale.",
-    ctaPrimary: { text: "Get Started", href: "/contact" },
-    ctaSecondary: { text: "View Services", href: "/services" },
+        "We don't just automate; we architect intelligent ecosystems that think, learn, and execute at the speed of light. Experience the 10x multiplier of true AI integration.",
+    ctaPrimary: { text: "Book Discovery Call", href: "/contact" },
+    ctaSecondary: { text: "Explore AI Calculator", href: "/calculator" },
     heroImage: "/images/hero-automation.png",
-    heroImageAlt: "AI Automation Workspace",
+    heroImageAlt: "Enterprise AI Automation",
 };
 
 export const stats = [
-    { end: 150, suffix: "+", label: "Workflows Built" },
-    { end: 40, suffix: "+", label: "Happy Clients" },
-    { end: 98, suffix: "%", label: "Uptime SLA" },
-    { end: 10, suffix: "x", label: "Avg. ROI" },
+    { end: 500, suffix: "+", label: "Enterprise Automations" },
+    { end: 15, suffix: "M", label: "Annual Client Savings" },
+    { end: 99, suffix: ".9%", label: "Automation Uptime" },
+    { end: 12, suffix: "x", label: "Average Client ROI" },
 ];
 
 export const servicesOverview = [
@@ -31,28 +31,28 @@ export const servicesOverview = [
         title: "n8n Automation",
         description:
             "Custom workflow builds using n8n for any business process. Automate lead gen, onboarding, reporting, and more.",
-        href: "/services",
+        href: "/services#n8n",
     },
     {
         icon: "BarChart3",
         title: "GoHighLevel CRM",
         description:
             "Full-stack CRM setup with automated funnels, SMS/email sequences, and appointment booking to close more deals.",
-        href: "/services",
+        href: "/services#gohighlevel",
     },
     {
         icon: "Bot",
         title: "AI Integration",
         description:
             "Connect your tools with AI to work smarter. GPT, Claude, and custom models integrated into your workflows.",
-        href: "/services",
+        href: "/services#ai",
     },
     {
         icon: "Boxes",
         title: "SaaS Tools",
         description:
             "Access our growing suite of automation SaaS products built for specific business verticals.",
-        href: "/services",
+        href: "/services#saas",
     },
 ];
 

@@ -15,8 +15,26 @@ export const metadata: Metadata = {
 };
 
 export default function Pricing() {
+    // FAQ structured data
+    const faqJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": pricingFAQ.map((item) => ({
+            "@type": "Question",
+            "name": item.q,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": item.a,
+            },
+        })),
+    };
+
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+            />
             {/* Hero */}
             <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { ScrollReveal, SectionHeader, Button, Card } from "@/components/ui";
 import { ArrowRight, TrendingUp } from "lucide-react";

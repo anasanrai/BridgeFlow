@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -50,22 +51,35 @@ export default async function Home() {
     return (
         <>
             {/* Hero Section */}
-            <section className="relative min-h-[100vh] flex items-center justify-center aurora-glow overflow-hidden">
-                {/* Radial gradient background */}
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold-400/[0.03] rounded-full blur-3xl animate-pulse" />
-                <div className="absolute top-1/4 right-1/4 w-[300px] h-[300px] bg-gold-400/[0.02] rounded-full blur-2xl animate-float" />
+            <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden">
+                {/* Full-section background image */}
+                <div className="absolute inset-0">
+                    <Image
+                        src={hero.heroImage || "/images/hero-automation.png"}
+                        alt=""
+                        fill
+                        className="object-cover object-center"
+                        priority
+                    />
+                    {/* Layered overlays for text readability */}
+                    <div className="absolute inset-0 bg-navy-950/60" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-navy-950/80 via-navy-950/40 to-navy-950" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-navy-950/50 via-transparent to-navy-950/50" />
+                </div>
+                {/* Soft accent glows */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold-400/[0.04] rounded-full blur-3xl animate-pulse" />
+                <div className="absolute top-1/4 right-1/4 w-[300px] h-[300px] bg-gold-400/[0.03] rounded-full blur-2xl animate-float" />
 
                 <div className="relative z-10 container-max text-center px-4 sm:px-6 pt-24 pb-20">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5 backdrop-blur-sm">
                             <span className="w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
                             {hero.badge}
                         </span>
                     </ScrollReveal>
 
                     <ScrollReveal delay={0.1}>
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6">
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6 drop-shadow-lg">
                             {hero.title}{" "}
                             {hero.titleLine2 && <><br className="hidden sm:block" />{hero.titleLine2} </>}
                             <span className="gold-text text-glow">{hero.highlight}</span>
@@ -73,7 +87,7 @@ export default async function Home() {
                     </ScrollReveal>
 
                     <ScrollReveal delay={0.2}>
-                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 mb-10 leading-relaxed">
+                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed drop-shadow-md">
                             {hero.description}
                         </p>
                     </ScrollReveal>
@@ -87,46 +101,6 @@ export default async function Home() {
                             <Button variant="secondary" size="lg" href={hero.ctaSecondary.href}>
                                 {hero.ctaSecondary.text}
                             </Button>
-                        </div>
-                    </ScrollReveal>
-
-                    {/* Hero Image */}
-                    <ScrollReveal delay={0.4} className="mt-16 sm:mt-24 relative perspective-1000 group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-gold-400/20 via-purple-500/20 to-gold-400/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-700 opacity-50 group-hover:opacity-100" />
-
-                        <div className="relative max-w-5xl mx-auto rounded-2xl overflow-hidden glass border border-white/10 shadow-2xl shadow-black/50 transform group-hover:-translate-y-2 group-hover:scale-[1.01] transition-all duration-700 ease-out">
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer z-20 pointer-events-none" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-navy-950/20 to-transparent z-10 pointer-events-none" />
-                            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent h-1/2 z-10 pointer-events-none" />
-
-                            <Image
-                                src={hero.heroImage || "/images/hero-automation.png"}
-                                alt={hero.heroImageAlt || "AI Automation Workspace"}
-                                width={1200}
-                                height={675}
-                                className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
-                                priority
-                            />
-
-                            <div className="absolute bottom-6 left-6 z-20 glass px-4 py-2 border border-white/10 rounded-xl backdrop-blur-md flex items-center gap-3 animate-float shadow-lg shadow-black/50">
-                                <div className="p-1.5 rounded-lg bg-green-500/20 text-green-400">
-                                    <Shield className="w-4 h-4" />
-                                </div>
-                                <div className="text-left">
-                                    <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Security</p>
-                                    <p className="text-xs text-white font-medium">Enterprise Grade</p>
-                                </div>
-                            </div>
-
-                            <div className="absolute bottom-6 right-6 z-20 glass px-4 py-2 border border-white/10 rounded-xl backdrop-blur-md flex items-center gap-3 animate-float shadow-lg shadow-black/50" style={{ animationDelay: '0.5s' }}>
-                                <div className="p-1.5 rounded-lg bg-blue-500/20 text-blue-400">
-                                    <Zap className="w-4 h-4" />
-                                </div>
-                                <div className="text-left">
-                                    <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Performance</p>
-                                    <p className="text-xs text-white font-medium">99.99% Uptime</p>
-                                </div>
-                            </div>
                         </div>
                     </ScrollReveal>
                 </div>

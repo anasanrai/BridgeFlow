@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Metadata } from "next";
 import { getBlogPost } from "@/lib/supabase-data";
 import { ScrollReveal, Card } from "@/components/ui";

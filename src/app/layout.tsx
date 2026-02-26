@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
@@ -76,7 +77,7 @@ export default async function RootLayout({
     };
 
     return (
-        <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
+        <html lang="en" className={`${inter.variable} ${outfit.variable} scroll-smooth`}>
             <head>
                 <script
                     type="application/ld+json"

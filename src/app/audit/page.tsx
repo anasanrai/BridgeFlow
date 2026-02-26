@@ -63,7 +63,7 @@ export default function AuditPage() {
                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-white/10 mb-6"
                     >
                         <Search className="w-4 h-4 text-gold-400" />
-                        <span className="text-sm font-medium text-gold-400 uppercase tracking-wider">The "Trojan Horse" Audit</span>
+                        <span className="text-sm font-medium text-gold-400 uppercase tracking-wider">The &quot;Trojan Horse&quot; Audit</span>
                     </motion.div>
 
                     <motion.h1
@@ -101,7 +101,7 @@ export default function AuditPage() {
                                 </div>
                                 <h3 className="text-2xl font-bold mb-4">Request Received!</h3>
                                 <p className="text-gray-400 mb-8">
-                                    Our engine is analyzing your site. You'll receive your Speed-to-Lead report via email within 24 hours.
+                                    Our engine is analyzing your site. You&apos;ll receive your Speed-to-Lead report via email within 24 hours.
                                 </p>
                                 <button
                                     onClick={() => setStatus("idle")}
@@ -189,7 +189,7 @@ export default function AuditPage() {
                         {
                             icon: BarChart,
                             title: "Revenue Recovery Map",
-                            desc: "A detailed roadmap of how many deals you're losing and how to recover them today."
+                            desc: "A detailed roadmap of how many deals you&apos;re losing and how to recover them today."
                         }
                     ].map((item, idx) => (
                         <motion.div

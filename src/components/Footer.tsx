@@ -9,14 +9,14 @@ import {
     ArrowRight,
     Github,
     Linkedin,
-    Twitter,
+    X,
     Instagram,
     Youtube,
     Facebook,
 } from "lucide-react";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-    Twitter,
+    X,
     LinkedIn: Linkedin,
     GitHub: Github,
     Instagram,

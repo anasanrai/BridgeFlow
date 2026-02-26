@@ -46,5 +46,10 @@ export default function ParticleBackground() {
         };
     }, []);
 
-    return <div ref={containerRef} className="fixed inset-0 z-0 overflow-hidden" />;
+    return (
+        <div ref={containerRef} className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-gold-400/[0.03] rounded-full aurora-blur animate-float" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/[0.02] rounded-full aurora-blur animate-float" style={{ animationDelay: '2s' }} />
+        </div>
+    );
 }

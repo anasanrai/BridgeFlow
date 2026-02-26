@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Search from "./Search";
 import Logo from "./Logo";
-import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar({ siteConfig }: { siteConfig: any }) {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -49,14 +48,14 @@ export default function Navbar({ siteConfig }: { siteConfig: any }) {
                     <Logo src={logo || "/images/logo.png"} alt={name || "BridgeFlow"} />
 
                     {/* Desktop Nav */}
-                    <div className="hidden lg:flex items-center gap-1">
+                    <div className="hidden lg:flex items-center gap-0">
                         {navLinks.map((link: any) => {
                             const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
                             return (
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    className={`nav-active-indicator relative px-4 py-2 text-sm font-medium transition-colors duration-300 group ${isActive
+                                    className={`nav-active-indicator relative px-3 py-2 text-[13px] font-medium transition-colors duration-300 group whitespace-nowrap ${isActive
                                         ? "text-gold-400 active"
                                         : "text-gray-300 hover:text-white"
                                         }`}
@@ -68,22 +67,21 @@ export default function Navbar({ siteConfig }: { siteConfig: any }) {
                     </div>
 
                     {/* Desktop CTA + Search */}
-                    <div className="hidden lg:flex items-center gap-3">
+                    <div className="hidden lg:flex items-center gap-2.5">
                         <Search />
-                        <ThemeToggle />
                         <Link
                             href="/audit"
-                            className="relative inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white glass rounded-full hover:bg-white/10 transition-all duration-300 border border-white/10"
+                            className="relative inline-flex items-center gap-2 px-5 py-2 text-[13px] font-semibold text-white glass rounded-full hover:bg-white/10 transition-all duration-300 border border-white/10"
                         >
                             Free Audit
                         </Link>
                         <Link
                             href="/contact"
-                            className="relative inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-navy-950 gold-gradient rounded-full hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300 hover:scale-105"
+                            className="relative inline-flex items-center gap-2 px-5 py-2 text-[13px] font-semibold text-navy-950 gold-gradient rounded-full hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300 hover:scale-105"
                         >
                             Get Started
                             <svg
-                                className="w-4 h-4"
+                                className="w-3.5 h-3.5"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -100,7 +98,6 @@ export default function Navbar({ siteConfig }: { siteConfig: any }) {
 
                     {/* Mobile Icons */}
                     <div className="flex lg:hidden items-center gap-2 relative z-50">
-                        <ThemeToggle />
                         <Search />
                         <button
                             onClick={() => setIsOpen(!isOpen)}

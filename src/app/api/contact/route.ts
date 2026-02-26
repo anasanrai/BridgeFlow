@@ -62,17 +62,7 @@ export async function POST(req: NextRequest) {
         `,
             });
         } else {
-            // Log to console when SMTP not configured
-            console.log("=== NEW CONTACT FORM SUBMISSION ===");
-            console.log(`Name: ${name}`);
-            console.log(`Email: ${email}`);
-            console.log(`Company: ${company || "N/A"}`);
-            console.log(`Budget: ${budget || "N/A"}`);
-            console.log(`Message: ${message}`);
-            console.log("===================================");
-            console.log(
-                "TIP: Configure SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and CONTACT_EMAIL env vars to send real emails."
-            );
+            // TIP: Configure SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and CONTACT_EMAIL env vars to send real emails.
         }
 
         return NextResponse.json(

@@ -9,9 +9,9 @@
 
 export const siteConfig = {
     name: "BridgeFlow",
-    tagline: "AI-Powered Automation Agency",
+    tagline: "Architecting the Future of Enterprise Automation",
     description:
-        "BridgeFlow helps B2B businesses streamline workflows with AI-powered automation services and SaaS tools, built for global scale.",
+        "BridgeFlow is a premier AI automation agency specializing in building high-performance, enterprise-grade workflows and intelligent decision systems for the world's most ambitious companies.",
     url: "https://www.bridgeflow.agency",
     email: "hello@bridgeflow.agency",
     location: "Remote-first, Global",
@@ -24,6 +24,7 @@ export const navLinks = [
     { href: "/", label: "Home" },
     { href: "/services", label: "Services" },
     { href: "/pricing", label: "Pricing" },
+    { href: "/calculator", label: "AI Calculator" },
     { href: "/about", label: "About" },
     { href: "/case-studies", label: "Case Studies" },
     { href: "/blog", label: "Blog" },
@@ -38,14 +39,15 @@ export const footerLinks = {
         { label: "Careers", href: "/careers" },
     ],
     services: [
-        { label: "n8n Automation", href: "/services" },
-        { label: "GoHighLevel CRM", href: "/services" },
-        { label: "AI Integration", href: "/services" },
+        { label: "n8n Automation", href: "/services#n8n" },
+        { label: "GoHighLevel CRM", href: "/services#gohighlevel" },
+        { label: "AI Integration", href: "/services#ai" },
         { label: "Pricing", href: "/pricing" },
         { label: "Free Audit", href: "/audit" },
     ],
     resources: [
         { label: "Blog", href: "/blog" },
+        { label: "AI Calculator", href: "/calculator" },
         { label: "Contact Us", href: "/contact" },
         { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Terms of Service", href: "/terms-of-service" },
