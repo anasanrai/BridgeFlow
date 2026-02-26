@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import Image from "next/image";
 import RotatingHeadline from "@/components/RotatingHeadline";
 import LiveDemos from "@/components/LiveDemos";
+import PartnersSection from "@/components/PartnersSection";
 import Link from "next/link";
 import {
     ScrollReveal,
@@ -25,9 +26,9 @@ import {
     Users,
     ExternalLink,
     Sparkles,
+    // Tag removed - now in PartnersSection
 
     Gift,
-    Tag,
 } from "lucide-react";
 import LucideIcon from "@/components/LucideIcon";
 import { getHomeContent, getPageSEO } from "@/lib/supabase-data";
@@ -48,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
     const data = await getHomeContent();
-    const { hero, stats, servicesOverview, processSteps, cta, offers, affiliateLinks } = data;
+    const { hero, stats, servicesOverview, processSteps, cta, offers } = data;
 
     return (
         <>
@@ -323,43 +324,17 @@ export default async function Home() {
                 </div>
             </section>
 
-            {/* Partner & Affiliate Showcase */}
+            {/* Tech Stack & Partner Offers */}
             <section className="section-padding bg-navy-900/20">
                 <div className="container-max">
                     <SectionHeader
                         badge="Our Partners"
-                        title="Tools we"
-                        highlight="recommend"
-                        description="Trusted platforms that power our automation stack. Exclusive partner offers for BridgeFlow clients."
+                        title="Our Tech Stack &"
+                        highlight="Partner Offers"
+                        description="Tools we use daily and recommend to every client. Some links include exclusive partner discounts."
                     />
 
-                    <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-                        {affiliateLinks.map((link: any, i: number) => (
-                            <ScrollReveal key={link.title} delay={i * 0.1}>
-                                <a
-                                    href={link.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="premium-card block p-6 lg:p-8 rounded-2xl glass border border-white/10 hover:border-gold-400/20 transition-all duration-500 group h-full"
-                                >
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400/10 to-purple-500/10 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                            <LucideIcon name={link.logo} className="w-6 h-6 text-gold-400" />
-                                        </div>
-                                        <span className="px-3 py-1 text-[10px] uppercase tracking-wider font-bold text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-full flex items-center gap-1">
-                                            <Tag className="w-3 h-3" />
-                                            {link.badge}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-lg font-display font-bold text-white mb-2 flex items-center gap-2">
-                                        {link.title}
-                                        <ExternalLink className="w-3.5 h-3.5 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                    </h3>
-                                    <p className="text-gray-400 text-sm leading-relaxed">{link.description}</p>
-                                </a>
-                            </ScrollReveal>
-                        ))}
-                    </div>
+                    <PartnersSection />
                 </div>
             </section>
 
