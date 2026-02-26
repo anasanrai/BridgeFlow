@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import Image from "next/image";
 import RotatingHeadline from "@/components/RotatingHeadline";
+import LiveDemos from "@/components/LiveDemos";
 import Link from "next/link";
 import {
     ScrollReveal,
@@ -24,7 +25,7 @@ import {
     Users,
     ExternalLink,
     Sparkles,
-    Play,
+
     Gift,
     Tag,
 } from "lucide-react";
@@ -47,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
     const data = await getHomeContent();
-    const { hero, stats, servicesOverview, processSteps, cta, offers, demos, affiliateLinks } = data;
+    const { hero, stats, servicesOverview, processSteps, cta, offers, affiliateLinks } = data;
 
     return (
         <>
@@ -251,29 +252,7 @@ export default async function Home() {
                         description="Watch real automation workflows that we've built for clients across industries."
                     />
 
-                    <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-                        {demos.map((demo: any, i: number) => (
-                            <ScrollReveal key={demo.title} delay={i * 0.1}>
-                                <Card className="h-full group premium-card">
-                                    <div className="relative mb-5 rounded-xl overflow-hidden bg-navy-900/80 border border-white/5 aspect-video flex items-center justify-center">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-gold-400/5 via-transparent to-purple-500/5" />
-                                        <div className="relative w-14 h-14 rounded-full bg-gold-400/10 border border-gold-400/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-gold-400/20 transition-all duration-300">
-                                            <Play className="w-6 h-6 text-gold-400 ml-0.5" />
-                                        </div>
-                                    </div>
-                                    <h3 className="text-lg font-display font-bold mb-2 text-white">{demo.title}</h3>
-                                    <p className="text-gray-400 text-sm leading-relaxed mb-4">{demo.description}</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {demo.tags.map((tag: string) => (
-                                            <span key={tag} className="px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-full">
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </Card>
-                            </ScrollReveal>
-                        ))}
-                    </div>
+                    <LiveDemos />
                 </div>
             </section>
 
