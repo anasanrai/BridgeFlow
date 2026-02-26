@@ -49,18 +49,15 @@ export async function POST(req: NextRequest) {
         const ollamaKey = process.env.OLLAMA_API_KEY;
         const geminiKey = process.env.GEMINI_API_KEY;
 
-        // Fetch primary AI model preference from DB
+        // Fetch primary AI model preference from DB (non-blocking)
         let primaryModel = "modal-glm5";
-        // Assuming getPublicClient() is defined elsewhere or imported
-        // For this example, we'll assume it's available in scope.
-        // If not, you'd need to add `import { getPublicClient } from '@/lib/supabase/client';` or similar.
-        const sb = getPublicClient();
-        if (sb) {
-            const { data } = await sb.from("site_settings").select("primary_ai_model").limit(1).single();
-            if (data && data.primary_ai_model) {
-                primaryModel = data.primary_ai_model;
+        try {
+            const sb = getPublicClient();
+            if (sb) {
+                const { data } = await sb.from("site_settings").select("primary_ai_model").limit(1).single();
+                if (data?.primary_ai_model) primaryModel = data.primary_ai_model;
             }
-        }
+        } catch { /* site_settings table may not exist, use default */ }
 
         // --- DYNAMIC AI PROVIDER CHAIN ---
 
@@ -111,6 +108,8 @@ export async function POST(req: NextRequest) {
 async function callModalGLM5(apiKey: string, messages: { role: string; content: string }[]) {
     try {
         console.log("Trying Modal GLM-5...");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://api.us-west-2.modal.direct/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -126,7 +125,9 @@ async function callModalGLM5(apiKey: string, messages: { role: string; content: 
                 max_tokens: 500,
                 temperature: 0.7,
             }),
+            signal: controller.signal,
         });
+        clearTimeout(timeout);
 
         if (response.ok) {
             const data = await response.json();
@@ -148,6 +149,8 @@ async function callModalGLM5(apiKey: string, messages: { role: string; content: 
 async function callOllamaCloud(apiKey: string, messages: { role: string; content: string }[]) {
     try {
         console.log("Trying Ollama Cloud...");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://ollama.com/api/chat", {
             method: "POST",
             headers: {
@@ -162,7 +165,9 @@ async function callOllamaCloud(apiKey: string, messages: { role: string; content
                 ],
                 stream: false,
             }),
+            signal: controller.signal,
         });
+        clearTimeout(timeout);
 
         if (response.ok) {
             const data = await response.json();
@@ -184,8 +189,10 @@ async function callOllamaCloud(apiKey: string, messages: { role: string; content
 async function callGeminiFallback(apiKey: string, messages: { role: string; content: string }[]) {
     try {
         console.log("Trying Gemini fallback...");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -202,8 +209,10 @@ async function callGeminiFallback(apiKey: string, messages: { role: string; cont
                         temperature: 0.7,
                     },
                 }),
+                signal: controller.signal,
             }
         );
+        clearTimeout(timeout);
 
         if (response.ok) {
             const data = await response.json();

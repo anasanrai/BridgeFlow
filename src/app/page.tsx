@@ -217,7 +217,7 @@ export default async function Home() {
                         badge="Process"
                         title="How it"
                         highlight="works"
-                        description="A proven 3-step process to transform your business operations."
+                        description="A proven 4-step process to transform your business operations."
                     />
 
                     <div className="grid md:grid-cols-3 gap-8">
