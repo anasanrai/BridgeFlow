@@ -4,7 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 import { X, ZoomIn } from "lucide-react";
 
-const demos = [
+interface Demo {
+    image: string;
+    loomId: string;
+    title: string;
+    description: string;
+    tags: string[];
+}
+
+const DEFAULT_DEMOS: Demo[] = [
     {
         image: "/images/workflow-1.png",
         loomId: "91bc462a0af645c5b2b73f540b5eb0cc",
@@ -31,8 +39,15 @@ const demos = [
     },
 ];
 
-export default function LiveDemos() {
+interface LiveDemosProps {
+    demos?: Demo[];
+}
+
+export default function LiveDemos({ demos }: LiveDemosProps) {
     const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+
+    // Use provided demos from Supabase, fall back to defaults
+    const activeDemos = (demos && demos.length > 0) ? demos : DEFAULT_DEMOS;
 
     return (
         <>
@@ -51,38 +66,42 @@ export default function LiveDemos() {
 
             {/* Demo Cards */}
             <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-                {demos.map((demo) => (
+                {activeDemos.map((demo, i) => (
                     <div
-                        key={demo.title}
+                        key={`${demo.title}-${i}`}
                         className="group glass rounded-2xl border border-white/10 hover:border-gold-400/20 transition-all duration-500 overflow-hidden flex flex-col"
                     >
                         {/* Clickable Workflow Image */}
-                        <button
-                            onClick={() => setLightboxImage(demo.image)}
-                            className="relative aspect-[16/10] overflow-hidden cursor-zoom-in"
-                        >
-                            <Image
-                                src={demo.image}
-                                alt={`${demo.title} workflow screenshot`}
-                                fill
-                                className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <div className="absolute inset-0 bg-navy-950/30 group-hover:bg-navy-950/10 transition-colors duration-300" />
-                            <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-navy-950/60 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
-                                <ZoomIn className="w-4 h-4 text-gold-400" />
-                            </div>
-                        </button>
+                        {demo.image && (
+                            <button
+                                onClick={() => setLightboxImage(demo.image)}
+                                className="relative aspect-[16/10] overflow-hidden cursor-zoom-in"
+                            >
+                                <Image
+                                    src={demo.image}
+                                    alt={`${demo.title} workflow screenshot`}
+                                    fill
+                                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-navy-950/30 group-hover:bg-navy-950/10 transition-colors duration-300" />
+                                <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-navy-950/60 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
+                                    <ZoomIn className="w-4 h-4 text-gold-400" />
+                                </div>
+                            </button>
+                        )}
 
                         {/* Loom Video Embed */}
-                        <div className="aspect-video">
-                            <iframe
-                                src={`https://www.loom.com/embed/${demo.loomId}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
-                                frameBorder="0"
-                                allowFullScreen
-                                className="w-full h-full"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            />
-                        </div>
+                        {demo.loomId && (
+                            <div className="aspect-video">
+                                <iframe
+                                    src={`https://www.loom.com/embed/${demo.loomId}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
+                                    frameBorder="0"
+                                    allowFullScreen
+                                    className="w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                />
+                            </div>
+                        )}
 
                         {/* Content */}
                         <div className="p-5 flex-1 flex flex-col">
@@ -93,7 +112,7 @@ export default function LiveDemos() {
                                 {demo.description}
                             </p>
                             <div className="flex flex-wrap gap-2">
-                                {demo.tags.map((tag) => (
+                                {(demo.tags || []).map((tag) => (
                                     <span
                                         key={tag}
                                         className="px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-full"

@@ -256,7 +256,7 @@ export default async function Home() {
                         description="Watch real automation workflows that we've built for clients across industries."
                     />
 
-                    <LiveDemos />
+                    <LiveDemos demos={(site as any).liveDemos} />
                 </div>
             </section>
 

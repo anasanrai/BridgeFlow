@@ -13,6 +13,7 @@ import {
     X,
     Loader2,
     Search,
+    Upload,
 } from "lucide-react";
 
 interface BlogPost {
@@ -58,6 +59,7 @@ export default function BlogAdmin() {
     const [search, setSearch] = useState("");
     const [toast, setToast] = useState("");
     const [activeTab, setActiveTab] = useState<"content" | "seo">("content");
+    const [uploadingImage, setUploadingImage] = useState(false);
 
     const loadPosts = useCallback(async () => {
         const res = await fetch("/api/admin/content/blog_posts");
@@ -109,6 +111,25 @@ export default function BlogAdmin() {
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/(^-|-$)/g, "");
+
+    const uploadCoverImage = async (file: File): Promise<string | null> => {
+        setUploadingImage(true);
+        try {
+            const fd = new FormData();
+            fd.append("file", file);
+            fd.append("folder", "blog");
+            const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+            const data = await res.json();
+            if (res.ok && data.url) return data.url;
+            showToast("❌ Upload failed: " + (data.error || "Unknown"));
+            return null;
+        } catch {
+            showToast("❌ Upload error");
+            return null;
+        } finally {
+            setUploadingImage(false);
+        }
+    };
 
     const filteredPosts = posts.filter(
         (p) =>
@@ -310,14 +331,39 @@ export default function BlogAdmin() {
                                             Cover Image URL
                                             <span className="text-[10px] text-gray-500 font-normal">Direct link to PNG/JPG</span>
                                         </label>
-                                        <input
-                                            value={editing.image_url || ""}
-                                            onChange={(e) =>
-                                                setEditing({ ...editing, image_url: e.target.value })
-                                            }
-                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors font-mono text-xs"
-                                            placeholder="https://example.com/cover-image.jpg"
-                                        />
+                                        <div className="flex gap-2">
+                                            <input
+                                                value={editing.image_url || ""}
+                                                onChange={(e) =>
+                                                    setEditing({ ...editing, image_url: e.target.value })
+                                                }
+                                                className="flex-1 px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors font-mono text-xs min-w-0"
+                                                placeholder="https://example.com/cover-image.jpg"
+                                            />
+                                            <label
+                                                className={`flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer transition-all flex-shrink-0 ${uploadingImage
+                                                        ? "border-gold-400/30 bg-gold-400/5"
+                                                        : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
+                                                    }`}
+                                                title="Upload cover image"
+                                            >
+                                                {uploadingImage
+                                                    ? <Loader2 className="w-4 h-4 text-gold-400 animate-spin" />
+                                                    : <Upload className="w-4 h-4 text-gray-400" />
+                                                }
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    className="hidden"
+                                                    onChange={async (e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (!file) return;
+                                                        const url = await uploadCoverImage(file);
+                                                        if (url) setEditing({ ...editing, image_url: url });
+                                                    }}
+                                                />
+                                            </label>
+                                        </div>
                                         {editing.image_url && (
                                             <div className="mt-2 aspect-video rounded-lg overflow-hidden border border-white/10 bg-navy-950">
                                                 <img

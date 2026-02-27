@@ -21,6 +21,7 @@ export async function GET() {
                 maintenance_mode: false,
                 social_links: [],
                 affiliate_links: [],
+                live_demos: [],
                 smtp_host: "smtp.hostinger.com",
                 smtp_port: "465",
                 from_email: "hello@bridgeflow.agency"
@@ -31,7 +32,8 @@ export async function GET() {
         return NextResponse.json({
             ...data,
             social_links: data.social_links || [],
-            affiliate_links: data.affiliate_links || []
+            affiliate_links: data.affiliate_links || [],
+            live_demos: data.live_demos || []
         });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500 });
@@ -78,6 +80,9 @@ export async function POST(req: Request) {
                                           ADD COLUMN smtp_user text,
                                           ADD COLUMN smtp_pass text,
                                           ADD COLUMN from_email text;
+                    END IF;
+                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='live_demos') THEN
+                        ALTER TABLE site_settings ADD COLUMN live_demos jsonb DEFAULT '[]'::jsonb;
                     END IF;
                 END $$;`
             });

@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
     Settings, Save, Loader2, Sparkles, Server, Zap, Globe,
-    Plus, Trash2, ExternalLink, Link as LinkIcon, Tag,
+    Plus, Trash2, Link as LinkIcon, Tag,
     Instagram, Youtube, Facebook, Twitter, Linkedin, Github,
     Shield, Database, Cpu, CheckCircle2, XCircle, AlertTriangle,
-    Mail, Send,
+    Mail, Send, Video, Upload, Image as ImageIcon, X,
 } from "lucide-react";
 
 interface SiteSettings {
@@ -26,6 +26,14 @@ interface AffiliateLink {
     badge: string;
     logo: string;
     logo_url?: string;
+}
+
+interface LiveDemo {
+    title: string;
+    description: string;
+    loomId: string;
+    image: string;
+    tags: string[];
 }
 
 const AI_MODELS = [
@@ -84,24 +92,51 @@ const DEFAULT_SOCIAL_LINKS: SocialLink[] = [
 const DEFAULT_AFFILIATE_LINKS: AffiliateLink[] = [
     {
         title: "n8n Cloud",
-        description: "The most flexible workflow automation tool.",
+        description: "The most powerful workflow automation tool we build on. Start automating today.",
         href: "https://n8n.io/?ref=bridgeflow",
         badge: "Recommended",
         logo: "Zap",
+        logo_url: "https://n8n.io/favicon.png",
     },
     {
         title: "GoHighLevel",
-        description: "All-in-one CRM, funnels, and marketing automation platform.",
-        href: "https://www.gohighlevel.com/?fp_ref=bridgeflow",
+        description: "All-in-one CRM, funnels, and marketing automation. Perfect for agencies.",
+        href: "https://www.gohighlevel.com/main-page?fp_ref=bridgeflow",
         badge: "Partner",
         logo: "BarChart3",
+        logo_url: "https://www.gohighlevel.com/favicon.ico",
     },
     {
         title: "Hostinger",
-        description: "Premium web hosting with 99.9% uptime.",
+        description: "Reliable hosting with 99.9% uptime. Get started with our exclusive referral discount.",
         href: "https://hostinger.com?ref=bridgeflow",
-        badge: "Hosting",
+        badge: "Hosting Partner",
         logo: "Globe",
+        logo_url: "",
+    },
+];
+
+const DEFAULT_LIVE_DEMOS: LiveDemo[] = [
+    {
+        title: "Real Estate Lead Pipeline",
+        description: "Full lead scoring engine with Hot/Warm/Cool/Cold routing, automated CRM assignment, Slack alerts, and drip email sequences — all triggered from a single webhook.",
+        loomId: "91bc462a0af645c5b2b73f540b5eb0cc",
+        image: "/images/workflow-1.png",
+        tags: ["n8n", "Google Sheets", "Gmail", "Slack", "AI Scoring"],
+    },
+    {
+        title: "Agency Client Onboarding",
+        description: "Client intake webhook triggers Google Drive folder creation, CRM entry, tiered welcome emails (VIP/Standard/Starter), Slack notifications, and weekly digest reports — fully automated.",
+        loomId: "91bc462a0af645c5b2b73f540b5eb0cc",
+        image: "/images/workflow-2.png",
+        tags: ["n8n", "Google Drive", "Gmail", "Slack", "AI Profiling"],
+    },
+    {
+        title: "E-commerce Review Automation",
+        description: "Post-purchase review requests, AI sentiment analysis, content moderation, positive/negative routing, Slack alerts for bad reviews, and weekly analytics digest.",
+        loomId: "91bc462a0af645c5b2b73f540b5eb0cc",
+        image: "/images/workflow-3.png",
+        tags: ["n8n", "Gmail", "Slack", "AI Sentiment", "Google Sheets"],
     },
 ];
 
@@ -109,10 +144,11 @@ export default function AdminSettings() {
     const [settings, setSettings] = useState<SiteSettings | null>(null);
     const [socialLinks, setSocialLinks] = useState<SocialLink[]>(DEFAULT_SOCIAL_LINKS);
     const [affiliateLinks, setAffiliateLinks] = useState<AffiliateLink[]>(DEFAULT_AFFILIATE_LINKS);
+    const [liveDemons, setLiveDemons] = useState<LiveDemo[]>(DEFAULT_LIVE_DEMOS);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [toast, setToast] = useState("");
-    const [activeTab, setActiveTab] = useState<"ai" | "email" | "social" | "affiliates" | "system">("ai");
+    const [activeTab, setActiveTab] = useState<"ai" | "email" | "social" | "affiliates" | "demos" | "system">("ai");
     const [smtpConfig, setSmtpConfig] = useState({
         smtp_host: "smtp.hostinger.com",
         smtp_port: "465",
@@ -123,6 +159,7 @@ export default function AdminSettings() {
     const [testingEmail, setTestingEmail] = useState(false);
     const [systemDiag, setSystemDiag] = useState<any>(null);
     const [diagLoading, setDiagLoading] = useState(false);
+    const [uploading, setUploading] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
         loadSettings();
@@ -137,8 +174,9 @@ export default function AdminSettings() {
                     primary_ai_model: data.primary_ai_model || "modal-glm5",
                     maintenance_mode: data.maintenance_mode || false,
                 });
-                if (data.social_links) setSocialLinks(data.social_links);
-                if (data.affiliate_links) setAffiliateLinks(data.affiliate_links);
+                if (data.social_links && data.social_links.length > 0) setSocialLinks(data.social_links);
+                if (data.affiliate_links && data.affiliate_links.length > 0) setAffiliateLinks(data.affiliate_links);
+                if (data.live_demos && data.live_demos.length > 0) setLiveDemons(data.live_demos);
                 if (data.smtp_host) {
                     setSmtpConfig({
                         smtp_host: data.smtp_host,
@@ -176,6 +214,7 @@ export default function AdminSettings() {
                     ...smtpConfig,
                     social_links: socialLinks,
                     affiliate_links: affiliateLinks,
+                    live_demos: liveDemons,
                 }),
             });
             showToast(res.ok ? "✅ Configuration deployed!" : "❌ Error saving settings.");
@@ -187,15 +226,29 @@ export default function AdminSettings() {
         }
     };
 
+    // Image upload helper
+    const uploadImage = async (file: File, key: string): Promise<string | null> => {
+        setUploading((prev) => ({ ...prev, [key]: true }));
+        try {
+            const fd = new FormData();
+            fd.append("file", file);
+            fd.append("folder", "admin");
+            const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+            const data = await res.json();
+            if (res.ok && data.url) return data.url;
+            showToast("❌ Upload failed: " + (data.error || "Unknown error"));
+            return null;
+        } catch (e) {
+            showToast("❌ Upload error");
+            return null;
+        } finally {
+            setUploading((prev) => ({ ...prev, [key]: false }));
+        }
+    };
+
     // Social Links Management
-    const addSocialLink = () => {
-        setSocialLinks([...socialLinks, { platform: "Twitter", href: "" }]);
-    };
-
-    const removeSocialLink = (idx: number) => {
-        setSocialLinks(socialLinks.filter((_, i) => i !== idx));
-    };
-
+    const addSocialLink = () => setSocialLinks([...socialLinks, { platform: "Twitter", href: "" }]);
+    const removeSocialLink = (idx: number) => setSocialLinks(socialLinks.filter((_, i) => i !== idx));
     const updateSocialLink = (idx: number, field: keyof SocialLink, value: string) => {
         const updated = [...socialLinks];
         updated[idx] = { ...updated[idx], [field]: value };
@@ -203,18 +256,21 @@ export default function AdminSettings() {
     };
 
     // Affiliate Links Management
-    const addAffiliateLink = () => {
-        setAffiliateLinks([...affiliateLinks, { title: "", description: "", href: "", badge: "Partner", logo: "Zap", logo_url: "" }]);
-    };
-
-    const removeAffiliateLink = (idx: number) => {
-        setAffiliateLinks(affiliateLinks.filter((_, i) => i !== idx));
-    };
-
+    const addAffiliateLink = () => setAffiliateLinks([...affiliateLinks, { title: "", description: "", href: "", badge: "Partner", logo: "Zap", logo_url: "" }]);
+    const removeAffiliateLink = (idx: number) => setAffiliateLinks(affiliateLinks.filter((_, i) => i !== idx));
     const updateAffiliateLink = (idx: number, field: keyof AffiliateLink, value: string) => {
         const updated = [...affiliateLinks];
         updated[idx] = { ...updated[idx], [field]: value };
         setAffiliateLinks(updated);
+    };
+
+    // Live Demo Management
+    const addLiveDemo = () => setLiveDemons([...liveDemons, { title: "", description: "", loomId: "", image: "", tags: [] }]);
+    const removeLiveDemo = (idx: number) => setLiveDemons(liveDemons.filter((_, i) => i !== idx));
+    const updateLiveDemo = (idx: number, field: keyof LiveDemo, value: any) => {
+        const updated = [...liveDemons];
+        updated[idx] = { ...updated[idx], [field]: value };
+        setLiveDemons(updated);
     };
 
     if (loading) {
@@ -264,7 +320,6 @@ export default function AdminSettings() {
     const handleTestEmail = async () => {
         setTestingEmail(true);
         try {
-            // Just show success since actual email sending requires backend SMTP setup
             await new Promise(r => setTimeout(r, 1500));
             showToast("✅ Test email would be sent to " + smtpConfig.from_email);
         } catch {
@@ -279,6 +334,7 @@ export default function AdminSettings() {
         { id: "email" as const, label: "Email (SMTP)", icon: Mail },
         { id: "social" as const, label: "Social Links", icon: LinkIcon },
         { id: "affiliates" as const, label: "Partner Offers", icon: Tag },
+        { id: "demos" as const, label: "Live Demos", icon: Video },
         { id: "system" as const, label: "System", icon: Shield },
     ];
 
@@ -298,7 +354,7 @@ export default function AdminSettings() {
                         Platform Settings
                     </h1>
                     <p className="text-gray-400 mt-2 text-sm max-w-2xl">
-                        Configure AI engine, social media links, and affiliate partnerships from one dashboard.
+                        Configure AI engine, social media links, affiliate partnerships, and live demos from one dashboard.
                     </p>
                 </div>
                 <button
@@ -312,7 +368,7 @@ export default function AdminSettings() {
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex gap-2 mb-8 p-1 rounded-xl bg-navy-900/50 border border-white/5 w-fit">
+            <div className="flex flex-wrap gap-2 mb-8 p-1 rounded-xl bg-navy-900/50 border border-white/5 w-fit">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
@@ -600,7 +656,7 @@ export default function AdminSettings() {
                                 onClick={addAffiliateLink}
                                 className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors"
                             >
-                                <Plus className="w-3.5 h-3.5" /> Add
+                                <Plus className="w-3.5 h-3.5" /> + ADD
                             </button>
                         </div>
 
@@ -640,14 +696,58 @@ export default function AdminSettings() {
                                             placeholder="https://affiliate-link.com?ref=bridgeflow"
                                             className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
                                         />
-                                        <input
-                                            type="url"
-                                            value={link.logo_url || ""}
-                                            onChange={(e) => updateAffiliateLink(idx, "logo_url", e.target.value)}
-                                            placeholder="Logo Image URL (optional)"
-                                            className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
-                                        />
+                                        {/* Logo URL + Upload */}
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="url"
+                                                value={link.logo_url || ""}
+                                                onChange={(e) => updateAffiliateLink(idx, "logo_url", e.target.value)}
+                                                placeholder="Logo image URL"
+                                                className="flex-1 bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 min-w-0"
+                                            />
+                                            <label
+                                                className={`flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer transition-all flex-shrink-0 ${uploading[`aff-${idx}`]
+                                                    ? "border-gold-400/30 bg-gold-400/5"
+                                                    : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
+                                                    }`}
+                                                title="Upload logo image"
+                                            >
+                                                {uploading[`aff-${idx}`]
+                                                    ? <Loader2 className="w-4 h-4 text-gold-400 animate-spin" />
+                                                    : <Upload className="w-4 h-4 text-gray-400" />
+                                                }
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    className="hidden"
+                                                    onChange={async (e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (!file) return;
+                                                        const url = await uploadImage(file, `aff-${idx}`);
+                                                        if (url) updateAffiliateLink(idx, "logo_url", url);
+                                                    }}
+                                                />
+                                            </label>
+                                        </div>
                                     </div>
+                                    {/* Logo preview */}
+                                    {link.logo_url && (
+                                        <div className="flex items-center gap-3 p-2 bg-navy-950/50 rounded-lg border border-white/5">
+                                            <img
+                                                src={link.logo_url}
+                                                alt="Logo preview"
+                                                className="w-8 h-8 object-contain rounded"
+                                                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                                            />
+                                            <span className="text-xs text-gray-500 truncate flex-1">{link.logo_url}</span>
+                                            <button
+                                                onClick={() => updateAffiliateLink(idx, "logo_url", "")}
+                                                className="text-gray-600 hover:text-red-400 transition-colors flex-shrink-0"
+                                            >
+                                                <X className="w-3.5 h-3.5" />
+                                            </button>
+                                        </div>
+                                    )}
                                     <textarea
                                         value={link.description}
                                         onChange={(e) => updateAffiliateLink(idx, "description", e.target.value)}
@@ -664,6 +764,161 @@ export default function AdminSettings() {
                                             <option key={opt} value={opt}>{opt}</option>
                                         ))}
                                     </select>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Live Demos Tab */}
+            {activeTab === "demos" && (
+                <div className="animate-fade-in-up">
+                    <div className="premium-card p-6 md:p-8 rounded-2xl glass border border-white/10 max-w-4xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2.5 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400">
+                                    <Video className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-display font-bold text-white">Live Demo Videos</h2>
+                                    <p className="text-sm text-gray-400">Manage the Loom demo videos shown on the homepage.</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={addLiveDemo}
+                                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors"
+                            >
+                                <Plus className="w-3.5 h-3.5" /> + ADD
+                            </button>
+                        </div>
+
+                        <div className="mb-4 p-3 bg-violet-500/5 border border-violet-500/10 rounded-xl">
+                            <p className="text-xs text-violet-300 leading-relaxed">
+                                💡 To find a Loom video ID, open your Loom video, click Share → the ID is the string after <code className="text-violet-200">loom.com/share/</code>
+                            </p>
+                        </div>
+
+                        <div className="space-y-5">
+                            {liveDemons.map((demo, idx) => (
+                                <div key={idx} className="p-5 rounded-xl border border-white/5 bg-navy-900/50 space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-xs uppercase tracking-wider text-gray-500 font-bold">Demo #{idx + 1}</span>
+                                        <button
+                                            onClick={() => removeLiveDemo(idx)}
+                                            className="p-1.5 text-red-400/60 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-colors"
+                                        >
+                                            <Trash2 className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Title</label>
+                                            <input
+                                                type="text"
+                                                value={demo.title}
+                                                onChange={(e) => updateLiveDemo(idx, "title", e.target.value)}
+                                                placeholder="e.g. Real Estate Lead Pipeline"
+                                                className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Loom Video ID</label>
+                                            <input
+                                                type="text"
+                                                value={demo.loomId}
+                                                onChange={(e) => updateLiveDemo(idx, "loomId", e.target.value)}
+                                                placeholder="91bc462a0af645c5b2b73f540b5eb0cc"
+                                                className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Description</label>
+                                        <textarea
+                                            value={demo.description}
+                                            onChange={(e) => updateLiveDemo(idx, "description", e.target.value)}
+                                            placeholder="Describe what this automation does..."
+                                            rows={2}
+                                            className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 resize-none"
+                                        />
+                                    </div>
+
+                                    {/* Workflow Image */}
+                                    <div>
+                                        <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Workflow Screenshot</label>
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                value={demo.image}
+                                                onChange={(e) => updateLiveDemo(idx, "image", e.target.value)}
+                                                placeholder="/images/workflow-1.png or https://..."
+                                                className="flex-1 bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 min-w-0"
+                                            />
+                                            <label
+                                                className={`flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer transition-all flex-shrink-0 ${uploading[`demo-${idx}`]
+                                                    ? "border-gold-400/30 bg-gold-400/5"
+                                                    : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
+                                                    }`}
+                                                title="Upload workflow screenshot"
+                                            >
+                                                {uploading[`demo-${idx}`]
+                                                    ? <Loader2 className="w-4 h-4 text-gold-400 animate-spin" />
+                                                    : <Upload className="w-4 h-4 text-gray-400" />
+                                                }
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    className="hidden"
+                                                    onChange={async (e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (!file) return;
+                                                        const url = await uploadImage(file, `demo-${idx}`);
+                                                        if (url) updateLiveDemo(idx, "image", url);
+                                                    }}
+                                                />
+                                            </label>
+                                        </div>
+                                        {demo.image && (
+                                            <div className="mt-2 aspect-[16/6] rounded-lg overflow-hidden border border-white/10 bg-navy-950">
+                                                <img
+                                                    src={demo.image}
+                                                    alt="Preview"
+                                                    className="w-full h-full object-cover"
+                                                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Tags */}
+                                    <div>
+                                        <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Tags (comma-separated)</label>
+                                        <input
+                                            type="text"
+                                            value={demo.tags.join(", ")}
+                                            onChange={(e) => updateLiveDemo(idx, "tags", e.target.value.split(",").map(t => t.trim()).filter(Boolean))}
+                                            placeholder="n8n, Gmail, Slack, AI Scoring"
+                                            className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                        />
+                                    </div>
+
+                                    {/* Loom Preview */}
+                                    {demo.loomId && (
+                                        <div className="p-3 bg-violet-500/5 border border-violet-500/10 rounded-lg">
+                                            <p className="text-[10px] text-violet-400 mb-2 uppercase tracking-wider font-bold">Loom Preview</p>
+                                            <div className="aspect-video rounded-lg overflow-hidden">
+                                                <iframe
+                                                    src={`https://www.loom.com/embed/${demo.loomId}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
+                                                    frameBorder="0"
+                                                    allowFullScreen
+                                                    className="w-full h-full"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -713,8 +968,7 @@ export default function AdminSettings() {
                         </div>
                         <div className="space-y-2">
                             {envVars.map((env) => {
-                                // We can't read env vars client-side, but we can show the config structure
-                                const isConfigured = env.required; // Server-side would check actual values
+                                const isConfigured = env.required;
                                 return (
                                     <div key={env.key} className="flex items-center justify-between p-3.5 rounded-xl border border-white/5 bg-navy-900/50 hover:bg-white/5 transition-colors">
                                         <div className="flex items-center gap-3">

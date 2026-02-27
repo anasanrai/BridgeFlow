@@ -47,6 +47,9 @@ export async function getSiteConfig() {
                 affiliateLinks: (settings?.affiliate_links && settings.affiliate_links.length > 0)
                     ? settings.affiliate_links
                     : siteData.defaultAffiliateLinks,
+                liveDemos: (settings?.live_demos && settings.live_demos.length > 0)
+                    ? settings.live_demos
+                    : null,
             };
         }
     } catch { }
