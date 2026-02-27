@@ -19,21 +19,36 @@ export async function getSiteConfig() {
     try {
         const sb = getPublicClient();
         if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("site_config").select("*").limit(1).single();
-        if (data) return {
-            name: data.name,
-            tagline: data.tagline,
-            description: data.description,
-            email: data.email,
-            url: data.url,
-            location: data.location,
-            copyright: data.copyright,
-            logo: data.logo,
-            og_image: data.og_image,
-            navLinks: (data.nav_links && data.nav_links.length > 0) ? data.nav_links : siteData.navLinks,
-            footerLinks: (data.footer_links && Object.keys(data.footer_links).length > 0) ? data.footer_links : siteData.footerLinks,
-            socialLinks: (data.social_links && data.social_links.length > 0) ? data.social_links : siteData.socialLinks,
-        };
+
+        const [configRes, settingsRes] = await Promise.all([
+            sb.from("site_config").select("*").limit(1).single(),
+            sb.from("site_settings").select("*").limit(1).single()
+        ]);
+
+        const config = configRes.data;
+        const settings = settingsRes.data;
+
+        if (config) {
+            return {
+                name: config.name,
+                tagline: config.tagline,
+                description: config.description,
+                email: config.email,
+                url: config.url,
+                location: config.location,
+                copyright: config.copyright,
+                logo: config.logo,
+                og_image: config.og_image,
+                navLinks: (config.nav_links && config.nav_links.length > 0) ? config.nav_links : siteData.navLinks,
+                footerLinks: (config.footer_links && Object.keys(config.footer_links).length > 0) ? config.footer_links : siteData.footerLinks,
+                socialLinks: (settings?.social_links && settings.social_links.length > 0)
+                    ? settings.social_links
+                    : ((config.social_links && config.social_links.length > 0) ? config.social_links : siteData.socialLinks),
+                affiliateLinks: (settings?.affiliate_links && settings.affiliate_links.length > 0)
+                    ? settings.affiliate_links
+                    : siteData.defaultAffiliateLinks,
+            };
+        }
     } catch { }
     return {
         name: siteData.siteConfig.name,
@@ -48,6 +63,7 @@ export async function getSiteConfig() {
         navLinks: siteData.navLinks,
         footerLinks: siteData.footerLinks,
         socialLinks: siteData.socialLinks,
+        affiliateLinks: siteData.defaultAffiliateLinks,
     };
 }
 

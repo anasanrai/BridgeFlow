@@ -28,6 +28,7 @@ interface BlogPost {
     seo_title: string;
     seo_description: string;
     og_image: string;
+    image_url: string;
     created_at: string;
     updated_at: string;
 }
@@ -46,6 +47,7 @@ const blankPost: Partial<BlogPost> = {
     seo_title: "",
     seo_description: "",
     og_image: "",
+    image_url: "",
 };
 
 export default function BlogAdmin() {
@@ -304,6 +306,31 @@ export default function BlogAdmin() {
                                     </div>
 
                                     <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1.5 flex items-center justify-between">
+                                            Cover Image URL
+                                            <span className="text-[10px] text-gray-500 font-normal">Direct link to PNG/JPG</span>
+                                        </label>
+                                        <input
+                                            value={editing.image_url || ""}
+                                            onChange={(e) =>
+                                                setEditing({ ...editing, image_url: e.target.value })
+                                            }
+                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors font-mono text-xs"
+                                            placeholder="https://example.com/cover-image.jpg"
+                                        />
+                                        {editing.image_url && (
+                                            <div className="mt-2 aspect-video rounded-lg overflow-hidden border border-white/10 bg-navy-950">
+                                                <img
+                                                    src={editing.image_url}
+                                                    alt="Preview"
+                                                    className="w-full h-full object-cover"
+                                                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">
                                             Content
                                         </label>
@@ -461,16 +488,25 @@ export default function BlogAdmin() {
                                 >
                                     <td className="py-3 px-4">
                                         <div className="flex items-center gap-3">
-                                            {post.featured && (
-                                                <Star className="w-4 h-4 text-gold-400 flex-shrink-0" />
-                                            )}
-                                            <div>
-                                                <p className="text-sm font-medium text-white">
-                                                    {post.title}
-                                                </p>
-                                                <p className="text-xs text-gray-500 mt-0.5 font-mono">
-                                                    /{post.slug}
-                                                </p>
+                                            <div className="w-12 h-10 rounded bg-navy-800 border border-white/5 overflow-hidden flex-shrink-0">
+                                                {post.image_url ? (
+                                                    <img src={post.image_url} alt="" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full gold-gradient opacity-20" />
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                {post.featured && (
+                                                    <Star className="w-4 h-4 text-gold-400 flex-shrink-0" />
+                                                )}
+                                                <div>
+                                                    <p className="text-sm font-medium text-white line-clamp-1">
+                                                        {post.title}
+                                                    </p>
+                                                    <p className="text-xs text-gray-500 mt-0.5 font-mono">
+                                                        /{post.slug}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>

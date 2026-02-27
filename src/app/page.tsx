@@ -31,7 +31,7 @@ import {
     Gift,
 } from "lucide-react";
 import LucideIcon from "@/components/LucideIcon";
-import { getHomeContent, getPageSEO } from "@/lib/supabase-data";
+import { getHomeContent, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,7 +48,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-    const data = await getHomeContent();
+    const [data, site] = await Promise.all([
+        getHomeContent(),
+        getSiteConfig(),
+    ]);
     const { hero, stats, servicesOverview, processSteps, cta, offers } = data;
 
     return (
@@ -334,7 +337,7 @@ export default async function Home() {
                         description="Tools we use daily and recommend to every client. Some links include exclusive partner discounts."
                     />
 
-                    <PartnersSection />
+                    <PartnersSection partners={site.affiliateLinks} />
                 </div>
             </section>
 

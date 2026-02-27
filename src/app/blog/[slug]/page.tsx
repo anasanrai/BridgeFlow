@@ -70,28 +70,47 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                             Back to Blog
                         </Link>
                     </ScrollReveal>
-                    <ScrollReveal delay={0.1}>
-                        <div className="max-w-3xl">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="px-3 py-1 text-xs font-semibold text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
-                                    {post.category}
-                                </span>
-                                {post.readTime && (
-                                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                                        <Clock className="w-3 h-3" />
-                                        {post.readTime}
+
+                    <div className="grid lg:grid-cols-[1fr,400px] gap-12 items-center">
+                        <ScrollReveal delay={0.1}>
+                            <div className="max-w-3xl">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="px-3 py-1 text-xs font-semibold text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                                        {post.category}
                                     </span>
-                                )}
-                                <span className="text-sm text-gray-500 flex items-center gap-1">
-                                    <Calendar className="w-3 h-3" />
-                                    {post.date}
-                                </span>
+                                    {post.read_time && (
+                                        <span className="text-sm text-gray-500 flex items-center gap-1">
+                                            <Clock className="w-3 h-3" />
+                                            {post.read_time}
+                                        </span>
+                                    )}
+                                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                                        <Calendar className="w-3 h-3" />
+                                        {new Date(post.created_at).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
+                                    {post.title}
+                                </h1>
+                                <p className="mt-6 text-xl text-gray-400 leading-relaxed">
+                                    {post.excerpt}
+                                </p>
                             </div>
-                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
-                                {post.title}
-                            </h1>
-                        </div>
-                    </ScrollReveal>
+                        </ScrollReveal>
+
+                        {post.image_url && (
+                            <ScrollReveal delay={0.2}>
+                                <div className="relative aspect-video lg:aspect-square rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
+                                    <img
+                                        src={post.image_url}
+                                        alt={post.title}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 to-transparent" />
+                                </div>
+                            </ScrollReveal>
+                        )}
+                    </div>
                 </div>
             </section>
 

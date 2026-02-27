@@ -25,6 +25,7 @@ interface AffiliateLink {
     href: string;
     badge: string;
     logo: string;
+    logo_url?: string;
 }
 
 const AI_MODELS = [
@@ -203,7 +204,7 @@ export default function AdminSettings() {
 
     // Affiliate Links Management
     const addAffiliateLink = () => {
-        setAffiliateLinks([...affiliateLinks, { title: "", description: "", href: "", badge: "Partner", logo: "Zap" }]);
+        setAffiliateLinks([...affiliateLinks, { title: "", description: "", href: "", badge: "Partner", logo: "Zap", logo_url: "" }]);
     };
 
     const removeAffiliateLink = (idx: number) => {
@@ -277,7 +278,7 @@ export default function AdminSettings() {
         { id: "ai" as const, label: "AI Engine", icon: Sparkles },
         { id: "email" as const, label: "Email (SMTP)", icon: Mail },
         { id: "social" as const, label: "Social Links", icon: LinkIcon },
-        { id: "affiliates" as const, label: "Affiliate Ads", icon: Tag },
+        { id: "affiliates" as const, label: "Partner Offers", icon: Tag },
         { id: "system" as const, label: "System", icon: Shield },
     ];
 
@@ -631,13 +632,22 @@ export default function AdminSettings() {
                                             className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
                                         />
                                     </div>
-                                    <input
-                                        type="url"
-                                        value={link.href}
-                                        onChange={(e) => updateAffiliateLink(idx, "href", e.target.value)}
-                                        placeholder="https://affiliate-link.com?ref=bridgeflow"
-                                        className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
-                                    />
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <input
+                                            type="url"
+                                            value={link.href}
+                                            onChange={(e) => updateAffiliateLink(idx, "href", e.target.value)}
+                                            placeholder="https://affiliate-link.com?ref=bridgeflow"
+                                            className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                        />
+                                        <input
+                                            type="url"
+                                            value={link.logo_url || ""}
+                                            onChange={(e) => updateAffiliateLink(idx, "logo_url", e.target.value)}
+                                            placeholder="Logo Image URL (optional)"
+                                            className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                        />
+                                    </div>
                                     <textarea
                                         value={link.description}
                                         onChange={(e) => updateAffiliateLink(idx, "description", e.target.value)}
