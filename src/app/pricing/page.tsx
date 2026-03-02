@@ -7,12 +7,24 @@ import {
 } from "@/components/ui";
 import { ArrowRight, CheckCircle2, Sparkles, Shield, Check, DollarSign, Globe } from "lucide-react";
 import { plans, pricingHero, pricingFAQ } from "@/data/pricing";
+import { getSiteConfig } from "@/lib/supabase-data";
 
-export const metadata: Metadata = {
-    title: "Pricing | BridgeFlow",
-    description:
-        "Founding member pricing for AI-powered automation services. Limited spots available at special rates.",
-};
+export const revalidate = 60;
+
+export async function generateMetadata() {
+    const site = await getSiteConfig();
+    return {
+        title: `Pricing | ${site.name}`,
+        description: "Transparent founding-member pricing for AI-powered automation services. Limited spots available at special rates.",
+        alternates: { canonical: `${site.url}/pricing` },
+        openGraph: {
+            title: `Pricing | ${site.name}`,
+            description: "Simple, transparent pricing for AI automation services.",
+            url: `${site.url}/pricing`,
+            type: "website",
+        },
+    };
+}
 
 export default function Pricing() {
     const faqJsonLd = {

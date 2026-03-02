@@ -10,32 +10,37 @@ function getPublicClient() {
     return createClient(url, key);
 }
 
-const SYSTEM_PROMPT = `You are BridgeFlow's AI assistant — a helpful, professional chatbot on the BridgeFlow website. BridgeFlow is an AI-powered automation agency.
+const SYSTEM_PROMPT = `You are BridgeFlow's AI assistant — a helpful, professional chatbot on the BridgeFlow website. BridgeFlow is an AI-powered automation agency founded by Anasan Rai.
 
 About BridgeFlow:
-- We help B2B businesses automate workflows using n8n, AI (GPT-4, Claude), and custom SaaS tools
-- Services: n8n Workflow Automation, AI Integration, SaaS Tools, Consulting & Strategy
-- Stats: 150+ workflows built, 40+ happy clients, 98% uptime SLA, 10x average ROI
-- Team: Alex Moreau (CEO), Priya Sharma (Engineering), James Okonkwo (AI Architect), Elena Vasquez (Client Success)
-- Location: Remote-first, Global
+- Founded by Anasan Rai (CEO & Founder & AI Automation Engineer) based in Kathmandu, Nepal
+- We help B2B businesses automate workflows using n8n, GoHighLevel, AI (GPT-4, Claude), and custom SaaS tools
+- Services: n8n Workflow Automation, GoHighLevel CRM & Funnels, AI Integration, SaaS Tools
+- Remote-first, global agency serving clients worldwide
 - Contact: hello@bridgeflow.agency
 - Website: https://www.bridgeflow.agency
 
 Key selling points:
-- Save 20+ hours/week with automation
-- Most automations live within 1-2 weeks
-- Enterprise-grade security (SOC 2 compliant)
-- 98% client retention rate
+- Save 10+ hours/week with automation
+- Most automations are live within 1-2 weeks of kickoff
+- Production-grade, documented, and measured by real business impact
+- Results-driven: every workflow measured by ROI, not vanity metrics
+- Free 30-minute automation audit available — no commitment required
 
-Pricing approach: Custom quotes based on project scope. We offer free consultations to assess needs.
+Pricing (Founding Member Rates — Limited Time):
+- Free Automation Audit: Free — 30-min strategy call, top 3 automation opportunities, custom ROI estimate
+- Quick Win Automation: $497 (founding rate, normally $997) — 1 custom n8n workflow, 5 integrated tools, 14 days support
+- Starter Automation Package: $997 (founding rate, normally $2,499) — 5 custom n8n workflows, CRM integration, 30 days monitoring
+- GoHighLevel Pro Setup: $1,997 (founding rate, normally $3,999) — complete GHL setup, 3 funnels, full team training
 
 Guidelines:
 - Be concise, friendly, and professional
-- Answer questions about BridgeFlow's services, pricing, and team
-- For specific project inquiries, encourage them to book a free consultation at /contact
+- Answer questions about BridgeFlow's services, pricing, and founder
+- For specific project inquiries, encourage them to book a free consultation at /contact or claim a free audit at /audit
 - Keep responses under 150 words unless the user asks for detail
 - Use markdown formatting sparingly (bold for emphasis, lists for features)
-- If asked something unrelated to BridgeFlow or automation, politely redirect`;
+- If asked something unrelated to BridgeFlow or automation, politely redirect
+- Never make up statistics or claims not listed above`;
 
 export async function POST(req: NextRequest) {
     try {
@@ -44,6 +49,12 @@ export async function POST(req: NextRequest) {
         if (!messages || !Array.isArray(messages)) {
             return NextResponse.json({ error: "Invalid messages array" }, { status: 400 });
         }
+
+        // Sanitize messages — limit to last 10 to prevent token abuse
+        const sanitizedMessages = messages.slice(-10).map((m: any) => ({
+            role: m.role === "user" ? "user" : "assistant",
+            content: String(m.content).slice(0, 2000), // cap per message
+        }));
 
         const modalKey = process.env.MODAL_API_KEY;
         const ollamaKey = process.env.OLLAMA_API_KEY;
@@ -63,41 +74,42 @@ export async function POST(req: NextRequest) {
 
         // 1. Try Primary Model
         if (primaryModel === "modal-glm5" && modalKey) {
-            const reply = await callModalGLM5(modalKey, messages);
+            const reply = await callModalGLM5(modalKey, sanitizedMessages);
             if (reply) return reply;
         } else if (primaryModel === "ollama-cloud" && ollamaKey) {
-            const reply = await callOllamaCloud(ollamaKey, messages);
+            const reply = await callOllamaCloud(ollamaKey, sanitizedMessages);
             if (reply) return reply;
         } else if (primaryModel === "gemini" && geminiKey) {
-            const reply = await callGeminiFallback(geminiKey, messages);
+            const reply = await callGeminiFallback(geminiKey, sanitizedMessages);
             if (reply) return reply;
         }
 
         // 2. If Primary Fails, fallback to Modal (if it wasn't primary)
         if (primaryModel !== "modal-glm5" && modalKey) {
-            const reply = await callModalGLM5(modalKey, messages);
+            const reply = await callModalGLM5(modalKey, sanitizedMessages);
             if (reply) return reply;
         }
 
         // 3. Fallback to Ollama (if it wasn't primary)
         if (primaryModel !== "ollama-cloud" && ollamaKey) {
-            const reply = await callOllamaCloud(ollamaKey, messages);
+            const reply = await callOllamaCloud(ollamaKey, sanitizedMessages);
             if (reply) return reply;
         }
 
         // 4. Ultimate Emergency Fallback to Gemini
         if (primaryModel !== "gemini" && geminiKey) {
-            const reply = await callGeminiFallback(geminiKey, messages);
+            const reply = await callGeminiFallback(geminiKey, sanitizedMessages);
             if (reply) return reply;
         }
 
         return NextResponse.json({
-            reply: "I'm sorry, but all my connection nodes are currently asleep. Please try again in a moment! 🌟",
+            reply: "I'm sorry, but I'm temporarily unavailable. Please reach out directly at hello@bridgeflow.agency or visit our [Contact](/contact) page.",
             provider: "fallback-error"
         });
 
-    } catch (error: any) {
-        console.error("Chat error:", error);
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        console.error("Chat API error:", message);
         return NextResponse.json({
             reply: "I'm having a brief connection issue. Please try again or explore our [Services](/services)!"
         });
@@ -107,7 +119,6 @@ export async function POST(req: NextRequest) {
 // ─── Modal GLM-5 (OpenAI-compatible endpoint) ───
 async function callModalGLM5(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying Modal GLM-5...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://api.us-west-2.modal.direct/v1/chat/completions", {
@@ -135,12 +146,9 @@ async function callModalGLM5(apiKey: string, messages: { role: string; content: 
             if (reply) {
                 return NextResponse.json({ reply, provider: "modal-glm5" });
             }
-        } else {
-            const errText = await response.text();
-            console.error("Modal GLM-5 error:", response.status, errText);
         }
-    } catch (error) {
-        console.error("Modal GLM-5 fetch error:", error);
+    } catch {
+        // Provider unavailable, fall through to next
     }
     return null;
 }
@@ -148,7 +156,6 @@ async function callModalGLM5(apiKey: string, messages: { role: string; content: 
 // ─── Ollama Cloud (Ollama API format) ───
 async function callOllamaCloud(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying Ollama Cloud...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://ollama.com/api/chat", {
@@ -175,12 +182,9 @@ async function callOllamaCloud(apiKey: string, messages: { role: string; content
             if (reply) {
                 return NextResponse.json({ reply, provider: "ollama-cloud" });
             }
-        } else {
-            const errText = await response.text();
-            console.error("Ollama Cloud error:", response.status, errText);
         }
-    } catch (error) {
-        console.error("Ollama Cloud fetch error:", error);
+    } catch {
+        // Provider unavailable, fall through to next
     }
     return null;
 }
@@ -188,7 +192,6 @@ async function callOllamaCloud(apiKey: string, messages: { role: string; content
 // ─── Gemini (emergency fallback) ───
 async function callGeminiFallback(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying Gemini fallback...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch(
@@ -220,12 +223,9 @@ async function callGeminiFallback(apiKey: string, messages: { role: string; cont
             if (reply) {
                 return NextResponse.json({ reply, provider: "gemini" });
             }
-        } else {
-            const errText = await response.text();
-            console.error("Gemini API Error:", response.status, errText);
         }
-    } catch (error) {
-        console.error("Gemini Fetch Error:", error);
+    } catch {
+        // Provider unavailable, fall through to next
     }
     return null;
 }

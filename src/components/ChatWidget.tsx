@@ -47,7 +47,7 @@ function renderContent(text: string) {
 export default function ChatWidget() {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
-        { role: "assistant", content: "Hi! 👋 I'm BridgeFlow's AI assistant, powered by **GLM-5**. How can I help you learn about our automation services?", timestamp: formatTime() },
+        { role: "assistant", content: "Hi! 👋 I'm BridgeFlow's AI assistant. How can I help you learn about our automation services today?", timestamp: formatTime() },
     ]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
@@ -106,9 +106,11 @@ export default function ChatWidget() {
             <button
                 onClick={() => setOpen(!open)}
                 className={`fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full gold-gradient text-navy-950 shadow-lg shadow-gold-400/20 hover:shadow-gold-400/40 transition-all hover:scale-110 flex items-center justify-center ${!open ? 'animate-pulse-glow' : ''}`}
-                aria-label="Chat with AI"
+                aria-label={open ? "Close chat" : "Open chat with AI assistant"}
+                aria-expanded={open}
+                aria-controls="chat-panel"
             >
-                {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
+                {open ? <X className="w-6 h-6" aria-hidden="true" /> : <MessageCircle className="w-6 h-6" aria-hidden="true" />}
                 {hasNewMessage && !open && (
                     <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-navy-950 animate-pulse" />
                 )}
@@ -116,7 +118,7 @@ export default function ChatWidget() {
 
             {/* Chat Panel */}
             {open && (
-                <div className="chat-entrance fixed bottom-24 right-6 z-[60] w-[400px] max-w-[calc(100vw-48px)] h-[560px] max-h-[calc(100vh-120px)] flex flex-col rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10"
+                <div id="chat-panel" className="chat-entrance fixed bottom-24 right-6 z-[60] w-[400px] max-w-[calc(100vw-48px)] h-[560px] max-h-[calc(100vh-120px)] flex flex-col rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10" role="dialog" aria-label="Chat with BridgeFlow AI"
                     style={{ background: "linear-gradient(135deg, rgba(10,15,30,0.98) 0%, rgba(15,20,40,0.98) 100%)", backdropFilter: "blur(20px)" }}>
 
                     {/* Header */}

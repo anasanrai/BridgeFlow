@@ -57,7 +57,7 @@ export const values = [
 export const team = [
     {
         name: "Anasan Rai",
-        role: "CEO & Founder & AI Automation Engineer",
+        role: "Founder & AI Automation Engineer",
         initials: "AR",
         location: "🇳🇵 Kathmandu, Nepal · Remote-first, Global",
     },

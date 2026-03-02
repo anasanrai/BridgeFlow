@@ -6,23 +6,23 @@
  */
 
 export const hero = {
-    badge: "Enterprise AI Orchestration",
+    badge: "AI-Powered Automation Agency",
     title: "Scale Your Operations with",
-    titleLine2: "Autonomous AI",
+    titleLine2: "Intelligent Automation",
     highlight: "Systems",
     description:
-        "BridgeFlow diagnoses exactly where your business is leaking revenue — then builds AI systems to fix it. Permanently.",
+        "BridgeFlow diagnoses exactly where your business is leaking time and revenue — then builds AI-powered systems to fix it. Permanently.",
     ctaPrimary: { text: "Get My Free Audit →", href: "/audit" },
-    ctaSecondary: { text: "See How It Works ↓", href: "/calculator" },
+    ctaSecondary: { text: "See How It Works", href: "/how-it-works" },
     heroImage: "/images/hero-automation.png",
-    heroImageAlt: "Enterprise AI Automation",
+    heroImageAlt: "AI Automation Workflows",
 };
 
 export const stats = [
     { end: 50, suffix: "+", label: "Workflows Built" },
-    { end: 7, suffix: "+", label: "Beta Clients Served" },
-    { end: 10, suffix: "hrs", label: "Saved Per Client Weekly" },
+    { end: 10, suffix: "+", label: "Hours Saved Per Client Weekly" },
     { end: 100, suffix: "%", label: "Client Satisfaction" },
+    { end: 14, suffix: " days", label: "Average Time to Launch" },
 ];
 
 export const servicesOverview = [
@@ -44,7 +44,7 @@ export const servicesOverview = [
         icon: "Bot",
         title: "AI Integration",
         description:
-            "Connect your tools with AI to work smarter. GPT, Claude, and custom models integrated into your workflows.",
+            "Connect your tools with AI to work smarter. GPT-4, Claude, and custom models integrated into your workflows.",
         href: "/services#ai",
     },
     {
@@ -65,65 +65,46 @@ export const processSteps = [
     },
     {
         step: "02",
-        title: "Build",
+        title: "Design",
         description:
-            "Our engineers architect and deploy custom automation workflows tailored to your exact needs.",
+            "Our team architects the optimal automation system — selecting the right tools, integrations, and AI models for your use case.",
     },
     {
         step: "03",
+        title: "Build",
+        description:
+            "We build your custom workflows with built-in error handling, retry logic, and comprehensive testing before deployment.",
+    },
+    {
+        step: "04",
         title: "Scale",
         description:
-            "We monitor, optimize, and scale your automations as your business grows — zero downtime guaranteed.",
+            "We monitor, optimize, and scale your automations as your business grows — with ongoing support and zero downtime.",
     },
 ];
 
 export const offers = [
     {
         title: "Free Automation Audit",
-        description: "Get a complimentary 30-minute deep-dive into your current workflows. We'll identify the top 3 automation opportunities with the highest ROI potential.",
+        description: "A complimentary 30-minute deep-dive into your current workflows. We'll identify your top 3 automation opportunities with estimated ROI — no commitment required.",
         badge: "Free",
         href: "/audit",
         highlight: true,
     },
     {
-        title: "Starter n8n Package",
-        description: "5 custom n8n workflows, CRM integration, email automation, and 30 days of monitoring included. Perfect for small teams getting started.",
-        badge: "$2,499",
+        title: "Quick Win Automation",
+        description: "1 custom n8n workflow, up to 5 integrated tools, full documentation, and 14 days of post-launch support. Perfect for teams that want fast results.",
+        badge: "$497",
         href: "/contact",
         highlight: false,
     },
     {
-        title: "GoHighLevel Pro Setup",
-        description: "Complete GHL setup with 3 funnels, pipeline configuration, automated follow-ups, review management, and full team training.",
-        badge: "$3,999",
+        title: "Starter Automation Package",
+        description: "5 custom n8n workflows, CRM integration, email automation, and 30 days of monitoring. Ideal for small teams ready to scale operations.",
+        badge: "$997",
         href: "/contact",
         highlight: false,
     },
 ];
 
-export const demos = [
-    {
-        title: "Lead-to-Close Pipeline",
-        description: "Watch a real n8n + GoHighLevel pipeline capture a lead from a web form, score it with AI, route it to a sales rep, and trigger an automated follow-up sequence.",
-        tags: ["n8n", "GoHighLevel", "AI Scoring"],
-    },
-    {
-        title: "AI Content Generator",
-        description: "See how we use GPT-4 to generate SEO-optimized blog posts, social captions, and email drafts — all triggered from a single Slack command.",
-        tags: ["GPT-4", "n8n", "Slack"],
-    },
-    {
-        title: "E-commerce Review Automation",
-        description: "Automatic review requests via SMS after purchase, negative review alerts to Slack, and AI-generated response suggestions for your team.",
-        tags: ["GoHighLevel", "SMS", "AI"],
-    },
-];
-
-export const cta = {
-    title: "Ready to",
-    highlight: "Automate?",
-    description:
-        "Let's talk about your business and build your first automation together — no commitments.",
-    ctaPrimary: { text: "Start a Conversation", href: "/contact" },
-    ctaSecondary: { text: "hello@bridgeflow.agency", href: "mailto:hello@bridgeflow.agency" },
-};
+export const demos = [];

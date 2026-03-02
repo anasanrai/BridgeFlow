@@ -26,7 +26,17 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 
-export default function Footer({ siteConfig }: { siteConfig: any }) {
+interface FooterSiteConfig {
+    email?: string;
+    location?: string;
+    copyright?: string;
+    logo?: string;
+    name?: string;
+    footerLinks?: Record<string, Array<{ label: string; href: string }>>;
+    socialLinks?: Array<{ platform: string; url: string; icon?: string }>;
+}
+
+export default function Footer({ siteConfig }: { siteConfig: FooterSiteConfig }) {
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -168,7 +178,7 @@ export default function Footer({ siteConfig }: { siteConfig: any }) {
                                 {category}
                             </h4>
                             <ul className="space-y-3">
-                                {links.map((link: any) => (
+                                {links.map((link: { label: string; href: string }) => (
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
@@ -190,7 +200,7 @@ export default function Footer({ siteConfig }: { siteConfig: any }) {
                         {copyright}
                     </p>
                     <div className="flex items-center gap-3 flex-wrap justify-center">
-                        {socialLinks.map((social: any) => {
+                        {socialLinks.map((social: { platform: string; url: string; icon?: string }) => {
                             const Icon = iconMap[social.platform];
                             return Icon ? (
                                 <a

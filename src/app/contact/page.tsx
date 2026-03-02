@@ -15,15 +15,21 @@ import ContactForm from "@/components/ContactForm";
 import { getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
 export async function generateMetadata(): Promise<Metadata> {
-    const seo = await getPageSEO("/contact");
+    const [seo, site] = await Promise.all([getPageSEO("/contact"), getSiteConfig()]);
+    const title = `Contact Us | ${site.name}`;
+    const description = "Get in touch with BridgeFlow to discuss your automation needs. Book a free consultation or send us a message — we respond within 24 hours.";
     return {
-        title: seo.title,
-        description: seo.description,
+        title,
+        description,
+        alternates: { canonical: `${site.url}/contact` },
         openGraph: {
-            title: seo.title,
-            description: seo.description,
-            images: [{ url: seo.ogImage }],
+            title,
+            description,
+            url: `${site.url}/contact`,
+            type: "website",
+            images: [{ url: seo.ogImage, width: 1200, height: 630, alt: title }],
         },
+        twitter: { card: "summary_large_image", title, description, images: [seo.ogImage] },
     };
 }
 

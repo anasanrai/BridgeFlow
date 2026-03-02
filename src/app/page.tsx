@@ -1,5 +1,8 @@
-export const dynamic = "force-dynamic";
+// ISR: Revalidate every 60 seconds
+export const revalidate = 60;
+
 import Image from "next/image";
+
 import RotatingHeadline from "@/components/RotatingHeadline";
 import LiveDemos from "@/components/LiveDemos";
 import PartnersSection from "@/components/PartnersSection";
@@ -31,19 +34,26 @@ import {
     Gift,
 } from "lucide-react";
 import LucideIcon from "@/components/LucideIcon";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import { getHomeContent, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-    const seo = await getPageSEO("/");
+    const [seo, site] = await Promise.all([getPageSEO("/"), getSiteConfig()]);
+    const title = `${site.name} — ${site.tagline}`;
+    const description = seo.description || site.description;
     return {
-        title: seo.title,
-        description: seo.description,
+        title,
+        description,
+        alternates: { canonical: site.url },
         openGraph: {
-            title: seo.title,
-            description: seo.description,
-            images: [{ url: seo.ogImage }],
+            title,
+            description,
+            url: site.url,
+            type: "website",
+            images: [{ url: seo.ogImage, width: 1200, height: 630, alt: title }],
         },
+        twitter: { card: "summary_large_image", title, description, images: [seo.ogImage] },
     };
 }
 
@@ -340,6 +350,9 @@ export default async function Home() {
                     <PartnersSection partners={site.affiliateLinks} />
                 </div>
             </section>
+
+            {/* Testimonials */}
+            <TestimonialsSection />
 
             {/* CTA Section */}
             <section className="section-padding">

@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
+
+// ─── ScrollReveal ─────────────────────────────────────────────────────────────
 
 interface ScrollRevealProps {
     children: React.ReactNode;
@@ -50,6 +53,8 @@ export function ScrollReveal({
     );
 }
 
+// ─── SectionHeader ────────────────────────────────────────────────────────────
+
 interface SectionHeaderProps {
     badge?: string;
     title: string;
@@ -67,8 +72,7 @@ export function SectionHeader({
 }: SectionHeaderProps) {
     return (
         <ScrollReveal
-            className={`mb-12 lg:mb-16 ${align === "center" ? "text-center" : "text-left"
-                }`}
+            className={`mb-12 lg:mb-16 ${align === "center" ? "text-center" : "text-left"}`}
         >
             {badge && (
                 <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
@@ -81,8 +85,7 @@ export function SectionHeader({
             </h2>
             {description && (
                 <p
-                    className={`mt-4 text-gray-400 text-lg max-w-2xl ${align === "center" ? "mx-auto" : ""
-                        }`}
+                    className={`mt-4 text-gray-400 text-lg max-w-2xl ${align === "center" ? "mx-auto" : ""}`}
                 >
                     {description}
                 </p>
@@ -90,6 +93,8 @@ export function SectionHeader({
         </ScrollReveal>
     );
 }
+
+// ─── AnimatedCounter ──────────────────────────────────────────────────────────
 
 interface AnimatedCounterProps {
     end: number;
@@ -133,7 +138,10 @@ export function AnimatedCounter({
 
     return (
         <div ref={ref} className="text-center">
-            <div className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold gold-text">
+            <div
+                className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold gold-text"
+                aria-label={`${prefix}${end}${suffix}`}
+            >
                 {prefix}
                 {count}
                 {suffix}
@@ -145,16 +153,37 @@ export function AnimatedCounter({
     );
 }
 
-interface ButtonProps {
+// ─── Button ───────────────────────────────────────────────────────────────────
+
+type ButtonBaseProps = {
     children: React.ReactNode;
     variant?: "primary" | "secondary" | "ghost";
     size?: "sm" | "md" | "lg";
-    href?: string;
     className?: string;
-    onClick?: () => void;
-    type?: "button" | "submit";
     disabled?: boolean;
-}
+};
+
+type ButtonAsButton = ButtonBaseProps & {
+    href?: undefined;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    type?: "button" | "submit" | "reset";
+    external?: never;
+};
+
+type ButtonAsLink = ButtonBaseProps & {
+    href: string;
+    onClick?: never;
+    type?: never;
+    /** Force open in new tab (adds rel="noopener noreferrer" automatically) */
+    external?: boolean;
+};
+
+type ButtonProps = ButtonAsButton | ButtonAsLink;
+
+const TRANSITION_STYLE = {
+    transition:
+        "transform 150ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out, opacity 200ms ease-out",
+};
 
 export function Button({
     children,
@@ -165,13 +194,10 @@ export function Button({
     onClick,
     type = "button",
     disabled = false,
+    external = false,
 }: ButtonProps) {
     const baseClasses =
         "inline-flex items-center justify-center gap-2 font-bold rounded-full btn-liquid";
-
-    const buttonStyle = {
-        transition: 'transform 150ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out, opacity 200ms ease-out',
-    };
 
     const variants = {
         primary:
@@ -187,14 +213,27 @@ export function Button({
         lg: "px-10 py-4 text-sm uppercase tracking-widest",
     };
 
-    const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabled ? "opacity-50 cursor-not-allowed" : ""
-        } ${className}`;
+    const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""} ${className}`;
 
     if (href) {
+        const isExternal = external || href.startsWith("http") || href.startsWith("//");
+        if (isExternal) {
+            return (
+                <a
+                    href={href}
+                    className={classes}
+                    style={TRANSITION_STYLE}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {children}
+                </a>
+            );
+        }
         return (
-            <a href={href} className={classes} style={buttonStyle}>
+            <Link href={href} className={classes} style={TRANSITION_STYLE}>
                 {children}
-            </a>
+            </Link>
         );
     }
 
@@ -204,12 +243,14 @@ export function Button({
             onClick={onClick}
             disabled={disabled}
             className={classes}
-            style={buttonStyle}
+            style={TRANSITION_STYLE}
         >
             {children}
         </button>
     );
 }
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
 
 interface CardProps {
     children: React.ReactNode;
@@ -220,9 +261,11 @@ interface CardProps {
 export function Card({ children, className = "", hover = true }: CardProps) {
     return (
         <div
-            className={`glass rounded-3xl p-6 lg:p-10 premium-card ${hover ? "hover:-translate-y-2" : ""
-                } ${className}`}
-            style={{ transition: 'transform 200ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out' }}
+            className={`glass rounded-3xl p-6 lg:p-10 premium-card ${hover ? "hover:-translate-y-2" : ""} ${className}`}
+            style={{
+                transition:
+                    "transform 200ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out",
+            }}
         >
             {children}
         </div>

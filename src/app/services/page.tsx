@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -16,18 +15,26 @@ import {
     CheckCircle2,
 } from "lucide-react";
 import LucideIcon from "@/components/LucideIcon";
-import { getServices, getPageSEO } from "@/lib/supabase-data";
+import { getServices, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
+
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-    const seo = await getPageSEO("/services");
+    const [seo, site] = await Promise.all([getPageSEO("/services"), getSiteConfig()]);
+    const title = `AI Automation Services | ${site.name}`;
+    const description = seo.description || "Enterprise-grade n8n automation, GoHighLevel CRM setup, and AI integration services for B2B businesses.";
     return {
-        title: seo.title,
-        description: seo.description,
+        title,
+        description,
+        alternates: { canonical: `${site.url}/services` },
         openGraph: {
-            title: seo.title,
-            description: seo.description,
-            images: [{ url: seo.ogImage }],
+            title,
+            description,
+            url: `${site.url}/services`,
+            type: "website",
+            images: [{ url: seo.ogImage, width: 1200, height: 630, alt: title }],
         },
+        twitter: { card: "summary_large_image", title, description, images: [seo.ogImage] },
     };
 }
 

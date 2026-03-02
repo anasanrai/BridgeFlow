@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { unstable_cache } from "next/cache";
 
 // Import local fallbacks
 import * as homeData from "@/data/home";
@@ -15,196 +16,231 @@ function getPublicClient() {
     return createClient(url, key);
 }
 
-export async function getSiteConfig() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
+// ─── Cached data fetchers (ISR — revalidate every 60 seconds) ───
 
-        const [configRes, settingsRes] = await Promise.all([
-            sb.from("site_config").select("*").limit(1).single(),
-            sb.from("site_settings").select("*").limit(1).single()
-        ]);
+export const getSiteConfig = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
 
-        const config = configRes.data;
-        const settings = settingsRes.data;
+            const [configRes, settingsRes] = await Promise.all([
+                sb.from("site_config").select("*").limit(1).single(),
+                sb.from("site_settings").select("*").limit(1).single()
+            ]);
 
-        if (config) {
-            return {
-                name: config.name,
-                tagline: config.tagline,
-                description: config.description,
-                email: config.email,
-                url: config.url,
-                location: config.location,
-                copyright: config.copyright,
-                logo: config.logo,
-                og_image: config.og_image,
-                navLinks: (config.nav_links && config.nav_links.length > 0) ? config.nav_links : siteData.navLinks,
-                footerLinks: (config.footer_links && Object.keys(config.footer_links).length > 0) ? config.footer_links : siteData.footerLinks,
-                socialLinks: (settings?.social_links && settings.social_links.length > 0)
-                    ? settings.social_links
-                    : ((config.social_links && config.social_links.length > 0) ? config.social_links : siteData.socialLinks),
-                affiliateLinks: (settings?.affiliate_links && settings.affiliate_links.length > 0)
-                    ? settings.affiliate_links
-                    : siteData.defaultAffiliateLinks,
-                liveDemos: (settings?.live_demos && settings.live_demos.length > 0)
-                    ? settings.live_demos
-                    : null,
+            const config = configRes.data;
+            const settings = settingsRes.data;
+
+            if (config) {
+                return {
+                    name: config.name,
+                    tagline: config.tagline,
+                    description: config.description,
+                    email: config.email,
+                    url: config.url,
+                    location: config.location,
+                    copyright: config.copyright,
+                    logo: config.logo,
+                    og_image: config.og_image,
+                    navLinks: (config.nav_links && config.nav_links.length > 0) ? config.nav_links : siteData.navLinks,
+                    footerLinks: (config.footer_links && Object.keys(config.footer_links).length > 0) ? config.footer_links : siteData.footerLinks,
+                    socialLinks: (settings?.social_links && settings.social_links.length > 0)
+                        ? settings.social_links
+                        : ((config.social_links && config.social_links.length > 0) ? config.social_links : siteData.socialLinks),
+                    affiliateLinks: (settings?.affiliate_links && settings.affiliate_links.length > 0)
+                        ? settings.affiliate_links
+                        : siteData.defaultAffiliateLinks,
+                    liveDemos: (settings?.live_demos && settings.live_demos.length > 0)
+                        ? settings.live_demos
+                        : null,
+                };
+            }
+        } catch { }
+        return {
+            name: siteData.siteConfig.name,
+            tagline: siteData.siteConfig.tagline,
+            description: siteData.siteConfig.description,
+            email: siteData.siteConfig.email,
+            url: siteData.siteConfig.url,
+            location: siteData.siteConfig.location,
+            copyright: siteData.siteConfig.copyright,
+            logo: siteData.siteConfig.logo,
+            og_image: siteData.siteConfig.og_image,
+            navLinks: siteData.navLinks,
+            footerLinks: siteData.footerLinks,
+            socialLinks: siteData.socialLinks,
+            affiliateLinks: siteData.defaultAffiliateLinks,
+            liveDemos: null,
+        };
+    },
+    ["site-config"],
+    { revalidate: 60, tags: ["site-config"] }
+);
+
+export const getHomeContent = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("home_content").select("*").limit(1).single();
+            if (data) return {
+                hero: data.hero || homeData.hero,
+                stats: data.stats || homeData.stats,
+                servicesOverview: data.services_overview?.length ? data.services_overview : homeData.servicesOverview,
+                processSteps: data.process_steps?.length ? data.process_steps : homeData.processSteps,
+                cta: data.cta || homeData.cta,
+                offers: data.offers?.length ? data.offers : homeData.offers,
+                demos: data.demos?.length ? data.demos : homeData.demos,
+                affiliateLinks: siteData.defaultAffiliateLinks,
             };
-        }
-    } catch { }
-    return {
-        name: siteData.siteConfig.name,
-        tagline: siteData.siteConfig.tagline,
-        description: siteData.siteConfig.description,
-        email: siteData.siteConfig.email,
-        url: siteData.siteConfig.url,
-        location: siteData.siteConfig.location,
-        copyright: siteData.siteConfig.copyright,
-        logo: siteData.siteConfig.logo,
-        og_image: siteData.siteConfig.og_image,
-        navLinks: siteData.navLinks,
-        footerLinks: siteData.footerLinks,
-        socialLinks: siteData.socialLinks,
-        affiliateLinks: siteData.defaultAffiliateLinks,
-    };
-}
-
-export async function getHomeContent() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("home_content").select("*").limit(1).single();
-        if (data) return {
-            hero: data.hero || homeData.hero,
-            stats: data.stats || homeData.stats,
-            servicesOverview: data.services_overview?.length ? data.services_overview : homeData.servicesOverview,
-            processSteps: data.process_steps?.length ? data.process_steps : homeData.processSteps,
-
-            cta: data.cta || homeData.cta,
-            offers: data.offers?.length ? data.offers : homeData.offers,
-            demos: data.demos?.length ? data.demos : homeData.demos,
+        } catch { }
+        return {
+            hero: homeData.hero,
+            stats: homeData.stats,
+            servicesOverview: homeData.servicesOverview,
+            processSteps: homeData.processSteps,
+            cta: homeData.cta,
+            offers: homeData.offers,
+            demos: homeData.demos,
             affiliateLinks: siteData.defaultAffiliateLinks,
         };
-    } catch { }
-    return {
-        hero: homeData.hero,
-        stats: homeData.stats,
-        servicesOverview: homeData.servicesOverview,
-        processSteps: homeData.processSteps,
+    },
+    ["home-content"],
+    { revalidate: 60, tags: ["home-content"] }
+);
 
-        cta: homeData.cta,
-        offers: homeData.offers,
-        demos: homeData.demos,
-        affiliateLinks: siteData.defaultAffiliateLinks,
-    };
-}
+export const getServices = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const [servicesRes, benefitsRes, metadataRes] = await Promise.all([
+                sb.from("services").select("*").eq("is_active", true).order("sort_order"),
+                sb.from("benefits").select("*").order("sort_order"),
+                sb.from("page_metadata").select("*").eq("path", "/services").single(),
+            ]);
 
-export async function getServices() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const [servicesRes, benefitsRes, metadataRes] = await Promise.all([
-            sb.from("services").select("*").eq("is_active", true).order("sort_order"),
-            sb.from("benefits").select("*").order("sort_order"),
-            sb.from("page_metadata").select("*").eq("path", "/services").single(),
-        ]);
+            const hero = {
+                ...servicesData.servicesHero,
+                title: metadataRes.data?.title?.split("|")[0].trim() || servicesData.servicesHero.title,
+                description: metadataRes.data?.description || servicesData.servicesHero.description,
+            };
 
-        // Merge static hero with database metadata if available
-        const hero = {
-            ...servicesData.servicesHero,
-            title: metadataRes.data?.title?.split("|")[0].trim() || servicesData.servicesHero.title,
-            description: metadataRes.data?.description || servicesData.servicesHero.description,
-        };
+            let services = servicesRes.data && servicesRes.data.length > 0 ? servicesRes.data : servicesData.services;
 
-        let services = servicesRes.data && servicesRes.data.length > 0 ? servicesRes.data : servicesData.services;
+            const hasGHL = services.some((s: { title?: string }) => {
+                const t = (s.title || "").toLowerCase();
+                return t.includes("gohighlevel") || t.includes("highlevel") || t.includes("ghl");
+            });
+            if (!hasGHL) {
+                const localGHL = servicesData.services.find((s) => s.title.toLowerCase().includes("gohighlevel"));
+                if (localGHL) services = [localGHL, ...services];
+            }
 
-        // Ensure GoHighLevel service is always included (from local fallback if missing in DB)
-        const hasGHL = services.some((s: any) => {
-            const t = (s.title || "").toLowerCase();
-            return t.includes("gohighlevel") || t.includes("highlevel") || t.includes("ghl");
-        });
-        if (!hasGHL) {
-            const localGHL = servicesData.services.find((s) => s.title.toLowerCase().includes("gohighlevel"));
-            if (localGHL) services = [localGHL, ...services];
-        }
-
+            return {
+                hero,
+                services,
+                benefits: benefitsRes.data && benefitsRes.data.length > 0 ? benefitsRes.data : servicesData.benefits,
+            };
+        } catch { }
         return {
-            hero,
-            services,
-            benefits: benefitsRes.data && benefitsRes.data.length > 0 ? benefitsRes.data : servicesData.benefits,
+            hero: servicesData.servicesHero,
+            services: servicesData.services,
+            benefits: servicesData.benefits,
         };
-    } catch { }
-    return {
-        hero: servicesData.servicesHero,
-        services: servicesData.services,
-        benefits: servicesData.benefits,
-    };
-}
+    },
+    ["services"],
+    { revalidate: 60, tags: ["services"] }
+);
 
-export async function getBenefits() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("benefits").select("*").order("sort_order");
-        if (data && data.length > 0) return data;
-    } catch { }
-    return servicesData.benefits;
-}
+export const getBenefits = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("benefits").select("*").order("sort_order");
+            if (data && data.length > 0) return data;
+        } catch { }
+        return servicesData.benefits;
+    },
+    ["benefits"],
+    { revalidate: 60, tags: ["benefits"] }
+);
 
-export async function getTeamMembers() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("team_members").select("*").order("sort_order");
-        if (data && data.length > 0) return data;
-    } catch { }
-    return aboutData.team;
-}
+export const getTeamMembers = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("team_members").select("*").order("sort_order");
+            if (data && data.length > 0) return data;
+        } catch { }
+        return aboutData.team;
+    },
+    ["team-members"],
+    { revalidate: 60, tags: ["team-members"] }
+);
 
-export async function getCompanyValues() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("company_values").select("*").order("sort_order");
-        if (data && data.length > 0) return data;
-    } catch { }
-    return aboutData.values;
-}
+export const getCompanyValues = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("company_values").select("*").order("sort_order");
+            if (data && data.length > 0) return data;
+        } catch { }
+        return aboutData.values;
+    },
+    ["company-values"],
+    { revalidate: 60, tags: ["company-values"] }
+);
 
-export async function getMilestones() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("milestones").select("*").order("sort_order");
-        if (data && data.length > 0) return data;
-    } catch { }
-    return aboutData.milestones;
-}
+export const getMilestones = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("milestones").select("*").order("sort_order");
+            if (data && data.length > 0) return data;
+        } catch { }
+        return (aboutData as { milestones?: unknown[] }).milestones || [];
+    },
+    ["milestones"],
+    { revalidate: 60, tags: ["milestones"] }
+);
 
-export async function getTechStack() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("tech_stack").select("*").order("sort_order");
-        if (data && data.length > 0) return data;
-    } catch { }
-    return aboutData.techStack;
-}
+export const getTechStack = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("tech_stack").select("*").order("sort_order");
+            if (data && data.length > 0) return data;
+        } catch { }
+        return aboutData.techStack;
+    },
+    ["tech-stack"],
+    { revalidate: 60, tags: ["tech-stack"] }
+);
 
-export async function getBlogPosts() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("blog_posts").select("*").eq("is_published", true).order("created_at", { ascending: false });
-        if (data && data.length > 0) return data.map((p: any) => ({
-            ...p,
-            date: new Date(p.created_at as string).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-            readTime: p.read_time,
-        }));
-    } catch { }
-    return blogData.posts;
-}
+export const getBlogPosts = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("blog_posts").select("*").eq("is_published", true).order("created_at", { ascending: false });
+            if (data && data.length > 0) return data.map((p: Record<string, unknown>) => ({
+                ...p,
+                date: new Date(p.created_at as string).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                readTime: p.read_time,
+            }));
+        } catch { }
+        return blogData.posts;
+    },
+    ["blog-posts"],
+    { revalidate: 60, tags: ["blog-posts"] }
+);
 
 export async function getBlogPost(slug: string) {
     try {
@@ -218,18 +254,22 @@ export async function getBlogPost(slug: string) {
             content: data.content ? data.content.split("\n\n") : [],
         };
     } catch { }
-    return blogData.blogPostContent[slug] || null;
+    return (blogData as { blogPostContent?: Record<string, unknown> }).blogPostContent?.[slug] || null;
 }
 
-export async function getCaseStudies() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("case_studies").select("*").eq("is_published", true).order("sort_order");
-        if (data && data.length > 0) return data;
-    } catch { }
-    return caseStudiesData.caseStudies;
-}
+export const getCaseStudies = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+            const { data } = await sb.from("case_studies").select("*").eq("is_published", true).order("sort_order");
+            if (data && data.length > 0) return data;
+        } catch { }
+        return caseStudiesData.caseStudies;
+    },
+    ["case-studies"],
+    { revalidate: 60, tags: ["case-studies"] }
+);
 
 export async function getCaseStudy(slug: string) {
     try {
@@ -238,11 +278,10 @@ export async function getCaseStudy(slug: string) {
         const { data } = await sb.from("case_studies").select("*").eq("slug", slug).single();
         if (data) return data;
     } catch { }
-    // Fallback logic for local data
-    return caseStudiesData.caseStudies.find(s => s.slug === slug) || null;
+    return caseStudiesData.caseStudies.find((s) => s.slug === slug) || null;
 }
 
-export async function getGeneralPageContent(path: string, fallbackHero: any) {
+export async function getGeneralPageContent(path: string, fallbackHero: Record<string, unknown>) {
     try {
         const sb = getPublicClient();
         if (!sb) throw new Error("No Supabase");
@@ -252,7 +291,7 @@ export async function getGeneralPageContent(path: string, fallbackHero: any) {
             return {
                 hero: {
                     ...fallbackHero,
-                    title: metadata.title?.split("|")[0].trim() || fallbackHero.title,
+                    title: (metadata.title as string)?.split("|")[0].trim() || fallbackHero.title,
                     description: metadata.description || fallbackHero.description,
                 }
             };
@@ -285,85 +324,45 @@ export async function getPageSEO(path: string) {
         url: site.url,
     };
 }
-export async function getAllSearchItems() {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
 
-        const [blogRes, caseStudiesRes] = await Promise.all([
-            sb.from("blog_posts").select("title, slug, excerpt").eq("is_published", true),
-            sb.from("case_studies").select("title, slug, excerpt").eq("is_published", true),
-        ]);
+export const getAllSearchItems = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
 
-        const blogItems = (blogRes.data || []).map((p: any) => ({
-            ...p,
-            type: "blog",
-            url: `/blog/${p.slug}`,
-        }));
+            const [blogRes, caseStudiesRes] = await Promise.all([
+                sb.from("blog_posts").select("title, slug, excerpt").eq("is_published", true),
+                sb.from("case_studies").select("title, slug, excerpt").eq("is_published", true),
+            ]);
 
-        const caseItems = (caseStudiesRes.data || []).map((p: any) => ({
-            ...p,
-            type: "case-study",
-            url: `/case-studies/${p.slug}`,
-        }));
+            const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
 
-        return [...blogItems, ...caseItems];
-    } catch { }
+            if (blogRes.data) {
+                blogRes.data.forEach((p: { title: string; slug: string; excerpt?: string }) => {
+                    items.push({ title: p.title, href: `/blog/${p.slug}`, type: "blog", excerpt: p.excerpt });
+                });
+            }
 
-    // Fallback to local data
-    const blogItems = blogData.posts.map((p: any) => ({
-        title: p.title,
-        slug: p.slug,
-        excerpt: p.excerpt,
-        type: "blog",
-        url: `/blog/${p.slug}`,
-    }));
+            if (caseStudiesRes.data) {
+                caseStudiesRes.data.forEach((c: { title: string; slug: string; excerpt?: string }) => {
+                    items.push({ title: c.title, href: `/case-studies/${c.slug}`, type: "case-study", excerpt: c.excerpt });
+                });
+            }
 
-    const caseItems = caseStudiesData.caseStudies.map((p: any) => ({
-        title: p.title,
-        slug: p.slug,
-        excerpt: p.excerpt,
-        type: "case-study",
-        url: `/case-studies/${p.slug}`,
-    }));
+            return items;
+        } catch { }
 
-    return [...blogItems, ...caseItems];
-}
-export async function getAboutContent() {
-    try {
-        const [team, values, milestones, tech] = await Promise.all([
-            getTeamMembers(),
-            getCompanyValues(),
-            getMilestones(),
-            getTechStack(),
-        ]);
-
-        const { hero } = await getGeneralPageContent("/about", aboutData.aboutHero);
-
-        return {
-            hero: hero,
-            mission: {
-                title: aboutData.mission.title,
-                highlight: aboutData.mission.highlight,
-                content: aboutData.mission.paragraphs.join("\n\n"),
-            },
-            values: values,
-            teamMember: team,
-            techStack: tech.map((t: any) => ({ ...t, desc: t.description || t.desc })),
-            milestones: milestones,
-        };
-    } catch { }
-
-    return {
-        hero: aboutData.aboutHero,
-        mission: {
-            title: aboutData.mission.title,
-            highlight: aboutData.mission.highlight,
-            content: aboutData.mission.paragraphs.join("\n\n"),
-        },
-        values: aboutData.values,
-        teamMember: aboutData.team,
-        techStack: aboutData.techStack,
-        milestones: aboutData.milestones,
-    };
-}
+        // Fallback to local data
+        const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
+        blogData.posts.forEach((p: { title: string; slug: string; excerpt?: string }) => {
+            items.push({ title: p.title, href: `/blog/${p.slug}`, type: "blog", excerpt: p.excerpt });
+        });
+        caseStudiesData.caseStudies.forEach((c: { title: string; slug: string; excerpt?: string }) => {
+            items.push({ title: c.title, href: `/case-studies/${c.slug}`, type: "case-study", excerpt: c.excerpt });
+        });
+        return items;
+    },
+    ["search-items"],
+    { revalidate: 300, tags: ["search-items"] }
+);

@@ -36,7 +36,7 @@ export default function TelemetryProvider({ children }: { children: React.ReactN
                         },
                     }),
                 });
-            } catch (err) {
+            } catch {
                 // Silently ignore telemetry errors
             }
         };
@@ -99,7 +99,7 @@ export default function TelemetryProvider({ children }: { children: React.ReactN
                             },
                         }),
                     });
-                } catch (err) { }
+                } catch { }
             }
         };
 

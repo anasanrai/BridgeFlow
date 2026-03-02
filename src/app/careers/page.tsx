@@ -60,13 +60,29 @@ export default function Careers() {
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
+    const [errorMsg, setErrorMsg] = useState("");
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
-        // Simulate submission
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        setSubmitted(true);
-        setSubmitting(false);
+        setErrorMsg("");
+        try {
+            const res = await fetch("/api/careers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+            if (res.ok) {
+                setSubmitted(true);
+            } else {
+                const data = await res.json();
+                setErrorMsg(data.error || "Something went wrong. Please try again.");
+            }
+        } catch {
+            setErrorMsg("Network error. Please check your connection and try again.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const updateField = (field: string, value: string) => {
@@ -288,6 +304,12 @@ export default function Careers() {
                                             className="w-full px-4 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
                                         />
                                     </div>
+
+                                    {errorMsg && (
+                                        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                                            {errorMsg}
+                                        </div>
+                                    )}
 
                                     {/* Submit */}
                                     <button

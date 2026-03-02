@@ -1,14 +1,24 @@
-export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { ScrollReveal, SectionHeader, Button, Card } from "@/components/ui";
 import { ArrowRight, TrendingUp } from "lucide-react";
-import { getCaseStudies } from "@/lib/supabase-data";
+import { getCaseStudies, getSiteConfig } from "@/lib/supabase-data";
 
-export const metadata: Metadata = {
-    title: "Case Studies",
-    description:
-        "See how BridgeFlow has helped businesses automate workflows, reduce costs, and scale operations with AI.",
-};
+export const revalidate = 60;
+
+export async function generateMetadata() {
+    const site = await getSiteConfig();
+    return {
+        title: `Case Studies | ${site.name}`,
+        description: "See how BridgeFlow has helped businesses automate workflows, reduce costs, and scale operations with AI-powered automation.",
+        alternates: { canonical: `${site.url}/case-studies` },
+        openGraph: {
+            title: `Case Studies | ${site.name}`,
+            description: "Real results from real businesses — AI automation transformations.",
+            url: `${site.url}/case-studies`,
+            type: "website",
+        },
+    };
+}
 
 export default async function CaseStudies() {
     const caseStudies = await getCaseStudies();

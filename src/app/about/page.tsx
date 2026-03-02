@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -9,18 +8,26 @@ import {
 } from "@/components/ui";
 import { ArrowRight } from "lucide-react";
 import LucideIcon from "@/components/LucideIcon";
-import { getAboutContent, getPageSEO } from "@/lib/supabase-data";
+import { getAboutContent, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
+
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-    const seo = await getPageSEO("/about");
+    const [seo, site] = await Promise.all([getPageSEO("/about"), getSiteConfig()]);
+    const title = `About | ${site.name} — AI Automation Agency`;
+    const description = seo.description || "Meet Anasan Rai, founder of BridgeFlow — a self-taught AI automation engineer helping B2B businesses eliminate manual work and scale operations.";
     return {
-        title: seo.title,
-        description: seo.description,
+        title,
+        description,
+        alternates: { canonical: `${site.url}/about` },
         openGraph: {
-            title: seo.title,
-            description: seo.description,
-            images: [{ url: seo.ogImage }],
+            title,
+            description,
+            url: `${site.url}/about`,
+            type: "profile",
+            images: [{ url: seo.ogImage, width: 1200, height: 630, alt: title }],
         },
+        twitter: { card: "summary_large_image", title, description, images: [seo.ogImage] },
     };
 }
 

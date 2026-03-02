@@ -1,33 +1,79 @@
-export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ScrollReveal, SectionHeader, Card } from "@/components/ui";
-import { ArrowRight, Clock, Calendar } from "lucide-react";
-import { getBlogPosts, getPageSEO } from "@/lib/supabase-data";
+import { ScrollReveal } from "@/components/ui";
+import { getBlogPosts, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
+import BlogContent from "@/components/blog/BlogContent";
+
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-    const seo = await getPageSEO("/blog");
+    const [seo, site] = await Promise.all([
+        getPageSEO("/blog"),
+        getSiteConfig(),
+    ]);
+
+    const title = `Blog & Insights | ${site.name}`;
+    const description = "Expert insights on AI automation, workflow engineering, and scaling your business with intelligent systems.";
+
     return {
-        title: seo.title,
-        description: seo.description,
+        title,
+        description,
+        alternates: {
+            canonical: `${site.url}/blog`,
+        },
         openGraph: {
-            title: seo.title,
-            description: seo.description,
-            images: [{ url: seo.ogImage }],
+            title,
+            description,
+            url: `${site.url}/blog`,
+            type: "website",
+            images: [{ url: seo.ogImage, width: 1200, height: 630, alt: title }],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
+            images: [seo.ogImage],
         },
     };
 }
 
-import BlogContent from "@/components/blog/BlogContent";
-
 export default async function Blog() {
-    const posts = await getBlogPosts();
+    const [posts, site] = await Promise.all([
+        getBlogPosts(),
+        getSiteConfig(),
+    ]);
 
     // Extract unique categories
-    const categories = ["All", ...Array.from(new Set(posts.map(p => p.category)))];
+    const categories = ["All", ...Array.from(new Set(posts.map((p: { category?: string }) => p.category).filter(Boolean)))];
+
+    // Blog listing structured data
+    const blogListJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": `${site.name} Blog`,
+        "description": "Expert insights on AI automation, workflow engineering, and scaling your business.",
+        "url": `${site.url}/blog`,
+        "publisher": {
+            "@type": "Organization",
+            "name": site.name,
+            "url": site.url,
+        },
+        "blogPost": posts.slice(0, 10).map((p: { title: string; slug: string; excerpt?: string; date?: string }) => ({
+            "@type": "BlogPosting",
+            "headline": p.title,
+            "url": `${site.url}/blog/${p.slug}`,
+            "description": p.excerpt || "",
+            "datePublished": p.date,
+        })),
+    };
 
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd) }}
+            />
+
             {/* Hero */}
             <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
@@ -55,4 +101,3 @@ export default async function Blog() {
         </>
     );
 }
-
