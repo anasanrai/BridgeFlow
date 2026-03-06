@@ -38,11 +38,23 @@ function N8nNodeComponent({ data }: NodeProps) {
                 position: "relative",
             }}
         >
-            <Handle type="target" position={Position.Left} style={{ background: "#00ffc8", width: 8, height: 8 }} />
-            <Handle type="source" position={Position.Right} style={{ background: "#00ffc8", width: 8, height: 8 }} />
+            <Handle type="target" position={Position.Left} style={{ background: "#00ffc8", width: 8, height: 8, left: -4 }} />
+            <Handle type="source" position={Position.Right} style={{ background: "#00ffc8", width: 8, height: 8, right: -4 }} />
 
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 20, lineHeight: 1 }}>{data.icon}</span>
+            {/* Node Header */}
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "8px 12px",
+                    background: "rgba(0,255,200,0.08)",
+                    borderBottom: "1px solid rgba(0,255,200,0.2)",
+                    borderRadius: "8px 8px 0 0",
+                    margin: "-12px -12px 12px -12px", // Adjust to fill parent padding
+                }}
+            >
+                <span style={{ fontSize: 18, lineHeight: 1 }}>{data.icon}</span>
                 <div style={{ overflow: "hidden", flex: 1 }}>
                     <div
                         style={{
@@ -57,19 +69,21 @@ function N8nNodeComponent({ data }: NodeProps) {
                     >
                         {data.label}
                     </div>
-                    <div
-                        style={{
-                            color: "rgba(255,255,255,0.4)",
-                            fontSize: 9,
-                            fontFamily: "Inter, system-ui, sans-serif",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                        }}
-                    >
-                        {data.humanLabel}
-                    </div>
                 </div>
+            </div>
+
+            {/* Node Body - Human Readable Label */}
+            <div
+                style={{
+                    color: "rgba(255,255,255,0.6)",
+                    fontSize: 10,
+                    fontFamily: "Inter, system-ui, sans-serif",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                }}
+            >
+                {data.humanLabel}
             </div>
 
             {/* Tooltip on hover */}
@@ -346,9 +360,10 @@ function WorkflowCanvasInner({ slug, fallbackWorkflowJson }: WorkflowCanvasProps
                     <Controls
                         showInteractive={false}
                         style={{
-                            background: "rgba(26,26,46,0.9)",
-                            border: "1px solid rgba(0,255,200,0.15)",
+                            background: "rgba(26,26,46,0.95)",
+                            border: "1px solid rgba(0,255,200,0.2)",
                             borderRadius: 8,
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
                         }}
                     />
                     {!isMobile && (

@@ -114,7 +114,7 @@ export function convertN8nToReactFlow(
 
     // Convert connections → edges
     const edges: RFEdge[] = [];
-    const edgeStyle = { stroke: "#00ffc8", strokeWidth: 2 };
+    const edgeStyle = { stroke: "#00ffc8", strokeWidth: 2.5, opacity: 0.9 };
 
     Object.entries(connections).forEach(([fromName, outputs]: [string, any]) => {
         const sourceId = nameToId[fromName];
@@ -146,17 +146,18 @@ export function convertN8nToReactFlow(
                     }
 
                     edgeObj.labelStyle = {
-                        fill: branchIdx === 0 ? "#5eead4" : "#94a3b8",
+                        fill: branchIdx === 0 ? "#00ffc8" : "#94a3b8",
                         fontWeight: 700,
-                        fontSize: 9,
+                        fontSize: 10,
+                        fontFamily: "Inter, system-ui, sans-serif",
                     };
                     edgeObj.labelBgStyle = {
-                        fill: branchIdx === 0 ? "rgba(20,184,166,0.15)" : "rgba(30,41,59,0.5)",
-                        stroke: branchIdx === 0 ? "rgba(20,184,166,0.3)" : "rgba(148,163,184,0.2)",
+                        fill: branchIdx === 0 ? "rgba(0,255,200,0.1)" : "rgba(30,41,59,0.6)",
+                        stroke: branchIdx === 0 ? "rgba(0,255,200,0.3)" : "rgba(148,163,184,0.3)",
                         strokeWidth: 1,
                     };
-                    edgeObj.labelBgPadding = [6, 3];
-                    edgeObj.labelBgBorderRadius = 4;
+                    edgeObj.labelBgPadding = [8, 4];
+                    edgeObj.labelBgBorderRadius = 6;
                 }
 
                 edges.push(edgeObj);
