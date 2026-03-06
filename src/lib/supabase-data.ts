@@ -169,74 +169,49 @@ export const getServices = unstable_cache(
     { revalidate: 60, tags: ["services"] }
 );
 
-export const getBenefits = unstable_cache(
+export const getAboutContent = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
             if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("benefits").select("*").order("sort_order");
-            if (data && data.length > 0) return data;
-        } catch { }
-        return servicesData.benefits;
-    },
-    ["benefits"],
-    { revalidate: 60, tags: ["benefits"] }
-);
+            const [heroRes, missionRes, valuesRes, teamRes, techRes, milestonesRes] = await Promise.all([
+                sb.from("about_hero").select("*").limit(1).single(),
+                sb.from("mission").select("*").limit(1).single(),
+                sb.from("values").select("*").order("sort_order"),
+                sb.from("team").select("*").order("sort_order"),
+                sb.from("tech_stack").select("*").order("sort_order"),
+                sb.from("milestones").select("*").order("sort_order"),
+            ]);
 
-export const getTeamMembers = unstable_cache(
-    async () => {
-        try {
-            const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("team_members").select("*").order("sort_order");
-            if (data && data.length > 0) return data;
+            return {
+                hero: heroRes.data || aboutData.aboutHero,
+                mission: missionRes.data ? {
+                    ...missionRes.data,
+                    content: missionRes.data.content || aboutData.mission.paragraphs.join("\n\n")
+                } : {
+                    ...aboutData.mission,
+                    content: aboutData.mission.paragraphs.join("\n\n")
+                },
+                values: valuesRes.data?.length ? valuesRes.data : aboutData.values,
+                teamMember: teamRes.data?.length ? teamRes.data[0] : aboutData.team[0],
+                techStack: techRes.data?.length ? techRes.data : aboutData.techStack,
+                milestones: milestonesRes.data?.length ? milestonesRes.data : aboutData.milestones,
+            };
         } catch { }
-        return aboutData.team;
+        return {
+            hero: aboutData.aboutHero,
+            mission: {
+                ...aboutData.mission,
+                content: aboutData.mission.paragraphs.join("\n\n")
+            },
+            values: aboutData.values,
+            teamMember: aboutData.team[0],
+            techStack: aboutData.techStack,
+            milestones: aboutData.milestones,
+        };
     },
-    ["team-members"],
-    { revalidate: 60, tags: ["team-members"] }
-);
-
-export const getCompanyValues = unstable_cache(
-    async () => {
-        try {
-            const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("company_values").select("*").order("sort_order");
-            if (data && data.length > 0) return data;
-        } catch { }
-        return aboutData.values;
-    },
-    ["company-values"],
-    { revalidate: 60, tags: ["company-values"] }
-);
-
-export const getMilestones = unstable_cache(
-    async () => {
-        try {
-            const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("milestones").select("*").order("sort_order");
-            if (data && data.length > 0) return data;
-        } catch { }
-        return (aboutData as { milestones?: unknown[] }).milestones || [];
-    },
-    ["milestones"],
-    { revalidate: 60, tags: ["milestones"] }
-);
-
-export const getTechStack = unstable_cache(
-    async () => {
-        try {
-            const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("tech_stack").select("*").order("sort_order");
-            if (data && data.length > 0) return data;
-        } catch { }
-        return aboutData.techStack;
-    },
-    ["tech-stack"],
-    { revalidate: 60, tags: ["tech-stack"] }
+    ["about-content"],
+    { revalidate: 60, tags: ["about-content"] }
 );
 
 export const getBlogPosts = unstable_cache(
@@ -269,7 +244,7 @@ export async function getBlogPost(slug: string) {
             content: data.content ? data.content.split("\n\n") : [],
         };
     } catch { }
-    return (blogData as { blogPostContent?: Record<string, unknown> }).blogPostContent?.[slug] || null;
+    return blogData.blogPostContent?.[slug] || null;
 }
 
 export const getCaseStudies = unstable_cache(
@@ -296,25 +271,6 @@ export async function getCaseStudy(slug: string) {
     return caseStudiesData.caseStudies.find((s) => s.slug === slug) || null;
 }
 
-export async function getGeneralPageContent(path: string, fallbackHero: Record<string, unknown>) {
-    try {
-        const sb = getPublicClient();
-        if (!sb) throw new Error("No Supabase");
-        const { data: metadata } = await sb.from("page_metadata").select("*").eq("path", path).single();
-
-        if (metadata) {
-            return {
-                hero: {
-                    ...fallbackHero,
-                    title: (metadata.title as string)?.split("|")[0].trim() || fallbackHero.title,
-                    description: metadata.description || fallbackHero.description,
-                }
-            };
-        }
-    } catch { }
-    return { hero: fallbackHero };
-}
-
 export async function getPageMetadata(path: string) {
     try {
         const sb = getPublicClient();
@@ -337,86 +293,5 @@ export async function getPageSEO(path: string) {
         ogImage: override?.og_image || site.og_image || "/images/og-default.png",
         siteName: site.name,
         url: site.url,
-    };
-}
-
-export const getAllSearchItems = unstable_cache(
-    async () => {
-        try {
-            const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-
-            const [blogRes, caseStudiesRes] = await Promise.all([
-                sb.from("blog_posts").select("title, slug, excerpt").eq("is_published", true),
-                sb.from("case_studies").select("title, slug, excerpt").eq("is_published", true),
-            ]);
-
-            const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
-
-            if (blogRes.data) {
-                blogRes.data.forEach((p: { title: string; slug: string; excerpt?: string }) => {
-                    items.push({ title: p.title, href: `/blog/${p.slug}`, type: "blog", excerpt: p.excerpt });
-                });
-            }
-
-            if (caseStudiesRes.data) {
-                caseStudiesRes.data.forEach((c: { title: string; slug: string; excerpt?: string }) => {
-                    items.push({ title: c.title, href: `/case-studies/${c.slug}`, type: "case-study", excerpt: c.excerpt });
-                });
-            }
-
-            return items;
-        } catch { }
-
-        // Fallback to local data
-        const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
-        blogData.posts.forEach((p: { title: string; slug: string; excerpt?: string }) => {
-            items.push({ title: p.title, href: `/blog/${p.slug}`, type: "blog", excerpt: p.excerpt });
-        });
-        caseStudiesData.caseStudies.forEach((c: { title: string; slug: string; excerpt?: string }) => {
-            items.push({ title: c.title, href: `/case-studies/${c.slug}`, type: "case-study", excerpt: c.excerpt });
-        });
-        return items;
-    },
-    ["search-items"],
-    { revalidate: 300, tags: ["search-items"] }
-);
-
-// ─── Composite About Content Fetcher ───
-export async function getAboutContent() {
-    const [values, teamMembers, techStack, milestones] = await Promise.all([
-        getCompanyValues(),
-        getTeamMembers(),
-        getTechStack(),
-        getMilestones(),
-    ]);
-
-    // Build hero from page metadata or fallback
-    let hero = aboutData.aboutHero;
-    try {
-        const metadata = await getPageMetadata("/about");
-        if (metadata) {
-            hero = {
-                ...hero,
-                title: (metadata.title as string)?.split("|")[0].trim() || hero.title,
-                description: (metadata.description as string) || hero.description,
-            };
-        }
-    } catch { }
-
-    // Build mission from local data (no separate Supabase table for this)
-    const mission = {
-        title: aboutData.mission.title,
-        highlight: aboutData.mission.highlight,
-        content: aboutData.mission.paragraphs.join("\n\n"),
-    };
-
-    return {
-        hero,
-        mission,
-        values,
-        teamMember: teamMembers?.[0] || aboutData.team[0],
-        techStack,
-        milestones,
     };
 }
