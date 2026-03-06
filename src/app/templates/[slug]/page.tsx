@@ -189,7 +189,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                     style={{ border: "1px solid rgba(0,255,200,0.15)", borderRadius: 12 }}
                                 >
                                     {template.n8nWorkflowId ? (
-                                        <WorkflowCanvas slug={template.slug} workflowId={template.n8nWorkflowId as string} fallbackWorkflowJson={template.workflowJson} />
+                                        <WorkflowCanvas slug={template.slug} workflowId={template.n8nWorkflowId as any} fallbackWorkflowJson={template.workflowJson} />
                                     ) : (
                                         <div className="flex items-center justify-center" style={{ height: 500, background: "#0a0a0f" }}>
                                             <div className="text-center">
