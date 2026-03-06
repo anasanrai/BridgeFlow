@@ -41,17 +41,17 @@ export const footerLinks = {
     ],
     services: [
         { label: "n8n Automation", href: "/services#n8n" },
-        { label: "GoHighLevel CRM", href: "/services#gohighlevel" },
         { label: "AI Integration", href: "/services#ai" },
+        { label: "Consulting", href: "/services#consulting" },
         { label: "Pricing", href: "/pricing" },
         { label: "Templates", href: "/templates" },
     ],
     resources: [
         { label: "Documentation", href: "/docs" },
-        { label: "AI Calculator", href: "/calculator" },
-        { label: "Contact Us", href: "/contact" },
+        { label: "API Reference", href: "/api-reference" },
         { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Terms of Service", href: "/terms-of-service" },
+        { label: "Contact Us", href: "/contact" },
     ],
 };
 
