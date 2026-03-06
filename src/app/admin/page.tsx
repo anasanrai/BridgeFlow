@@ -27,7 +27,7 @@ export default function AdminLogin() {
             const data = await res.json();
 
             if (res.ok) {
-                router.push("/admin/dashboard");
+                router.push("/admin/templates");
             } else {
                 setError(data.error || "Invalid credentials");
             }

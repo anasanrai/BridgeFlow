@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Zap, DollarSign } from "lucide-react";
 import { templates, categoryColors, difficultyColors } from "@/data/templates";
-import N8nCanvas from "@/components/templates/N8nCanvasWrapper";
+import WorkflowCanvas from "@/components/templates/N8nCanvasWrapper";
 import TemplateCard from "@/components/templates/TemplateCard";
 
 interface Props {
@@ -18,8 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const template = templates.find((t) => t.slug === params.slug);
     if (!template) return { title: "Template Not Found | BridgeFlow" };
     return {
-        title: `${template.name} | BridgeFlow Templates`,
+        title: `${template.name} — Bridgeflow`,
         description: template.description,
+        openGraph: {
+            title: `${template.name} — Bridgeflow`,
+            description: template.description,
+            images: [`/images/templates/${template.slug}.png`],
+            type: "website",
+        },
     };
 }
 
@@ -145,17 +151,14 @@ export default function TemplateDetailPage({ params }: Props) {
                             </div>
 
                             {/* Workflow diagram */}
-                            <div>
-                                <h2 className="text-lg font-display font-bold text-white mb-3">Workflow Diagram</h2>
+                            <div id="canvas">
+                                <h2 className="text-lg font-display font-bold text-white mb-3">Live Workflow</h2>
                                 <div
-                                    className="rounded-2xl overflow-hidden border"
-                                    style={{ border: "1px solid rgba(6,182,212,0.15)" }}
+                                    className="rounded-2xl overflow-hidden"
+                                    style={{ border: "1px solid rgba(0,255,200,0.15)", borderRadius: 12 }}
                                 >
-                                    <N8nCanvas workflowJson={template.workflowJson} height={500} />
+                                    <WorkflowCanvas slug={template.slug} fallbackWorkflowJson={template.workflowJson} />
                                 </div>
-                                {!template.workflowJson && (
-                                    <p className="text-xs text-gray-600 mt-2 text-center">Static preview — upload n8n JSON from admin dashboard for exact node positions.</p>
-                                )}
                             </div>
                         </div>
 

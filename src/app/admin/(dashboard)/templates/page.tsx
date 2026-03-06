@@ -1,8 +1,11 @@
 "use client";
-import { useState, useRef, useCallback } from "react";
+
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { templates } from "@/data/templates";
+import dynamic from "next/dynamic";
+import AdminTemplateForm from "@/components/AdminTemplateForm";
 import N8nCanvas, { N8nNodeIconStrip } from "@/components/templates/N8nCanvas";
+import { difficultyColors as difficultyColor } from "@/data/templates";
 import {
     Layers,
     Upload,
@@ -16,19 +19,61 @@ import {
     X,
     CloudUpload,
     Workflow,
+    Plus,
+    Pencil,
+    Trash2,
+    GripVertical,
+    Copy,
+    EyeOff,
+    Star,
+    BarChart3,
 } from "lucide-react";
+
+// Dynamic import for live React Flow canvas in preview modal
+const WorkflowCanvas = dynamic(() => import("@/components/WorkflowCanvas"), {
+    ssr: false,
+    loading: () => (
+        <div className="flex items-center justify-center" style={{ height: 400, background: "#0a0a0f" }}>
+            <div className="w-6 h-6 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin" />
+        </div>
+    ),
+});
 
 type Tab = "list" | "upload";
 
-const difficultyColor: Record<string, string> = {
-    Beginner: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-    Intermediate: "text-amber-400 bg-amber-500/10 border-amber-500/20",
-    Advanced: "text-red-400 bg-red-500/10 border-red-500/20",
-};
+interface TemplateData {
+    id: string;
+    name: string;
+    slug: string;
+    categories: string[];
+    difficulty: string;
+    nodes: string[];
+    nodeCount: number;
+    setupTime: string;
+    value: number;
+    description: string;
+    whatItDoes: string[];
+    featured: boolean;
+    status: "published" | "draft";
+    n8nWorkflowId: string;
+    order: number;
+    updatedAt?: string;
+    workflowJson?: any;
+}
+
 
 export default function AdminTemplatesPage() {
     const [tab, setTab] = useState<Tab>("list");
-    const [selectedSlug, setSelectedSlug] = useState(templates[0].slug);
+    const [templates, setTemplates] = useState<TemplateData[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [showForm, setShowForm] = useState(false);
+    const [editingTemplate, setEditingTemplate] = useState<TemplateData | null>(null);
+    const [canvasPreviewSlug, setCanvasPreviewSlug] = useState<string | null>(null);
+    const [copiedId, setCopiedId] = useState<string | null>(null);
+    const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+
+    // Upload tab state
+    const [selectedSlug, setSelectedSlug] = useState("");
     const [jsonInput, setJsonInput] = useState("");
     const [parsedJson, setParsedJson] = useState<Record<string, any> | null>(null);
     const [parseError, setParseError] = useState("");
@@ -37,10 +82,91 @@ export default function AdminTemplatesPage() {
     const [saveMsg, setSaveMsg] = useState("");
     const [isDragging, setIsDragging] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState("");
-    const fileRef = useRef<HTMLInputElement>(null);
 
-    const selectedTemplate = templates.find((t) => t.slug === selectedSlug)!;
+    // Fetch templates
+    const fetchTemplates = useCallback(async () => {
+        try {
+            const res = await fetch("/api/admin/templates");
+            const data = await res.json();
+            if (data.ok) {
+                setTemplates(data.templates.sort((a: TemplateData, b: TemplateData) => (a.order || 0) - (b.order || 0)));
+                if (!selectedSlug && data.templates.length) setSelectedSlug(data.templates[0].slug);
+            }
+        } catch (err) {
+            console.error("Failed to fetch templates:", err);
+        } finally {
+            setLoading(false);
+        }
+    }, [selectedSlug]);
 
+    useEffect(() => {
+        fetchTemplates();
+    }, [fetchTemplates]);
+
+    // Stats
+    const publishedCount = templates.filter((t) => t.status === "published").length;
+    const draftCount = templates.filter((t) => t.status === "draft").length;
+    const featuredCount = templates.filter((t) => t.featured).length;
+    const totalValue = templates.reduce((s, t) => s + (t.value || 0), 0);
+
+    // Copy workflow ID
+    const copyId = (id: string) => {
+        navigator.clipboard.writeText(id);
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+    };
+
+    // Toggle status
+    const toggleStatus = async (t: TemplateData) => {
+        try {
+            await fetch("/api/admin/templates", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: t.id, status: t.status === "published" ? "draft" : "published" }),
+            });
+            fetchTemplates();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Delete template
+    const deleteTemplate = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this template?")) return;
+        try {
+            await fetch(`/api/admin/templates?id=${id}`, { method: "DELETE" });
+            fetchTemplates();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Drag & drop reorder
+    const handleDragStart = (idx: number) => setDraggedIdx(idx);
+    const handleDragOver = (e: React.DragEvent, idx: number) => {
+        e.preventDefault();
+        if (draggedIdx === null || draggedIdx === idx) return;
+        const reordered = [...templates];
+        const [dragged] = reordered.splice(draggedIdx, 1);
+        reordered.splice(idx, 0, dragged);
+        setTemplates(reordered);
+        setDraggedIdx(idx);
+    };
+    const handleDragEnd = async () => {
+        if (draggedIdx === null) return;
+        setDraggedIdx(null);
+        try {
+            await fetch("/api/admin/templates", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ orderedIds: templates.map((t) => t.id) }),
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Upload tab handlers
     const processFile = (file: File) => {
         if (!file.name.endsWith(".json")) {
             setParseError("Please upload a .json file");
@@ -68,25 +194,6 @@ export default function AdminTemplatesPage() {
         reader.readAsText(file);
     };
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) processFile(file);
-    };
-
-    const handleDrop = useCallback((e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(false);
-        const file = e.dataTransfer.files?.[0];
-        if (file) processFile(file);
-    }, []);
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = () => setIsDragging(false);
-
     const handleParse = () => {
         setParseError("");
         setParsedJson(null);
@@ -103,23 +210,26 @@ export default function AdminTemplatesPage() {
         }
     };
 
-    const handleSave = async () => {
+    const handleSaveWorkflow = async () => {
         if (!parsedJson) return;
         setSaving(true);
         setSaveStatus("");
         try {
-            const res = await fetch("/api/admin/templates/save-workflow", {
-                method: "POST",
+            const targetTemplate = templates.find((t) => t.slug === selectedSlug);
+            if (!targetTemplate) throw new Error("Template not found");
+
+            const res = await fetch("/api/admin/templates", {
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ slug: selectedSlug, workflowJson: parsedJson }),
+                body: JSON.stringify({ id: targetTemplate.id, workflowJson: parsedJson }),
             });
             const data = await res.json();
-            if (res.ok && data.ok) {
+            if (data.ok) {
                 setSaveStatus("success");
-                setSaveMsg(`Workflow saved to "${selectedTemplate.name}" — redeploy to see changes on /templates`);
+                setSaveMsg(`Workflow saved to "${targetTemplate.name}"`);
+                fetchTemplates();
             } else {
-                setSaveStatus("error");
-                setSaveMsg(data.error || "Save failed");
+                throw new Error(data.error || "Save failed");
             }
         } catch (err: any) {
             setSaveStatus("error");
@@ -135,30 +245,69 @@ export default function AdminTemplatesPage() {
         setParseError("");
         setSaveStatus("");
         setUploadedFileName("");
-        if (fileRef.current) fileRef.current.value = "";
     };
+
+    const selectedTemplate = templates.find((t) => t.slug === selectedSlug);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #06b6d4, #0891b2)" }}>
                         <Workflow className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-xl font-display font-bold text-white">Workflow Templates</h1>
-                        <p className="text-xs text-gray-500">{templates.length} templates · Upload n8n JSON to update canvas</p>
+                        <h1 className="text-xl font-display font-bold text-white">Template Manager</h1>
+                        <p className="text-xs text-gray-500">{templates.length} templates · Manage, reorder, and preview workflows</p>
                     </div>
                 </div>
-                <Link
-                    href="/templates"
-                    target="_blank"
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-gray-400 border border-white/10 hover:border-white/20 hover:text-white transition-all"
-                >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    View Live
-                </Link>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => { setEditingTemplate(null); setShowForm(true); }}
+                        className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 transition-all hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
+                        style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}
+                    >
+                        <Plus className="w-3.5 h-3.5" /> Add New
+                    </button>
+                    <Link
+                        href="/templates"
+                        target="_blank"
+                        className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-gray-400 border border-white/10 hover:border-white/20 hover:text-white transition-all"
+                    >
+                        <ExternalLink className="w-3.5 h-3.5" /> View Live
+                    </Link>
+                </div>
+            </div>
+
+            {/* Stats Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                    { label: "Total", value: templates.length, icon: Layers, color: "#06b6d4" },
+                    { label: "Published", value: publishedCount, icon: CheckCircle2, color: "#10b981" },
+                    { label: "Drafts", value: draftCount, icon: EyeOff, color: "#f59e0b" },
+                    { label: "Featured", value: featuredCount, icon: Star, color: "#e6b422" },
+                ].map((stat) => (
+                    <div
+                        key={stat.label}
+                        className="rounded-xl p-4 border border-white/8"
+                        style={{ background: "rgba(10,12,25,0.6)" }}
+                    >
+                        <div className="flex items-center gap-2 mb-2">
+                            <stat.icon className="w-4 h-4" style={{ color: stat.color }} />
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{stat.label}</span>
+                        </div>
+                        <span className="text-2xl font-display font-bold text-white">{stat.value}</span>
+                    </div>
+                ))}
             </div>
 
             {/* Tab switcher */}
@@ -168,74 +317,146 @@ export default function AdminTemplatesPage() {
                     className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${tab === "list" ? "text-white" : "text-gray-500 hover:text-gray-300"}`}
                     style={tab === "list" ? { background: "rgba(255,255,255,0.08)" } : {}}
                 >
-                    <Layers className="w-3.5 h-3.5" />
-                    All Templates ({templates.length})
+                    <Layers className="w-3.5 h-3.5" /> All Templates ({templates.length})
                 </button>
                 <button
                     onClick={() => setTab("upload")}
                     className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${tab === "upload" ? "text-white" : "text-gray-500 hover:text-gray-300"}`}
                     style={tab === "upload" ? { background: "linear-gradient(135deg, rgba(6,182,212,0.2), rgba(8,145,178,0.1))", border: "1px solid rgba(6,182,212,0.2)" } : {}}
                 >
-                    <CloudUpload className="w-3.5 h-3.5" />
-                    Upload Workflow JSON
+                    <CloudUpload className="w-3.5 h-3.5" /> Upload Workflow JSON
                 </button>
             </div>
 
             {/* LIST TAB */}
             {tab === "list" && (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {templates.map((t) => (
+                <div className="rounded-xl border border-white/8 overflow-hidden" style={{ background: "rgba(10,12,25,0.4)" }}>
+                    {/* Table header */}
+                    <div className="hidden md:grid grid-cols-[40px_1fr_140px_100px_80px_80px_100px_140px] gap-3 px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-600 border-b border-white/5">
+                        <span></span>
+                        <span>Template</span>
+                        <span>Workflow ID</span>
+                        <span>Category</span>
+                        <span>Difficulty</span>
+                        <span>Updated</span>
+                        <span>Status</span>
+                        <span className="text-right">Actions</span>
+                    </div>
+
+                    {/* Template rows */}
+                    {templates.map((t, idx) => (
                         <div
                             key={t.id}
-                            className="rounded-2xl overflow-hidden border border-white/8 hover:border-white/15 transition-all"
-                            style={{ background: "rgba(10,12,25,0.7)" }}
+                            draggable
+                            onDragStart={() => handleDragStart(idx)}
+                            onDragOver={(e) => handleDragOver(e, idx)}
+                            onDragEnd={handleDragEnd}
+                            className={`grid grid-cols-1 md:grid-cols-[40px_1fr_140px_100px_80px_80px_100px_140px] gap-3 px-4 py-3 items-center border-b border-white/5 hover:bg-white/3 transition-all cursor-grab ${draggedIdx === idx ? "opacity-50" : ""
+                                }`}
                         >
-                            <div className="h-36 relative overflow-hidden border-b border-white/5">
-                                {t.workflowJson ? (
-                                    <N8nCanvas workflowJson={t.workflowJson} compact height={144} />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-navy-950/60">
-                                        <div className="text-center">
-                                            <FileJson className="w-8 h-8 text-gray-700 mx-auto mb-2" />
-                                            <p className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">No JSON uploaded</p>
-                                        </div>
-                                    </div>
-                                )}
-                                <div className="absolute top-2 right-2 flex gap-1.5">
-                                    {t.workflowJson && (
-                                        <span className="px-2 py-0.5 rounded-md text-[9px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">
-                                            JSON
-                                        </span>
-                                    )}
-                                    <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold border ${difficultyColor[t.difficulty]}`}>
-                                        {t.difficulty}
-                                    </span>
-                                </div>
+                            {/* Drag handle */}
+                            <div className="hidden md:flex items-center justify-center">
+                                <GripVertical className="w-4 h-4 text-gray-700" />
                             </div>
-                            <div className="p-4">
-                                <h3 className="text-sm font-bold text-white mb-1 line-clamp-1">{t.name}</h3>
-                                <p className="text-[11px] text-gray-500 mb-3 line-clamp-2">{t.description}</p>
-                                <N8nNodeIconStrip nodes={t.nodes.slice(0, 4)} />
-                                <div className="flex gap-2 mt-3">
-                                    <button
-                                        onClick={() => {
-                                            setSelectedSlug(t.slug);
-                                            setTab("upload");
-                                            clearUpload();
-                                        }}
-                                        className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-cyan-400 border border-cyan-400/20 hover:bg-cyan-400/10 transition-all"
-                                    >
-                                        <Upload className="w-3 h-3" />
-                                        {t.workflowJson ? "Update JSON" : "Upload JSON"}
-                                    </button>
-                                    <Link
-                                        href={`/templates/${t.slug}`}
-                                        target="_blank"
-                                        className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-gray-400 border border-white/10 hover:border-white/20 hover:text-white transition-all"
-                                    >
-                                        <Eye className="w-3 h-3" />
-                                    </Link>
+
+                            {/* Name + Description */}
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-white/10" style={{ background: "#050510" }}>
+                                    {t.workflowJson ? (
+                                        <N8nCanvas workflowJson={t.workflowJson} compact height={40} />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <FileJson className="w-4 h-4 text-gray-700" />
+                                        </div>
+                                    )}
                                 </div>
+                                <div>
+                                    <h3 className="text-sm font-bold text-white line-clamp-1">{t.name}</h3>
+                                    <p className="text-[10px] text-gray-600 line-clamp-1">${t.value.toLocaleString()} value · {t.nodeCount} nodes</p>
+                                </div>
+                                {t.featured && (
+                                    <span className="px-2 py-0.5 rounded-full text-[8px] font-black text-navy-950" style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}>
+                                        ⭐
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Workflow ID */}
+                            <div className="flex items-center gap-1">
+                                {t.n8nWorkflowId ? (
+                                    <button
+                                        onClick={() => copyId(t.n8nWorkflowId)}
+                                        className="flex items-center gap-1 text-[10px] font-mono text-gray-500 hover:text-cyan-400 transition-colors"
+                                        title={t.n8nWorkflowId}
+                                    >
+                                        {t.n8nWorkflowId.slice(0, 8)}…
+                                        <Copy className="w-3 h-3" />
+                                        {copiedId === t.n8nWorkflowId && <span className="text-[9px] text-cyan-400">✓</span>}
+                                    </button>
+                                ) : (
+                                    <span className="text-[10px] text-gray-700">—</span>
+                                )}
+                            </div>
+
+                            {/* Category */}
+                            <div className="flex flex-wrap gap-1">
+                                <span className="text-[9px] text-gray-500 line-clamp-1">{t.categories[0] || "—"}</span>
+                            </div>
+
+                            {/* Difficulty */}
+                            <span className={`inline-block px-2 py-0.5 rounded-md text-[9px] font-bold border w-fit ${difficultyColor[t.difficulty]}`}>
+                                {t.difficulty}
+                            </span>
+
+                            {/* Updated */}
+                            <span className="text-[9px] text-gray-600 font-mono">
+                                {t.updatedAt ? new Date(t.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "—"}
+                            </span>
+
+                            {/* Status */}
+                            <button
+                                onClick={() => toggleStatus(t)}
+                                className={`inline-block px-2 py-0.5 rounded-md text-[9px] font-bold border w-fit transition-all cursor-pointer ${t.status === "published"
+                                    ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20"
+                                    : "text-gray-500 bg-gray-500/10 border-gray-500/20 hover:bg-gray-500/20"
+                                    }`}
+                            >
+                                {t.status === "published" ? "Published" : "Draft"}
+                            </button>
+
+                            {/* Actions */}
+                            <div className="flex items-center gap-1 justify-end">
+                                <button
+                                    onClick={() => { setEditingTemplate(t); setShowForm(true); }}
+                                    className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-all"
+                                    title="Edit"
+                                >
+                                    <Pencil className="w-3.5 h-3.5" />
+                                </button>
+                                {t.n8nWorkflowId && (
+                                    <button
+                                        onClick={() => setCanvasPreviewSlug(t.slug)}
+                                        className="p-1.5 rounded-lg text-gray-500 hover:text-cyan-400 hover:bg-cyan-400/10 transition-all"
+                                        title="Preview Canvas"
+                                    >
+                                        <Eye className="w-3.5 h-3.5" />
+                                    </button>
+                                )}
+                                <Link
+                                    href={`/templates/${t.slug}`}
+                                    target="_blank"
+                                    className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-all"
+                                    title="View Page"
+                                >
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                </Link>
+                                <button
+                                    onClick={() => deleteTemplate(t.id)}
+                                    className="p-1.5 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-400/10 transition-all"
+                                    title="Delete"
+                                >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -260,59 +481,49 @@ export default function AdminTemplatesPage() {
                                     </option>
                                 ))}
                             </select>
-                            <p className="text-[10px] text-gray-600 mt-2">checkmark = has workflow JSON · circle = no JSON yet</p>
                         </div>
 
                         <div
-                            onDrop={handleDrop}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onClick={() => fileRef.current?.click()}
-                            className={`relative rounded-xl border-2 border-dashed p-8 text-center cursor-pointer transition-all ${
-                                isDragging ? "border-cyan-400/60 bg-cyan-400/5"
+                            onDrop={(e) => { e.preventDefault(); setIsDragging(false); const file = e.dataTransfer.files?.[0]; if (file) processFile(file); }}
+                            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                            onDragLeave={() => setIsDragging(false)}
+                            className={`relative rounded-xl border-2 border-dashed p-8 text-center cursor-pointer transition-all ${isDragging ? "border-cyan-400/60 bg-cyan-400/5"
                                 : uploadedFileName ? "border-emerald-400/40 bg-emerald-400/5"
-                                : "border-white/15 hover:border-white/30"
-                            }`}
+                                    : "border-white/15 hover:border-white/30"
+                                }`}
                         >
-                            <input ref={fileRef} type="file" accept=".json" onChange={handleFileUpload} className="hidden" />
+                            <input
+                                type="file"
+                                accept=".json"
+                                onChange={(e) => { const file = e.target.files?.[0]; if (file) processFile(file); }}
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                            />
                             {uploadedFileName ? (
                                 <div className="flex flex-col items-center gap-2">
-                                    <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-500/20">
-                                        <CheckCircle2 className="w-6 h-6 text-emerald-400" />
-                                    </div>
+                                    <CheckCircle2 className="w-8 h-8 text-emerald-400" />
                                     <p className="text-sm font-bold text-emerald-400">{uploadedFileName}</p>
-                                    <p className="text-xs text-gray-500">File loaded · {parsedJson?.nodes?.length || 0} nodes detected</p>
-                                    <button onClick={(e) => { e.stopPropagation(); clearUpload(); }} className="mt-1 flex items-center gap-1 text-[10px] text-gray-500 hover:text-red-400 transition-colors">
+                                    <p className="text-xs text-gray-500">{parsedJson?.nodes?.length || 0} nodes detected</p>
+                                    <button onClick={(e) => { e.stopPropagation(); clearUpload(); }} className="text-[10px] text-gray-500 hover:text-red-400 flex items-center gap-1">
                                         <X className="w-3 h-3" /> Clear
                                     </button>
                                 </div>
                             ) : (
-                                <div className="flex flex-col items-center gap-3">
-                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${isDragging ? "bg-cyan-400/20" : "bg-white/5"}`}>
-                                        <CloudUpload className={`w-7 h-7 transition-colors ${isDragging ? "text-cyan-400" : "text-gray-500"}`} />
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-bold text-white mb-1">{isDragging ? "Drop your n8n JSON file here" : "Drag and drop n8n JSON file"}</p>
-                                        <p className="text-xs text-gray-500">or click to browse · .json files only</p>
-                                    </div>
+                                <div className="flex flex-col items-center gap-3 pointer-events-none">
+                                    <CloudUpload className={`w-8 h-8 ${isDragging ? "text-cyan-400" : "text-gray-600"}`} />
+                                    <p className="text-sm font-bold text-white">Drag and drop n8n JSON file</p>
+                                    <p className="text-xs text-gray-500">or click to browse · .json files only</p>
                                 </div>
                             )}
                         </div>
 
+                        {/* Paste JSON */}
                         <div className="rounded-xl p-4 border border-white/8 space-y-3" style={{ background: "rgba(10,12,25,0.6)" }}>
-                            <div className="flex items-center justify-between">
-                                <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Or Paste JSON Directly</label>
-                                {jsonInput && (
-                                    <button onClick={clearUpload} className="text-[10px] text-gray-600 hover:text-red-400 transition-colors flex items-center gap-1">
-                                        <X className="w-3 h-3" /> Clear
-                                    </button>
-                                )}
-                            </div>
+                            <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Or Paste JSON Directly</label>
                             <textarea
                                 value={jsonInput}
                                 onChange={(e) => { setJsonInput(e.target.value); setParsedJson(null); setSaveStatus(""); }}
                                 placeholder='{"name": "My Workflow", "nodes": [...], "connections": {...}}'
-                                rows={8}
+                                rows={6}
                                 className="w-full px-4 py-3 rounded-xl text-xs font-mono text-gray-300 border border-white/10 focus:outline-none focus:border-cyan-400/40 resize-none transition-all"
                                 style={{ background: "rgba(5,5,16,0.9)" }}
                             />
@@ -336,13 +547,12 @@ export default function AdminTemplatesPage() {
                             <button
                                 onClick={handleParse}
                                 disabled={!jsonInput.trim()}
-                                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-400/5 hover:text-cyan-400 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white border border-white/10 hover:border-cyan-400/30 hover:text-cyan-400 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                             >
-                                <Eye className="w-3.5 h-3.5" />
-                                Parse and Preview
+                                <Eye className="w-3.5 h-3.5" /> Parse and Preview
                             </button>
                             <button
-                                onClick={handleSave}
+                                onClick={handleSaveWorkflow}
                                 disabled={!parsedJson || saving}
                                 className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
                                 style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}
@@ -356,11 +566,7 @@ export default function AdminTemplatesPage() {
                     <div className="rounded-xl p-5 border border-white/8 space-y-4" style={{ background: "rgba(10,12,25,0.6)" }}>
                         <div className="flex items-center justify-between">
                             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">Live Canvas Preview</h3>
-                            {parsedJson && (
-                                <span className="text-[10px] text-emerald-400 font-semibold">
-                                    {parsedJson.nodes?.length || 0} nodes
-                                </span>
-                            )}
+                            {parsedJson && <span className="text-[10px] text-emerald-400 font-semibold">{parsedJson.nodes?.length || 0} nodes</span>}
                         </div>
 
                         {parsedJson ? (
@@ -383,9 +589,11 @@ export default function AdminTemplatesPage() {
                                         </div>
                                     ))}
                                 </div>
-                                <p className="text-[10px] text-gray-600 text-center">
-                                    Targeting: <span className="text-gray-400 font-semibold">{selectedTemplate.name}</span>
-                                </p>
+                                {selectedTemplate && (
+                                    <p className="text-[10px] text-gray-600 text-center">
+                                        Targeting: <span className="text-gray-400 font-semibold">{selectedTemplate.name}</span>
+                                    </p>
+                                )}
                             </>
                         ) : (
                             <div className="flex flex-col items-center justify-center h-80 text-gray-700">
@@ -396,6 +604,38 @@ export default function AdminTemplatesPage() {
                                 <p className="text-xs mt-1 text-gray-600">Real workflow canvas will appear here</p>
                             </div>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {/* Add/Edit Form Modal */}
+            {showForm && (
+                <AdminTemplateForm
+                    template={editingTemplate ?? undefined}
+                    onClose={() => { setShowForm(false); setEditingTemplate(null); }}
+                    onSaved={fetchTemplates}
+                />
+            )}
+
+            {/* Canvas Preview Modal */}
+            {canvasPreviewSlug && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div
+                        className="relative w-full max-w-4xl rounded-2xl overflow-hidden"
+                        style={{ background: "#0d0d1a", border: "1px solid rgba(0,255,200,0.15)" }}
+                    >
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
+                            <h3 className="text-sm font-bold text-white">
+                                Live Canvas — {templates.find((t) => t.slug === canvasPreviewSlug)?.name}
+                            </h3>
+                            <button
+                                onClick={() => setCanvasPreviewSlug(null)}
+                                className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-all"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <WorkflowCanvas slug={canvasPreviewSlug} />
                     </div>
                 </div>
             )}

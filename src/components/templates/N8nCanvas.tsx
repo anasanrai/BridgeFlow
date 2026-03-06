@@ -40,6 +40,11 @@ export function getN8nNodeStyle(type: string, name?: string): N8nNodeStyle {
     const lower = (type || "").toLowerCase();
     if (NODE_REGISTRY[type]) return NODE_REGISTRY[type];
     const nameLower = (name || "").toLowerCase();
+    if (nameLower.includes("openai")) return NODE_REGISTRY["n8n-nodes-base.openai"];
+    if (nameLower.includes("google sheets")) return { ...DEFAULT_STYLE, icon: "📊", label: "Google Sheets" };
+    if (nameLower.includes("email") || nameLower.includes("gmail")) return { ...DEFAULT_STYLE, icon: "📧", label: "Email" };
+    if (nameLower.includes("crm") || nameLower.includes("hubspot")) return { ...DEFAULT_STYLE, icon: "🤝", label: "CRM" };
+    if (nameLower.includes("filter") || nameLower.includes("switch")) return { ...DEFAULT_STYLE, icon: "🌲", label: "Logic" };
     if (nameLower.includes("webhook")) return NODE_REGISTRY["n8n-nodes-base.webhook"];
     if (nameLower.includes("slack")) return NODE_REGISTRY["n8n-nodes-base.slack"];
     if (nameLower.includes("agent")) return NODE_REGISTRY["@n8n/n8n-nodes-langchain.agent"];
@@ -146,7 +151,7 @@ interface N8nCanvasProps {
 export default function N8nCanvas({ workflowJson, compact = false, className = "", height }: N8nCanvasProps) {
     const { nodes, edges, width, height: layoutHeight } = layoutWorkflow(workflowJson);
     const canvasHeight = height || (compact ? 180 : Math.max(layoutHeight, 400));
-    
+
     return (
         <div className={`relative overflow-hidden rounded-3xl ${className}`} style={{ background: "#050510", height: canvasHeight }}>
             <svg width="100%" height="100%" className="absolute inset-0" style={{ opacity: 0.1 }}>

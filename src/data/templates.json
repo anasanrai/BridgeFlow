@@ -1,0 +1,241 @@
+[
+    {
+        "id": "1",
+        "name": "Real Estate Lead Capture & Notification",
+        "slug": "real-estate-lead-capture",
+        "categories": [
+            "Real Estate",
+            "Lead Management"
+        ],
+        "difficulty": "Beginner",
+        "nodes": [
+            "Webhook",
+            "Google Sheets",
+            "Telegram",
+            "Gmail"
+        ],
+        "nodeCount": 4,
+        "setupTime": "20 min",
+        "value": 200,
+        "description": "Instantly capture leads from any source, save to Google Sheets, and notify your team via Telegram and email.",
+        "whatItDoes": [
+            "Receives leads via webhook from any website or form",
+            "Saves lead data to Google Sheets automatically",
+            "Sends instant Telegram alert to agent",
+            "Sends welcome email to lead within seconds"
+        ],
+        "featured": false,
+        "status": "published",
+        "n8nWorkflowId": "wKBnBodZY46OaPoA",
+        "order": 1,
+        "updatedAt": "2026-03-06T00:00:00Z"
+    },
+    {
+        "id": "2",
+        "name": "3-Email Follow-Up Sequence",
+        "slug": "follow-up-email-sequence",
+        "categories": [
+            "Real Estate",
+            "Communication"
+        ],
+        "difficulty": "Beginner",
+        "nodes": [
+            "Webhook",
+            "Wait",
+            "Gmail"
+        ],
+        "nodeCount": 5,
+        "setupTime": "25 min",
+        "value": 150,
+        "description": "Automatically send a timed 3-email follow-up sequence to every lead without any manual work.",
+        "whatItDoes": [
+            "Sends instant welcome email on lead capture",
+            "Waits 24 hours then sends follow-up email",
+            "Waits 48 more hours then sends final check-in",
+            "Works 24/7 even while you sleep"
+        ],
+        "featured": false,
+        "status": "published",
+        "n8nWorkflowId": "BWepF6rYUerOW3fh",
+        "order": 2,
+        "updatedAt": "2026-03-06T00:00:00Z"
+    },
+    {
+        "id": "3",
+        "name": "Lead Routing by Area",
+        "slug": "lead-routing-system",
+        "categories": [
+            "Real Estate",
+            "Lead Management"
+        ],
+        "difficulty": "Intermediate",
+        "nodes": [
+            "Webhook",
+            "Google Sheets",
+            "Edit Fields",
+            "Switch",
+            "Gmail",
+            "Telegram"
+        ],
+        "nodeCount": 10,
+        "setupTime": "45 min",
+        "value": 300,
+        "description": "Automatically route incoming leads to the right agent based on their area preference using Switch node logic.",
+        "whatItDoes": [
+            "Normalizes area data automatically",
+            "Routes leads to correct agent (North/South/Downtown)",
+            "Sends area-specific email and Telegram notification",
+            "Logs all leads with assigned agent to Google Sheets"
+        ],
+        "featured": false,
+        "status": "published",
+        "n8nWorkflowId": "dav9j1aEDKynzp0O",
+        "order": 3,
+        "updatedAt": "2026-03-06T00:00:00Z"
+    },
+    {
+        "id": "4",
+        "name": "Missed Call Auto-Response System",
+        "slug": "missed-call-text-back",
+        "categories": [
+            "Real Estate",
+            "Communication"
+        ],
+        "difficulty": "Intermediate",
+        "nodes": [
+            "Webhook",
+            "Google Sheets",
+            "Gmail",
+            "Telegram",
+            "Schedule"
+        ],
+        "nodeCount": 8,
+        "setupTime": "35 min",
+        "value": 400,
+        "description": "Never lose a lead from a missed call again. Auto-sends email response and delivers daily missed call summary every morning.",
+        "whatItDoes": [
+            "Receives missed call webhook from GHL or any CRM",
+            "Instantly emails the caller with callback message",
+            "Sends Telegram alert to agent immediately",
+            "Delivers formatted daily summary every morning at 8am"
+        ],
+        "featured": false,
+        "status": "published",
+        "n8nWorkflowId": "2t0HPTKtNWo1y2OP",
+        "order": 4,
+        "updatedAt": "2026-03-06T00:00:00Z"
+    },
+    {
+        "id": "5",
+        "name": "AI Personalized Email Generator",
+        "slug": "ai-personalized-email",
+        "categories": [
+            "Real Estate",
+            "AI-Powered"
+        ],
+        "difficulty": "Intermediate",
+        "nodes": [
+            "Webhook",
+            "OpenAI/OpenRouter",
+            "Gmail",
+            "Google Sheets",
+            "Telegram"
+        ],
+        "nodeCount": 5,
+        "setupTime": "30 min",
+        "value": 500,
+        "description": "GPT writes a unique personalized email for every single lead based on their specific interests, budget, and location.",
+        "whatItDoes": [
+            "Reads lead interest, budget, and location",
+            "GPT writes completely unique email for each lead",
+            "Sends personalized email automatically",
+            "Logs AI-generated content to Google Sheets",
+            "Telegram preview of email sent to agent"
+        ],
+        "featured": false,
+        "status": "published",
+        "n8nWorkflowId": "J5BbDcr2qrz0poja",
+        "order": 5,
+        "updatedAt": "2026-03-06T00:00:00Z"
+    },
+    {
+        "id": "6",
+        "name": "AI Lead Scoring System",
+        "slug": "ai-lead-scoring",
+        "categories": [
+            "Real Estate",
+            "AI-Powered",
+            "Lead Management"
+        ],
+        "difficulty": "Advanced",
+        "nodes": [
+            "Webhook",
+            "OpenAI/OpenRouter",
+            "Code",
+            "IF",
+            "Gmail",
+            "Telegram",
+            "Google Sheets"
+        ],
+        "nodeCount": 12,
+        "setupTime": "60 min",
+        "value": 800,
+        "description": "AI automatically scores every lead 1-10 and routes HOT leads to instant booking while filing cold leads for later.",
+        "whatItDoes": [
+            "AI analyzes budget, timeline, location, pre-approval status",
+            "Scores lead 1-10 with visual emoji score bar",
+            "HOT leads (7+) get urgent alert + booking email instantly",
+            "WARM leads get AI nurture email",
+            "COLD leads saved for future follow-up",
+            "All scores logged to Google Sheets"
+        ],
+        "featured": false,
+        "status": "published",
+        "n8nWorkflowId": "Uca80DipBMoWBifX",
+        "order": 6,
+        "updatedAt": "2026-03-06T00:00:00Z"
+    },
+    {
+        "id": "7",
+        "name": "Complete Real Estate Lead Machine",
+        "slug": "complete-lead-machine",
+        "categories": [
+            "Real Estate",
+            "AI-Powered",
+            "Lead Management",
+            "CRM"
+        ],
+        "difficulty": "Advanced",
+        "nodes": [
+            "Webhook",
+            "Edit Fields",
+            "Google Sheets",
+            "OpenAI/OpenRouter",
+            "Code",
+            "Switch",
+            "IF",
+            "Gmail",
+            "Telegram",
+            "Basic LLM Chain"
+        ],
+        "nodeCount": 25,
+        "setupTime": "3 hours",
+        "value": 1497,
+        "description": "The complete done-for-you lead automation system. AI scoring + area routing + personalized emails + instant alerts + daily summaries.",
+        "whatItDoes": [
+            "Captures and normalizes all lead data",
+            "AI scores every lead 1-10 automatically",
+            "Routes to correct agent by area (7 zones)",
+            "HOT leads: booking email + urgent Telegram alert",
+            "WARM leads: AI writes personalized follow-up email",
+            "COLD leads: saved for future without wasting agent time",
+            "All leads logged with score, category, agent, action taken",
+            "Final confirmation message for every processed lead"
+        ],
+        "featured": true,
+        "status": "published",
+        "n8nWorkflowId": "bwr0OQ2lH5Ylq4hP",
+        "order": 7,
+        "updatedAt": "2026-03-06T00:00:00Z"
+    }
+]

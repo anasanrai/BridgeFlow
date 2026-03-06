@@ -71,7 +71,7 @@ export default function Footer({ siteConfig }: { siteConfig: FooterSiteConfig })
                         body: JSON.stringify({
                             event_type: "form_submit",
                             path: window.location.pathname,
-                            session_id: sessionStorage.getItem("bf_session_id") || "unknown",
+                            session_id: "anonymous",
                             data: { type: "newsletter" }
                         }),
                     });
@@ -196,9 +196,14 @@ export default function Footer({ siteConfig }: { siteConfig: FooterSiteConfig })
 
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p className="text-sm text-gray-500">
-                        {copyright}
-                    </p>
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                        <p className="text-sm text-gray-500">
+                            {copyright}
+                        </p>
+                        <Link href="/admin" className="text-[10px] text-gray-700 hover:text-gray-500 uppercase tracking-widest transition-colors font-bold">
+                            Admin
+                        </Link>
+                    </div>
                     <div className="flex items-center gap-3 flex-wrap justify-center">
                         {(socialLinks || []).map((social: { platform: string; url: string; icon?: string; href?: string }) => {
                             const Icon = iconMap[social.platform];

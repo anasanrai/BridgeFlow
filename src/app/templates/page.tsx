@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import type { Metadata } from "next";
 import { Zap, Clock, Users, ArrowRight, CheckCircle2, Search, SlidersHorizontal, ChevronRight } from "lucide-react";
-import { templates as allTemplates } from "@/data/templates";
-import N8nCanvas from "@/components/templates/N8nCanvasWrapper";
+import { publishedTemplates as allTemplates } from "@/data/templates";
+import N8nCanvas from "@/components/templates/N8nCanvas";
 
 const CATEGORIES = [
   { id: "all", label: "All Templates", icon: "🏠" },
@@ -20,15 +20,15 @@ export default function TemplatesPage() {
 
   const filteredTemplates = allTemplates.filter((t) => {
     const matchesCategory = activeCategory === "all" || t.categories.some(c => c.toLowerCase().includes(activeCategory.toLowerCase()));
-    const matchesSearch = t.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          t.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   return (
     <div className="min-h-screen bg-[#050510] text-white pt-24 pb-20">
       <div className="container-max px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header Section */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -51,8 +51,8 @@ export default function TemplatesPage() {
           {/* Search Bar */}
           <div className="relative max-w-2xl mb-12">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Search 100+ automation templates..."
               className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
               value={searchQuery}
@@ -63,7 +63,7 @@ export default function TemplatesPage() {
 
         {/* Main Split Layout */}
         <div className="flex flex-col lg:flex-row gap-8">
-          
+
           {/* Sidebar Navigation */}
           <aside className="lg:w-64 flex-shrink-0">
             <div className="sticky top-32 space-y-1">
@@ -72,11 +72,10 @@ export default function TemplatesPage() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
-                    activeCategory === cat.id 
-                    ? "bg-white/10 text-white font-bold" 
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${activeCategory === cat.id
+                    ? "bg-white/10 text-white font-bold"
                     : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
-                  }`}
+                    }`}
                 >
                   <span className="flex items-center gap-3">
                     <span className="text-base">{cat.icon}</span>
@@ -95,7 +94,7 @@ export default function TemplatesPage() {
                 filteredTemplates.map((template) => (
                   <div key={template.id} className="group relative">
                     <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 items-start">
-                      
+
                       {/* Left: Info (2 cols) */}
                       <div className="xl:col-span-2 space-y-6">
                         <div className="flex items-center gap-3">
@@ -109,7 +108,7 @@ export default function TemplatesPage() {
                         <p className="text-gray-400 text-sm leading-relaxed">
                           {template.description}
                         </p>
-                        
+
                         <div className="flex flex-wrap gap-4 py-4 border-y border-white/5">
                           <div className="flex items-center gap-2">
                             <Clock className="w-4 h-4 text-gray-500" />
@@ -131,7 +130,7 @@ export default function TemplatesPage() {
                         </ul>
 
                         <div className="pt-4">
-                          <a 
+                          <a
                             href={`/templates/${template.slug}`}
                             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-navy-950 text-xs font-bold uppercase tracking-widest hover:bg-cyan-400 transition-all"
                           >
@@ -144,8 +143,8 @@ export default function TemplatesPage() {
                       {/* Right: Canvas (3 cols) */}
                       <div className="xl:col-span-3">
                         <div className="relative rounded-3xl overflow-hidden border border-white/10 group-hover:border-cyan-500/30 transition-all shadow-2xl">
-                          <N8nCanvas 
-                            workflowJson={template.workflowJson} 
+                          <N8nCanvas
+                            workflowJson={template.workflowJson}
                             height={380}
                             className="scale-105 group-hover:scale-100 transition-transform duration-700"
                           />
