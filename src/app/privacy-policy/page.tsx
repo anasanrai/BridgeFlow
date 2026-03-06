@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
-                        <p className="text-gray-400">Last updated: February 26, 2026</p>
+                        <p className="text-gray-400">Last updated: March 2026</p>
                     </ScrollReveal>
                 </div>
             </section>
@@ -127,7 +127,22 @@ export default function PrivacyPolicy() {
 
                         <ScrollReveal>
                             <div className="glass rounded-2xl p-8">
-                                <h2 className="text-xl font-display font-bold mb-4 text-white">7. Data Retention</h2>
+                                <h2 className="text-xl font-display font-bold mb-4 text-white">7. Non-Disclosure Agreement (NDA)</h2>
+                                <p className="text-gray-400 leading-relaxed mb-4">
+                                    For all client engagements, we enter into a formal Non-Disclosure Agreement (NDA) to protect your proprietary technical and business information. This includes:
+                                </p>
+                                <ul className="list-disc list-inside text-gray-400 space-y-2">
+                                    <li>Protection of research, product plans, customer data, and software developments</li>
+                                    <li>Strict obligations of non-use and non-disclosure for a period of five (5) years</li>
+                                    <li>Reasonable measures to protect the secrecy of and avoid unauthorized use of confidential information</li>
+                                    <li>Requirement to return or destroy confidential information upon written request</li>
+                                </ul>
+                            </div>
+                        </ScrollReveal>
+
+                        <ScrollReveal>
+                            <div className="glass rounded-2xl p-8">
+                                <h2 className="text-xl font-display font-bold mb-4 text-white">8. Data Retention</h2>
                                 <p className="text-gray-400 leading-relaxed">
                                     We retain your personal data only for as long as necessary to fulfill the purposes described in this policy, comply with legal obligations, resolve disputes, and enforce agreements. Contact form submissions are retained for 24 months. Newsletter subscriptions remain active until you unsubscribe. Client project data is retained for the duration of the engagement plus 12 months.
                                 </p>
