@@ -235,7 +235,7 @@ interface WorkflowCanvasProps {
      * When provided, this takes priority over the slugToWorkflowId lookup.
      * Pass this from template data so admin can update it without code changes.
      */
-    workflowId?: string | null;
+    workflowId?: string | null | undefined;
     /** Fallback workflow JSON (from the template's inline data) */
     fallbackWorkflowJson?: Record<string, any> | null;
 }
