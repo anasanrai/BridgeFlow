@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Zap, DollarSign } from "lucide-react";
 import { templates, categoryColors, difficultyColors } from "@/data/templates";
-import WorkflowDiagram from "@/components/templates/WorkflowDiagram";
+import N8nCanvas from "@/components/templates/N8nCanvasWrapper";
 import TemplateCard from "@/components/templates/TemplateCard";
 
 interface Props {
@@ -151,7 +151,7 @@ export default function TemplateDetailPage({ params }: Props) {
                                     className="rounded-2xl overflow-hidden border"
                                     style={{ border: "1px solid rgba(6,182,212,0.15)" }}
                                 >
-                                    <WorkflowDiagram template={template} />
+                                    <N8nCanvas workflowJson={template.workflowJson} height={500} />
                                 </div>
                                 {!template.workflowJson && (
                                     <p className="text-xs text-gray-600 mt-2 text-center">Static preview — upload n8n JSON from admin dashboard for exact node positions.</p>

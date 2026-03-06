@@ -26,6 +26,7 @@ import {
     DollarSign,
     Phone,
     Search,
+    Workflow,
 } from "lucide-react";
 import AdminAI from "./AdminAI";
 
@@ -59,6 +60,7 @@ const sidebarLinks = [
             { href: "/admin/services", label: "Services", icon: Briefcase },
             { href: "/admin/blog", label: "Blog Posts", icon: FileText },
             { href: "/admin/case-studies", label: "Case Studies", icon: FolderOpen },
+            { href: "/admin/templates", label: "Workflow Templates", icon: Workflow },
         ],
     },
     {
