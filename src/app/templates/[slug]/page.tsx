@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Zap, DollarSign } from "luc
 import { templates, categoryColors, difficultyColors } from "@/data/templates";
 import WorkflowCanvas from "@/components/templates/N8nCanvasWrapper";
 import TemplateCard from "@/components/templates/TemplateCard";
+import { getSupabase } from "@/lib/supabase";
 
 interface Props {
     params: { slug: string };
@@ -36,8 +37,38 @@ const whatYouGet = [
     "30 days email support",
 ];
 
-export default function TemplateDetailPage({ params }: Props) {
-    const template = templates.find((t) => t.slug === params.slug);
+/**
+ * Fetch template with n8nWorkflowId from Supabase
+ * Falls back to local templates.json if Supabase is unavailable
+ */
+async function getTemplateWithWorkflowId(slug: string) {
+    try {
+        const sb = getSupabase();
+        const { data, error } = await sb
+            .from("templates")
+            .select("*")
+            .eq("slug", slug)
+            .single();
+
+        if (error || !data) {
+            console.warn(`[Template] Supabase fetch failed for ${slug}, using local data`);
+            return templates.find((t) => t.slug === slug) || null;
+        }
+
+        // Merge Supabase data with local template data
+        const localTemplate = templates.find((t) => t.slug === slug);
+        return {
+            ...localTemplate,
+            n8nWorkflowId: data.n8n_workflow_id || localTemplate?.n8nWorkflowId,
+        };
+    } catch (err) {
+        console.warn(`[Template] Error fetching from Supabase: ${err}`);
+        return templates.find((t) => t.slug === slug) || null;
+    }
+}
+
+export default async function TemplateDetailPage({ params }: Props) {
+    const template = await getTemplateWithWorkflowId(params.slug);
     if (!template) notFound();
 
     const related = templates.filter((t) => t.slug !== template.slug && t.categories.some((c) => template.categories.includes(c))).slice(0, 3);
@@ -157,7 +188,19 @@ export default function TemplateDetailPage({ params }: Props) {
                                     className="rounded-2xl overflow-hidden"
                                     style={{ border: "1px solid rgba(0,255,200,0.15)", borderRadius: 12 }}
                                 >
-                                    <WorkflowCanvas slug={template.slug} workflowId={template.n8nWorkflowId} fallbackWorkflowJson={template.workflowJson} />
+                                    {template.n8nWorkflowId ? (
+                                        <WorkflowCanvas slug={template.slug} workflowId={template.n8nWorkflowId} fallbackWorkflowJson={template.workflowJson} />
+                                    ) : (
+                                        <div className="flex items-center justify-center" style={{ height: 500, background: "#0a0a0f" }}>
+                                            <div className="text-center">
+                                                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
+                                                    <span className="text-2xl">⚠️</span>
+                                                </div>
+                                                <p className="text-gray-500 text-sm font-semibold mb-1">No workflow configured</p>
+                                                <p className="text-gray-700 text-xs">The n8n workflow canvas will appear here when available.</p>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
