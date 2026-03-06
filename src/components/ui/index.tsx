@@ -88,9 +88,9 @@ export function SectionHeader({
     );
 }
 
-// ─── Stat Counter ─────────────────────────────────────────────────────────────
+// ─── Animated Counter ─────────────────────────────────────────────────────────────
 
-interface StatCounterProps {
+interface AnimatedCounterProps {
     end: number;
     label: string;
     prefix?: string;
@@ -98,13 +98,13 @@ interface StatCounterProps {
     duration?: number;
 }
 
-export function StatCounter({
+export function AnimatedCounter({
     end,
     label,
     prefix = "",
     suffix = "",
     duration = 2,
-}: StatCounterProps) {
+}: AnimatedCounterProps) {
     const [count, setCount] = React.useState(0);
     const countRef = React.useRef(0);
 
