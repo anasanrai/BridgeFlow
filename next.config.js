@@ -10,6 +10,10 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "images.unsplash.com",
             },
+            {
+                protocol: "https",
+                hostname: "n8n.io",
+            },
         ],
         // Optimize image quality
         formats: ["image/avif", "image/webp"],
@@ -52,7 +56,7 @@ const nextConfig = {
                             "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
                             "style-src 'self' 'unsafe-inline'",
                             "font-src 'self' data:",
-                            "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com",
+                            "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://n8n.io",
                             [
                                 "connect-src 'self'",
                                 "https://*.supabase.co",
