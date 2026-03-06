@@ -57,6 +57,13 @@ export const getSiteConfig = unstable_cache(
                 };
             }
         } catch { }
+
+        // 3. Merge or ensure standard links (like Templates) exist
+        const hasTemplates = siteData.navLinks.some(link => link.href === '/templates');
+        if (!hasTemplates) {
+            siteData.navLinks.splice(2, 0, { label: "Templates", href: "/templates" });
+        }
+
         return {
             name: siteData.siteConfig.name,
             tagline: siteData.siteConfig.tagline,

@@ -1,6 +1,46 @@
 import Link from "next/link";
+import {
+    Webhook,
+    Database,
+    Mail,
+    MessageSquare,
+    Send,
+    FileText,
+    Calendar,
+    Cpu,
+    Bot,
+    Globe,
+    Zap,
+    Table2,
+    Code2,
+    Briefcase,
+    Users,
+    ArrowRight
+} from "lucide-react";
 import { Template, categoryColors, difficultyColors } from "@/data/templates";
 import WorkflowDiagram from "./WorkflowDiagram";
+
+// Mapping n8n node names to Lucide icons
+const nodeIconMap: Record<string, any> = {
+    "Webhook": Webhook,
+    "Google Sheets": Table2,
+    "Telegram": Send,
+    "Gmail": Mail,
+    "OpenAI": Cpu,
+    "Claude AI": Bot,
+    "OpenRouter": Globe,
+    "Slack": MessageSquare,
+    "Database": Database,
+    "Airtable": Table2,
+    "Notion": FileText,
+    "Google Calendar": Calendar,
+    "Code": Code2,
+    "HTTP Request": Globe,
+    "AI Agent": Zap,
+    "CRM": Briefcase,
+    "GoHighLevel": Briefcase,
+    "Lead": Users,
+};
 
 interface TemplateCardProps {
     template: Template;
@@ -12,103 +52,126 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
 
     return (
         <div
-            className="template-card relative flex flex-col rounded-2xl overflow-hidden border border-white/8"
+            className="template-card relative flex flex-col rounded-2xl overflow-hidden border border-white/8 group"
             style={{
-                background: "rgba(12,12,28,0.8)",
-                transition: "transform 250ms ease-out, box-shadow 250ms ease-out, border-color 250ms ease-out",
+                background: "rgba(10,12,25,0.6)",
+                backdropFilter: "blur(10px)",
+                transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1)",
             }}
         >
-            {/* ── MOST POPULAR ribbon ─────────────── */}
-            {template.featured && (
-                <div
-                    className="absolute top-4 right-[-28px] z-10 rotate-45 px-8 py-1 text-[9px] font-black uppercase tracking-widest text-navy-950"
-                    style={{
-                        background: "linear-gradient(135deg, #e6b422 0%, #c9a227 100%)",
-                        boxShadow: "0 2px 12px rgba(230,180,34,0.4)",
-                    }}
-                >
-                    Most Popular
+            {/* ── Workflow Preview (Canvas style) ─────────────── */}
+            <div className="relative h-48 overflow-hidden bg-navy-950/40 border-b border-white/5">
+                <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity">
+                    <WorkflowDiagram template={template} compact />
                 </div>
-            )}
 
-            {/* ── Header badges ───────────────────── */}
-            <div className="flex items-start justify-between gap-2 p-4 pb-0">
-                <div className="flex flex-wrap gap-1.5">
-                    {template.categories.slice(0, 2).map((cat) => (
+                {/* Overlay for "View Pattern" hint */}
+                <div className="absolute inset-0 flex items-center justify-center bg-navy-950/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <div className="px-4 py-2 rounded-full glass border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white shadow-2xl">
+                        Preview Workflow
+                    </div>
+                </div>
+
+                {/* ── Category badges ───────────────────── */}
+                <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-10">
+                    {template.categories.slice(0, 1).map((cat) => (
                         <span
                             key={cat}
-                            className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${categoryColors[cat] || "bg-gray-500/15 text-gray-400 border-gray-500/20"}`}
+                            className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border ${categoryColors[cat] || "bg-gray-500/15 text-gray-400 border-gray-500/20"}`}
                         >
                             {cat}
                         </span>
                     ))}
                 </div>
-                <span
-                    className={`flex-shrink-0 inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${difficultyColors[template.difficulty]}`}
-                >
-                    {template.difficulty}
-                </span>
-            </div>
 
-            {/* ── Workflow mini-diagram ─────────────── */}
-            <div className="px-4 pt-3">
-                <WorkflowDiagram template={template} compact />
+                {/* ── Difficulty ───────────────────── */}
+                <div className="absolute top-4 right-4 z-10">
+                    <span
+                        className={`inline-block px-2 py-0.5 rounded-md text-[9px] font-bold border ${difficultyColors[template.difficulty]}`}
+                    >
+                        {template.difficulty}
+                    </span>
+                </div>
             </div>
 
             {/* ── Content ──────────────────────────── */}
-            <div className="flex flex-col flex-1 gap-3 p-4">
+            <div className="flex flex-col flex-1 p-5 lg:p-6 gap-4">
                 <div>
-                    <h3 className="font-display font-bold text-white text-base leading-snug mb-1">
+                    <h3 className="font-display font-bold text-white text-lg leading-snug mb-2 group-hover:text-gold-400 transition-colors">
                         {template.name}
                     </h3>
-                    <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">
-                        {template.description}
+                    <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 italic">
+                        &quot;{template.description}&quot;
                     </p>
                 </div>
 
-                {/* Node pills */}
-                <div className="flex flex-wrap gap-1.5">
-                    {template.nodes.slice(0, 5).map((node) => (
-                        <span
-                            key={node}
-                            className="inline-block px-2 py-0.5 rounded-md text-[9px] font-semibold bg-white/5 text-gray-400 border border-white/8"
-                        >
-                            {node}
-                        </span>
-                    ))}
-                    {template.nodes.length > 5 && (
-                        <span className="inline-block px-2 py-0.5 rounded-md text-[9px] font-semibold bg-white/5 text-gray-500 border border-white/8">
-                            +{template.nodes.length - 5} more
-                        </span>
-                    )}
+                {/* ── "In this workflow" Icons (n8n style) ───────── */}
+                <div className="space-y-2">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 opacity-60">In this workflow:</div>
+                    <div className="flex flex-wrap gap-2">
+                        {template.nodes.slice(0, 6).map((node) => {
+                            const Icon = nodeIconMap[node] || Cpu;
+                            return (
+                                <div
+                                    key={node}
+                                    className="w-8 h-8 rounded-lg bg-navy-900/80 border border-white/5 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/20 transition-all cursor-help"
+                                    title={node}
+                                >
+                                    <Icon className="w-4 h-4" />
+                                </div>
+                            );
+                        })}
+                        {template.nodes.length > 6 && (
+                            <div className="w-8 h-8 rounded-lg bg-navy-900/80 border border-white/5 flex items-center justify-center text-[10px] font-bold text-gray-500">
+                                +{template.nodes.length - 6}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {/* Stats row */}
-                <div className="flex items-center gap-4 text-[11px] text-gray-500 border-t border-white/6 pt-3">
-                    <span title="Node count">⚡ <span className="text-gray-300 font-semibold">{template.nodeCount}</span> nodes</span>
-                    <span title="Setup time">⏱ <span className="text-gray-300 font-semibold">{template.setupTime}</span></span>
-                    <span title="Estimated value" className="ml-auto text-gold-400 font-bold text-sm">
-                        ${template.value.toLocaleString()}
-                    </span>
+                {/* ── Stats Strip ─────────────────────────── */}
+                <div className="flex items-center justify-between py-3 border-y border-white/5 my-1">
+                    <div className="flex flex-col">
+                        <span className="text-[10px] text-gray-500 uppercase tracking-tighter">Nodes</span>
+                        <span className="text-sm font-bold text-gray-200">{template.nodeCount}</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <span className="text-[10px] text-gray-500 uppercase tracking-tighter">Setup</span>
+                        <span className="text-sm font-bold text-gray-200">{template.setupTime}</span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                        <span className="text-[10px] text-gray-500 uppercase tracking-tighter">Est. Value</span>
+                        <span className="text-sm font-bold text-gold-400">${template.value.toLocaleString()}</span>
+                    </div>
                 </div>
 
-                {/* Action buttons */}
-                <div className="flex gap-2 mt-auto">
+                {/* ── Actions ──────────────────────────── */}
+                <div className="flex gap-3 mt-2">
                     <Link
                         href={`/templates/${template.slug}`}
-                        className="flex-1 text-center px-3 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider text-gold-400 border border-gold-400/30 hover:bg-gold-400/10 hover:border-gold-400/50 transition-all duration-200"
+                        className="flex-1 text-center px-4 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider text-white glass border border-white/10 hover:bg-white/10 transition-all duration-300"
                     >
-                        View Details
+                        Learn More
                     </Link>
                     <Link
-                        href="/contact"
-                        className="flex-1 text-center px-3 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider text-navy-950 transition-all duration-200 hover:shadow-[0_0_20px_rgba(230,180,34,0.4)] hover:scale-105"
-                        style={{ background: "linear-gradient(135deg, #e6b422 0%, #c9a227 100%)" }}
+                        href={`/templates/${template.slug}#canvas`}
+                        className="flex-1 text-center px-4 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider text-navy-950 transition-all duration-300 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+                        style={{ background: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)" }}
                     >
-                        Get Template
+                        Use Workflow
                     </Link>
                 </div>
             </div>
+
+            {/* ── Ribbon (Only if featured) ─────────────── */}
+            {template.featured && (
+                <div className="absolute top-0 right-0 p-4">
+                    <span className="flex h-2 w-2 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500"></span>
+                    </span>
+                </div>
+            )}
         </div>
     );
 }
