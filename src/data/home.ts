@@ -107,4 +107,13 @@ export const offers = [
     },
 ];
 
-export const demos = [];
+export const demos: unknown[] = [];
+
+export const cta = {
+    title: "Ready to automate your",
+    highlight: "growth?",
+    description:
+        "Book a free 30-minute automation audit and we'll show you the top 3 workflows that'll save you 10+ hours a week.",
+    ctaPrimary: { text: "Claim Free Audit", href: "/audit" },
+    ctaSecondary: { text: "View Services", href: "/services" },
+};

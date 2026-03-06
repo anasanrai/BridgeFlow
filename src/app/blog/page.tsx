@@ -44,7 +44,7 @@ export default async function Blog() {
     ]);
 
     // Extract unique categories
-    const categories = ["All", ...Array.from(new Set(posts.map((p: { category?: string }) => p.category).filter(Boolean)))];
+    const categories = ["All", ...Array.from(new Set((posts as any[]).map((p) => p.category).filter(Boolean)))];
 
     // Blog listing structured data
     const blogListJsonLd = {
@@ -58,7 +58,7 @@ export default async function Blog() {
             "name": site.name,
             "url": site.url,
         },
-        "blogPost": posts.slice(0, 10).map((p: { title: string; slug: string; excerpt?: string; date?: string }) => ({
+        "blogPost": (posts as any[]).slice(0, 10).map((p) => ({
             "@type": "BlogPosting",
             "headline": p.title,
             "url": `${site.url}/blog/${p.slug}`,
@@ -97,7 +97,7 @@ export default async function Blog() {
                 </div>
             </section>
 
-            <BlogContent posts={posts} categories={categories} />
+            <BlogContent posts={posts as any} categories={categories} />
         </>
     );
 }

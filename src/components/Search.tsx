@@ -8,10 +8,9 @@ import Link from "next/link";
 
 interface SearchItem {
     title: string;
-    slug: string;
-    excerpt: string;
-    type: "blog" | "case-study";
-    url: string;
+    href: string;
+    excerpt?: string;
+    type: string;
 }
 
 export default function Search() {
@@ -137,8 +136,8 @@ export default function Search() {
                                     <div className="space-y-1">
                                         {results.map((result) => (
                                             <Link
-                                                key={result.url}
-                                                href={result.url}
+                                                key={result.href}
+                                                href={result.href}
                                                 onClick={() => setIsOpen(false)}
                                                 className="flex items-start gap-4 p-3 rounded-xl hover:bg-white/5 transition-all group"
                                             >

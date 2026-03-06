@@ -172,7 +172,7 @@ export default function Footer({ siteConfig }: { siteConfig: FooterSiteConfig })
                     </div>
 
                     {/* Link Columns */}
-                    {Object.entries(footerLinks).map(([category, links]: [string, any]) => (
+                    {Object.entries(footerLinks || {}).map(([category, links]: [string, any]) => (
                         <div key={category}>
                             <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
                                 {category}
@@ -200,7 +200,7 @@ export default function Footer({ siteConfig }: { siteConfig: FooterSiteConfig })
                         {copyright}
                     </p>
                     <div className="flex items-center gap-3 flex-wrap justify-center">
-                        {socialLinks.map((social: { platform: string; url: string; icon?: string }) => {
+                        {(socialLinks || []).map((social: { platform: string; url: string; icon?: string; href?: string }) => {
                             const Icon = iconMap[social.platform];
                             return Icon ? (
                                 <a

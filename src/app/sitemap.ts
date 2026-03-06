@@ -94,14 +94,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
     ];
 
-    const blogRoutes: MetadataRoute.Sitemap = posts.map((post: { slug: string; published_at?: string; created_at?: string }) => ({
+    const blogRoutes: MetadataRoute.Sitemap = (posts as any[]).map((post) => ({
         url: `${baseUrl}/blog/${post.slug}`,
         lastModified: new Date(post.published_at || post.created_at || Date.now()),
         changeFrequency: "monthly" as const,
         priority: 0.7,
     }));
 
-    const caseRoutes: MetadataRoute.Sitemap = cases.map((item: { slug: string; created_at?: string; updated_at?: string }) => ({
+    const caseRoutes: MetadataRoute.Sitemap = (cases as any[]).map((item) => ({
         url: `${baseUrl}/case-studies/${item.slug}`,
         lastModified: new Date(item.updated_at || item.created_at || Date.now()),
         changeFrequency: "monthly" as const,

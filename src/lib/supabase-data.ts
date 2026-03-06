@@ -366,3 +366,42 @@ export const getAllSearchItems = unstable_cache(
     ["search-items"],
     { revalidate: 300, tags: ["search-items"] }
 );
+
+// ─── Composite About Content Fetcher ───
+export async function getAboutContent() {
+    const [values, teamMembers, techStack, milestones] = await Promise.all([
+        getCompanyValues(),
+        getTeamMembers(),
+        getTechStack(),
+        getMilestones(),
+    ]);
+
+    // Build hero from page metadata or fallback
+    let hero = aboutData.aboutHero;
+    try {
+        const metadata = await getPageMetadata("/about");
+        if (metadata) {
+            hero = {
+                ...hero,
+                title: (metadata.title as string)?.split("|")[0].trim() || hero.title,
+                description: (metadata.description as string) || hero.description,
+            };
+        }
+    } catch { }
+
+    // Build mission from local data (no separate Supabase table for this)
+    const mission = {
+        title: aboutData.mission.title,
+        highlight: aboutData.mission.highlight,
+        content: aboutData.mission.paragraphs.join("\n\n"),
+    };
+
+    return {
+        hero,
+        mission,
+        values,
+        teamMember: teamMembers?.[0] || aboutData.team[0],
+        techStack,
+        milestones,
+    };
+}
