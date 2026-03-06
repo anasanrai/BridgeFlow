@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const N8N_BASE_URL = "https://n8n.n8ngalaxy.com/api/v1/workflows";
+// N8N_BASE_URL is read from Vercel environment variables.
+// Set N8N_BASE_URL in your Vercel project settings (e.g. https://your-n8n.cloud/api/v1/workflows).
+// Falls back to the default n8n cloud instance if the env var is not configured.
+const N8N_BASE_URL =
+    process.env.N8N_BASE_URL || "https://n8n.n8ngalaxy.com/api/v1/workflows";
 
 // Simple in-memory cache (5 min TTL)
-const cache = new Map<string, { data: any; expires: number }>();
+const cache = new Map<string, { data: unknown; expires: number }>();
 const CACHE_TTL = 5 * 60 * 1000;
 
 export async function GET(
@@ -21,14 +25,14 @@ export async function GET(
 
     const apiKey = process.env.N8N_API_KEY;
     if (!apiKey) {
-        console.error("[n8n proxy] N8N_API_KEY not set");
+        console.error("[n8n proxy] N8N_API_KEY not set in environment variables");
         return NextResponse.json(
             { error: "Preview unavailable" },
             { status: 500 }
         );
     }
 
-    // Check cache
+    // Return cached result if still fresh
     const cached = cache.get(workflowId);
     if (cached && Date.now() < cached.expires) {
         return NextResponse.json(cached.data, {
@@ -72,36 +76,43 @@ export async function GET(
 
         const data = await response.json();
 
-        // Strip sensitive credential data
+        // Strip sensitive credential data before returning to client
         const sanitized = {
             id: data.id,
             name: data.name,
-            nodes: (data.nodes || []).map((n: any) => ({
+            nodes: (data.nodes || []).map((n: {
+                id: string;
+                name: string;
+                type: string;
+                typeVersion: number;
+                position: [number, number];
+            }) => ({
                 id: n.id,
                 name: n.name,
                 type: n.type,
                 typeVersion: n.typeVersion,
                 position: n.position,
-                parameters: {}, // Don't leak config
+                parameters: {}, // Never expose node credentials/config
             })),
             connections: data.connections || {},
         };
 
-        // Cache the result
+        // Cache the sanitized result
         cache.set(workflowId, { data: sanitized, expires: Date.now() + CACHE_TTL });
 
         return NextResponse.json(sanitized, {
             headers: { "X-Cache": "MISS" },
         });
-    } catch (err: any) {
-        if (err.name === "AbortError") {
+    } catch (err: unknown) {
+        const error = err as { name?: string; message?: string };
+        if (error.name === "AbortError") {
             console.error("[n8n proxy] Request timeout for workflow:", workflowId);
             return NextResponse.json(
                 { error: "Live preview temporarily offline" },
                 { status: 504 }
             );
         }
-        console.error("[n8n proxy] Network error:", err.message);
+        console.error("[n8n proxy] Network error:", error.message);
         return NextResponse.json(
             { error: "Live preview temporarily offline" },
             { status: 503 }

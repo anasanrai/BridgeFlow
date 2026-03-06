@@ -295,3 +295,46 @@ export async function getPageSEO(path: string) {
         url: site.url,
     };
 }
+
+// ─── Search: aggregates blog posts + case studies for site-wide search ───
+export const getAllSearchItems = unstable_cache(
+    async () => {
+        try {
+            const sb = getPublicClient();
+            if (!sb) throw new Error("No Supabase");
+
+            const [blogRes, caseStudiesRes] = await Promise.all([
+                sb.from("blog_posts").select("title, slug, excerpt").eq("is_published", true),
+                sb.from("case_studies").select("title, slug, excerpt").eq("is_published", true),
+            ]);
+
+            const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
+
+            if (blogRes.data) {
+                blogRes.data.forEach((p: { title: string; slug: string; excerpt?: string }) => {
+                    items.push({ title: p.title, href: `/blog/${p.slug}`, type: "blog", excerpt: p.excerpt });
+                });
+            }
+
+            if (caseStudiesRes.data) {
+                caseStudiesRes.data.forEach((c: { title: string; slug: string; excerpt?: string }) => {
+                    items.push({ title: c.title, href: `/case-studies/${c.slug}`, type: "case-study", excerpt: c.excerpt });
+                });
+            }
+
+            if (items.length > 0) return items;
+        } catch { }
+
+        // Fallback to local static data
+        const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
+        blogData.posts.forEach((p: { title: string; slug: string; excerpt?: string }) => {
+            items.push({ title: p.title, href: `/blog/${p.slug}`, type: "blog", excerpt: p.excerpt });
+        });
+        caseStudiesData.caseStudies.forEach((c: { title: string; slug: string; excerpt?: string }) => {
+            items.push({ title: c.title, href: `/case-studies/${c.slug}`, type: "case-study", excerpt: c.excerpt });
+        });
+        return items;
+    },
+    ["search-items"],
+    { revalidate: 300, tags: ["search-items"] }
+);

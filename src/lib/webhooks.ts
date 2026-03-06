@@ -1,51 +1,87 @@
 import { createAdminClient } from "./supabase";
 
 /**
- * Dispatches a webhook event to all active webhooks.
- * @param event The event type (e.g., 'audit.requested')
- * @param payload The data to send
+ * Dispatches a webhook event to all active webhooks registered in the database.
+ * If N8N_WEBHOOK_URL is set in environment variables, it is also triggered as a
+ * fallback for all events (useful when Supabase is not yet configured).
+ *
+ * @param event   The event type (e.g., 'audit.requested', 'contact.submitted')
+ * @param payload The data to send with the event
  */
-export async function dispatchWebhook(event: string, payload: any) {
-    const supabase = createAdminClient();
+export async function dispatchWebhook(event: string, payload: unknown) {
+    const dispatched: Promise<void>[] = [];
 
-    // Get active webhooks
-    const { data: webhooks, error } = await supabase
-        .from("webhooks")
-        .select("*")
-        .eq("is_active", true);
+    // ── 1. Dispatch to all active webhooks stored in Supabase ──
+    try {
+        const supabase = createAdminClient();
+        const { data: webhooks, error } = await supabase
+            .from("webhooks")
+            .select("*")
+            .eq("is_active", true);
 
-    if (error || !webhooks) {
-        console.error("Webhook Dispatch: Failed to fetch webhooks", error);
-        return;
+        if (!error && webhooks && webhooks.length > 0) {
+            for (const webhook of webhooks) {
+                const isSubscribed =
+                    webhook.events.includes("*") || webhook.events.includes(event);
+                if (!isSubscribed) continue;
+
+                dispatched.push(
+                    fetch(webhook.url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-BridgeFlow-Event": event,
+                            "X-BridgeFlow-Secret": webhook.secret || "",
+                        },
+                        body: JSON.stringify({
+                            event,
+                            timestamp: new Date().toISOString(),
+                            payload,
+                        }),
+                    })
+                        .then((res) => {
+                            if (!res.ok) {
+                                console.warn(
+                                    `[webhook] Failed for "${webhook.name}": ${res.statusText}`
+                                );
+                            }
+                        })
+                        .catch((err) => {
+                            console.error(`[webhook] Error for "${webhook.name}":`, err);
+                        })
+                );
+            }
+        }
+    } catch (err) {
+        console.error("[webhook] Failed to fetch webhooks from Supabase:", err);
     }
 
-    const promises = webhooks.map(async (webhook) => {
-        // Check if event is subscribed
-        const isSubscribed = webhook.events.includes("*") || webhook.events.includes(event);
-        if (!isSubscribed) return;
-
-        try {
-            const response = await fetch(webhook.url, {
+    // ── 2. Also trigger the n8n webhook URL from env vars (if configured) ──
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+    if (n8nWebhookUrl) {
+        dispatched.push(
+            fetch(n8nWebhookUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-BridgeFlow-Event": event,
-                    "X-BridgeFlow-Secret": webhook.secret || "",
                 },
                 body: JSON.stringify({
                     event,
                     timestamp: new Date().toISOString(),
                     payload,
                 }),
-            });
+            })
+                .then((res) => {
+                    if (!res.ok) {
+                        console.warn(`[webhook] n8n webhook failed: ${res.statusText}`);
+                    }
+                })
+                .catch((err) => {
+                    console.error("[webhook] n8n webhook error:", err);
+                })
+        );
+    }
 
-            if (!response.ok) {
-                console.warn(`Webhook failed for ${webhook.name}: ${response.statusText}`);
-            }
-        } catch (err) {
-            console.error(`Webhook error for ${webhook.name}:`, err);
-        }
-    });
-
-    await Promise.allSettled(promises);
+    await Promise.allSettled(dispatched);
 }
