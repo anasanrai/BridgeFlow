@@ -230,11 +230,17 @@ function MobileBanner() {
 // ── Main Canvas Component ────────────────────────────────────────────────────
 interface WorkflowCanvasProps {
     slug: string;
+    /**
+     * The n8n workflow ID to fetch (e.g. "wKBnBodZY46OaPoA").
+     * When provided, this takes priority over the slugToWorkflowId lookup.
+     * Pass this from template data so admin can update it without code changes.
+     */
+    workflowId?: string | null;
     /** Fallback workflow JSON (from the template's inline data) */
     fallbackWorkflowJson?: Record<string, any> | null;
 }
 
-function WorkflowCanvasInner({ slug, fallbackWorkflowJson }: WorkflowCanvasProps) {
+function WorkflowCanvasInner({ slug, workflowId: workflowIdProp, fallbackWorkflowJson }: WorkflowCanvasProps) {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [loading, setLoading] = useState(true);
@@ -242,7 +248,8 @@ function WorkflowCanvasInner({ slug, fallbackWorkflowJson }: WorkflowCanvasProps
     const [statsNodeCount, setStatsNodeCount] = useState(0);
     const [statsEdgeCount, setStatsEdgeCount] = useState(0);
 
-    const workflowId = slugToWorkflowId[slug];
+    // Prefer the explicit workflowId prop (from template data), fall back to hardcoded map
+    const workflowId = workflowIdProp || slugToWorkflowId[slug];
 
     // Fallback using inline workflowJson
     const loadFromFallback = useCallback(() => {
@@ -384,6 +391,8 @@ function WorkflowCanvasInner({ slug, fallbackWorkflowJson }: WorkflowCanvasProps
         </div>
     );
 }
+
+export type { WorkflowCanvasProps };
 
 export default function WorkflowCanvas(props: WorkflowCanvasProps) {
     return (

@@ -32,6 +32,9 @@ export async function GET(
         );
     }
 
+    console.log("[n8n proxy] Fetching workflow:", workflowId);
+    console.log("[n8n proxy] From URL:", `${N8N_BASE_URL}/${workflowId}`);
+
     // Return cached result if still fresh
     const cached = cache.get(workflowId);
     if (cached && Date.now() < cached.expires) {

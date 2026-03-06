@@ -157,7 +157,7 @@ export default function TemplateDetailPage({ params }: Props) {
                                     className="rounded-2xl overflow-hidden"
                                     style={{ border: "1px solid rgba(0,255,200,0.15)", borderRadius: 12 }}
                                 >
-                                    <WorkflowCanvas slug={template.slug} fallbackWorkflowJson={template.workflowJson} />
+                                    <WorkflowCanvas slug={template.slug} workflowId={template.n8nWorkflowId} fallbackWorkflowJson={template.workflowJson} />
                                 </div>
                             </div>
                         </div>

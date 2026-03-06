@@ -173,8 +173,8 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                                     type="button"
                                     onClick={() => toggleCategory(cat)}
                                     className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${categories.includes(cat)
-                                            ? "text-cyan-400 border-cyan-400/30 bg-cyan-400/10"
-                                            : "text-gray-500 border-white/10 hover:border-white/20"
+                                        ? "text-cyan-400 border-cyan-400/30 bg-cyan-400/10"
+                                        : "text-gray-500 border-white/10 hover:border-white/20"
                                         }`}
                                 >
                                     {cat}
@@ -208,6 +208,9 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                                 className="w-full px-4 py-3 rounded-xl text-sm text-white border border-white/10 focus:outline-none focus:border-cyan-400/40 transition-all font-mono"
                                 style={{ background: "rgba(5,5,16,0.9)" }}
                             />
+                            <p className="text-[10px] text-gray-500 mt-1.5 font-semibold">
+                                Find this in your n8n workflow URL
+                            </p>
                         </div>
                     </div>
 

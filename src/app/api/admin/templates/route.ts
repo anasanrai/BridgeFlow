@@ -29,10 +29,31 @@ export async function GET() {
             .order("order", { ascending: true });
 
         if (error) throw error;
-        return NextResponse.json({ ok: true, templates: data || [] });
+        // Normalize all rows from snake_case DB columns → camelCase for the frontend
+        return NextResponse.json({ ok: true, templates: (data || []).map(normalizeTemplate) });
     } catch {
         // Fallback to local JSON if Supabase unavailable
-        const templates = await getLocalTemplates();
+        const raw = await getLocalTemplates();
+        // Local JSON already uses camelCase — pass through a normalizer to ensure consistency
+        const templates = raw.map((t: Record<string, unknown>) => ({
+            id: String(t.id),
+            name: t.name,
+            slug: t.slug,
+            categories: t.categories,
+            difficulty: t.difficulty,
+            nodes: t.nodes,
+            nodeCount: t.nodeCount,
+            setupTime: t.setupTime,
+            value: t.value,
+            description: t.description,
+            whatItDoes: t.whatItDoes,
+            featured: t.featured,
+            status: t.status,
+            n8nWorkflowId: t.n8nWorkflowId,
+            order: t.order,
+            updatedAt: t.updatedAt,
+            workflowJson: t.workflowJson ?? null,
+        }));
         return NextResponse.json({ ok: true, templates });
     }
 }
