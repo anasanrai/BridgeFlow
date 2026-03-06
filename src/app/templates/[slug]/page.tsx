@@ -132,8 +132,8 @@ export default async function TemplateDetailPage({ params }: Props) {
                             <div className="grid grid-cols-3 gap-4">
                                 {[
                                     { icon: Zap, label: "Nodes", value: (template.nodeCount || 0).toString() + ((template.nodeCount || 0) >= 25 ? "+" : "") },
-                                    { icon: Clock, label: "Setup Time", value: template.setupTime },
-                                    { icon: DollarSign, label: "Est. Value", value: `$${template.value.toLocaleString()}` },
+                                    { icon: Clock, label: "Setup Time", value: template.setupTime || "30 min" },
+                                    { icon: DollarSign, label: "Est. Value", value: `$${(template.value || 0).toLocaleString()}` },
                                 ].map((s) => (
                                     <div
                                         key={s.label}
