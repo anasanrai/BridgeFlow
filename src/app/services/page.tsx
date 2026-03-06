@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
     ScrollReveal,
     SectionHeader,
@@ -7,10 +6,6 @@ import {
     Card,
 } from "@/components/ui";
 import {
-    Zap,
-    Bot,
-    Boxes,
-    MessageSquare,
     ArrowRight,
     CheckCircle2,
 } from "lucide-react";
@@ -200,18 +195,19 @@ export default async function Services() {
                         highlight="solutions"
                         description="Tailored automation systems built on industry-leading technologies."
                     />
-                    <div className=204	                        {otherServices.map((service: any, i: number) => {
-205	                            const lowerTitle = (service.title || "").toLowerCase();
-206	                            const slug = lowerTitle.includes("n8n") ? "n8n" : 
-207	                                         lowerTitle.includes("ai") ? "ai" : 
-208	                                         service.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').split('-')[0];
-209	                            return (
-210	                                <ScrollReveal key={service.title}>
-211	                                    <div
-212	                                        id={slug}
-213	                                        className={`scroll-mt-24 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center ${i % 2 === 1 ? "lg:flex-row-reverse" : ""
-214	                                            }`}
-215	                                    >                         <div className={i % 2 === 1 ? "lg:order-2" : ""}>
+                    <div className="space-y-24 mt-16">
+                        {otherServices.map((service: any, i: number) => {
+                            const lowerTitle = (service.title || "").toLowerCase();
+                            const slug = lowerTitle.includes("n8n") ? "n8n" : 
+                                         lowerTitle.includes("ai") ? "ai" : 
+                                         service.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').split('-')[0];
+                            return (
+                                <ScrollReveal key={service.title}>
+                                    <div
+                                        id={slug}
+                                        className="scroll-mt-24 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center"
+                                    >
+                                        <div className={i % 2 === 1 ? "lg:order-2" : ""}>
                                             <div
                                                 className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-8 shadow-lg shadow-black/20 group-hover:scale-110 transition-transform`}
                                             >
@@ -307,7 +303,7 @@ export default async function Services() {
                                         Book Free Session
                                         <ArrowRight className="w-4 h-4" />
                                     </Button>
-                                    <Button variant="secondary" size="lg" href="https://calendly.com" className="w-full sm:w-auto">
+                                    <Button variant="secondary" size="lg" href="/pricing" className="w-full sm:w-auto">
                                         View Full Pricing
                                     </Button>
                                 </div>
@@ -319,4 +315,3 @@ export default async function Services() {
         </>
     );
 }
-
