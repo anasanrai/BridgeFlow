@@ -33,17 +33,25 @@ export const getSiteConfig = unstable_cache(
             const settings = settingsRes.data;
 
             if (config) {
+                // Ensure Templates is in navLinks
+                let navLinks = (config.nav_links && config.nav_links.length > 0) ? [...config.nav_links] : [...siteData.navLinks];
+                const hasTemplates = navLinks.some((link: any) => link.href === '/templates');
+                if (!hasTemplates) {
+                    // Inject Templates link after Services (index 2)
+                    navLinks.splice(2, 0, { label: "Templates", href: "/templates" });
+                }
+
                 return {
-                    name: config.name,
-                    tagline: config.tagline,
-                    description: config.description,
-                    email: config.email,
-                    url: config.url,
-                    location: config.location,
-                    copyright: config.copyright,
-                    logo: config.logo,
-                    og_image: config.og_image,
-                    navLinks: (config.nav_links && config.nav_links.length > 0) ? config.nav_links : siteData.navLinks,
+                    name: config.name || siteData.siteConfig.name,
+                    tagline: config.tagline || siteData.siteConfig.tagline,
+                    description: config.description || siteData.siteConfig.description,
+                    email: config.email || siteData.siteConfig.email,
+                    url: config.url || siteData.siteConfig.url,
+                    location: config.location || siteData.siteConfig.location,
+                    copyright: config.copyright || siteData.siteConfig.copyright,
+                    logo: config.logo || siteData.siteConfig.logo,
+                    og_image: config.og_image || siteData.siteConfig.og_image,
+                    navLinks: navLinks,
                     footerLinks: (config.footer_links && Object.keys(config.footer_links).length > 0) ? config.footer_links : siteData.footerLinks,
                     socialLinks: (settings?.social_links && settings.social_links.length > 0)
                         ? settings.social_links
@@ -58,7 +66,7 @@ export const getSiteConfig = unstable_cache(
             }
         } catch { }
 
-        // 3. Merge or ensure standard links (like Templates) exist
+        // 3. Fallback logic: Ensure standard links exist in local data before returning
         const hasTemplates = siteData.navLinks.some(link => link.href === '/templates');
         if (!hasTemplates) {
             siteData.navLinks.splice(2, 0, { label: "Templates", href: "/templates" });
@@ -93,7 +101,7 @@ export const getHomeContent = unstable_cache(
             const { data } = await sb.from("home_content").select("*").limit(1).single();
             if (data) return {
                 hero: data.hero || homeData.hero,
-                stats: data.stats || homeData.stats,
+                stats: data.stats?.length ? data.stats : homeData.stats,
                 servicesOverview: data.services_overview?.length ? data.services_overview : homeData.servicesOverview,
                 processSteps: data.process_steps?.length ? data.process_steps : homeData.processSteps,
                 cta: data.cta || homeData.cta,
