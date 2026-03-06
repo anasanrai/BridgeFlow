@@ -5,7 +5,7 @@ import {
     Button,
     Card,
 } from "@/components/ui";
-import { ArrowRight, CheckCircle2, Sparkles, Shield, Check, DollarSign, Globe } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { plans, pricingHero, pricingFAQ } from "@/data/pricing";
 import { getSiteConfig } from "@/lib/supabase-data";
 
@@ -141,14 +141,18 @@ export default function Pricing() {
                                                 {f}
                                             </li>
                                         ))}
-                                  147	                                    {/* CTA */}
-148	                                    <Button
-149	                                        variant={plan.popular ? "primary" : "outline"}
-150	                                        href={plan.cta.href}
-151	                                        className="w-full justify-center"
-152	                                    >
-153	                                        {plan.cta.text}
-154	                                    </Button>               {/* Spots remaining */}
+                                    </ul>
+
+                                    {/* CTA */}
+                                    <Button
+                                        variant={plan.popular ? "primary" : "outline"}
+                                        href={plan.cta.href}
+                                        className="w-full justify-center"
+                                    >
+                                        {plan.cta.text}
+                                    </Button>
+
+                                    {/* Spots remaining */}
                                     {plan.spotsRemaining && (
                                         <p className="text-center text-xs text-gold-400 mt-3 font-medium">
                                             {plan.spotsRemaining}
