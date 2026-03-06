@@ -141,18 +141,14 @@ export default function Pricing() {
                                                 {f}
                                             </li>
                                         ))}
-                                    </ul>
-
-                                    {/* CTA */}
-                                    <Button
-                                        variant={plan.popular ? "primary" : "secondary"}
-                                        href={plan.cta.href}
-                                        className="w-full justify-center"
-                                    >
-                                        {plan.cta.text}
-                                    </Button>
-
-                                    {/* Spots remaining */}
+                                  147	                                    {/* CTA */}
+148	                                    <Button
+149	                                        variant={plan.popular ? "primary" : "outline"}
+150	                                        href={plan.cta.href}
+151	                                        className="w-full justify-center"
+152	                                    >
+153	                                        {plan.cta.text}
+154	                                    </Button>               {/* Spots remaining */}
                                     {plan.spotsRemaining && (
                                         <p className="text-center text-xs text-gold-400 mt-3 font-medium">
                                             {plan.spotsRemaining}

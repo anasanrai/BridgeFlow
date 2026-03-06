@@ -1,50 +1,38 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
-// ─── ScrollReveal ─────────────────────────────────────────────────────────────
+// ─── Scroll Reveal ───────────────────────────────────────────────────────────
 
 interface ScrollRevealProps {
     children: React.ReactNode;
-    className?: string;
     delay?: number;
     direction?: "up" | "down" | "left" | "right";
+    className?: string;
 }
 
 export function ScrollReveal({
     children,
-    className = "",
     delay = 0,
     direction = "up",
+    className = "",
 }: ScrollRevealProps) {
-    const ref = useRef<HTMLDivElement>(null);
-    const isInView = useInView(ref, { once: true, margin: "-80px" });
-
-    const directionMap = {
-        up: { y: 40, x: 0 },
-        down: { y: -40, x: 0 },
-        left: { x: 40, y: 0 },
-        right: { x: -40, y: 0 },
+    const directions = {
+        up: { y: 20 },
+        down: { y: -20 },
+        left: { x: 20 },
+        right: { x: -20 },
     };
 
     return (
         <motion.div
-            ref={ref}
-            initial={{
-                opacity: 0,
-                ...directionMap[direction],
-            }}
-            animate={
-                isInView
-                    ? { opacity: 1, x: 0, y: 0 }
-                    : { opacity: 0, ...directionMap[direction] }
-            }
+            initial={{ opacity: 0, ...directions[direction] }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{
-                duration: 0.7,
+                duration: 0.6,
                 delay,
-                ease: [0.21, 0.47, 0.32, 0.98],
+                ease: [0.16, 1, 0.3, 1],
             }}
             className={className}
         >
@@ -53,7 +41,7 @@ export function ScrollReveal({
     );
 }
 
-// ─── SectionHeader ────────────────────────────────────────────────────────────
+// ─── Section Header ──────────────────────────────────────────────────────────
 
 interface SectionHeaderProps {
     badge?: string;
@@ -61,6 +49,7 @@ interface SectionHeaderProps {
     highlight?: string;
     description?: string;
     align?: "left" | "center";
+    className?: string;
 }
 
 export function SectionHeader({
@@ -69,75 +58,75 @@ export function SectionHeader({
     highlight,
     description,
     align = "center",
+    className = "",
 }: SectionHeaderProps) {
     return (
-        <ScrollReveal
-            className={`mb-12 lg:mb-16 ${align === "center" ? "text-center" : "text-left"}`}
+        <div
+            className={`mb-12 lg:mb-16 ${align === "center" ? "text-center mx-auto" : "text-left"
+                } ${className}`}
         >
             {badge && (
-                <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
-                    {badge}
-                </span>
+                <ScrollReveal>
+                    <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        {badge}
+                    </span>
+                </ScrollReveal>
             )}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
-                {title}{" "}
-                {highlight && <span className="gold-text">{highlight}</span>}
-            </h2>
+            <ScrollReveal delay={0.1}>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
+                    {title} {highlight && <span className="gold-text">{highlight}</span>}
+                </h2>
+            </ScrollReveal>
             {description && (
-                <p
-                    className={`mt-4 text-gray-400 text-lg max-w-2xl ${align === "center" ? "mx-auto" : ""}`}
-                >
-                    {description}
-                </p>
+                <ScrollReveal delay={0.2}>
+                    <p className="mt-4 text-gray-400 text-lg max-w-2xl mx-auto">
+                        {description}
+                    </p>
+                </ScrollReveal>
             )}
-        </ScrollReveal>
+        </div>
     );
 }
 
-// ─── AnimatedCounter ──────────────────────────────────────────────────────────
+// ─── Stat Counter ─────────────────────────────────────────────────────────────
 
-interface AnimatedCounterProps {
+interface StatCounterProps {
     end: number;
-    suffix?: string;
-    prefix?: string;
-    duration?: number;
     label: string;
+    prefix?: string;
+    suffix?: string;
+    duration?: number;
 }
 
-export function AnimatedCounter({
+export function StatCounter({
     end,
-    suffix = "",
-    prefix = "",
-    duration = 2,
     label,
-}: AnimatedCounterProps) {
-    const [count, setCount] = useState(0);
-    const ref = useRef<HTMLDivElement>(null);
-    const isInView = useInView(ref, { once: true });
+    prefix = "",
+    suffix = "",
+    duration = 2,
+}: StatCounterProps) {
+    const [count, setCount] = React.useState(0);
+    const countRef = React.useRef(0);
 
-    useEffect(() => {
-        if (!isInView) return;
-
-        let startTime: number;
-        const step = (currentTime: number) => {
-            if (!startTime) startTime = currentTime;
-            const progress = Math.min(
-                (currentTime - startTime) / (duration * 1000),
-                1
-            );
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * end));
-
+    React.useEffect(() => {
+        let startTimestamp: number | null = null;
+        const step = (timestamp: number) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
+            const currentCount = Math.floor(progress * end);
+            if (currentCount !== countRef.current) {
+                countRef.current = currentCount;
+                setCount(currentCount);
+            }
             if (progress < 1) {
-                requestAnimationFrame(step);
+                window.requestAnimationFrame(step);
             }
         };
-
-        requestAnimationFrame(step);
-    }, [isInView, end, duration]);
+        window.requestAnimationFrame(step);
+    }, [end, duration]);
 
     return (
-        <div ref={ref} className="text-center">
+        <div className="text-center">
             <div
                 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold gold-text"
                 aria-label={`${prefix}${end}${suffix}`}
@@ -157,7 +146,7 @@ export function AnimatedCounter({
 
 type ButtonBaseProps = {
     children: React.ReactNode;
-    variant?: "primary" | "secondary" | "ghost";
+    variant?: "primary" | "secondary" | "ghost" | "outline";
     size?: "sm" | "md" | "lg";
     className?: string;
     disabled?: boolean;
@@ -174,7 +163,6 @@ type ButtonAsLink = ButtonBaseProps & {
     href: string;
     onClick?: never;
     type?: never;
-    /** Force open in new tab (adds rel="noopener noreferrer" automatically) */
     external?: boolean;
 };
 
@@ -197,14 +185,15 @@ export function Button({
     external = false,
 }: ButtonProps) {
     const baseClasses =
-        "inline-flex items-center justify-center gap-2 font-bold rounded-full btn-liquid";
+        "inline-flex items-center justify-center gap-2 font-bold rounded-full btn-liquid relative overflow-hidden group/btn";
 
     const variants = {
         primary:
-            "gold-gradient text-navy-950 hover:shadow-[0_0_30px_rgba(230,180,34,0.4)] hover:scale-105 active:scale-95",
+            "gold-gradient text-navy-950 hover:shadow-[0_0_40px_rgba(230,180,34,0.5)] hover:scale-[1.03] active:scale-95",
         secondary:
-            "glass-strong border border-gold-400/30 text-gold-400 hover:bg-gold-400/10 hover:border-gold-400/50 hover:shadow-[0_0_20px_rgba(230,180,34,0.1)] hover:scale-105 active:scale-95",
+            "glass-strong border border-gold-400/30 text-gold-400 hover:bg-gold-400/10 hover:border-gold-400/50 hover:shadow-[0_0_20px_rgba(230,180,34,0.1)] hover:scale-[1.03] active:scale-95",
         ghost: "text-gray-400 hover:text-white hover:bg-white/5 active:scale-95",
+        outline: "border border-white/10 text-white hover:border-gold-400/50 hover:text-gold-400 hover:bg-gold-400/5 active:scale-95",
     };
 
     const sizes = {
@@ -214,6 +203,13 @@ export function Button({
     };
 
     const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""} ${className}`;
+
+    const innerContent = (
+        <>
+            <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700 pointer-events-none" />
+            <span className="relative z-10 flex items-center gap-2">{children}</span>
+        </>
+    );
 
     if (href) {
         const isExternal = external || href.startsWith("http") || href.startsWith("//");
@@ -226,13 +222,13 @@ export function Button({
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    {children}
+                    {innerContent}
                 </a>
             );
         }
         return (
             <Link href={href} className={classes} style={TRANSITION_STYLE}>
-                {children}
+                {innerContent}
             </Link>
         );
     }
@@ -245,7 +241,7 @@ export function Button({
             className={classes}
             style={TRANSITION_STYLE}
         >
-            {children}
+            {innerContent}
         </button>
     );
 }
@@ -261,13 +257,17 @@ interface CardProps {
 export function Card({ children, className = "", hover = true }: CardProps) {
     return (
         <div
-            className={`glass rounded-3xl p-6 lg:p-10 premium-card ${hover ? "hover:-translate-y-2" : ""} ${className}`}
+            className={`glass rounded-3xl p-6 lg:p-10 premium-card relative overflow-hidden group/card ${hover ? "hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(230,180,34,0.15)]" : ""} ${className}`}
             style={{
                 transition:
-                    "transform 200ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out",
+                    "transform 300ms cubic-bezier(0.2, 0, 0, 1), box-shadow 300ms cubic-bezier(0.2, 0, 0, 1), background-color 300ms ease-out, border-color 300ms ease-out",
             }}
         >
-            {children}
+            {/* Interactive Glow Effect */}
+            <div className="absolute -inset-[100%] bg-gradient-to-br from-gold-400/0 via-gold-400/[0.03] to-gold-400/0 group-hover/card:translate-x-[50%] group-hover/card:translate-y-[50%] transition-transform duration-1000 pointer-events-none" />
+            <div className="relative z-10">
+                {children}
+            </div>
         </div>
     );
 }
