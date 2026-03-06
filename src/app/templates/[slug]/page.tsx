@@ -103,7 +103,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                 {cat}
                             </span>
                         ))}
-                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${difficultyColors[template.difficulty]}`}>
+                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${difficultyColors[template.difficulty || "Beginner"]}`}>
                             {template.difficulty}
                         </span>
                         {template.featured && (
@@ -131,7 +131,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                             {/* Stat boxes */}
                             <div className="grid grid-cols-3 gap-4">
                                 {[
-                                    { icon: Zap, label: "Nodes", value: template.nodeCount.toString() + (template.nodeCount >= 25 ? "+" : "") },
+                                    { icon: Zap, label: "Nodes", value: (template.nodeCount || 0).toString() + ((template.nodeCount || 0) >= 25 ? "+" : "") },
                                     { icon: Clock, label: "Setup Time", value: template.setupTime },
                                     { icon: DollarSign, label: "Est. Value", value: `$${template.value.toLocaleString()}` },
                                 ].map((s) => (
