@@ -5,14 +5,10 @@ import { useState, useEffect } from "react";
 const rotatingWords = [
     "Real Estate Deals",
     "E-commerce Sales",
-    "Law Firm Clients",
-    "Clinic Appointments",
     "Agency Retainers",
-    "Coaching Clients",
+    "Clinic Appointments",
     "B2B Contracts",
     "SaaS Signups",
-    "Insurance Renewals",
-    "School Enrollments",
 ];
 
 export default function RotatingHeadline() {
@@ -37,8 +33,8 @@ export default function RotatingHeadline() {
             <br className="hidden sm:block" />
             <span
                 className={`gold-text text-glow inline-block transition-all duration-400 ${isVisible
-                        ? "opacity-100 translate-y-0 blur-0"
-                        : "opacity-0 translate-y-2 blur-[2px]"
+                    ? "opacity-100 translate-y-0 blur-0"
+                    : "opacity-0 translate-y-2 blur-[2px]"
                     }`}
             >
                 {rotatingWords[currentIndex]}

@@ -10,38 +10,34 @@ function getPublicClient() {
     return createClient(url, key);
 }
 
-const SYSTEM_PROMPT = `You are BridgeFlow's AI assistant — a helpful, professional chatbot on the BridgeFlow website. BridgeFlow is an AI-powered automation agency founded by Anasan Rai.
+const SYSTEM_PROMPT = `You are BridgeFlow's AI assistant — a helpful, professional chatbot on the BridgeFlow website. BridgeFlow is an AI-powered automation agency.
 
 About BridgeFlow:
-- Founded by Anasan Rai (CEO & Founder & AI Automation Engineer) based in Kathmandu, Nepal.
-- IMPORTANT: Anasan Rai is the ONLY founder and CEO. Do not mention any other names like Alex Moreau, Priya Sharma, etc. If asked about them, state they are not affiliated with BridgeFlow.
-- We help B2B businesses automate workflows using n8n, GoHighLevel, AI (GPT-4, Claude), and custom SaaS tools.
-- Services: n8n Workflow Automation, GoHighLevel CRM & Funnels, AI Integration, SaaS Tools.
-- Remote-first, global agency serving clients worldwide.
+- Founded and led by Anasan Rai (Founder & CEO) — the sole founder and operator of BridgeFlow
+- We help businesses automate workflows using n8n, AI (GPT-4, Claude), GoHighLevel CRM, and custom SaaS tools
+- Services: n8n Workflow Automation, GoHighLevel CRM Setup, AI Integration, SaaS Tools, Consulting & Strategy
+- Stats: 50+ workflows built, 7+ beta clients served, 10+ hours saved per client weekly, 100% client satisfaction
+- Location: Remote-first, Global
 - Contact: hello@bridgeflow.agency
 - Website: https://www.bridgeflow.agency
 
-Key selling points:
-- Save 10+ hours/week with automation.
-- Most automations are live within 1-2 weeks of kickoff.
-- Production-grade, documented, and measured by real business impact.
-- Results-driven: every workflow measured by ROI, not vanity metrics.
-- Free 30-minute automation audit available — no commitment required.
+IMPORTANT: Anasan Rai is the ONLY founder and CEO. There is NO other team member. Do NOT mention any other names as team members. If asked about the team, say it's a solo-founder agency led by Anasan Rai with plans to grow.
 
-Pricing (Founding Member Rates — Limited Time):
-- Free Automation Audit: Free — 30-min strategy call, top 3 automation opportunities, custom ROI estimate.
-- Quick Win Automation: $497 (founding rate, normally $997) — 1 custom n8n workflow, 5 integrated tools, 14 days support.
-- Starter Automation Package: $997 (founding rate, normally $2,499) — 5 custom n8n workflows, CRM integration, 30 days monitoring.
-- GoHighLevel Pro Setup: $1,997 (founding rate, normally $3,999) — complete GHL setup, 3 funnels, full team training.
+Key selling points:
+- Save 10+ hours/week with automation
+- Most automations live within 1-2 weeks
+- Currently onboarding founding clients at special rates (limited to 5 spots)
+- Specializes in real estate, e-commerce, and agency automation
+
+Pricing approach: Custom quotes based on project scope. We offer free automation audits at /audit and consultations at /contact.
 
 Guidelines:
-- Be concise, friendly, and professional.
-- Answer questions about BridgeFlow's services, pricing, and founder (Anasan Rai).
-- For specific project inquiries, encourage them to book a free consultation at /contact or claim a free audit at /audit.
-- Keep responses under 150 words unless the user asks for detail.
-- Use markdown formatting sparingly (bold for emphasis, lists for features).
-- If asked something unrelated to BridgeFlow or automation, politely redirect.
-- Never make up statistics or claims not listed above.`;
+- Be concise, friendly, and professional
+- Answer questions about BridgeFlow's services, pricing, and founder
+- For specific project inquiries, encourage them to book a free audit at /audit or contact at /contact
+- Keep responses under 150 words unless the user asks for detail
+- Use markdown formatting sparingly (bold for emphasis, lists for features)
+- If asked something unrelated to BridgeFlow or automation, politely redirect`;
 
 export async function POST(req: NextRequest) {
     try {
@@ -50,12 +46,6 @@ export async function POST(req: NextRequest) {
         if (!messages || !Array.isArray(messages)) {
             return NextResponse.json({ error: "Invalid messages array" }, { status: 400 });
         }
-
-        // Sanitize messages — limit to last 10 to prevent token abuse
-        const sanitizedMessages = messages.slice(-10).map((m: any) => ({
-            role: m.role === "user" ? "user" : "assistant",
-            content: String(m.content).slice(0, 2000), // cap per message
-        }));
 
         const modalKey = process.env.MODAL_API_KEY;
         const ollamaKey = process.env.OLLAMA_API_KEY;
@@ -75,42 +65,41 @@ export async function POST(req: NextRequest) {
 
         // 1. Try Primary Model
         if (primaryModel === "modal-glm5" && modalKey) {
-            const reply = await callModalGLM5(modalKey, sanitizedMessages);
+            const reply = await callModalGLM5(modalKey, messages);
             if (reply) return reply;
         } else if (primaryModel === "ollama-cloud" && ollamaKey) {
-            const reply = await callOllamaCloud(ollamaKey, sanitizedMessages);
+            const reply = await callOllamaCloud(ollamaKey, messages);
             if (reply) return reply;
         } else if (primaryModel === "gemini" && geminiKey) {
-            const reply = await callGeminiFallback(geminiKey, sanitizedMessages);
+            const reply = await callGeminiFallback(geminiKey, messages);
             if (reply) return reply;
         }
 
         // 2. If Primary Fails, fallback to Modal (if it wasn't primary)
         if (primaryModel !== "modal-glm5" && modalKey) {
-            const reply = await callModalGLM5(modalKey, sanitizedMessages);
+            const reply = await callModalGLM5(modalKey, messages);
             if (reply) return reply;
         }
 
         // 3. Fallback to Ollama (if it wasn't primary)
         if (primaryModel !== "ollama-cloud" && ollamaKey) {
-            const reply = await callOllamaCloud(ollamaKey, sanitizedMessages);
+            const reply = await callOllamaCloud(ollamaKey, messages);
             if (reply) return reply;
         }
 
         // 4. Ultimate Emergency Fallback to Gemini
         if (primaryModel !== "gemini" && geminiKey) {
-            const reply = await callGeminiFallback(geminiKey, sanitizedMessages);
+            const reply = await callGeminiFallback(geminiKey, messages);
             if (reply) return reply;
         }
 
         return NextResponse.json({
-            reply: "I'm sorry, but I'm temporarily unavailable. Please reach out directly at hello@bridgeflow.agency or visit our [Contact](/contact) page.",
+            reply: "I'm sorry, but all my connection nodes are currently asleep. Please try again in a moment! 🌟",
             provider: "fallback-error"
         });
 
-    } catch (error: unknown) {
-        const message = error instanceof Error ? error.message : "Unknown error";
-        console.error("Chat API error:", message);
+    } catch (error: any) {
+        console.error("Chat error:", error);
         return NextResponse.json({
             reply: "I'm having a brief connection issue. Please try again or explore our [Services](/services)!"
         });
@@ -120,6 +109,7 @@ export async function POST(req: NextRequest) {
 // ─── Modal GLM-5 (OpenAI-compatible endpoint) ───
 async function callModalGLM5(apiKey: string, messages: { role: string; content: string }[]) {
     try {
+        console.log("Trying Modal GLM-5...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://api.us-west-2.modal.direct/v1/chat/completions", {
@@ -147,9 +137,12 @@ async function callModalGLM5(apiKey: string, messages: { role: string; content: 
             if (reply) {
                 return NextResponse.json({ reply, provider: "modal-glm5" });
             }
+        } else {
+            const errText = await response.text();
+            console.error("Modal GLM-5 error:", response.status, errText);
         }
-    } catch {
-        // Provider unavailable, fall through to next
+    } catch (error) {
+        console.error("Modal GLM-5 fetch error:", error);
     }
     return null;
 }
@@ -157,6 +150,7 @@ async function callModalGLM5(apiKey: string, messages: { role: string; content: 
 // ─── Ollama Cloud (Ollama API format) ───
 async function callOllamaCloud(apiKey: string, messages: { role: string; content: string }[]) {
     try {
+        console.log("Trying Ollama Cloud...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://ollama.com/api/chat", {
@@ -183,9 +177,12 @@ async function callOllamaCloud(apiKey: string, messages: { role: string; content
             if (reply) {
                 return NextResponse.json({ reply, provider: "ollama-cloud" });
             }
+        } else {
+            const errText = await response.text();
+            console.error("Ollama Cloud error:", response.status, errText);
         }
-    } catch {
-        // Provider unavailable, fall through to next
+    } catch (error) {
+        console.error("Ollama Cloud fetch error:", error);
     }
     return null;
 }
@@ -193,6 +190,7 @@ async function callOllamaCloud(apiKey: string, messages: { role: string; content
 // ─── Gemini (emergency fallback) ───
 async function callGeminiFallback(apiKey: string, messages: { role: string; content: string }[]) {
     try {
+        console.log("Trying Gemini fallback...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch(
@@ -224,9 +222,12 @@ async function callGeminiFallback(apiKey: string, messages: { role: string; cont
             if (reply) {
                 return NextResponse.json({ reply, provider: "gemini" });
             }
+        } else {
+            const errText = await response.text();
+            console.error("Gemini API Error:", response.status, errText);
         }
-    } catch {
-        // Provider unavailable, fall through to next
+    } catch (error) {
+        console.error("Gemini Fetch Error:", error);
     }
     return null;
 }
