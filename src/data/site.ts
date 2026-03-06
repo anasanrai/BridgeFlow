@@ -35,7 +35,7 @@ export const navLinks = [
 export const footerLinks = {
     company: [
         { label: "About", href: "/about" },
-        { label: "How It Works", href: "/how-it-works" },
+        { label: "Blog", href: "/blog" },
         { label: "Case Studies", href: "/case-studies" },
         { label: "Careers", href: "/careers" },
     ],
@@ -44,12 +44,10 @@ export const footerLinks = {
         { label: "GoHighLevel CRM", href: "/services#gohighlevel" },
         { label: "AI Integration", href: "/services#ai" },
         { label: "Pricing", href: "/pricing" },
-        { label: "Free Audit", href: "/audit" },
+        { label: "Templates", href: "/templates" },
     ],
     resources: [
-        { label: "Blog", href: "/blog" },
         { label: "Documentation", href: "/docs" },
-        { label: "API Reference", href: "/api-reference" },
         { label: "AI Calculator", href: "/calculator" },
         { label: "Contact Us", href: "/contact" },
         { label: "Privacy Policy", href: "/privacy-policy" },
@@ -61,7 +59,7 @@ export const footerLinks = {
  * Social media links — add more platforms here, they will render in footer
  */
 export const socialLinks = [
-    { platform: "Twitter", href: "https://x.com/bridgeflowai" },
+    { platform: "X", href: "https://x.com/bridgeflowai" },
     { platform: "LinkedIn", href: "https://linkedin.com/company/bridgeflow-agency" },
     { platform: "GitHub", href: "https://github.com/bridgeflow-agency" },
     { platform: "Instagram", href: "https://instagram.com/bridgeflow.agency" },
