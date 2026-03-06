@@ -71,7 +71,7 @@ export default async function TemplateDetailPage({ params }: Props) {
     const template = await getTemplateWithWorkflowId(params.slug);
     if (!template) notFound();
 
-    const related = templates.filter((t) => t.slug !== template.slug && t.categories.some((c) => template.categories.includes(c))).slice(0, 3);
+    const related = templates.filter((t) => t.slug !== template.slug && t.categories?.some((c) => template.categories?.includes(c))).slice(0, 3);
 
     return (
         <>
@@ -95,7 +95,7 @@ export default async function TemplateDetailPage({ params }: Props) {
 
                     {/* Badges */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {template.categories.map((cat) => (
+                        {template.categories?.map((cat) => (
                             <span
                                 key={cat}
                                 className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${categoryColors[cat] || "bg-gray-500/15 text-gray-400 border-gray-500/20"}`}
@@ -156,7 +156,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                             >
                                 <h2 className="text-xl font-display font-bold text-white mb-5">What this workflow does</h2>
                                 <ul className="space-y-3">
-                                    {template.whatItDoes.map((step, i) => (
+                                    {template.whatItDoes?.map((step, i) => (
                                         <li key={i} className="flex items-start gap-3 text-gray-300 text-sm leading-relaxed">
                                             <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
                                             {step}
@@ -169,7 +169,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                             <div>
                                 <h2 className="text-lg font-display font-bold text-white mb-3">Tools & Nodes</h2>
                                 <div className="flex flex-wrap gap-2">
-                                    {template.nodes.map((node) => (
+                                    {template.nodes?.map((node) => (
                                         <span
                                             key={node}
                                             className="inline-block px-3 py-1.5 rounded-lg text-xs font-semibold border"
