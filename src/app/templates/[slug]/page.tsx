@@ -189,7 +189,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                     style={{ border: "1px solid rgba(0,255,200,0.15)", borderRadius: 12 }}
                                 >
                                     {template.n8nWorkflowId ? (
-                                        <WorkflowCanvas slug={template.slug} workflowId={template.n8nWorkflowId as any} fallbackWorkflowJson={template.workflowJson} />
+                                        <WorkflowCanvas slug={template.slug || ""} workflowId={template.n8nWorkflowId || undefined} fallbackWorkflowJson={template.workflowJson} />
                                     ) : (
                                         <div className="flex items-center justify-center" style={{ height: 500, background: "#0a0a0f" }}>
                                             <div className="text-center">
@@ -219,7 +219,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                 <div className="p-6">
                                     <div className="text-center mb-6">
                                         <div className="text-4xl font-display font-bold gold-text mb-1">
-                                            ${template.value.toLocaleString()}
+                                            ${(template.value || 0).toLocaleString()}
                                         </div>
                                         <div className="text-xs text-gray-500">Estimated value saved</div>
                                     </div>
@@ -230,7 +230,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                             className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold text-navy-950 transition-all duration-300 hover:shadow-[0_0_20px_rgba(230,180,34,0.4)] hover:scale-105"
                                             style={{ background: "linear-gradient(135deg, #e6b422 0%, #c9a227 100%)" }}
                                         >
-                                            Get This Template — ${template.value.toLocaleString()}
+                                            Get This Template — ${(template.value || 0).toLocaleString()}
                                             <ArrowRight className="w-4 h-4" />
                                         </a>
                                         <a

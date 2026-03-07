@@ -1,6 +1,8 @@
 "use client";
 import dynamic from "next/dynamic";
 
+import type { WorkflowCanvasProps } from "@/components/WorkflowCanvas";
+
 /**
  * WorkflowCanvasWrapper
  * ────────────────────────────────────────────────
@@ -22,4 +24,6 @@ const WorkflowCanvas = dynamic(() => import("@/components/WorkflowCanvas"), {
     ),
 });
 
-export default WorkflowCanvas;
+export default function WorkflowCanvasWrapper(props: WorkflowCanvasProps) {
+    return <WorkflowCanvas {...props} />;
+}
