@@ -6,6 +6,7 @@ import PaymentModal from "@/components/PaymentModal";
 interface TemplatePurchaseButtonProps {
     templateName: string;
     templateValue: number;
+    templateSlug: string;
     className?: string;
     variant?: "primary" | "outline";
 }
@@ -13,6 +14,7 @@ interface TemplatePurchaseButtonProps {
 export default function TemplatePurchaseButton({
     templateName,
     templateValue,
+    templateSlug,
     className = "",
     variant = "primary",
 }: TemplatePurchaseButtonProps) {
@@ -41,6 +43,7 @@ export default function TemplatePurchaseButton({
                 planName={`Template: ${templateName}`}
                 planPrice={priceStr}
                 planPriceNumeric={templateValue}
+                templateSlug={templateSlug}
             />
         </>
     );

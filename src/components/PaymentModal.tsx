@@ -40,6 +40,7 @@ interface PaymentModalProps {
     planName: string;
     planPrice: string;
     planPriceNumeric?: number;
+    templateSlug?: string;
 }
 
 type TabId = "card" | "paypal" | "bank" | "wallet";
@@ -66,7 +67,7 @@ const WALLETS: { id: WalletId; label: string; color: string }[] = [
     { id: "khalti", label: "Khalti", color: "purple" },
 ];
 
-export default function PaymentModal({ isOpen, onClose, planName, planPrice, planPriceNumeric }: PaymentModalProps) {
+export default function PaymentModal({ isOpen, onClose, planName, planPrice, planPriceNumeric, templateSlug }: PaymentModalProps) {
     const [settings, setSettings] = useState<PaymentSettings | null>(null);
     const [tab, setTab] = useState<TabId>("card");
     const [wallet, setWallet] = useState<WalletId>("payoneer");
@@ -97,6 +98,26 @@ export default function PaymentModal({ isOpen, onClose, planName, planPrice, pla
         await navigator.clipboard.writeText(text);
         setCopied(key);
         setTimeout(() => setCopied(null), 2000);
+    };
+
+    const downloadTemplate = async () => {
+        if (!templateSlug) return;
+        try {
+            const res = await fetch(`/api/templates/${templateSlug}/download`);
+            if (res.ok) {
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${templateSlug}-workflow.json`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
+        } catch (err) {
+            console.error('Download failed:', err);
+        }
     };
 
     const fmtCard = (v: string) => v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
@@ -185,9 +206,16 @@ export default function PaymentModal({ isOpen, onClose, planName, planPrice, pla
                                         ? "Please complete the bank transfer. We'll activate your order within 24 hours of receiving payment."
                                         : "Please complete the wallet payment. We'll activate your order within 24 hours of confirmation."}
                             </p>
-                            <button onClick={onClose} className="px-6 py-3 gold-gradient text-navy-950 font-bold rounded-xl text-sm">
-                                Done
-                            </button>
+                            <div className="flex gap-3">
+                                {templateSlug && (
+                                    <button onClick={downloadTemplate} className="flex-1 px-6 py-3 gold-gradient text-navy-950 font-bold rounded-xl text-sm">
+                                        Download Template
+                                    </button>
+                                )}
+                                <button onClick={onClose} className="flex-1 px-6 py-3 gold-gradient text-navy-950 font-bold rounded-xl text-sm">
+                                    Done
+                                </button>
+                            </div>
                         </div>
                     )}
 

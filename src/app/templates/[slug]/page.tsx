@@ -218,6 +218,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                         <TemplatePurchaseButton
                                             templateName={template.name || ""}
                                             templateValue={template.value || 0}
+                                            templateSlug={template.slug || ""}
                                             variant="primary"
                                         />
                                         <a

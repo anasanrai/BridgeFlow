@@ -27,7 +27,6 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
     const [description, setDescription] = useState(template?.description || "");
     const [categories, setCategories] = useState<string[]>(template?.categories || []);
     const [difficulty, setDifficulty] = useState(template?.difficulty || "Beginner");
-    const [n8nWorkflowId, setN8nWorkflowId] = useState(template?.n8nWorkflowId || "");
     const [nodeCount, setNodeCount] = useState(template?.nodeCount || 0);
     const [setupTime, setSetupTime] = useState(template?.setupTime || "30 min");
     const [value, setValue] = useState(template?.value || 0);
@@ -74,7 +73,6 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
             description,
             categories,
             difficulty,
-            n8nWorkflowId,
             nodeCount: Number(nodeCount),
             setupTime,
             value: Number(value),
@@ -183,7 +181,7 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                         </div>
                     </div>
 
-                    {/* Row: Difficulty + n8n Workflow ID */}
+                    {/* Row: Difficulty + Node Count */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Difficulty</label>
@@ -199,24 +197,6 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                             </select>
                         </div>
                         <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">n8n Workflow ID</label>
-                            <input
-                                type="text"
-                                value={n8nWorkflowId}
-                                onChange={(e) => setN8nWorkflowId(e.target.value)}
-                                placeholder="e.g. wKBnBodZY46OaPoA"
-                                className="w-full px-4 py-3 rounded-xl text-sm text-white border border-white/10 focus:outline-none focus:border-cyan-400/40 transition-all font-mono"
-                                style={{ background: "rgba(5,5,16,0.9)" }}
-                            />
-                            <p className="text-[10px] text-gray-500 mt-1.5 font-semibold">
-                                Find this in your n8n workflow URL
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Row: Node count + Setup time + Value */}
-                    <div className="grid grid-cols-3 gap-4">
-                        <div>
                             <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Node Count</label>
                             <input
                                 type="number"
@@ -226,6 +206,10 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                                 style={{ background: "rgba(5,5,16,0.9)" }}
                             />
                         </div>
+                    </div>
+
+                    {/* Row: Setup time + Value */}
+                    <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Setup Time</label>
                             <input

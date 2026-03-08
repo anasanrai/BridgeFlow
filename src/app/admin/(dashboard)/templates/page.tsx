@@ -96,6 +96,7 @@ export default function AdminTemplatesPage() {
     const [imageUploadStatus, setImageUploadStatus] = useState<"" | "success" | "error">("" );
     const [imageUploadMsg, setImageUploadMsg] = useState("");
     const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+    const [instantPreviewImage, setInstantPreviewImage] = useState<string | null>(null);
 
     // Fetch templates
     const fetchTemplates = useCallback(async () => {
@@ -279,6 +280,7 @@ export default function AdminTemplatesPage() {
             const data = await res.json();
             if (data.ok) {
                 setUploadedImageUrl(data.url);
+                setInstantPreviewImage(data.url); // Instant preview
                 // Also update the template's image_url in DB
                 const tpl = templates.find(t => t.slug === selectedSlug);
                 if (tpl) {
@@ -717,10 +719,14 @@ export default function AdminTemplatesPage() {
                     <div className="rounded-xl p-5 border border-white/8 space-y-4" style={{ background: "rgba(10,12,25,0.6)" }}>
                         <div className="flex items-center justify-between">
                             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">Live Canvas Preview</h3>
-                            {parsedJson && <span className="text-[10px] text-emerald-400 font-semibold">{parsedJson.nodes?.length || 0} nodes</span>}
+                            {(parsedJson || instantPreviewImage) && <span className="text-[10px] text-emerald-400 font-semibold">{instantPreviewImage ? "Image" : parsedJson?.nodes?.length || 0} {instantPreviewImage ? "" : "nodes"}</span>}
                         </div>
 
-                        {parsedJson ? (
+                        {instantPreviewImage ? (
+                            <div className="rounded-xl overflow-hidden border border-emerald-500/15">
+                                <img src={instantPreviewImage} alt="Processed workflow" className="w-full h-auto" />
+                            </div>
+                        ) : parsedJson ? (
                             <>
                                 <div className="rounded-xl overflow-hidden border border-cyan-500/15">
                                     <N8nCanvas workflowJson={parsedJson} height={340} />
