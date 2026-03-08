@@ -41,16 +41,35 @@ export default function TemplatesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [templates, setTemplates] = useState<Template[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lastRefresh, setLastRefresh] = useState(Date.now());
 
-  useEffect(() => {
-    fetch("/api/templates")
+  const refreshTemplates = () => {
+    setLoading(true);
+    // Add cache-busting query parameter
+    fetch(`/api/templates?t=${Date.now()}`)
       .then((r) => r.json())
       .then(({ templates: data }) => {
         setTemplates(data || []);
       })
       .catch(() => setTemplates([]))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    refreshTemplates();
   }, []);
+
+  // Refresh templates every 10 seconds to catch updates from admin panel
+  useEffect(() => {
+    const interval = setInterval(refreshTemplates, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Manual refresh function for immediate updates
+  const handleManualRefresh = () => {
+    setLastRefresh(Date.now());
+    refreshTemplates();
+  };
 
   const filteredTemplates = templates.filter((t) => {
     const matchesCategory =
