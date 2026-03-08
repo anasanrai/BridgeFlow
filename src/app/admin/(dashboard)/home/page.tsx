@@ -63,6 +63,14 @@ export default function HomeAdmin() {
             <Home className="w-10 h-10 mx-auto mb-3 text-gray-600" />
             <p className="text-gray-400 mb-4">No home content configured</p>
             <button onClick={async () => {
+                // Check if a row already exists before creating one
+                const checkRes = await fetch("/api/admin/content/home_content");
+                const checkData = await checkRes.json();
+                if (checkData.data && checkData.data.length > 0) {
+                    // Row exists, just reload
+                    load();
+                    return;
+                }
                 await fetch("/api/admin/content/home_content", {
                     method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

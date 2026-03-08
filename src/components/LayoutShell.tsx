@@ -21,7 +21,6 @@ interface SiteConfig {
     navLinks: Array<{ label: string; href: string }>;
     footerLinks: Record<string, Array<{ label: string; href: string }>>;
     socialLinks: Array<{ platform: string; url: string; icon?: string }>;
-    affiliateLinks?: Array<{ name: string; url: string; description?: string }>;
     liveDemos?: Array<{ title: string; url: string; description?: string }> | null;
 }
 

@@ -133,8 +133,8 @@ export default async function About() {
                                     <div className="relative flex-shrink-0">
                                         <div className="relative w-40 h-40 sm:w-44 sm:h-44 rounded-full overflow-hidden shadow-2xl" style={{ background: "linear-gradient(135deg, rgba(230,180,34,0.15) 0%, rgba(6,182,212,0.10) 100%)", border: "3px solid rgba(230,180,34,0.40)" }}>
                                             <Image
-                                                src="/images/founder-portrait.png"
-                                                alt="Anasan Rai — Founder & CEO of BridgeFlow"
+                                                src={teamMember?.avatar_url || teamMember?.image_url || "/images/founder-portrait.png"}
+                                                alt={`${teamMember?.name || "Anasan Rai"} — ${teamMember?.role || "Founder & CEO of BridgeFlow"}`}
                                                 fill
                                                 className="object-cover object-top"
                                                 sizes="(max-width: 640px) 160px, 176px"
@@ -152,10 +152,10 @@ export default async function About() {
                                             Founder &amp; CEO
                                         </div>
                                         <h3 className="font-display font-bold text-2xl sm:text-3xl mb-1">
-                                            Anasan Rai
+                                            {teamMember?.name || "Anasan Rai"}
                                         </h3>
                                         <p className="text-gold-400 text-sm font-medium mb-1">
-                                            AI Automation Engineer
+                                            {teamMember?.role || "AI Automation Engineer"}
                                         </p>
                                         <p className="text-gray-500 text-sm flex items-center justify-center sm:justify-start gap-1.5 mb-4">
                                             <MapPin className="w-3.5 h-3.5" />

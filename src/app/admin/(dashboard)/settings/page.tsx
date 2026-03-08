@@ -12,6 +12,9 @@ import {
 interface SiteSettings {
     primary_ai_model: string;
     maintenance_mode: boolean;
+    custom_webhook_url?: string;
+    custom_webhook_name?: string;
+    custom_webhook_enabled?: boolean;
 }
 
 interface SocialLink {
@@ -144,11 +147,12 @@ export default function AdminSettings() {
     const [settings, setSettings] = useState<SiteSettings | null>(null);
     const [socialLinks, setSocialLinks] = useState<SocialLink[]>(DEFAULT_SOCIAL_LINKS);
     const [affiliateLinks, setAffiliateLinks] = useState<AffiliateLink[]>(DEFAULT_AFFILIATE_LINKS);
+    const [webhookTestStatus, setWebhookTestStatus] = useState<"idle" | "testing" | "ok" | "fail">("idle");
     const [liveDemons, setLiveDemons] = useState<LiveDemo[]>(DEFAULT_LIVE_DEMOS);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [toast, setToast] = useState("");
-    const [activeTab, setActiveTab] = useState<"ai" | "email" | "social" | "affiliates" | "demos" | "system">("ai");
+    const [activeTab, setActiveTab] = useState<"ai" | "email" | "social" | "demos" | "system">("ai");
     const [smtpConfig, setSmtpConfig] = useState({
         smtp_host: "smtp.hostinger.com",
         smtp_port: "465",
@@ -173,6 +177,9 @@ export default function AdminSettings() {
                 setSettings({
                     primary_ai_model: data.primary_ai_model || "modal-glm5",
                     maintenance_mode: data.maintenance_mode || false,
+                    custom_webhook_url: data.custom_webhook_url || "",
+                    custom_webhook_name: data.custom_webhook_name || "Custom Model",
+                    custom_webhook_enabled: data.custom_webhook_enabled || false,
                 });
                 if (data.social_links && data.social_links.length > 0) setSocialLinks(data.social_links);
                 if (data.affiliate_links && data.affiliate_links.length > 0) setAffiliateLinks(data.affiliate_links);
@@ -187,11 +194,11 @@ export default function AdminSettings() {
                     });
                 }
             } else {
-                setSettings({ primary_ai_model: "modal-glm5", maintenance_mode: false });
+                setSettings({ primary_ai_model: "modal-glm5", maintenance_mode: false, custom_webhook_url: "", custom_webhook_name: "Custom Model", custom_webhook_enabled: false });
             }
         } catch (error) {
             console.error("Failed to load settings:", error);
-            setSettings({ primary_ai_model: "modal-glm5", maintenance_mode: false });
+            setSettings({ primary_ai_model: "modal-glm5", maintenance_mode: false, custom_webhook_url: "", custom_webhook_name: "Custom Model", custom_webhook_enabled: false });
         } finally {
             setLoading(false);
         }
@@ -213,7 +220,6 @@ export default function AdminSettings() {
                     ...settings,
                     ...smtpConfig,
                     social_links: socialLinks,
-                    affiliate_links: affiliateLinks,
                     live_demos: liveDemons,
                 }),
             });
@@ -333,7 +339,6 @@ export default function AdminSettings() {
         { id: "ai" as const, label: "AI Engine", icon: Sparkles },
         { id: "email" as const, label: "Email (SMTP)", icon: Mail },
         { id: "social" as const, label: "Social Links", icon: LinkIcon },
-        { id: "affiliates" as const, label: "Partner Offers", icon: Tag },
         { id: "demos" as const, label: "Live Demos", icon: Video },
         { id: "system" as const, label: "System", icon: Shield },
     ];
@@ -354,7 +359,7 @@ export default function AdminSettings() {
                         Platform Settings
                     </h1>
                     <p className="text-gray-400 mt-2 text-sm max-w-2xl">
-                        Configure AI engine, social media links, affiliate partnerships, and live demos from one dashboard.
+                        Configure AI engine, social media links, and live demos from one dashboard.
                     </p>
                 </div>
                 <button
@@ -432,6 +437,88 @@ export default function AdminSettings() {
                                         </div>
                                     );
                                 })}
+                            </div>
+
+                            {/* Custom Webhook Model */}
+                            <div className="mt-6 pt-6 border-t border-white/5">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+                                            <Cpu className="w-4 h-4 text-cyan-400" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-bold text-white">Custom Webhook Model</h3>
+                                            <p className="text-xs text-gray-500">Connect any AI endpoint via webhook URL</p>
+                                        </div>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={settings?.custom_webhook_enabled || false}
+                                            onChange={(e) => setSettings({ ...settings!, custom_webhook_enabled: e.target.checked })}
+                                            className="sr-only peer"
+                                        />
+                                        <div className="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan-500" />
+                                    </label>
+                                </div>
+                                <div className="space-y-3">
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-widest">Model Display Name</label>
+                                        <input
+                                            type="text"
+                                            value={settings?.custom_webhook_name || ""}
+                                            onChange={(e) => setSettings({ ...settings!, custom_webhook_name: e.target.value })}
+                                            placeholder="e.g. GPT-4o, Claude 3.5, Llama 3.3"
+                                            className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-cyan-400/50 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-widest">Webhook URL</label>
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="url"
+                                                value={settings?.custom_webhook_url || ""}
+                                                onChange={(e) => setSettings({ ...settings!, custom_webhook_url: e.target.value })}
+                                                placeholder="https://your-endpoint.com/api/chat"
+                                                className="flex-1 px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-cyan-400/50 focus:outline-none font-mono"
+                                            />
+                                            <button
+                                                onClick={async () => {
+                                                    if (!settings?.custom_webhook_url) return;
+                                                    setWebhookTestStatus("testing");
+                                                    try {
+                                                        const res = await fetch(settings.custom_webhook_url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ test: true, ping: "bridgeflow" }), signal: AbortSignal.timeout(5000) });
+                                                        setWebhookTestStatus(res.ok ? "ok" : "fail");
+                                                    } catch { setWebhookTestStatus("fail"); }
+                                                    setTimeout(() => setWebhookTestStatus("idle"), 4000);
+                                                }}
+                                                disabled={!settings?.custom_webhook_url || webhookTestStatus === "testing"}
+                                                className="px-4 py-2.5 rounded-lg text-sm font-semibold border transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 border-cyan-500/30 text-cyan-400 bg-cyan-500/5 hover:bg-cyan-500/10"
+                                            >
+                                                {webhookTestStatus === "testing" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : webhookTestStatus === "ok" ? <CheckCircle2 className="w-3.5 h-3.5" /> : webhookTestStatus === "fail" ? <XCircle className="w-3.5 h-3.5" /> : <Send className="w-3.5 h-3.5" />}
+                                                {webhookTestStatus === "testing" ? "Testing..." : webhookTestStatus === "ok" ? "Connected" : webhookTestStatus === "fail" ? "Failed" : "Test"}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {settings?.custom_webhook_enabled && (
+                                        <div
+                                            onClick={() => setSettings({ ...settings!, primary_ai_model: "custom-webhook" })}
+                                            className={`mt-2 p-3 rounded-xl border-2 transition-all cursor-pointer flex items-center gap-3 ${
+                                                settings?.primary_ai_model === "custom-webhook"
+                                                    ? "border-cyan-500/50 bg-cyan-500/10 shadow-lg shadow-cyan-500/10"
+                                                    : "border-white/5 bg-navy-900/50 hover:bg-white/5 hover:border-white/10"
+                                            }`}
+                                        >
+                                            <Cpu className={`w-4 h-4 ${settings?.primary_ai_model === "custom-webhook" ? "text-cyan-400" : "text-gray-500"}`} />
+                                            <span className={`text-sm font-medium flex-1 ${settings?.primary_ai_model === "custom-webhook" ? "text-white" : "text-gray-400"}`}>
+                                                Use {settings?.custom_webhook_name || "Custom Webhook"} as primary model
+                                            </span>
+                                            {settings?.primary_ai_model === "custom-webhook" && (
+                                                <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full border text-cyan-400 border-cyan-500/30">Active</span>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -633,139 +720,6 @@ export default function AdminSettings() {
                                     </div>
                                 );
                             })}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Affiliate Links Tab */}
-            {activeTab === "affiliates" && (
-                <div className="animate-fade-in-up">
-                    <div className="premium-card p-6 md:p-8 rounded-2xl glass border border-white/10 max-w-4xl">
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
-                                    <Tag className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <h2 className="text-xl font-display font-bold text-white">Affiliate & Partner Links</h2>
-                                    <p className="text-sm text-gray-400">Manage the partner showcase section on the homepage.</p>
-                                </div>
-                            </div>
-                            <button
-                                onClick={addAffiliateLink}
-                                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors"
-                            >
-                                <Plus className="w-3.5 h-3.5" /> + ADD
-                            </button>
-                        </div>
-
-                        <div className="space-y-4">
-                            {affiliateLinks.map((link, idx) => (
-                                <div key={idx} className="p-5 rounded-xl border border-white/5 bg-navy-900/50 space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs uppercase tracking-wider text-gray-500 font-bold">Partner #{idx + 1}</span>
-                                        <button
-                                            onClick={() => removeAffiliateLink(idx)}
-                                            className="p-1.5 text-red-400/60 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-colors"
-                                        >
-                                            <Trash2 className="w-3.5 h-3.5" />
-                                        </button>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <input
-                                            type="text"
-                                            value={link.title}
-                                            onChange={(e) => updateAffiliateLink(idx, "title", e.target.value)}
-                                            placeholder="Partner name"
-                                            className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
-                                        />
-                                        <input
-                                            type="text"
-                                            value={link.badge}
-                                            onChange={(e) => updateAffiliateLink(idx, "badge", e.target.value)}
-                                            placeholder="Badge label"
-                                            className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <input
-                                            type="url"
-                                            value={link.href}
-                                            onChange={(e) => updateAffiliateLink(idx, "href", e.target.value)}
-                                            placeholder="https://affiliate-link.com?ref=bridgeflow"
-                                            className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
-                                        />
-                                        {/* Logo URL + Upload */}
-                                        <div className="flex gap-2">
-                                            <input
-                                                type="url"
-                                                value={link.logo_url || ""}
-                                                onChange={(e) => updateAffiliateLink(idx, "logo_url", e.target.value)}
-                                                placeholder="Logo image URL"
-                                                className="flex-1 bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 min-w-0"
-                                            />
-                                            <label
-                                                className={`flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer transition-all flex-shrink-0 ${uploading[`aff-${idx}`]
-                                                    ? "border-gold-400/30 bg-gold-400/5"
-                                                    : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
-                                                    }`}
-                                                title="Upload logo image"
-                                            >
-                                                {uploading[`aff-${idx}`]
-                                                    ? <Loader2 className="w-4 h-4 text-gold-400 animate-spin" />
-                                                    : <Upload className="w-4 h-4 text-gray-400" />
-                                                }
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    className="hidden"
-                                                    onChange={async (e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (!file) return;
-                                                        const url = await uploadImage(file, `aff-${idx}`);
-                                                        if (url) updateAffiliateLink(idx, "logo_url", url);
-                                                    }}
-                                                />
-                                            </label>
-                                        </div>
-                                    </div>
-                                    {/* Logo preview */}
-                                    {link.logo_url && (
-                                        <div className="flex items-center gap-3 p-2 bg-navy-950/50 rounded-lg border border-white/5">
-                                            <img
-                                                src={link.logo_url}
-                                                alt="Logo preview"
-                                                className="w-8 h-8 object-contain rounded"
-                                                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                                            />
-                                            <span className="text-xs text-gray-500 truncate flex-1">{link.logo_url}</span>
-                                            <button
-                                                onClick={() => updateAffiliateLink(idx, "logo_url", "")}
-                                                className="text-gray-600 hover:text-red-400 transition-colors flex-shrink-0"
-                                            >
-                                                <X className="w-3.5 h-3.5" />
-                                            </button>
-                                        </div>
-                                    )}
-                                    <textarea
-                                        value={link.description}
-                                        onChange={(e) => updateAffiliateLink(idx, "description", e.target.value)}
-                                        placeholder="Short description..."
-                                        rows={2}
-                                        className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 resize-none"
-                                    />
-                                    <select
-                                        value={link.logo}
-                                        onChange={(e) => updateAffiliateLink(idx, "logo", e.target.value)}
-                                        className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white w-40 focus:outline-none focus:border-gold-400/50"
-                                    >
-                                        {LOGO_OPTIONS.map(opt => (
-                                            <option key={opt} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            ))}
                         </div>
                     </div>
                 </div>

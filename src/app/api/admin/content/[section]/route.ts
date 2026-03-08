@@ -47,7 +47,12 @@ export async function GET(
         if (SORTABLE_SECTIONS.includes(section)) {
             query = query.order("sort_order", { ascending: true });
         }
-        query = query.order("created_at", { ascending: false });
+        // home_content uses updated_at, not created_at
+        if (section === "home_content") {
+            query = query.order("updated_at", { ascending: false });
+        } else if (!SORTABLE_SECTIONS.includes(section)) {
+            query = query.order("created_at", { ascending: false });
+        }
 
         const { data, error } = await query;
 

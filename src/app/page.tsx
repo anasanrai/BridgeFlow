@@ -5,7 +5,6 @@ import Image from "next/image";
 
 import RotatingHeadline from "@/components/RotatingHeadline";
 import LiveDemos from "@/components/LiveDemos";
-import PartnersSection from "@/components/PartnersSection";
 import Link from "next/link";
 import {
     ScrollReveal,
@@ -29,8 +28,6 @@ import {
     Users,
     ExternalLink,
     Sparkles,
-    // Tag removed - now in PartnersSection
-
     Gift,
 } from "lucide-react";
 import LucideIcon from "@/components/LucideIcon";
@@ -334,20 +331,6 @@ export default async function Home() {
                             </div>
                         </ScrollReveal>
                     </div>
-                </div>
-            </section>
-
-            {/* Tech Stack & Partner Offers */}
-            <section className="section-padding bg-navy-900/20">
-                <div className="container-max">
-                    <SectionHeader
-                        badge="Our Partners"
-                        title="Our Tech Stack &"
-                        highlight="Partner Offers"
-                        description="Tools we use daily and recommend to every client. Some links include exclusive partner discounts."
-                    />
-
-                    <PartnersSection partners={site.affiliateLinks} />
                 </div>
             </section>
 

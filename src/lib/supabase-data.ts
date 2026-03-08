@@ -56,9 +56,6 @@ export const getSiteConfig = unstable_cache(
                     socialLinks: (settings?.social_links && settings.social_links.length > 0)
                         ? settings.social_links
                         : ((config.social_links && config.social_links.length > 0) ? config.social_links : siteData.socialLinks),
-                    affiliateLinks: (settings?.affiliate_links && settings.affiliate_links.length > 0)
-                        ? settings.affiliate_links
-                        : siteData.defaultAffiliateLinks,
                     liveDemos: (settings?.live_demos && settings.live_demos.length > 0)
                         ? settings.live_demos
                         : null,
@@ -85,7 +82,6 @@ export const getSiteConfig = unstable_cache(
             navLinks: siteData.navLinks,
             footerLinks: siteData.footerLinks,
             socialLinks: siteData.socialLinks,
-            affiliateLinks: siteData.defaultAffiliateLinks,
             liveDemos: null,
         };
     },
@@ -100,14 +96,15 @@ export const getHomeContent = unstable_cache(
             if (!sb) throw new Error("No Supabase");
             const { data } = await sb.from("home_content").select("*").limit(1).single();
             if (data) return {
-                hero: data.hero || homeData.hero,
+                // Merge DB hero with defaults to ensure all fields (ctaPrimary, ctaSecondary, heroImage) are present
+                hero: data.hero ? { ...homeData.hero, ...data.hero } : homeData.hero,
                 stats: data.stats?.length ? data.stats : homeData.stats,
                 servicesOverview: data.services_overview?.length ? data.services_overview : homeData.servicesOverview,
                 processSteps: data.process_steps?.length ? data.process_steps : homeData.processSteps,
-                cta: data.cta || homeData.cta,
+                // Merge DB cta with defaults to ensure ctaPrimary, ctaSecondary are present
+                cta: data.cta ? { ...homeData.cta, ...data.cta } : homeData.cta,
                 offers: data.offers?.length ? data.offers : homeData.offers,
                 demos: data.demos?.length ? data.demos : homeData.demos,
-                affiliateLinks: siteData.defaultAffiliateLinks,
             };
         } catch { }
         return {
@@ -118,7 +115,6 @@ export const getHomeContent = unstable_cache(
             cta: homeData.cta,
             offers: homeData.offers,
             demos: homeData.demos,
-            affiliateLinks: siteData.defaultAffiliateLinks,
         };
     },
     ["home-content"],
@@ -174,21 +170,17 @@ export const getAboutContent = unstable_cache(
         try {
             const sb = getPublicClient();
             if (!sb) throw new Error("No Supabase");
-            const [heroRes, missionRes, valuesRes, teamRes, techRes, milestonesRes] = await Promise.all([
-                sb.from("about_hero").select("*").limit(1).single(),
-                sb.from("mission").select("*").limit(1).single(),
-                sb.from("values").select("*").order("sort_order"),
-                sb.from("team").select("*").order("sort_order"),
+            // Use correct table names matching the admin dashboard
+            const [valuesRes, teamRes, techRes, milestonesRes] = await Promise.all([
+                sb.from("company_values").select("*").order("sort_order"),
+                sb.from("team_members").select("*").eq("is_active", true).order("sort_order"),
                 sb.from("tech_stack").select("*").order("sort_order"),
                 sb.from("milestones").select("*").order("sort_order"),
             ]);
 
             return {
-                hero: heroRes.data || aboutData.aboutHero,
-                mission: missionRes.data ? {
-                    ...missionRes.data,
-                    content: missionRes.data.content || aboutData.mission.paragraphs.join("\n\n")
-                } : {
+                hero: aboutData.aboutHero,
+                mission: {
                     ...aboutData.mission,
                     content: aboutData.mission.paragraphs.join("\n\n")
                 },

@@ -33,7 +33,10 @@ export async function GET() {
             ...data,
             social_links: data.social_links || [],
             affiliate_links: data.affiliate_links || [],
-            live_demos: data.live_demos || []
+            live_demos: data.live_demos || [],
+            custom_webhook_url: data.custom_webhook_url || "",
+            custom_webhook_name: data.custom_webhook_name || "Custom Model",
+            custom_webhook_enabled: data.custom_webhook_enabled || false,
         });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500 });
@@ -83,6 +86,11 @@ export async function POST(req: Request) {
                     END IF;
                     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='live_demos') THEN
                         ALTER TABLE site_settings ADD COLUMN live_demos jsonb DEFAULT '[]'::jsonb;
+                    END IF;
+                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='custom_webhook_url') THEN
+                        ALTER TABLE site_settings ADD COLUMN custom_webhook_url text,
+                                          ADD COLUMN custom_webhook_name text DEFAULT 'Custom Model',
+                                          ADD COLUMN custom_webhook_enabled boolean DEFAULT false;
                     END IF;
                 END $$;`
             });
