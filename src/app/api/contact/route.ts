@@ -53,11 +53,15 @@ export async function POST(req: NextRequest) {
                 } else {
                     submissionId = data?.id;
                     // Log activity
-                    await supabase.from("activity_log").insert({
-                        action: "contact_form_submitted",
-                        section: "Contact",
-                        details: `New contact from ${name} (${email})${company ? ` — ${company}` : ""}`,
-                    }).catch(() => {});
+                    try {
+                        await supabase.from("activity_log").insert({
+                            action: "contact_form_submitted",
+                            section: "Contact",
+                            details: `New contact from ${name} (${email})${company ? ` — ${company}` : ""}`,
+                        });
+                    } catch (activityErr) {
+                        console.error("Activity log error:", activityErr);
+                    }
                 }
             } catch (dbErr) {
                 console.error("Supabase error:", dbErr);
