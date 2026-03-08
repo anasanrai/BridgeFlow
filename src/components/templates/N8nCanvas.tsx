@@ -199,7 +199,7 @@ function computeHierarchicalLayout(workflowJson: any): { nodes: LayoutNode[]; ed
         });
     });
 
-    const maxLevel = Math.max(...levels.values(), 0);
+    const maxLevel = Math.max(...Array.from(levels.values()), 0);
     const width = Math.max(800, 250 * (maxLevel + 1));
     const height = Math.max(400, (maxLevel + 1) * LEVEL_HEIGHT + 100);
 

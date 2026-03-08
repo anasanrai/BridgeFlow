@@ -1,0 +1,23 @@
+
+> bridgeflow@0.1.0 build /home/ubuntu/BridgeFlow
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/components/templates/N8nCanvas.tsx:202:34
+Type error: Type 'MapIterator<number>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+[0m [90m 200 |[39m     })[33m;[39m[0m
+[0m [90m 201 |[39m[0m
+[0m[31m[1m>[22m[39m[90m 202 |[39m     [36mconst[39m maxLevel [33m=[39m [33mMath[39m[33m.[39mmax([33m...[39mlevels[33m.[39mvalues()[33m,[39m [35m0[39m)[33m;[39m[0m
+[0m [90m     |[39m                                  [31m[1m^[22m[39m[0m
+[0m [90m 203 |[39m     [36mconst[39m width [33m=[39m [33mMath[39m[33m.[39mmax([35m800[39m[33m,[39m [35m250[39m [33m*[39m (maxLevel [33m+[39m [35m1[39m))[33m;[39m[0m
+[0m [90m 204 |[39m     [36mconst[39m height [33m=[39m [33mMath[39m[33m.[39mmax([35m400[39m[33m,[39m (maxLevel [33m+[39m [35m1[39m) [33m*[39m [33mLEVEL_HEIGHT[39m [33m+[39m [35m100[39m)[33m;[39m[0m
+[0m [90m 205 |[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+ ELIFECYCLE  Command failed with exit code 1.

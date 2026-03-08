@@ -42,52 +42,6 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "No DB connection" }, { status: 500 });
         }
 
-        // Ensure payment_settings table exists
-        try {
-            await sb.rpc("exec_sql", {
-                sql: `
-                CREATE TABLE IF NOT EXISTS payment_settings (
-                    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-                    -- PayPal
-                    paypal_enabled boolean DEFAULT false,
-                    paypal_client_id text,
-                    paypal_client_secret text,
-                    paypal_mode text DEFAULT 'sandbox',
-                    paypal_currency text DEFAULT 'USD',
-                    -- Bank Transfer
-                    bank_enabled boolean DEFAULT false,
-                    bank_name text,
-                    bank_account_name text,
-                    bank_account_number text,
-                    bank_routing_number text,
-                    bank_swift_code text,
-                    bank_iban text,
-                    bank_instructions text,
-                    -- Wallets
-                    wallets_enabled boolean DEFAULT false,
-                    wallet_payoneer_enabled boolean DEFAULT false,
-                    wallet_payoneer_email text,
-                    wallet_wise_enabled boolean DEFAULT false,
-                    wallet_wise_email text,
-                    wallet_usdt_enabled boolean DEFAULT false,
-                    wallet_usdt_address text,
-                    wallet_esewa_enabled boolean DEFAULT false,
-                    wallet_esewa_id text,
-                    wallet_khalti_enabled boolean DEFAULT false,
-                    wallet_khalti_id text,
-                    -- General
-                    currency text DEFAULT 'USD',
-                    tax_rate numeric DEFAULT 0,
-                    invoice_prefix text DEFAULT 'BF',
-                    payment_terms text DEFAULT 'Payment due within 7 days of invoice',
-                    created_at timestamptz DEFAULT now(),
-                    updated_at timestamptz DEFAULT now()
-                );`
-            });
-        } catch (e) {
-            console.error("DDL Error:", e);
-        }
-
         const { data: existing } = await sb
             .from("payment_settings")
             .select("id")
@@ -123,6 +77,16 @@ export async function POST(req: NextRequest) {
 
 function getDefaultPaymentSettings() {
     return {
+        provider: "paypal",
+        mode: "sandbox",
+        client_id: "",
+        client_secret: "",
+        webhook_id: "",
+        is_active: false,
+        supports_cards: true,
+        supports_bank: true,
+        supports_wallets: true,
+        // Keep existing fields for backward compatibility if needed by UI
         paypal_enabled: false,
         paypal_client_id: "",
         paypal_client_secret: "",
