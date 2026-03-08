@@ -43,11 +43,10 @@ export default function TemplatesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/admin/templates")
+    fetch("/api/templates")
       .then((r) => r.json())
       .then(({ templates: data }) => {
-        const published = (data || []).filter((t: Template) => t.status === "published");
-        setTemplates(published);
+        setTemplates(data || []);
       })
       .catch(() => setTemplates([]))
       .finally(() => setLoading(false));
