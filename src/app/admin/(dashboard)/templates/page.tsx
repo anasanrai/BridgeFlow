@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import AdminTemplateForm from "@/components/AdminTemplateForm";
 import N8nCanvas, { N8nNodeIconStrip } from "@/components/templates/N8nCanvas";
 import { difficultyColors as difficultyColor } from "@/data/templates";
+import Image from "next/image";
 import {
     Layers,
     Upload,
@@ -27,6 +28,10 @@ import {
     EyeOff,
     Star,
     BarChart3,
+    ImageIcon,
+    Wand2,
+    ZoomIn,
+    ImagePlus,
 } from "lucide-react";
 
 // Dynamic import for live React Flow canvas in preview modal
@@ -82,6 +87,15 @@ export default function AdminTemplatesPage() {
     const [saveMsg, setSaveMsg] = useState("");
     const [isDragging, setIsDragging] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState("");
+    // Image upload state
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imageRemoveBg, setImageRemoveBg] = useState(true);
+    const [imageUpscale, setImageUpscale] = useState(true);
+    const [imageUploading, setImageUploading] = useState(false);
+    const [imageUploadStatus, setImageUploadStatus] = useState<"" | "success" | "error">("" );
+    const [imageUploadMsg, setImageUploadMsg] = useState("");
+    const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
 
     // Fetch templates
     const fetchTemplates = useCallback(async () => {
@@ -248,6 +262,59 @@ export default function AdminTemplatesPage() {
     };
 
     const selectedTemplate = templates.find((t) => t.slug === selectedSlug);
+
+    // Image upload handler
+    const handleImageUpload = async () => {
+        if (!imageFile || !selectedSlug) return;
+        setImageUploading(true);
+        setImageUploadStatus("");
+        setImageUploadMsg("");
+        try {
+            const fd = new FormData();
+            fd.append("file", imageFile);
+            fd.append("slug", selectedSlug);
+            fd.append("removeBg", String(imageRemoveBg));
+            fd.append("upscale", String(imageUpscale));
+            const res = await fetch("/api/admin/templates/process-image", { method: "POST", body: fd });
+            const data = await res.json();
+            if (data.ok) {
+                setUploadedImageUrl(data.url);
+                // Also update the template's image_url in DB
+                const tpl = templates.find(t => t.slug === selectedSlug);
+                if (tpl) {
+                    await fetch("/api/admin/templates", {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ id: tpl.id, imageUrl: data.url }),
+                    });
+                    fetchTemplates();
+                }
+                setImageUploadStatus("success");
+                setImageUploadMsg(`Image processed & saved! ${data.processed.bgRemoved ? "BG removed. " : ""}${data.processed.upscaled ? "Upscaled to 4K." : ""}`);
+            } else {
+                throw new Error(data.error || "Upload failed");
+            }
+        } catch (err: any) {
+            setImageUploadStatus("error");
+            setImageUploadMsg(err.message);
+        } finally {
+            setImageUploading(false);
+        }
+    };
+
+    const handleImageFileSelect = (file: File) => {
+        if (!["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type)) {
+            setImageUploadStatus("error");
+            setImageUploadMsg("Only JPEG, PNG, or WebP images are allowed");
+            return;
+        }
+        setImageFile(file);
+        setImageUploadStatus("");
+        setUploadedImageUrl(null);
+        const reader = new FileReader();
+        reader.onload = (e) => setImagePreview(e.target?.result as string);
+        reader.readAsDataURL(file);
+    };
 
     if (loading) {
         return (
@@ -483,6 +550,90 @@ export default function AdminTemplatesPage() {
                             </select>
                         </div>
 
+                        {/* ── IMAGE UPLOAD SECTION ── */}
+                        <div className="rounded-xl p-4 border border-amber-400/20 space-y-4" style={{ background: "rgba(230,180,34,0.04)" }}>
+                            <div className="flex items-center gap-2">
+                                <ImagePlus className="w-4 h-4 text-amber-400" />
+                                <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400">Workflow Image Upload</h3>
+                                <span className="text-[9px] text-gray-600 ml-auto">PNG · JPG · WebP · max 20MB</span>
+                            </div>
+                            {/* Image drop zone */}
+                            <div
+                                onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files?.[0]; if (f) handleImageFileSelect(f); }}
+                                onDragOver={(e) => e.preventDefault()}
+                                className="relative rounded-xl border-2 border-dashed border-amber-400/30 hover:border-amber-400/60 p-6 text-center cursor-pointer transition-all"
+                            >
+                                <input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageFileSelect(f); }} className="absolute inset-0 opacity-0 cursor-pointer" />
+                                {imagePreview ? (
+                                    <div className="flex flex-col items-center gap-3">
+                                        <div className="relative w-full max-w-xs mx-auto rounded-lg overflow-hidden border border-amber-400/20" style={{ aspectRatio: "16/9" }}>
+                                            <Image src={imagePreview} alt="Preview" fill className="object-cover" unoptimized />
+                                        </div>
+                                        <p className="text-xs text-amber-400 font-semibold">{imageFile?.name}</p>
+                                        <button onClick={(e) => { e.stopPropagation(); setImageFile(null); setImagePreview(null); setUploadedImageUrl(null); setImageUploadStatus(""); }} className="text-[10px] text-gray-500 hover:text-red-400">
+                                            <X className="w-3 h-3 inline mr-1" />Remove
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center gap-2 pointer-events-none">
+                                        <ImageIcon className="w-8 h-8 text-amber-400/40" />
+                                        <p className="text-sm font-bold text-white">Drop workflow screenshot here</p>
+                                        <p className="text-xs text-gray-500">or click to browse</p>
+                                    </div>
+                                )}
+                            </div>
+                            {/* Processing options */}
+                            <div className="flex gap-3">
+                                <label className="flex items-center gap-2 cursor-pointer flex-1 p-3 rounded-xl border transition-all" style={{ background: imageRemoveBg ? "rgba(6,182,212,0.08)" : "rgba(10,12,25,0.6)", borderColor: imageRemoveBg ? "rgba(6,182,212,0.3)" : "rgba(255,255,255,0.08)" }}>
+                                    <input type="checkbox" checked={imageRemoveBg} onChange={(e) => setImageRemoveBg(e.target.checked)} className="sr-only" />
+                                    <Wand2 className={`w-4 h-4 ${imageRemoveBg ? "text-cyan-400" : "text-gray-600"}`} />
+                                    <div>
+                                        <p className={`text-xs font-bold ${imageRemoveBg ? "text-cyan-400" : "text-gray-500"}`}>Remove Background</p>
+                                        <p className="text-[10px] text-gray-600">AI-powered BG removal</p>
+                                    </div>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer flex-1 p-3 rounded-xl border transition-all" style={{ background: imageUpscale ? "rgba(230,180,34,0.08)" : "rgba(10,12,25,0.6)", borderColor: imageUpscale ? "rgba(230,180,34,0.3)" : "rgba(255,255,255,0.08)" }}>
+                                    <input type="checkbox" checked={imageUpscale} onChange={(e) => setImageUpscale(e.target.checked)} className="sr-only" />
+                                    <ZoomIn className={`w-4 h-4 ${imageUpscale ? "text-amber-400" : "text-gray-600"}`} />
+                                    <div>
+                                        <p className={`text-xs font-bold ${imageUpscale ? "text-amber-400" : "text-gray-500"}`}>Upscale to 4K</p>
+                                        <p className="text-[10px] text-gray-600">LANCZOS high-quality resize</p>
+                                    </div>
+                                </label>
+                            </div>
+                            {/* Upload result */}
+                            {uploadedImageUrl && (
+                                <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-xs font-bold text-emerald-400">Image saved to template!</p>
+                                        <a href={uploadedImageUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] text-gray-500 hover:text-cyan-400 truncate block">{uploadedImageUrl}</a>
+                                    </div>
+                                </div>
+                            )}
+                            {imageUploadStatus === "error" && (
+                                <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                                    <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                                    <span>{imageUploadMsg}</span>
+                                </div>
+                            )}
+                            {imageUploadStatus === "success" && (
+                                <div className="flex items-start gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs">
+                                    <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+                                    <span>{imageUploadMsg}</span>
+                                </div>
+                            )}
+                            <button
+                                onClick={handleImageUpload}
+                                disabled={!imageFile || !selectedSlug || imageUploading}
+                                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)", color: "#0a0a0f" }}
+                            >
+                                {imageUploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                                {imageUploading ? "Processing..." : "Process & Upload Image"}
+                            </button>
+                        </div>
+                        {/* ── JSON UPLOAD SECTION ── */}
                         <div
                             onDrop={(e) => { e.preventDefault(); setIsDragging(false); const file = e.dataTransfer.files?.[0]; if (file) processFile(file); }}
                             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}

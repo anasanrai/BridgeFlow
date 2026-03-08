@@ -219,10 +219,17 @@ export default async function Services() {
                                             <p className="text-gray-400 text-lg leading-relaxed mb-8">
                                                 {service.description}
                                             </p>
-                                            <Button variant="secondary" href="/contact" className="group">
-                                                Get Started
-                                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                            </Button>
+                                            {lowerTitle.includes("consult") ? (
+                                                <Button variant="primary" href="/services/consulting" className="group">
+                                                    View Consulting Packages
+                                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                                </Button>
+                                            ) : (
+                                                <Button variant="secondary" href="/contact" className="group">
+                                                    Get Started
+                                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                                </Button>
+                                            )}
                                         </div>
                                         <div className={i % 2 === 1 ? "lg:order-1" : ""}>
                                             <Card hover={false} className="!p-0 relative overflow-hidden group premium-card">

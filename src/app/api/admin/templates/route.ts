@@ -129,6 +129,8 @@ export async function PUT(req: NextRequest) {
         if (body.status !== undefined) updatePayload.status = body.status;
         if (body.n8nWorkflowId !== undefined) updatePayload.n8n_workflow_id = body.n8nWorkflowId;
         if (body.order !== undefined) updatePayload.order = body.order;
+        if (body.imageUrl !== undefined) updatePayload.image_url = body.imageUrl;
+        if (body.workflowJson !== undefined) updatePayload.workflow_json = body.workflowJson;
 
         const { data, error } = await sb
             .from("templates")
@@ -208,5 +210,7 @@ function normalizeTemplate(row: Record<string, unknown>) {
         n8nWorkflowId: row.n8n_workflow_id,
         order: row.order,
         updatedAt: row.updated_at,
+        imageUrl: row.image_url ?? null,
+        workflowJson: row.workflow_json ?? null,
     };
 }

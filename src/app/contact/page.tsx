@@ -9,6 +9,12 @@ import {
     ArrowRight,
     Linkedin,
     Calendar,
+    Twitter,
+    Youtube,
+    Instagram,
+    Github,
+    Facebook,
+    MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import ContactForm from "@/components/ContactForm";
@@ -187,23 +193,29 @@ export default async function Contact() {
                                     <h3 className="text-lg font-display font-bold mb-4">
                                         Connect With Us
                                     </h3>
-                                    <div className="flex gap-3">
-                                        <a
-                                            href="https://www.linkedin.com/company/bridgeflow-agency"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            aria-label="LinkedIn"
-                                            className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/30 transition-all"
-                                        >
-                                            <Linkedin className="w-5 h-5" />
-                                        </a>
-                                        <a
-                                            href="mailto:hello@bridgeflow.agency"
-                                            aria-label="Email"
-                                            className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-400 hover:border-gold-400/30 transition-all"
-                                        >
-                                            <Mail className="w-5 h-5" />
-                                        </a>
+                                    <div className="flex flex-wrap gap-3">
+                                        {([
+                                            { href: "https://www.linkedin.com/company/bridgeflow-agency", Icon: Linkedin, label: "LinkedIn", hoverCls: "hover:text-[#0A66C2] hover:border-[#0A66C2]/30" },
+                                            { href: "https://twitter.com/bridgeflowai", Icon: Twitter, label: "Twitter / X", hoverCls: "hover:text-[#1DA1F2] hover:border-[#1DA1F2]/30" },
+                                            { href: "https://www.youtube.com/@bridgeflow", Icon: Youtube, label: "YouTube", hoverCls: "hover:text-[#FF0000] hover:border-[#FF0000]/30" },
+                                            { href: "https://www.instagram.com/bridgeflowai", Icon: Instagram, label: "Instagram", hoverCls: "hover:text-[#E1306C] hover:border-[#E1306C]/30" },
+                                            { href: "https://github.com/bridgeflow", Icon: Github, label: "GitHub", hoverCls: "hover:text-white hover:border-white/30" },
+                                            { href: "https://www.facebook.com/bridgeflowai", Icon: Facebook, label: "Facebook", hoverCls: "hover:text-[#1877F2] hover:border-[#1877F2]/30" },
+                                            { href: "https://t.me/bridgeflowai", Icon: MessageCircle, label: "Telegram", hoverCls: "hover:text-[#26A5E4] hover:border-[#26A5E4]/30" },
+                                            { href: `mailto:${site.email || "hello@bridgeflow.agency"}`, Icon: Mail, label: "Email", hoverCls: "hover:text-gold-400 hover:border-gold-400/30" },
+                                        ] as const).map(({ href, Icon, label, hoverCls }) => (
+                                            <a
+                                                key={label}
+                                                href={href}
+                                                target={href.startsWith("mailto") ? undefined : "_blank"}
+                                                rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                                                aria-label={label}
+                                                title={label}
+                                                className={`w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 transition-all ${hoverCls}`}
+                                            >
+                                                <Icon className="w-5 h-5" />
+                                            </a>
+                                        ))}
                                     </div>
                                 </Card>
                             </ScrollReveal>

@@ -147,52 +147,7 @@ export default function AICalculator() {
 
             <div className="container-max px-4">
                 {/* ─── Hero Section ─── */}
-                <div className="relative max-w-5xl mx-auto text-center mb-20">
-                    {/* Floating stat badges */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -40, y: 20 }}
-                        animate={{ opacity: 1, x: 0, y: 0 }}
-                        transition={{ delay: 0.5, duration: 0.6 }}
-                        className="hidden lg:flex absolute -left-8 top-12 glass border border-emerald-500/20 rounded-2xl px-4 py-3 items-center gap-3"
-                    >
-                        <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <Clock className="w-5 h-5 text-emerald-400" />
-                        </div>
-                        <div className="text-left">
-                            <div className="text-lg font-bold text-emerald-400">90%</div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Time Saved</div>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, x: 40, y: -20 }}
-                        animate={{ opacity: 1, x: 0, y: 0 }}
-                        transition={{ delay: 0.7, duration: 0.6 }}
-                        className="hidden lg:flex absolute -right-4 top-8 glass border border-gold-400/20 rounded-2xl px-4 py-3 items-center gap-3"
-                    >
-                        <div className="w-10 h-10 rounded-xl bg-gold-400/10 flex items-center justify-center">
-                            <DollarSign className="w-5 h-5 text-gold-400" />
-                        </div>
-                        <div className="text-left">
-                            <div className="text-lg font-bold text-gold-400">$130K+</div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Avg Yearly ROI</div>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.9, duration: 0.6 }}
-                        className="hidden lg:flex absolute right-16 bottom-4 glass border border-purple-500/20 rounded-2xl px-4 py-3 items-center gap-3"
-                    >
-                        <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                            <TrendingUp className="w-5 h-5 text-purple-400" />
-                        </div>
-                        <div className="text-left">
-                            <div className="text-lg font-bold text-purple-400">10×</div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Output Scale</div>
-                        </div>
-                    </motion.div>
+                <div className="max-w-4xl mx-auto text-center mb-20">
 
                     {/* Badge */}
                     <motion.div
@@ -237,26 +192,33 @@ export default function AICalculator() {
                         <span className="text-white font-semibold">let us fix it</span>.
                     </motion.p>
 
-                    {/* Quick stats row on mobile */}
+                    {/* Stats row — all screen sizes */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="flex lg:hidden items-center justify-center gap-6 mb-8"
+                        className="flex items-stretch justify-center gap-0 mb-10 glass border border-white/10 rounded-2xl overflow-hidden max-w-lg mx-auto"
                     >
-                        <div className="text-center">
-                            <div className="text-2xl font-bold text-emerald-400">90%</div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-wider">Time Saved</div>
+                        <div className="flex-1 flex flex-col items-center justify-center py-4 px-6 border-r border-white/10">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Clock className="w-4 h-4 text-emerald-400" />
+                                <div className="text-2xl sm:text-3xl font-bold text-emerald-400">90%</div>
+                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Time Saved</div>
                         </div>
-                        <div className="w-px h-8 bg-white/10" />
-                        <div className="text-center">
-                            <div className="text-2xl font-bold text-gold-400">$130K+</div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-wider">Yearly ROI</div>
+                        <div className="flex-1 flex flex-col items-center justify-center py-4 px-6 border-r border-white/10">
+                            <div className="flex items-center gap-2 mb-1">
+                                <DollarSign className="w-4 h-4 text-gold-400" />
+                                <div className="text-2xl sm:text-3xl font-bold text-gold-400">$130K+</div>
+                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Avg Yearly ROI</div>
                         </div>
-                        <div className="w-px h-8 bg-white/10" />
-                        <div className="text-center">
-                            <div className="text-2xl font-bold text-purple-400">10×</div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-wider">Output Scale</div>
+                        <div className="flex-1 flex flex-col items-center justify-center py-4 px-6">
+                            <div className="flex items-center gap-2 mb-1">
+                                <TrendingUp className="w-4 h-4 text-purple-400" />
+                                <div className="text-2xl sm:text-3xl font-bold text-purple-400">10×</div>
+                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Output Scale</div>
                         </div>
                     </motion.div>
 

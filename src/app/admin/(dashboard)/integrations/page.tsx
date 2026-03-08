@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Link2, Save, Loader2, Plus, X, Key, Zap, Copy, Trash2, Globe } from "lucide-react";
+import { Link2, Save, Loader2, Plus, X, Key, Zap, Copy, Trash2, Globe, CheckCircle, AlertCircle, Play, RefreshCw } from "lucide-react";
 
 interface ApiToken {
     id: string;
@@ -28,6 +28,11 @@ export default function IntegrationsAdmin() {
     const [toast, setToast] = useState("");
     const [n8nWebhookUrl, setN8nWebhookUrl] = useState("");
     const [savingN8n, setSavingN8n] = useState(false);
+    const [freeAuditWebhookUrl, setFreeAuditWebhookUrl] = useState("");
+    const [savingAudit, setSavingAudit] = useState(false);
+    const [testingAudit, setTestingAudit] = useState(false);
+    const [auditWebhookStatus, setAuditWebhookStatus] = useState<"idle" | "success" | "error">("idle");
+    const [auditWebhookSaved, setAuditWebhookSaved] = useState(false);
 
     const load = useCallback(async () => {
         setLoading(true);
@@ -129,6 +134,45 @@ export default function IntegrationsAdmin() {
             load();
         } catch { showToast("❌ Error saving webhook"); }
         finally { setSavingN8n(false); }
+    };
+
+    const handleSaveFreeAuditWebhook = async () => {
+        if (!freeAuditWebhookUrl) { showToast("Please enter a webhook URL"); return; }
+        setSavingAudit(true);
+        try {
+            await fetch("/api/admin/content/webhooks", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: "Free Audit — n8n Agent Webhook",
+                    url: freeAuditWebhookUrl,
+                    secret: "",
+                    events: ["audit.requested", "free_audit"],
+                    is_active: true,
+                }),
+            });
+            setAuditWebhookSaved(true);
+            showToast("✅ Free Audit webhook saved!");
+            load();
+        } catch { showToast("❌ Error saving webhook"); }
+        finally { setSavingAudit(false); }
+    };
+
+    const testFreeAuditWebhook = async () => {
+        const url = freeAuditWebhookUrl || webhooks.find(w => w.events.includes("free_audit"))?.url;
+        if (!url) { showToast("No webhook URL configured"); return; }
+        setTestingAudit(true);
+        setAuditWebhookStatus("idle");
+        try {
+            const res = await fetch("/api/audit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: "https://www.bridgeflow.agency", email: "test@bridgeflow.agency", test: true }),
+            });
+            setAuditWebhookStatus(res.ok ? "success" : "error");
+            showToast(res.ok ? "✅ Test webhook fired successfully!" : "❌ Webhook test failed");
+        } catch { setAuditWebhookStatus("error"); showToast("❌ Webhook test failed"); }
+        finally { setTestingAudit(false); }
     };
 
     const deleteItem = async (section: string, id: string) => {
@@ -339,17 +383,67 @@ export default function IntegrationsAdmin() {
                     )}
                 </div>
 
-                <div className="mt-8 p-6 bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-blue-500/15 rounded-xl">
+                {/* Free Audit Webhook — Prominent Panel */}
+                <div className="mt-8 p-6 bg-gradient-to-br from-gold-400/5 to-orange-500/5 border-2 border-gold-400/20 rounded-xl">
+                    <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gold-400/10 border border-gold-400/20 flex items-center justify-center flex-shrink-0">
+                            <Zap className="w-6 h-6 text-gold-400" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="text-sm font-bold text-white">Free Audit — n8n Agent Webhook</span>
+                                <span className="px-2 py-0.5 bg-gold-400/10 text-gold-400 text-[10px] font-bold rounded-full border border-gold-400/20">PRIMARY</span>
+                                {auditWebhookStatus === "success" && <span className="flex items-center gap-1 text-[10px] text-emerald-400"><CheckCircle className="w-3 h-3" /> Live</span>}
+                                {auditWebhookStatus === "error" && <span className="flex items-center gap-1 text-[10px] text-red-400"><AlertCircle className="w-3 h-3" /> Failed</span>}
+                            </div>
+                            <p className="text-xs text-gray-400 mb-4 leading-relaxed">
+                                Connect your n8n workflow agent to the &quot;Free Audit&quot; button. When a visitor submits their website URL,
+                                BridgeFlow will POST <code className="text-gold-400/80 bg-navy-950 px-1 py-0.5 rounded text-[10px]">&#123; url, email, timestamp &#125;</code> to this webhook.
+                                Your n8n agent then runs the audit and sends the report automatically.
+                            </p>
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="relative flex-1">
+                                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                    <input
+                                        value={freeAuditWebhookUrl}
+                                        onChange={(e) => setFreeAuditWebhookUrl(e.target.value)}
+                                        placeholder="https://your-n8n.app.n8n.cloud/webhook/free-audit"
+                                        className="w-full pl-10 pr-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-600 focus:border-gold-400/50 focus:outline-none"
+                                    />
+                                </div>
+                                <button onClick={handleSaveFreeAuditWebhook} disabled={savingAudit}
+                                    className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-lg text-xs disabled:opacity-50 flex-shrink-0">
+                                    {savingAudit ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                                    {savingAudit ? "Saving..." : "Save"}
+                                </button>
+                                <button onClick={testFreeAuditWebhook} disabled={testingAudit}
+                                    className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 font-bold rounded-lg text-xs disabled:opacity-50 flex-shrink-0 transition-all">
+                                    {testingAudit ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
+                                    Test
+                                </button>
+                            </div>
+                            {/* Existing saved audit webhooks */}
+                            {webhooks.filter(w => w.events.includes("free_audit") || w.events.includes("audit.requested")).map(w => (
+                                <div key={w.id} className="flex items-center gap-3 p-3 bg-navy-950/80 rounded-lg border border-white/5 mt-2">
+                                    <div className={`w-2 h-2 rounded-full flex-shrink-0 ${w.is_active ? "bg-emerald-400" : "bg-gray-600"}`} />
+                                    <span className="text-xs text-gray-400 flex-1 truncate font-mono">{w.url}</span>
+                                    <span className="text-[10px] text-gray-600">{w.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* n8n General Pipeline */}
+                <div className="mt-4 p-6 bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-blue-500/15 rounded-xl">
                     <div className="flex items-start gap-4">
                         <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
                             <Zap className="w-5 h-5 text-blue-400" />
                         </div>
                         <div className="flex-1">
-                            <div className="text-sm font-bold text-white mb-1">n8n &quot;Trojan Horse&quot; Audit Pipeline</div>
+                            <div className="text-sm font-bold text-white mb-1">n8n &quot;Trojan Horse&quot; General Pipeline</div>
                             <p className="text-xs text-gray-400 mb-4 leading-relaxed">
-                                Paste your n8n webhook URL here to activate the Trojan Horse audit pipeline.
-                                When a user requests a Free Audit, BridgeFlow will POST the site URL and email to this webhook.
-                                n8n will then perform a deeper analysis and send the report automatically.
+                                General n8n webhook for all BridgeFlow events (contact forms, new orders, etc).
                             </p>
                             <div className="flex items-center gap-3">
                                 <div className="relative flex-1">
@@ -361,11 +455,8 @@ export default function IntegrationsAdmin() {
                                         className="w-full pl-10 pr-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-600 focus:border-blue-500/50 focus:outline-none"
                                     />
                                 </div>
-                                <button
-                                    onClick={handleSaveN8nWebhook}
-                                    disabled={savingN8n}
-                                    className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-lg text-xs disabled:opacity-50"
-                                >
+                                <button onClick={handleSaveN8nWebhook} disabled={savingN8n}
+                                    className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-lg text-xs disabled:opacity-50">
                                     {savingN8n ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                                     {savingN8n ? "Saving..." : "Save"}
                                 </button>

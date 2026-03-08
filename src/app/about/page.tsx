@@ -129,9 +129,9 @@ export default async function About() {
                         <ScrollReveal>
                             <Card className="mb-12 overflow-hidden">
                                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
-                                    {/* Portrait */}
+                                    {/* Portrait — circular format */}
                                     <div className="relative flex-shrink-0">
-                                        <div className="relative w-40 h-48 sm:w-44 sm:h-52 rounded-2xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(230,180,34,0.08) 0%, rgba(6,182,212,0.08) 100%)", border: "1px solid rgba(230,180,34,0.2)" }}>
+                                        <div className="relative w-40 h-40 sm:w-44 sm:h-44 rounded-full overflow-hidden shadow-2xl" style={{ background: "linear-gradient(135deg, rgba(230,180,34,0.15) 0%, rgba(6,182,212,0.10) 100%)", border: "3px solid rgba(230,180,34,0.40)" }}>
                                             <Image
                                                 src="/images/founder-portrait.png"
                                                 alt="Anasan Rai — Founder & CEO of BridgeFlow"
@@ -141,8 +141,8 @@ export default async function About() {
                                                 priority
                                             />
                                         </div>
-                                        {/* Gold accent ring */}
-                                        <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full gold-gradient flex items-center justify-center text-navy-950 text-xs font-bold shadow-lg">
+                                        {/* Gold accent badge */}
+                                        <div className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full gold-gradient flex items-center justify-center text-navy-950 text-xs font-bold shadow-lg border-2 border-navy-950">
                                             🇳🇵
                                         </div>
                                     </div>
