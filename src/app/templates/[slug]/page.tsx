@@ -6,6 +6,7 @@ import { templates, categoryColors, difficultyColors } from "@/data/templates";
 import WorkflowCanvas from "@/components/templates/N8nCanvasWrapper";
 import TemplateCard from "@/components/templates/TemplateCard";
 import TemplatePurchaseButton from "@/components/templates/TemplatePurchaseButton";
+import JsonViewer from "@/components/templates/JsonViewer";
 import { getSupabase } from "@/lib/supabase";
 
 interface Props {
@@ -257,6 +258,17 @@ export default async function TemplateDetailPage({ params }: Props) {
                     </div>
                 </div>
             </section>
+
+            {/* ── Workflow JSON ─────────────────────────────────── */}
+            {template.workflowJson && (
+                <section className="section-padding bg-navy-900/30 border-t border-white/5">
+                    <div className="container-max px-4 sm:px-6 lg:px-8">
+                        <h2 className="text-lg font-display font-bold text-white mb-4">Workflow JSON</h2>
+                        <p className="text-gray-400 text-sm mb-4">Copy the complete n8n workflow JSON below to import into your n8n instance.</p>
+                        <JsonViewer json={template.workflowJson} />
+                    </div>
+                </section>
+            )}
 
             {/* ── Related Templates ─────────────────────────────── */}
             {related.length > 0 && (

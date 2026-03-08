@@ -1,0 +1,23 @@
+
+> bridgeflow@0.1.0 build /home/ubuntu/BridgeFlow
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/contact/route.ts:60:24
+Type error: Property 'catch' does not exist on type 'PostgrestFilterBuilder<any, any, any, null, "activity_log", unknown, "POST">'. Did you mean 'match'?
+
+[0m [90m 58 |[39m                         section[33m:[39m [32m"Contact"[39m[33m,[39m[0m
+[0m [90m 59 |[39m                         details[33m:[39m [32m`New contact from ${name} (${email})${company ? ` — ${company}` : ""}`[39m[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 60 |[39m                     })[33m.[39m[36mcatch[39m(() [33m=>[39m {})[33m;[39m[0m
+[0m [90m    |[39m                        [31m[1m^[22m[39m[0m
+[0m [90m 61 |[39m                 }[0m
+[0m [90m 62 |[39m             } [36mcatch[39m (dbErr) {[0m
+[0m [90m 63 |[39m                 console[33m.[39merror([32m"Supabase error:"[39m[33m,[39m dbErr)[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+ ELIFECYCLE  Command failed with exit code 1.

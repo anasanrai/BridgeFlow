@@ -1,0 +1,118 @@
+
+> bridgeflow@0.1.0 build /home/ubuntu/BridgeFlow
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/66) ...
+   Generating static pages (16/66) 
+   Generating static pages (32/66) 
+   Generating static pages (49/66) 
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+[Template] Error fetching from Supabase: Error: Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+ ✓ Generating static pages (66/66)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                    Size     First Load JS
+┌ ○ /                                          5.17 kB         329 kB
+├ ○ /_not-found                                153 B          88.2 kB
+├ ○ /about                                     1.98 kB         326 kB
+├ ○ /admin                                     3.23 kB        96.4 kB
+├ ○ /admin/about                               6.2 kB         99.4 kB
+├ ○ /admin/activity                            1.94 kB          90 kB
+├ ○ /admin/ai-models                           5.14 kB        93.2 kB
+├ ○ /admin/blog                                5.74 kB        93.8 kB
+├ ○ /admin/case-studies                        4.24 kB        92.3 kB
+├ ○ /admin/contacts                            3.04 kB        91.1 kB
+├ ○ /admin/dashboard                           116 kB          220 kB
+├ ○ /admin/home                                4.71 kB        92.7 kB
+├ ○ /admin/integrations                        5.7 kB         93.7 kB
+├ ○ /admin/media                               3.83 kB        91.8 kB
+├ ○ /admin/payments                            6.03 kB          94 kB
+├ ○ /admin/seo                                 4.69 kB        92.7 kB
+├ ○ /admin/services                            3.87 kB        91.9 kB
+├ ○ /admin/settings                            8.25 kB        99.4 kB
+├ ○ /admin/site                                3.06 kB        91.1 kB
+├ ○ /admin/subscribers                         3.01 kB          91 kB
+├ ○ /admin/templates                           15.6 kB         118 kB
+├ ○ /api-reference                             8.89 kB         145 kB
+├ ƒ /api/admin/ai                              0 B                0 B
+├ ƒ /api/admin/auth                            0 B                0 B
+├ ƒ /api/admin/content/[section]               0 B                0 B
+├ ƒ /api/admin/migrate                         0 B                0 B
+├ ƒ /api/admin/payments                        0 B                0 B
+├ ƒ /api/admin/settings                        0 B                0 B
+├ ƒ /api/admin/templates                       0 B                0 B
+├ ƒ /api/admin/templates/process-image         0 B                0 B
+├ ƒ /api/admin/templates/save-workflow         0 B                0 B
+├ ƒ /api/admin/upload                          0 B                0 B
+├ ƒ /api/audit                                 0 B                0 B
+├ ƒ /api/careers                               0 B                0 B
+├ ƒ /api/chat                                  0 B                0 B
+├ ƒ /api/checkout                              0 B                0 B
+├ ƒ /api/contact                               0 B                0 B
+├ ƒ /api/n8n/workflow/[id]                     0 B                0 B
+├ ƒ /api/newsletter                            0 B                0 B
+├ ƒ /api/telemetry                             0 B                0 B
+├ ƒ /api/templates                             0 B                0 B
+├ ○ /audit                                     3.32 kB         134 kB
+├ ○ /blog                                      3.44 kB         142 kB
+├ ƒ /blog/[slug]                               1.93 kB         143 kB
+├ ○ /calculator                                5.63 kB         141 kB
+├ ○ /careers                                   5.89 kB         142 kB
+├ ○ /case-studies                              1.93 kB         138 kB
+├ ● /case-studies/[slug]                       1.93 kB         138 kB
+├   ├ /case-studies/techscale-lead-automation
+├   ├ /case-studies/growthbase-onboarding
+├   └ /case-studies/nexus-digital-crm-ai
+├ ○ /client-service-agreement                  187 B          96.9 kB
+├ ƒ /contact                                   5.5 kB          142 kB
+├ ○ /docs                                      11.1 kB         148 kB
+├ ○ /how-it-works                              1.91 kB         138 kB
+├ ○ /icon.svg                                  0 B                0 B
+├ ƒ /opengraph-image                           0 B                0 B
+├ ○ /pricing                                   4.7 kB          146 kB
+├ ○ /privacy-policy                            1.92 kB         138 kB
+├ ○ /refund-policy                             187 B          96.9 kB
+├ ○ /robots.txt                                0 B                0 B
+├ ○ /services                                  1.96 kB         321 kB
+├ ○ /services/ai                               1.92 kB         138 kB
+├ ○ /services/consulting                       1.93 kB         138 kB
+├ ○ /sitemap.xml                               0 B                0 B
+├ ○ /templates                                 5.87 kB        99.1 kB
+├ ● /templates/[slug]                          8.97 kB         110 kB
+├   ├ /templates/real-estate-lead-capture
+├   ├ /templates/follow-up-email-sequence
+├   ├ /templates/lead-routing-system
+├   └ [+4 more paths]
+└ ○ /terms-of-service                          1.92 kB         138 kB
++ First Load JS shared by all                  88 kB
+  ├ chunks/2200cc46-9e260350a28d8dde.js        53.6 kB
+  ├ chunks/2945-f0e19c756f236fa9.js            31.9 kB
+  └ other shared chunks (total)                2.52 kB
+
+
+ƒ Middleware                                   32.8 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+ƒ  (Dynamic)  server-rendered on demand
+
