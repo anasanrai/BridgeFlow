@@ -3,7 +3,7 @@ import { ScrollReveal } from "@/components/ui";
 import { FileText, Gavel, CheckCircle2, AlertCircle, DollarSign, Shield, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Terms of Service | BridgeFlow",
+    title: "Terms of Service",
     description: "BridgeFlow Client Service Agreement and Terms of Service — the legal agreement governing use of our AI automation services.",
 };
 

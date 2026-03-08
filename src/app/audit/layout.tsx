@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description,
         alternates: { canonical: `${site.url}/audit` },
         openGraph: {
-            title: "Free Automation Audit — BridgeFlow",
+            title: "Free Automation Audit",
             description: "Find out how many leads you're losing. Free 60-second audit.",
             url: `${site.url}/audit`,
             type: "website",
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
         },
         twitter: {
             card: "summary_large_image",
-            title: "Free Automation Audit — BridgeFlow",
+            title: "Free Automation Audit",
             description: "Find out how many leads you're losing. Free 60-second audit.",
             images: ["/images/og-audit.png"],
         },

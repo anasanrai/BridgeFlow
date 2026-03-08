@@ -15,7 +15,7 @@ export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
     const [seo, site] = await Promise.all([getPageSEO("/about"), getSiteConfig()]);
-    const title = `About | ${site.name} — AI Automation Agency`;
+    const title = `About | ${site.name}`;
     const description = seo.description || "Meet Anasan Rai, founder of BridgeFlow — a self-taught AI automation engineer helping B2B businesses eliminate manual work and scale operations.";
     return {
         title,

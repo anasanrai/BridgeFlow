@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Shield, Clock, CheckCircle2, AlertCircle, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Refund Policy | BridgeFlow AI Automation Agency",
+    title: "Refund Policy",
     description: "BridgeFlow's refund policy for AI automation services. Understand our 30-day satisfaction guarantee and payment terms.",
     alternates: { canonical: "https://bridgeflow.agency/refund-policy" },
 };

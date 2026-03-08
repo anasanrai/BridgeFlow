@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ScrollReveal, SectionHeader, Button, Card } from "@/components/ui";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import Link from "next/link";
+import { ScrollReveal, Button, Card } from "@/components/ui";
+import { ArrowRight, Building2 } from "lucide-react";
 import { getCaseStudies, getSiteConfig } from "@/lib/supabase-data";
 
 export const revalidate = 60;
@@ -22,6 +23,14 @@ export async function generateMetadata() {
 
 export default async function CaseStudies() {
     const caseStudies = await getCaseStudies();
+
+    const industryColors: Record<string, string> = {
+        SaaS: "text-blue-400 bg-blue-400/10 border-blue-400/20",
+        Consulting: "text-purple-400 bg-purple-400/10 border-purple-400/20",
+        "Digital Marketing": "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
+        "Real Estate": "text-orange-400 bg-orange-400/10 border-orange-400/20",
+        "E-Commerce": "text-pink-400 bg-pink-400/10 border-pink-400/20",
+    };
 
     return (
         <>
@@ -50,94 +59,76 @@ export default async function CaseStudies() {
                 </div>
             </section>
 
-            {/* Case Studies */}
-            <section className="section-padding">
-                <div className="container-max space-y-24">
-                    {caseStudies.map((cs: any, i: number) => (
-                        <ScrollReveal key={cs.slug}>
-                            <div className="relative">
-                                {/* Header */}
-                                <div className="mb-8">
-                                    <div className="flex flex-wrap items-center gap-3 mb-4">
-                                        <span className="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
-                                            {cs.industry}
-                                        </span>
-                                        <span className="text-sm text-gray-500">{cs.client}</span>
-                                    </div>
-                                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold mb-4">
-                                        {cs.title}
-                                    </h2>
-                                    <p className="text-gray-400 text-lg max-w-3xl">
-                                        {cs.excerpt}
-                                    </p>
-                                </div>
-
-                                <div className="grid lg:grid-cols-2 gap-8">
-                                    {/* Challenge & Solution */}
-                                    <div className="space-y-6">
-                                        <Card hover={false}>
-                                            <h3 className="text-sm font-semibold text-red-400 uppercase tracking-wider mb-3">
-                                                The Challenge
-                                            </h3>
-                                            <p className="text-gray-400 leading-relaxed">
-                                                {cs.challenge}
-                                            </p>
-                                        </Card>
-                                        <Card hover={false}>
-                                            <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-3">
-                                                Our Solution
-                                            </h3>
-                                            <p className="text-gray-400 leading-relaxed">
-                                                {cs.solution}
-                                            </p>
-                                        </Card>
-                                        <div className="flex flex-wrap gap-2">
-                                            {cs.tags.map((tag: string) => (
-                                                <span
-                                                    key={tag}
-                                                    className="px-3 py-1 text-xs text-gray-400 border border-white/10 rounded-full bg-white/5"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Results */}
-                                    <div>
-                                        <Card hover={false} className="h-full">
-                                            <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-6 flex items-center gap-2">
-                                                <TrendingUp className="w-4 h-4" />
-                                                Results
-                                            </h3>
-                                            <div className="grid grid-cols-2 gap-6">
-                                                {cs.results.map((r: any) => (
-                                                    <div key={r.label}>
-                                                        <div className="text-2xl sm:text-3xl font-display font-bold gold-text mb-1">
-                                                            {r.metric}
-                                                        </div>
-                                                        <div className="text-sm text-gray-400">
-                                                            {r.label}
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </Card>
-                                    </div>
-                                </div>
-
-                                {i < caseStudies.length - 1 && (
-                                    <div className="mt-16 border-b border-white/5" />
-                                )}
+            {/* Stats Bar */}
+            <section className="py-10 bg-navy-900/50 border-y border-white/5">
+                <div className="container-max px-4 sm:px-6">
+                    <ScrollReveal>
+                        <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto text-center">
+                            <div>
+                                <div className="text-3xl font-display font-bold gold-text mb-1">{caseStudies.length}+</div>
+                                <div className="text-sm text-gray-400">Case Studies</div>
                             </div>
-                        </ScrollReveal>
-                    ))}
+                            <div>
+                                <div className="text-3xl font-display font-bold gold-text mb-1">340%</div>
+                                <div className="text-sm text-gray-400">Avg. Client ROI</div>
+                            </div>
+                            <div>
+                                <div className="text-3xl font-display font-bold gold-text mb-1">98%</div>
+                                <div className="text-sm text-gray-400">Satisfaction Rate</div>
+                            </div>
+                        </div>
+                    </ScrollReveal>
                 </div>
             </section>
 
-            {/* CTA */}
+            {/* Case Studies Grid */}
             <section className="section-padding">
-                <div className="container-max">
+                <div className="container-max px-4 sm:px-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                        {caseStudies.map((cs: any, i: number) => {
+                            const colorClass = industryColors[cs.industry] || "text-gold-400 bg-gold-400/10 border-gold-400/20";
+                            return (
+                                <ScrollReveal key={cs.slug} delay={i * 0.05}>
+                                    <Link href={`/case-studies/${cs.slug}`} className="block group h-full">
+                                        <Card className="h-full flex flex-col transition-all duration-300 group-hover:border-gold-400/30 group-hover:-translate-y-1">
+                                            <div className="flex items-start justify-between gap-3 mb-4">
+                                                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full border ${colorClass}`}>
+                                                    <Building2 className="w-3 h-3" />
+                                                    {cs.industry}
+                                                </span>
+                                                <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-gold-400 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
+                                            </div>
+                                            <h2 className="text-lg font-display font-bold mb-2 group-hover:text-gold-400 transition-colors leading-snug">
+                                                {cs.title}
+                                            </h2>
+                                            <p className="text-sm text-gray-400 leading-relaxed mb-5 flex-1">
+                                                {cs.excerpt}
+                                            </p>
+                                            <div className="grid grid-cols-2 gap-3 mb-5 p-4 rounded-xl bg-white/3 border border-white/5">
+                                                {cs.results.slice(0, 4).map((r: any, ri: number) => (
+                                                    <div key={ri}>
+                                                        <div className="text-lg font-display font-bold gold-text leading-tight">{r.metric}</div>
+                                                        <div className="text-xs text-gray-500 capitalize leading-tight mt-0.5">{r.label}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="flex flex-wrap gap-1.5 mb-4">
+                                                {cs.tags.slice(0, 3).map((tag: string) => (
+                                                    <span key={tag} className="px-2.5 py-0.5 text-xs text-gray-400 border border-white/10 rounded-full bg-white/5">{tag}</span>
+                                                ))}
+                                            </div>
+                                            <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                                                <span className="text-xs text-gray-500">{cs.client}</span>
+                                                <span className="text-xs font-semibold text-gold-400 group-hover:underline">Read Case Study →</span>
+                                            </div>
+                                        </Card>
+                                    </Link>
+                                </ScrollReveal>
+                            );
+                        })}
+                    </div>
+
+                    {/* CTA */}
                     <ScrollReveal>
                         <div className="relative rounded-3xl overflow-hidden p-10 lg:p-16 text-center glass card-glow">
                             <div className="absolute inset-0 bg-hero-glow opacity-50" />
@@ -149,10 +140,15 @@ export default async function CaseStudies() {
                                     Every project starts with a conversation. Let&apos;s discuss
                                     what automation can do for your business.
                                 </p>
-                                <Button variant="primary" size="lg" href="/contact">
-                                    Start Your Project
-                                    <ArrowRight className="w-4 h-4" />
-                                </Button>
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                    <Button variant="primary" size="lg" href="/contact">
+                                        Start Your Project
+                                        <ArrowRight className="w-4 h-4" />
+                                    </Button>
+                                    <Button variant="secondary" size="lg" href="/pricing">
+                                        View Pricing
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </ScrollReveal>

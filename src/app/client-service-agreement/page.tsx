@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, FileText, Clock, CheckCircle2, AlertCircle, Mail, DollarSign, Shield } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Client Service Agreement | BridgeFlow AI Automation Agency",
+    title: "Client Service Agreement",
     description: "BridgeFlow's standard Client Service Agreement governing AI automation services, payment terms, intellectual property, and confidentiality.",
     alternates: { canonical: "https://bridgeflow.agency/client-service-agreement" },
 };

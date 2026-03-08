@@ -3,7 +3,7 @@ import { ScrollReveal } from "@/components/ui";
 import { Shield } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Privacy Policy | BridgeFlow",
+    title: "Privacy Policy",
     description: "BridgeFlow Privacy Policy — how we collect, use, and protect your data.",
 };
 

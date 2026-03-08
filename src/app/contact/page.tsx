@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import ContactForm from "@/components/ContactForm";
+import CalendlyEmbed from "@/components/CalendlyEmbed";
 import { getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -108,15 +109,7 @@ export default async function Contact() {
                         </div>
                     </ScrollReveal>
                     <ScrollReveal delay={0.1}>
-                        <div className="rounded-2xl border border-gold-400/20 overflow-hidden bg-navy-900/30">
-                            <iframe
-                                src="https://calendly.com/raianasan10/30min?hide_gdpr_banner=1&background_color=0a0f1a&text_color=e5e7eb&primary_color=d4a843"
-                                width="100%"
-                                style={{ minHeight: "650px" }}
-                                frameBorder="0"
-                                title="Book a Strategy Call"
-                            />
-                        </div>
+                        <CalendlyEmbed url="https://calendly.com/raianasan10/30min" />
                     </ScrollReveal>
                 </div>
             </section>
