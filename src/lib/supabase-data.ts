@@ -187,12 +187,21 @@ export const getAboutContent = unstable_cache(
             const sb = getPublicClient();
             if (!sb) throw new Error("No Supabase");
             // Use correct table names matching the admin dashboard
-            const [valuesRes, teamRes, techRes, milestonesRes] = await Promise.all([
+            const [valuesRes, teamRes, techRes, milestonesRes, settingsRes] = await Promise.all([
                 sb.from("company_values").select("*").order("sort_order"),
                 sb.from("team_members").select("*").eq("is_active", true).order("sort_order"),
                 sb.from("tech_stack").select("*").order("sort_order"),
                 sb.from("milestones").select("*").order("sort_order"),
+                sb.from("site_settings").select("founder_image").limit(1).single(),
             ]);
+
+            const founderImageUrl = settingsRes.data?.founder_image;
+            const teamMember = teamRes.data?.length ? teamRes.data[0] : aboutData.team[0];
+            
+            // Override founder image if it exists in site_settings
+            if (founderImageUrl && teamMember) {
+                teamMember.avatar_url = founderImageUrl;
+            }
 
             return {
                 hero: aboutData.aboutHero,
@@ -201,7 +210,7 @@ export const getAboutContent = unstable_cache(
                     content: aboutData.mission.paragraphs.join("\n\n")
                 },
                 values: valuesRes.data?.length ? valuesRes.data : aboutData.values,
-                teamMember: teamRes.data?.length ? teamRes.data[0] : aboutData.team[0],
+                teamMember: teamMember,
                 techStack: techRes.data?.length ? techRes.data : aboutData.techStack,
                 milestones: milestonesRes.data?.length ? milestonesRes.data : aboutData.milestones,
             };
