@@ -47,12 +47,13 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Invalid messages array" }, { status: 400 });
         }
 
+        const openaiKey = process.env.OPENAI_API_KEY;
         const modalKey = process.env.MODAL_API_KEY;
         const ollamaKey = process.env.OLLAMA_API_KEY;
         const geminiKey = process.env.GEMINI_API_KEY;
 
         // Fetch primary AI model preference from DB (non-blocking)
-        let primaryModel = "modal-glm5";
+        let primaryModel = "openai";
         try {
             const sb = getPublicClient();
             if (sb) {
@@ -63,32 +64,29 @@ export async function POST(req: NextRequest) {
 
         // --- DYNAMIC AI PROVIDER CHAIN ---
 
-        // 1. Try Primary Model
+        // 1. Try OpenAI-compatible API (primary — always available via env)
+        if (openaiKey) {
+            const reply = await callOpenAI(openaiKey, messages);
+            if (reply) return reply;
+        }
+
+        // 2. Try Modal GLM-5
         if (primaryModel === "modal-glm5" && modalKey) {
             const reply = await callModalGLM5(modalKey, messages);
             if (reply) return reply;
-        } else if (primaryModel === "ollama-cloud" && ollamaKey) {
-            const reply = await callOllamaCloud(ollamaKey, messages);
-            if (reply) return reply;
-        } else if (primaryModel === "gemini" && geminiKey) {
-            const reply = await callGeminiFallback(geminiKey, messages);
-            if (reply) return reply;
-        }
-
-        // 2. If Primary Fails, fallback to Modal (if it wasn't primary)
-        if (primaryModel !== "modal-glm5" && modalKey) {
+        } else if (modalKey) {
             const reply = await callModalGLM5(modalKey, messages);
             if (reply) return reply;
         }
 
-        // 3. Fallback to Ollama (if it wasn't primary)
-        if (primaryModel !== "ollama-cloud" && ollamaKey) {
+        // 3. Try Ollama Cloud
+        if (ollamaKey) {
             const reply = await callOllamaCloud(ollamaKey, messages);
             if (reply) return reply;
         }
 
         // 4. Ultimate Emergency Fallback to Gemini
-        if (primaryModel !== "gemini" && geminiKey) {
+        if (geminiKey) {
             const reply = await callGeminiFallback(geminiKey, messages);
             if (reply) return reply;
         }
@@ -104,6 +102,52 @@ export async function POST(req: NextRequest) {
             reply: "I'm having a brief connection issue. Please try again or explore our [Services](/services)!"
         });
     }
+}
+
+// ─── OpenAI / OpenAI-compatible API (primary) ───
+async function callOpenAI(apiKey: string, messages: { role: string; content: string }[]) {
+    try {
+        console.log("Trying OpenAI API...");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
+
+        // Support custom base URL for OpenAI-compatible providers
+        const baseUrl = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
+        const model = process.env.OPENAI_CHAT_MODEL || "gpt-4.1-mini";
+
+        const response = await fetch(`${baseUrl}/chat/completions`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model,
+                messages: [
+                    { role: "system", content: SYSTEM_PROMPT },
+                    ...messages,
+                ],
+                max_tokens: 500,
+                temperature: 0.7,
+            }),
+            signal: controller.signal,
+        });
+        clearTimeout(timeout);
+
+        if (response.ok) {
+            const data = await response.json();
+            const reply = data?.choices?.[0]?.message?.content;
+            if (reply) {
+                return NextResponse.json({ reply, provider: "openai" });
+            }
+        } else {
+            const errText = await response.text();
+            console.error("OpenAI API error:", response.status, errText);
+        }
+    } catch (error) {
+        console.error("OpenAI fetch error:", error);
+    }
+    return null;
 }
 
 // ─── Modal GLM-5 (OpenAI-compatible endpoint) ───

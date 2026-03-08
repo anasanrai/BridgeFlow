@@ -116,14 +116,23 @@ export default function AdminSidebar() {
             <aside className={`fixed left-0 top-0 bottom-0 w-64 bg-navy-900/95 backdrop-blur-xl border-r border-white/5 flex flex-col z-50 transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 {/* Header */}
                 <div className="p-5 border-b border-white/5">
-                    <Link href="/admin/dashboard" className="flex items-center gap-3">
-                        <Image
-                            src="/images/logo.png"
-                            alt="BridgeFlow"
-                            width={120}
-                            height={30}
-                            className="h-7 w-auto"
-                        />
+                    <Link href="/admin/dashboard" className="flex items-center gap-2.5 group">
+                        {/* Gold B icon — show only the icon portion of the logo */}
+                        <div className="relative h-9 w-9 flex-shrink-0 rounded-xl overflow-hidden">
+                            <Image
+                                src="/images/logo.png"
+                                alt="B"
+                                width={120}
+                                height={35}
+                                className="absolute inset-0 h-full w-auto max-w-none"
+                                style={{ objectFit: 'cover', objectPosition: 'left center', width: '200%' }}
+                                priority
+                            />
+                        </div>
+                        {/* BridgeFlow text in white for dark sidebar */}
+                        <span className="text-base font-semibold tracking-tight text-white group-hover:text-gold-400 transition-colors" style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}>
+                            BridgeFlow
+                        </span>
                     </Link>
                     <div className="mt-3 flex items-center gap-2">
                         <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />

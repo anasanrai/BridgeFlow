@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     try {
         const { messages, template } = await req.json();
 
+        const openaiKey = process.env.OPENAI_API_KEY;
         const modalKey = process.env.MODAL_API_KEY;
         const ollamaKey = process.env.OLLAMA_API_KEY;
         const geminiKey = process.env.GEMINI_API_KEY;
@@ -46,53 +47,25 @@ export async function POST(req: NextRequest) {
             };
         }
 
-        let primaryAiModel: string | null = null;
-        const supabase = getPublicClient();
-        if (supabase) {
-            const { data, error } = await supabase
-                .from("site_settings")
-                .select("primary_ai_model")
-                .single();
-
-            if (error) {
-                console.error("Error fetching primary_ai_model:", error);
-            } else if (data) {
-                primaryAiModel = data.primary_ai_model;
-            }
+        // 1. Try OpenAI-compatible API (primary — always available)
+        if (openaiKey) {
+            const result = await callOpenAI(openaiKey, finalMessages);
+            if (result) return result;
         }
 
-        let result: NextResponse | null = null;
-        let primaryModelUsed = false;
-
-        // 0. Try the primary AI model if configured
-        if (primaryAiModel === "modal" && modalKey && modalKey.trim() !== "") {
-            result = await callModalGLM5(modalKey, finalMessages);
-            if (result) primaryModelUsed = true;
-        } else if (primaryAiModel === "ollama" && ollamaKey && ollamaKey.trim() !== "") {
-            result = await callOllamaCloud(ollamaKey, finalMessages);
-            if (result) primaryModelUsed = true;
-        } else if (primaryAiModel === "gemini" && geminiKey && geminiKey.trim() !== "") {
-            result = await callGeminiFallback(geminiKey, finalMessages);
-            if (result) primaryModelUsed = true;
+        // 2. Try Modal GLM-5
+        if (modalKey && modalKey.trim() !== "") {
+            const result = await callModalGLM5(modalKey, finalMessages);
+            if (result) return result;
         }
 
-        if (result) return result;
-
-        // 1. Try Modal GLM-5 (primary — best for content generation)
-        if (!primaryModelUsed || primaryAiModel !== "modal") {
-            if (modalKey && modalKey.trim() !== "") {
-                result = await callModalGLM5(modalKey, finalMessages);
-                if (result) return result;
-            }
-        }
-
-        // 2. Try Ollama Cloud (secondary fallback)
+        // 3. Try Ollama Cloud (secondary fallback)
         if (ollamaKey && ollamaKey.trim() !== "") {
             const result = await callOllamaCloud(ollamaKey, finalMessages);
             if (result) return result;
         }
 
-        // 3. Try Gemini (emergency fallback)
+        // 4. Try Gemini (emergency fallback)
         if (geminiKey && geminiKey.trim() !== "") {
             const result = await callGeminiFallback(geminiKey, finalMessages);
             if (result) return result;
@@ -107,6 +80,46 @@ export async function POST(req: NextRequest) {
             reply: "⚠️ **AI Error:** There was a problem generating the content. Please try again."
         });
     }
+}
+
+// ─── OpenAI / OpenAI-compatible API (primary) ───
+async function callOpenAI(apiKey: string, messages: { role: string; content: string }[]) {
+    try {
+        console.log("Trying OpenAI API (Admin)...");
+        const baseUrl = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
+        const model = process.env.OPENAI_ADMIN_MODEL || process.env.OPENAI_CHAT_MODEL || "gpt-4.1-mini";
+
+        const response = await fetch(`${baseUrl}/chat/completions`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model,
+                messages: [
+                    { role: "system", content: SYSTEM_PROMPT },
+                    ...messages,
+                ],
+                max_tokens: 2000,
+                temperature: 0.8,
+            }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const reply = data?.choices?.[0]?.message?.content;
+            if (reply) {
+                return NextResponse.json({ reply, provider: "openai" });
+            }
+        } else {
+            const errText = await response.text();
+            console.error("OpenAI (Admin) error:", response.status, errText);
+        }
+    } catch (error) {
+        console.error("OpenAI (Admin) fetch error:", error);
+    }
+    return null;
 }
 
 // ─── Modal GLM-5 (OpenAI-compatible) ───

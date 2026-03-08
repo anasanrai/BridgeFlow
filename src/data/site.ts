@@ -41,7 +41,7 @@ export const footerLinks = {
     ],
     services: [
         { label: "n8n Automation", href: "/services#n8n" },
-        { label: "AI Integration", href: "/services#ai" },
+        { label: "AI Integration", href: "/services/ai" },
         { label: "Consulting", href: "/services#consulting" },
         { label: "Pricing", href: "/pricing" },
         { label: "Templates", href: "/templates" },
