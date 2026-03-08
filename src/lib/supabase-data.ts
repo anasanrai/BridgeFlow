@@ -52,7 +52,23 @@ export const getSiteConfig = unstable_cache(
                     logo: config.logo || siteData.siteConfig.logo,
                     og_image: config.og_image || siteData.siteConfig.og_image,
                     navLinks: navLinks,
-                    footerLinks: (config.footer_links && Object.keys(config.footer_links).length > 0) ? config.footer_links : siteData.footerLinks,
+                    footerLinks: (() => {
+                        const fl = config.footer_links;
+                        if (!fl) return siteData.footerLinks;
+                        // DB stores as array [{title, links}] — convert to Record<string, Array<{label,href}>>
+                        if (Array.isArray(fl) && fl.length > 0) {
+                            const record: Record<string, Array<{ label: string; href: string }>> = {};
+                            fl.forEach((section: { title: string; links: Array<{ label: string; href: string }> }) => {
+                                if (section.title && Array.isArray(section.links)) {
+                                    record[section.title] = section.links;
+                                }
+                            });
+                            return Object.keys(record).length > 0 ? record : siteData.footerLinks;
+                        }
+                        // DB stores as Record already
+                        if (typeof fl === 'object' && Object.keys(fl).length > 0) return fl;
+                        return siteData.footerLinks;
+                    })(),
                     socialLinks: (settings?.social_links && settings.social_links.length > 0)
                         ? settings.social_links
                         : ((config.social_links && config.social_links.length > 0) ? config.social_links : siteData.socialLinks),
