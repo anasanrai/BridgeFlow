@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
     ScrollReveal,
     SectionHeader,
     Button,
     Card,
 } from "@/components/ui";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Linkedin, Twitter, Globe, MapPin } from "lucide-react";
 import LucideIcon from "@/components/LucideIcon";
 import { getAboutContent, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
@@ -126,21 +127,51 @@ export default async function About() {
                     <div className="max-w-3xl mx-auto">
                         {/* Founder Card */}
                         <ScrollReveal>
-                            <Card className="text-center mb-12">
-                                <div className="w-24 h-24 rounded-full gold-gradient flex items-center justify-center mx-auto mb-5 text-navy-950 font-display font-bold text-2xl">
-                                    AR
+                            <Card className="mb-12 overflow-hidden">
+                                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+                                    {/* Portrait */}
+                                    <div className="relative flex-shrink-0">
+                                        <div className="relative w-40 h-48 sm:w-44 sm:h-52 rounded-2xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(230,180,34,0.08) 0%, rgba(6,182,212,0.08) 100%)", border: "1px solid rgba(230,180,34,0.2)" }}>
+                                            <Image
+                                                src="/images/founder-portrait.png"
+                                                alt="Anasan Rai — Founder & CEO of BridgeFlow"
+                                                fill
+                                                className="object-cover object-top"
+                                                sizes="(max-width: 640px) 160px, 176px"
+                                                priority
+                                            />
+                                        </div>
+                                        {/* Gold accent ring */}
+                                        <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full gold-gradient flex items-center justify-center text-navy-950 text-xs font-bold shadow-lg">
+                                            🇳🇵
+                                        </div>
+                                    </div>
+                                    {/* Info */}
+                                    <div className="text-center sm:text-left flex-1">
+                                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-gold-400 bg-gold-400/10 border border-gold-400/20 mb-3">
+                                            Founder &amp; CEO
+                                        </div>
+                                        <h3 className="font-display font-bold text-2xl sm:text-3xl mb-1">
+                                            Anasan Rai
+                                        </h3>
+                                        <p className="text-gold-400 text-sm font-medium mb-1">
+                                            AI Automation Engineer
+                                        </p>
+                                        <p className="text-gray-500 text-sm flex items-center justify-center sm:justify-start gap-1.5 mb-4">
+                                            <MapPin className="w-3.5 h-3.5" />
+                                            Kathmandu, Nepal · Remote-first, Global
+                                        </p>
+                                        {/* Social Links */}
+                                        <div className="flex items-center justify-center sm:justify-start gap-3">
+                                            <a href="https://linkedin.com/in/anasanrai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-blue-400 border border-white/10 hover:border-blue-400/30 transition-all">
+                                                <Linkedin className="w-3.5 h-3.5" /> LinkedIn
+                                            </a>
+                                            <a href="https://bridgeflow.agency" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-gold-400 border border-white/10 hover:border-gold-400/30 transition-all">
+                                                <Globe className="w-3.5 h-3.5" /> Website
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <h3 className="font-display font-bold text-2xl mb-1">
-                                    Anasan Rai
-                                </h3>
-                                <p className="text-gold-400 text-sm font-medium mb-2">
-                                    CEO &amp; Founder &amp; AI Automation
-                                    Engineer
-                                </p>
-                                <p className="text-gray-500 text-sm">
-                                    🇳🇵 Kathmandu, Nepal · Remote-first,
-                                    Global
-                                </p>
                             </Card>
                         </ScrollReveal>
 

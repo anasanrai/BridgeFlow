@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Zap, DollarSign } from "luc
 import { templates, categoryColors, difficultyColors } from "@/data/templates";
 import WorkflowCanvas from "@/components/templates/N8nCanvasWrapper";
 import TemplateCard from "@/components/templates/TemplateCard";
+import TemplatePurchaseButton from "@/components/templates/TemplatePurchaseButton";
 import { getSupabase } from "@/lib/supabase";
 
 interface Props {
@@ -225,14 +226,11 @@ export default async function TemplateDetailPage({ params }: Props) {
                                     </div>
 
                                     <div className="space-y-3 mb-6">
-                                        <a
-                                            href="/contact"
-                                            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold text-navy-950 transition-all duration-300 hover:shadow-[0_0_20px_rgba(230,180,34,0.4)] hover:scale-105"
-                                            style={{ background: "linear-gradient(135deg, #e6b422 0%, #c9a227 100%)" }}
-                                        >
-                                            Get This Template — ${(template.value || 0).toLocaleString()}
-                                            <ArrowRight className="w-4 h-4" />
-                                        </a>
+                                        <TemplatePurchaseButton
+                                            templateName={template.name || ""}
+                                            templateValue={template.value || 0}
+                                            variant="primary"
+                                        />
                                         <a
                                             href="/contact"
                                             className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold text-white glass border border-white/10 hover:bg-white/10 transition-all duration-300"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+import "./animations.css";
 import LayoutShell from "@/components/LayoutShell";
 import { getSiteConfig } from "@/lib/supabase-data";
 import TelemetryProvider from "@/components/TelemetryProvider";

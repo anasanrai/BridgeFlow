@@ -5,9 +5,10 @@ import {
     Button,
     Card,
 } from "@/components/ui";
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles, Shield, Clock, Globe, Zap } from "lucide-react";
 import { plans, pricingHero, pricingFAQ } from "@/data/pricing";
 import { getSiteConfig } from "@/lib/supabase-data";
+import PricingCard from "@/components/PricingCard";
 
 export const revalidate = 60;
 
@@ -68,6 +69,23 @@ export default function Pricing() {
                             {pricingHero.description}
                         </p>
                     </ScrollReveal>
+
+                    {/* Trust badges */}
+                    <ScrollReveal delay={0.3}>
+                        <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
+                            {[
+                                { icon: Shield, text: "Secure Checkout" },
+                                { icon: Clock, text: "No Long-term Contracts" },
+                                { icon: Zap, text: "ROI Guarantee" },
+                                { icon: Globe, text: "Remote-first, Global" },
+                            ].map(({ icon: Icon, text }) => (
+                                <div key={text} className="flex items-center gap-1.5">
+                                    <Icon className="w-3.5 h-3.5 text-gold-400/60" />
+                                    <span>{text}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </ScrollReveal>
                 </div>
             </section>
 
@@ -76,113 +94,36 @@ export default function Pricing() {
                 <div className="container-max">
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {plans.map((plan, i) => (
-                            <ScrollReveal key={plan.name} delay={i * 0.1}>
-                                <Card
-                                    className={`relative h-full flex flex-col ${plan.popular
-                                            ? "ring-2 ring-gold-400/50"
-                                            : ""
-                                        }`}
-                                >
-                                    {/* Badge */}
-                                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                                        <span
-                                            className={`inline-flex items-center gap-1.5 px-4 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full whitespace-nowrap ${plan.popular
-                                                    ? "text-navy-950 gold-gradient"
-                                                    : "text-gold-400 bg-navy-900 border border-gold-400/20"
-                                                }`}
-                                        >
-                                            <Sparkles className="w-3 h-3" />
-                                            {plan.badge}
-                                        </span>
-                                    </div>
-
-                                    <div className="text-center mb-6 pt-2">
-                                        <h3 className="text-lg font-display font-bold mb-3">
-                                            {plan.name}
-                                        </h3>
-
-                                        {/* Price */}
-                                        <div className="flex items-baseline justify-center gap-2 mb-1">
-                                            {plan.originalPrice && (
-                                                <span className="text-lg text-gray-500 line-through">
-                                                    {plan.originalPrice}
-                                                </span>
-                                            )}
-                                            <span className="text-3xl sm:text-4xl font-display font-bold gold-text">
-                                                {plan.price}
-                                            </span>
-                                            {plan.period && (
-                                                <span className="text-gray-500">
-                                                    {plan.period}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Savings Tag */}
-                                        {plan.savingsTag && (
-                                            <span className="inline-block px-3 py-1 text-[10px] uppercase tracking-wider font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 rounded-full mt-2">
-                                                {plan.savingsTag}
-                                            </span>
-                                        )}
-
-                                        <p className="text-sm text-gray-400 mt-3 leading-relaxed">
-                                            {plan.description}
-                                        </p>
-                                    </div>
-
-                                    {/* Features */}
-                                    <ul className="space-y-2.5 mb-6 flex-1">
-                                        {plan.features.map((f) => (
-                                            <li
-                                                key={f}
-                                                className="flex items-start gap-2.5 text-sm text-gray-300"
-                                            >
-                                                <CheckCircle2 className="w-4 h-4 text-gold-400 mt-0.5 flex-shrink-0" />
-                                                {f}
-                                            </li>
-                                        ))}
-                                    </ul>
-
-                                    {/* CTA */}
-                                    <Button
-                                        variant={plan.popular ? "primary" : "outline"}
-                                        href={plan.cta.href}
-                                        className="w-full justify-center"
-                                    >
-                                        {plan.cta.text}
-                                    </Button>
-
-                                    {/* Spots remaining */}
-                                    {plan.spotsRemaining && (
-                                        <p className="text-center text-xs text-gold-400 mt-3 font-medium">
-                                            {plan.spotsRemaining}
-                                        </p>
-                                    )}
-                                </Card>
-                            </ScrollReveal>
+                            <PricingCard key={plan.name} plan={plan} index={i} />
                         ))}
                     </div>
 
-                    {/* Trust Bar */}
+                    {/* Payment Methods Note */}
                     <ScrollReveal>
-                        <div className="mt-12 text-center">
-                            <p className="text-sm text-gray-500 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-                                <span className="inline-flex items-center gap-1.5">
-                                    🔒 Secure Checkout
-                                </span>
-                                <span className="text-gray-700">|</span>
-                                <span className="inline-flex items-center gap-1.5">
-                                    ✅ No Long-term Contracts
-                                </span>
-                                <span className="text-gray-700">|</span>
-                                <span className="inline-flex items-center gap-1.5">
-                                    💰 ROI Guarantee
-                                </span>
-                                <span className="text-gray-700">|</span>
-                                <span className="inline-flex items-center gap-1.5">
-                                    🌍 Remote-first, Global Team
-                                </span>
+                        <div className="mt-10 p-5 rounded-2xl bg-white/[0.02] border border-white/5 text-center">
+                            <p className="text-sm text-gray-500 mb-2">
+                                <span className="text-gray-400 font-semibold">Accepted Payment Methods:</span>
                             </p>
+                            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-600">
+                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+                                    <Globe className="w-3 h-3 text-blue-400" /> PayPal
+                                </span>
+                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+                                    🏦 Bank Transfer
+                                </span>
+                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+                                    💳 Payoneer
+                                </span>
+                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+                                    🌐 Wise
+                                </span>
+                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+                                    🪙 USDT
+                                </span>
+                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+                                    🇳🇵 eSewa / Khalti
+                                </span>
+                            </div>
                         </div>
                     </ScrollReveal>
                 </div>

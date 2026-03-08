@@ -49,9 +49,13 @@ export const footerLinks = {
     resources: [
         { label: "Documentation", href: "/docs" },
         { label: "API Reference", href: "/api-reference" },
+        { label: "Contact Us", href: "/contact" },
+    ],
+    legal: [
         { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Terms of Service", href: "/terms-of-service" },
-        { label: "Contact Us", href: "/contact" },
+        { label: "Refund Policy", href: "/refund-policy" },
+        { label: "Client Agreement", href: "/client-service-agreement" },
     ],
 };
 

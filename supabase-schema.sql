@@ -252,3 +252,7 @@ CREATE POLICY "Service role full access" ON page_metadata FOR ALL USING (true) W
 CREATE POLICY "Public insert" ON contact_submissions FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public insert" ON newsletter_subscribers FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public insert" ON telemetry FOR INSERT WITH CHECK (true);
+
+-- Payment Settings column for site_config (run if not exists)
+ALTER TABLE site_config ADD COLUMN IF NOT EXISTS payment_settings JSONB DEFAULT '{"paypal_enabled":false,"paypal_client_id":"","paypal_client_secret":"","paypal_mode":"sandbox","paypal_currency":"USD","bank_enabled":false,"bank_name":"","bank_account_name":"","bank_account_number":"","bank_routing_number":"","bank_swift_code":"","bank_iban":"","bank_instructions":"","wallets_enabled":false,"wallet_payoneer_enabled":false,"wallet_payoneer_email":"","wallet_wise_enabled":false,"wallet_wise_email":"","wallet_usdt_enabled":false,"wallet_usdt_address":"","wallet_esewa_enabled":false,"wallet_esewa_id":"","wallet_khalti_enabled":false,"wallet_khalti_id":"","currency":"USD","payment_terms":"50% deposit required before work begins"}'::jsonb;
+
