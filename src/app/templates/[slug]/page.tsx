@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Zap, DollarSign } from "lucide-react";
 import { templates, categoryColors, difficultyColors } from "@/data/templates";
-import WorkflowCanvas from "@/components/templates/N8nCanvasWrapper";
+import { WorkflowImageViewer } from "@/components/templates/WorkflowImageViewer";
 import TemplateCard from "@/components/templates/TemplateCard";
 import TemplatePurchaseButton from "@/components/templates/TemplatePurchaseButton";
 import JsonViewer from "@/components/templates/JsonViewer";
@@ -190,19 +190,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                     className="rounded-2xl overflow-hidden"
                                     style={{ border: "1px solid rgba(0,255,200,0.15)", borderRadius: 12 }}
                                 >
-                                    {template.n8nWorkflowId ? (
-                                        <WorkflowCanvas slug={template.slug || ""} workflowId={template.n8nWorkflowId || undefined} fallbackWorkflowJson={template.workflowJson} />
-                                    ) : (
-                                        <div className="flex items-center justify-center" style={{ height: 500, background: "#0a0a0f" }}>
-                                            <div className="text-center">
-                                                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-                                                    <span className="text-2xl">⚠️</span>
-                                                </div>
-                                                <p className="text-gray-500 text-sm font-semibold mb-1">No workflow configured</p>
-                                                <p className="text-gray-700 text-xs">The n8n workflow canvas will appear here when available.</p>
-                                            </div>
-                                        </div>
-                                    )}
+                                    <WorkflowImageViewer slug={template.slug || ""} templateName={template.name || ""} />
                                 </div>
                             </div>
                         </div>
