@@ -72,9 +72,12 @@ export default function SiteConfigAdmin() {
 
     if (loading) return <div className="space-y-4">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-16 glass rounded-lg animate-pulse" />)}</div>;
     if (!config) return (
-        <div className="text-center py-16 glass rounded-xl">
+        <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
             <Globe className="w-10 h-10 mx-auto mb-3 text-gray-600" />
-            <p className="text-gray-400 mb-4">No site configuration found</p>
+            <p className="text-gray-300 font-semibold mb-2">No site configuration found</p>
+            <p className="text-sm text-gray-500 max-w-sm mx-auto mb-5">
+                Initialize site config to manage your company name, tagline, email, nav links, social links, and footer links from this panel.
+            </p>
             <button onClick={async () => {
                 await fetch("/api/admin/content/site_config", {
                     method: "POST", headers: { "Content-Type": "application/json" },

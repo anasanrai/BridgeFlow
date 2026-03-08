@@ -30,7 +30,13 @@ export default function ActivityAdmin() {
             </div>
 
             {loading ? <div className="space-y-3">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-14 glass rounded-lg animate-pulse" />)}</div> : logs.length === 0 ? (
-                <div className="text-center py-16 glass rounded-xl"><Activity className="w-10 h-10 mx-auto mb-3 text-gray-600" /><p className="text-gray-400">No activity yet</p></div>
+                <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
+                    <Activity className="w-10 h-10 mx-auto mb-3 text-gray-600" />
+                    <p className="text-gray-300 font-semibold mb-2">No activity yet</p>
+                    <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                        Every create, update, and delete action in the admin panel is logged here. Start editing content to see your activity trail.
+                    </p>
+                </div>
             ) : (
                 <div className="relative">
                     <div className="absolute left-[19px] top-0 bottom-0 w-px bg-white/5" />

@@ -228,9 +228,18 @@ export default function ServicesAdmin() {
             {loading ? (
                 <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-20 glass rounded-lg animate-pulse" />)}</div>
             ) : services.length === 0 ? (
-                <div className="text-center py-16 glass rounded-xl">
+                <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
                     <Briefcase className="w-10 h-10 mx-auto mb-3 text-gray-600" />
-                    <p className="text-gray-400">No services yet</p>
+                    <p className="text-gray-300 font-semibold mb-2">No services yet</p>
+                    <p className="text-sm text-gray-500 max-w-sm mx-auto mb-5">
+                        Services appear on the /services page and in the homepage overview. Add your automation and AI services here.
+                    </p>
+                    <button
+                        onClick={() => { setEditing({ title: "", icon: "Zap", description: "", features: [], color: "from-amber-500 to-gold-400", sort_order: 0, is_active: true }); setFeatureInput(""); }}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm"
+                    >
+                        <Plus className="w-4 h-4" /> Add Your First Service
+                    </button>
                 </div>
             ) : (
                 <div className="space-y-3">

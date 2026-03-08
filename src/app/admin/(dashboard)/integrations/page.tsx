@@ -223,7 +223,11 @@ export default function IntegrationsAdmin() {
                 <div className="space-y-3">
                     {tokens.length === 0 ? (
                         <div className="text-center py-8 bg-navy-900/50 rounded-xl border border-dashed border-white/10">
-                            <p className="text-xs text-gray-500 font-medium">No API tokens generated yet</p>
+                            <Key className="w-8 h-8 mx-auto mb-3 text-gray-700" />
+                            <p className="text-sm text-gray-400 font-medium mb-1">No API tokens yet</p>
+                            <p className="text-xs text-gray-600 max-w-xs mx-auto">
+                                Generate tokens to allow external apps (n8n, Zapier, custom scripts) to securely access the BridgeFlow API.
+                            </p>
                         </div>
                     ) : (
                         tokens.map((token) => (
@@ -289,7 +293,11 @@ export default function IntegrationsAdmin() {
                 <div className="grid gap-4">
                     {webhooks.length === 0 ? (
                         <div className="text-center py-8 bg-navy-900/50 rounded-xl border border-dashed border-white/10">
-                            <p className="text-xs text-gray-500 font-medium">No webhooks configured yet</p>
+                            <Zap className="w-8 h-8 mx-auto mb-3 text-gray-700" />
+                            <p className="text-sm text-gray-400 font-medium mb-1">No webhooks configured yet</p>
+                            <p className="text-xs text-gray-600 max-w-xs mx-auto">
+                                Add webhook URLs to fire events to n8n, Zapier, or your own endpoints when contact forms are submitted or audits are requested.
+                            </p>
                         </div>
                     ) : (
                         webhooks.map((webhook, idx) => (

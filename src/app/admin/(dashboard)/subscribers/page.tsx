@@ -66,7 +66,13 @@ export default function SubscribersAdmin() {
             </div>
 
             {loading ? <div className="space-y-3">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-12 glass rounded-lg animate-pulse" />)}</div> : filtered.length === 0 ? (
-                <div className="text-center py-16 glass rounded-xl"><Bell className="w-10 h-10 mx-auto mb-3 text-gray-600" /><p className="text-gray-400">No subscribers yet</p></div>
+                <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
+                    <Bell className="w-10 h-10 mx-auto mb-3 text-gray-600" />
+                    <p className="text-gray-300 font-semibold mb-2">No subscribers yet</p>
+                    <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                        Subscribers are collected when visitors sign up via the newsletter form in the website footer. Once they subscribe, they will appear here and can be exported as CSV.
+                    </p>
+                </div>
             ) : (
                 <div className="glass rounded-xl overflow-hidden">
                     <table className="w-full">

@@ -389,7 +389,11 @@ export default function AboutAdmin() {
                                     </div>
                                 ))}
                                 {team.length === 0 && (
-                                    <div className="text-center py-12 text-gray-500 text-sm">No team members yet. Click &quot;Add Member&quot; to get started.</div>
+                                    <div className="text-center py-12 glass rounded-xl border border-dashed border-white/10">
+                                        <Users className="w-10 h-10 mx-auto mb-3 text-gray-600" />
+                                        <p className="text-gray-300 font-semibold mb-2">No team members yet</p>
+                                        <p className="text-sm text-gray-500 max-w-xs mx-auto">Add team members to display on the /about page. Include names, roles, bios, and photos.</p>
+                                    </div>
                                 )}
                             </div>
                         )}

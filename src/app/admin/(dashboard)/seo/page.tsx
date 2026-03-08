@@ -16,9 +16,13 @@ const DEFAULT_PAGES = [
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
     { path: "/services", label: "Services" },
+    { path: "/pricing", label: "Pricing" },
+    { path: "/templates", label: "Templates" },
+    { path: "/calculator", label: "AI Calculator" },
     { path: "/case-studies", label: "Case Studies" },
     { path: "/blog", label: "Blog" },
     { path: "/contact", label: "Contact" },
+    { path: "/careers", label: "Careers" },
 ];
 
 export default function SEOAdmin() {
@@ -118,8 +122,13 @@ export default function SEOAdmin() {
                     ) : filteredMetadata.length === 0 ? (
                         <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
                             <Globe className="w-10 h-10 mx-auto mb-4 text-gray-600" />
-                            <p className="text-gray-400">No SEO overrides found</p>
-                            <button onClick={() => setEditing({ path: "/" })} className="mt-4 text-gold-400 hover:text-gold-300">Add first override →</button>
+                            <p className="text-gray-300 font-semibold mb-2">No SEO overrides yet</p>
+                            <p className="text-sm text-gray-500 max-w-sm mx-auto mb-5">
+                                Add custom meta titles, descriptions, and OG images for each page. Use the &quot;Suggested Paths&quot; panel on the right to quickly get started.
+                            </p>
+                            <button onClick={() => setEditing({ path: "/" })} className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm">
+                                <Plus className="w-4 h-4" /> Add Homepage SEO
+                            </button>
                         </div>
                     ) : (
                         <div className="space-y-4">

@@ -45,10 +45,12 @@ export default function NotFound() {
                 </div>
 
                 {/* Quick nav */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {[
                         { label: "Services", href: "/services" },
                         { label: "Pricing", href: "/pricing" },
+                        { label: "AI Calculator", href: "/calculator" },
+                        { label: "Templates", href: "/templates" },
                         { label: "Blog", href: "/blog" },
                         { label: "About", href: "/about" },
                     ].map((link) => (

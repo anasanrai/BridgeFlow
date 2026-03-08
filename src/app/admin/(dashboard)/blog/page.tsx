@@ -14,6 +14,7 @@ import {
     Loader2,
     Search,
     Upload,
+    ExternalLink,
 } from "lucide-react";
 
 interface BlogPost {
@@ -497,14 +498,17 @@ export default function BlogAdmin() {
                     ))}
                 </div>
             ) : filteredPosts.length === 0 ? (
-                <div className="text-center py-16 glass rounded-xl">
+                <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
                     <FileText className="w-10 h-10 mx-auto mb-3 text-gray-600" />
-                    <p className="text-gray-400">No blog posts yet</p>
+                    <p className="text-gray-300 font-semibold mb-2">No blog posts yet</p>
+                    <p className="text-sm text-gray-500 max-w-sm mx-auto mb-5">
+                        Blog posts appear on the public /blog page and help drive organic traffic. Write about automation tips, AI insights, and industry trends.
+                    </p>
                     <button
                         onClick={() => setEditing({ ...blankPost })}
-                        className="mt-4 text-sm text-gold-400 hover:text-gold-300"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm"
                     >
-                        Create your first post →
+                        <Plus className="w-4 h-4" /> Create Your First Post
                     </button>
                 </div>
             ) : (
@@ -578,6 +582,17 @@ export default function BlogAdmin() {
                                     </td>
                                     <td className="py-3 px-4">
                                         <div className="flex items-center justify-end gap-1">
+                                            {post.is_published && (
+                                                <a
+                                                    href={`/blog/${post.slug}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="p-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
+                                                    title="Preview live post"
+                                                >
+                                                    <ExternalLink className="w-4 h-4" />
+                                                </a>
+                                            )}
                                             <button
                                                 onClick={() => setEditing(post)}
                                                 className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"

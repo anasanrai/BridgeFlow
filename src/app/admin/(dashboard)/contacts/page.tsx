@@ -73,7 +73,13 @@ export default function ContactsAdmin() {
                 {/* List */}
                 <div className="flex-1">
                     {loading ? <div className="space-y-3">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-16 glass rounded-lg animate-pulse" />)}</div> : filtered.length === 0 ? (
-                        <div className="text-center py-16 glass rounded-xl"><MessageSquare className="w-10 h-10 mx-auto mb-3 text-gray-600" /><p className="text-gray-400">No submissions yet</p></div>
+                        <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
+                            <MessageSquare className="w-10 h-10 mx-auto mb-3 text-gray-600" />
+                            <p className="text-gray-300 font-semibold mb-2">No submissions yet</p>
+                            <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                                Contact form submissions from the /contact page will appear here. New submissions are highlighted in blue and marked as read when you open them.
+                            </p>
+                        </div>
                     ) : (
                         <div className="space-y-2">
                             {filtered.map(c => (

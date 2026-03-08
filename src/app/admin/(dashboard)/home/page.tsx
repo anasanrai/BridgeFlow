@@ -59,9 +59,12 @@ export default function HomeAdmin() {
 
     if (loading) return <div className="space-y-4">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-20 glass rounded-lg animate-pulse" />)}</div>;
     if (!content) return (
-        <div className="text-center py-16 glass rounded-xl">
+        <div className="text-center py-16 glass rounded-xl border border-dashed border-white/10">
             <Home className="w-10 h-10 mx-auto mb-3 text-gray-600" />
-            <p className="text-gray-400 mb-4">No home content configured</p>
+            <p className="text-gray-300 font-semibold mb-2">No home content configured</p>
+            <p className="text-sm text-gray-500 max-w-sm mx-auto mb-5">
+                Initialize the homepage content to start editing the hero, stats, services overview, process steps, and CTA sections.
+            </p>
             <button onClick={async () => {
                 // Check if a row already exists before creating one
                 const checkRes = await fetch("/api/admin/content/home_content");
@@ -97,9 +100,14 @@ export default function HomeAdmin() {
                 <div><h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><Home className="w-6 h-6 text-gold-400" />Home Page</h1>
                     <p className="text-gray-500 text-sm mt-1">Manage all homepage sections</p>
                 </div>
-                <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm disabled:opacity-50">
-                    {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? "Saving..." : "Save All"}
-                </button>
+                <div className="flex items-center gap-2">
+                    <a href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2.5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg text-sm transition-all">
+                        <Play className="w-4 h-4" /> Preview
+                    </a>
+                    <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm disabled:opacity-50">
+                        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? "Saving..." : "Save All"}
+                    </button>
+                </div>
             </div>
 
             <div className="space-y-6">

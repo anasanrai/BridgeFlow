@@ -81,6 +81,12 @@ const nextConfig = {
                 permanent: false,
                 has: [{ type: "cookie", key: "admin_token" }],
             },
+            // Fix: /ai-calculator was linked in nav but page lives at /calculator
+            {
+                source: "/ai-calculator",
+                destination: "/calculator",
+                permanent: true,
+            },
         ];
     },
     // Remove console.log in production (keep error/warn)

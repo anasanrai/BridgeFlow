@@ -84,6 +84,16 @@ export default async function CaseStudies() {
             {/* Case Studies Grid */}
             <section className="section-padding">
                 <div className="container-max px-4 sm:px-6">
+                    {caseStudies.length === 0 && (
+                        <div className="text-center py-20 mb-16 glass rounded-3xl border border-dashed border-white/10">
+                            <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+                            <h3 className="text-xl font-display font-bold text-white mb-3">Case studies coming soon</h3>
+                            <p className="text-gray-400 max-w-md mx-auto mb-6">
+                                We&apos;re documenting our client success stories. In the meantime, get in touch to learn about our results directly.
+                            </p>
+                            <Button variant="primary" href="/contact">Talk to Us <ArrowRight className="w-4 h-4" /></Button>
+                        </div>
+                    )}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                         {caseStudies.map((cs: any, i: number) => {
                             const colorClass = industryColors[cs.industry] || "text-gold-400 bg-gold-400/10 border-gold-400/20";

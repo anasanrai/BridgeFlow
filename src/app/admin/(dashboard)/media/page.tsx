@@ -179,7 +179,16 @@ export default function MediaManagerAdmin() {
                 {items.length === 0 ? (
                     <div className="col-span-full py-20 text-center glass rounded-2xl border border-dashed border-white/10">
                         <FolderOpen className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-                        <p className="text-gray-500 font-medium">Your asset vault is empty</p>
+                        <p className="text-gray-300 font-semibold mb-2">Your asset vault is empty</p>
+                        <p className="text-sm text-gray-500 max-w-md mx-auto mb-6">
+                            Add brand assets, images, videos, and copywriting snippets here to keep your media organized. Click &quot;Add Asset&quot; to get started.
+                        </p>
+                        <button
+                            onClick={() => setEditing({ title: "", type: "image", category: "General", url: "" })}
+                            className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm"
+                        >
+                            <Plus className="w-4 h-4" /> Add Your First Asset
+                        </button>
                     </div>
                 ) : (
                     items.map((item) => (
