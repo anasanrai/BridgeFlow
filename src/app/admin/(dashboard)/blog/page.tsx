@@ -113,6 +113,12 @@ export default function BlogAdmin() {
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/(^-|-$)/g, "");
 
+    const calcReadTime = (content: string) => {
+        const words = content.trim().split(/\s+/).filter(Boolean).length;
+        const mins = Math.max(1, Math.round(words / 200));
+        return `${mins} min read`;
+    };
+
     const uploadCoverImage = async (file: File): Promise<string | null> => {
         setUploadingImage(true);
         try {
@@ -343,8 +349,8 @@ export default function BlogAdmin() {
                                             />
                                             <label
                                                 className={`flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer transition-all flex-shrink-0 ${uploadingImage
-                                                        ? "border-gold-400/30 bg-gold-400/5"
-                                                        : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
+                                                    ? "border-gold-400/30 bg-gold-400/5"
+                                                    : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
                                                     }`}
                                                 title="Upload cover image"
                                             >
@@ -384,12 +390,19 @@ export default function BlogAdmin() {
                                         <textarea
                                             value={editing.content || ""}
                                             onChange={(e) =>
-                                                setEditing({ ...editing, content: e.target.value })
+                                                setEditing({
+                                                    ...editing,
+                                                    content: e.target.value,
+                                                    read_time: calcReadTime(e.target.value),
+                                                })
                                             }
                                             rows={10}
                                             className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors resize-none font-mono text-sm"
                                             placeholder="Write your blog post content here... (Supports plain text, separate paragraphs with blank lines)"
                                         />
+                                        <p className="text-[10px] text-gray-600 mt-1">
+                                            Read time auto-calculated • {(editing.content?.trim().split(/\s+/).filter(Boolean).length || 0).toLocaleString()} words
+                                        </p>
                                     </div>
                                 </>
                             ) : (

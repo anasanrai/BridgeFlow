@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { ZoomIn, ZoomOut, Maximize2, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -16,11 +16,7 @@ export function WorkflowImageViewer({ slug, templateName }: WorkflowImageViewerP
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadImages();
-  }, [slug]);
-
-  const loadImages = async () => {
+  const loadImages = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -30,10 +26,10 @@ export function WorkflowImageViewer({ slug, templateName }: WorkflowImageViewerP
 
     for (let i = 0; i < imageCount; i++) {
       const imageName = imageCount > 1 ? `${slug}-${i + 1}.png` : `${slug}.png`;
-      
+
       // Try Supabase storage first
       const supabaseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/template-images/${imageName}`;
-      
+
       // Fallback to public folder
       const publicUrl = `/images/templates/${imageName}`;
 
@@ -54,7 +50,11 @@ export function WorkflowImageViewer({ slug, templateName }: WorkflowImageViewerP
 
     setImages(loadedImages);
     setIsLoading(false);
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    loadImages();
+  }, [loadImages]);
 
   const goToPrevious = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -177,11 +177,10 @@ export function WorkflowImageViewer({ slug, templateName }: WorkflowImageViewerP
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          index === currentImageIndex
+                        className={`w-2 h-2 rounded-full transition-colors ${index === currentImageIndex
                             ? "bg-amber-500"
                             : "bg-slate-600 hover:bg-slate-500"
-                        }`}
+                          }`}
                         title={`Go to image ${index + 1}`}
                       />
                     ))}

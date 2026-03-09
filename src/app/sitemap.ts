@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getSiteConfig, getBlogPosts, getCaseStudies } from "@/lib/supabase-data";
+import templatesJson from "@/data/templates.json";
 
 export const revalidate = 3600; // Revalidate sitemap every hour
 
@@ -81,6 +82,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.7,
         },
         {
+            url: `${baseUrl}/templates`,
+            lastModified: new Date(),
+            changeFrequency: "weekly",
+            priority: 0.85,
+        },
+        {
             url: `${baseUrl}/privacy-policy`,
             lastModified: new Date(),
             changeFrequency: "yearly",
@@ -108,5 +115,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.75,
     }));
 
-    return [...staticRoutes, ...blogRoutes, ...caseRoutes];
+    const templateRoutes: MetadataRoute.Sitemap = (templatesJson as any[]).map((t) => ({
+        url: `${baseUrl}/templates/${t.slug}`,
+        lastModified: new Date(t.updatedAt || Date.now()),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+    }));
+
+    return [...staticRoutes, ...blogRoutes, ...caseRoutes, ...templateRoutes];
 }
