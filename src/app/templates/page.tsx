@@ -15,6 +15,7 @@ interface Template {
   setupTime: string;
   value: number;
   description: string;
+  longDescription?: string;
   whatItDoes: string[];
   featured: boolean;
   status: string;
@@ -27,13 +28,9 @@ const CATEGORIES = [
   { id: "Real Estate", label: "Real Estate", icon: "🏢" },
   { id: "Lead Management", label: "Lead Generation", icon: "🎯" },
   { id: "Marketing", label: "Marketing", icon: "📣" },
-  { id: "Sales", label: "Sales Ops", icon: "💰" },
   { id: "AI-Powered", label: "AI & Agents", icon: "🤖" },
-  { id: "E-Commerce", label: "E-Commerce", icon: "🛒" },
-  { id: "CRM", label: "CRM", icon: "🤝" },
   { id: "Communication", label: "Communication", icon: "💬" },
   { id: "Operations", label: "Operations", icon: "⚙️" },
-  { id: "Customer Support", label: "Customer Support", icon: "🎧" },
 ];
 
 export default function TemplatesPage() {
@@ -143,11 +140,10 @@ export default function TemplatesPage() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
-                    activeCategory === cat.id
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${activeCategory === cat.id
                       ? "bg-white/10 text-white font-bold"
                       : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
-                  }`}
+                    }`}
                 >
                   <span className="flex items-center gap-3">
                     <span className="text-base">{cat.icon}</span>
@@ -168,11 +164,10 @@ export default function TemplatesPage() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all ${
-                    activeCategory === cat.id
+                  className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all ${activeCategory === cat.id
                       ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
                       : "bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10"
-                  }`}
+                    }`}
                 >
                   <span>{cat.icon}</span>
                   {cat.label}

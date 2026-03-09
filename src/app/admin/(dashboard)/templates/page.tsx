@@ -32,6 +32,8 @@ import {
     Wand2,
     ZoomIn,
     ImagePlus,
+    Lock,
+    ShieldCheck,
 } from "lucide-react";
 
 // Dynamic import for live React Flow canvas in preview modal
@@ -57,6 +59,8 @@ interface TemplateData {
     setupTime: string;
     value: number;
     description: string;
+    shortDescription?: string;
+    longDescription?: string;
     whatItDoes: string[];
     featured: boolean;
     status: "published" | "draft";
@@ -64,21 +68,22 @@ interface TemplateData {
     order: number;
     updatedAt?: string;
     workflowJson?: any;
+    connectionCount?: number;
+    imageUrls?: string[];
+    jsonUrl?: string;
+    jsonAccess?: "free" | "paid";
+    tools?: string[];
 }
 
-
-export default function AdminTemplatesPage() {
-    const [tab, setTab] = useState<Tab>("list");
+export default function TemplateManager() {
     const [templates, setTemplates] = useState<TemplateData[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedSlug, setSelectedSlug] = useState("");
     const [showForm, setShowForm] = useState(false);
     const [editingTemplate, setEditingTemplate] = useState<TemplateData | null>(null);
     const [canvasPreviewSlug, setCanvasPreviewSlug] = useState<string | null>(null);
     const [copiedId, setCopiedId] = useState<string | null>(null);
     const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
-
-    // Upload tab state
-    const [selectedSlug, setSelectedSlug] = useState("");
     const [jsonInput, setJsonInput] = useState("");
     const [parsedJson, setParsedJson] = useState<Record<string, any> | null>(null);
     const [parseError, setParseError] = useState("");
@@ -93,10 +98,11 @@ export default function AdminTemplatesPage() {
     const [imageRemoveBg, setImageRemoveBg] = useState(true);
     const [imageUpscale, setImageUpscale] = useState(true);
     const [imageUploading, setImageUploading] = useState(false);
-    const [imageUploadStatus, setImageUploadStatus] = useState<"" | "success" | "error">("" );
+    const [imageUploadStatus, setImageUploadStatus] = useState<"" | "success" | "error">("");
     const [imageUploadMsg, setImageUploadMsg] = useState("");
     const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
     const [instantPreviewImage, setInstantPreviewImage] = useState<string | null>(null);
+    const [tab, setTab] = useState<Tab>("list");
 
     // Fetch templates
     const fetchTemplates = useCallback(async () => {
@@ -284,10 +290,17 @@ export default function AdminTemplatesPage() {
                 // Also update the template's image_url in DB
                 const tpl = templates.find(t => t.slug === selectedSlug);
                 if (tpl) {
+                    const existingUrls = tpl.imageUrls || [];
+                    const newUrls = existingUrls.includes(data.url) ? existingUrls : [...existingUrls, data.url];
+
                     await fetch("/api/admin/templates", {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ id: tpl.id, imageUrl: data.url }),
+                        body: JSON.stringify({
+                            id: tpl.id,
+                            imageUrl: data.url,
+                            imageUrls: newUrls
+                        }),
                     });
                     fetchTemplates();
                 }
@@ -401,11 +414,12 @@ export default function AdminTemplatesPage() {
             {tab === "list" && (
                 <div className="rounded-xl border border-white/8 overflow-hidden" style={{ background: "rgba(10,12,25,0.4)" }}>
                     {/* Table header */}
-                    <div className="hidden md:grid grid-cols-[40px_1fr_140px_100px_80px_80px_100px_140px] gap-3 px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-600 border-b border-white/5">
+                    <div className="hidden md:grid grid-cols-[40px_1fr_140px_100px_100px_80px_100px_100px_140px] gap-3 px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-600 border-b border-white/5">
                         <span></span>
                         <span>Template</span>
                         <span>Workflow ID</span>
                         <span>Category</span>
+                        <span>Access</span>
                         <span>Difficulty</span>
                         <span>Updated</span>
                         <span>Status</span>
@@ -420,7 +434,7 @@ export default function AdminTemplatesPage() {
                             onDragStart={() => handleDragStart(idx)}
                             onDragOver={(e) => handleDragOver(e, idx)}
                             onDragEnd={handleDragEnd}
-                            className={`grid grid-cols-1 md:grid-cols-[40px_1fr_140px_100px_80px_80px_100px_140px] gap-3 px-4 py-3 items-center border-b border-white/5 hover:bg-white/3 transition-all cursor-grab ${draggedIdx === idx ? "opacity-50" : ""
+                            className={`grid grid-cols-1 md:grid-cols-[40px_1fr_140px_100px_100px_80px_100px_100px_140px] gap-3 px-4 py-3 items-center border-b border-white/5 hover:bg-white/3 transition-all cursor-grab ${draggedIdx === idx ? "opacity-50" : ""
                                 }`}
                         >
                             {/* Drag handle */}
@@ -469,11 +483,21 @@ export default function AdminTemplatesPage() {
 
                             {/* Category */}
                             <div className="flex flex-wrap gap-1">
-                                <span className="text-[9px] text-gray-500 line-clamp-1">{t.categories[0] || "—"}</span>
+                                <span className="text-[9px] text-gray-500 line-clamp-1">{t.categories?.[0] || "—"}</span>
+                            </div>
+
+                            {/* Access */}
+                            <div className="flex items-center gap-1.5">
+                                <span className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-bold border transition-all ${t.jsonAccess === "paid"
+                                    ? "text-gold-400 bg-gold-400/10 border-gold-400/20"
+                                    : "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"}`}>
+                                    {t.jsonAccess === "paid" ? <Lock className="w-2.5 h-2.5" /> : <ShieldCheck className="w-2.5 h-2.5" />}
+                                    {t.jsonAccess === "paid" ? "Paid" : "Free"}
+                                </span>
                             </div>
 
                             {/* Difficulty */}
-                            <span className={`inline-block px-2 py-0.5 rounded-md text-[9px] font-bold border w-fit ${difficultyColor[t.difficulty]}`}>
+                            <span className={`inline-block px-2 py-0.5 rounded-md text-[9px] font-bold border w-fit ${difficultyColor[t.difficulty || "Beginner"]}`}>
                                 {t.difficulty}
                             </span>
 

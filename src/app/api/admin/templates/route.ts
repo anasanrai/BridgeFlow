@@ -52,7 +52,15 @@ export async function GET() {
             n8nWorkflowId: t.n8nWorkflowId,
             order: t.order,
             updatedAt: t.updatedAt,
+            imageUrl: t.imageUrl ?? null,
+            imageUrls: t.imageUrls ?? [],
             workflowJson: t.workflowJson ?? null,
+            shortDescription: t.shortDescription ?? "",
+            longDescription: t.longDescription ?? "",
+            connectionCount: t.connectionCount ?? 0,
+            jsonUrl: t.jsonUrl ?? "",
+            jsonAccess: t.jsonAccess ?? "free",
+            tools: t.tools ?? [],
         }));
         return NextResponse.json({ ok: true, templates });
     }
@@ -89,6 +97,13 @@ export async function POST(req: NextRequest) {
             n8n_workflow_id: body.n8nWorkflowId || "",
             order: nextOrder,
             updated_at: new Date().toISOString(),
+            short_description: body.shortDescription || "",
+            long_description: body.longDescription || "",
+            connection_count: body.connectionCount || 0,
+            image_urls: body.imageUrls || [],
+            json_url: body.jsonUrl || "",
+            json_access: body.jsonAccess || "free",
+            tools: body.tools || [],
         };
 
         const { data, error } = await sb
@@ -130,7 +145,14 @@ export async function PUT(req: NextRequest) {
         if (body.n8nWorkflowId !== undefined) updatePayload.n8n_workflow_id = body.n8nWorkflowId;
         if (body.order !== undefined) updatePayload.order = body.order;
         if (body.imageUrl !== undefined) updatePayload.image_url = body.imageUrl;
+        if (body.imageUrls !== undefined) updatePayload.image_urls = body.imageUrls;
         if (body.workflowJson !== undefined) updatePayload.workflow_json = body.workflowJson;
+        if (body.shortDescription !== undefined) updatePayload.short_description = body.shortDescription;
+        if (body.longDescription !== undefined) updatePayload.long_description = body.longDescription;
+        if (body.connectionCount !== undefined) updatePayload.connection_count = body.connectionCount;
+        if (body.jsonUrl !== undefined) updatePayload.json_url = body.jsonUrl;
+        if (body.jsonAccess !== undefined) updatePayload.json_access = body.jsonAccess;
+        if (body.tools !== undefined) updatePayload.tools = body.tools;
 
         const { data, error } = await sb
             .from("templates")
@@ -211,6 +233,13 @@ function normalizeTemplate(row: Record<string, unknown>) {
         order: row.order,
         updatedAt: row.updated_at,
         imageUrl: row.image_url ?? null,
+        imageUrls: row.image_urls ?? [],
         workflowJson: row.workflow_json ?? null,
+        shortDescription: row.short_description ?? "",
+        longDescription: row.long_description ?? "",
+        connectionCount: row.connection_count ?? 0,
+        jsonUrl: row.json_url ?? "",
+        jsonAccess: row.json_access ?? "free",
+        tools: row.tools ?? [],
     };
 }

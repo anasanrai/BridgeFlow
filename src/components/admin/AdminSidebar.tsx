@@ -28,6 +28,7 @@ import {
     Search,
     Workflow,
     CreditCard,
+    History,
 } from "lucide-react";
 import AdminAI from "./AdminAI";
 
@@ -51,6 +52,7 @@ const sidebarLinks = [
             { href: "/admin/ai-models", label: "AI Model Stack", icon: Cpu },
             { href: "/admin/media", label: "Media Manager", icon: FolderOpen },
             { href: "/admin/payments", label: "Payment Gateway", icon: CreditCard },
+            { href: "/admin/purchases", label: "Transactions", icon: History },
         ],
     },
     {

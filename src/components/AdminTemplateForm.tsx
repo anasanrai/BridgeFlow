@@ -33,6 +33,10 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
     const [whatItDoes, setWhatItDoes] = useState<string[]>(template?.whatItDoes || [""]);
     const [status, setStatus] = useState<"published" | "draft">(template?.status || "draft");
     const [featured, setFeatured] = useState(template?.featured || false);
+    const [shortDescription, setShortDescription] = useState(template?.shortDescription || "");
+    const [longDescription, setLongDescription] = useState(template?.longDescription || "");
+    const [connectionCount, setConnectionCount] = useState(template?.connectionCount || 0);
+    const [jsonAccess, setJsonAccess] = useState<"free" | "paid">(template?.jsonAccess || "free");
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
 
@@ -77,8 +81,10 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
             setupTime,
             value: Number(value),
             whatItDoes: whatItDoes.filter((b) => b.trim()),
-            status,
-            featured,
+            shortDescription,
+            longDescription,
+            connectionCount: Number(connectionCount),
+            jsonAccess,
             nodes: [], // Will be auto-populated from n8n API
         };
 
@@ -148,14 +154,27 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                         <p className="text-[10px] text-gray-600 mt-1">Auto-generated from name, but editable</p>
                     </div>
 
-                    {/* Description */}
+                    {/* Short Description */}
                     <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Description</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Short Description</label>
+                        <input
+                            type="text"
+                            value={shortDescription}
+                            onChange={(e) => setShortDescription(e.target.value)}
+                            placeholder="One-liner for cards..."
+                            className="w-full px-4 py-3 rounded-xl text-sm text-white border border-white/10 focus:outline-none focus:border-cyan-400/40 transition-all"
+                            style={{ background: "rgba(5,5,16,0.9)" }}
+                        />
+                    </div>
+
+                    {/* Long Description */}
+                    <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Long Description (HTML allowed)</label>
                         <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="A brief summary of what this template does..."
-                            rows={3}
+                            value={longDescription}
+                            onChange={(e) => setLongDescription(e.target.value)}
+                            placeholder="Detailed technical overview..."
+                            rows={4}
                             className="w-full px-4 py-3 rounded-xl text-sm text-white border border-white/10 focus:outline-none focus:border-cyan-400/40 resize-none transition-all"
                             style={{ background: "rgba(5,5,16,0.9)" }}
                         />
@@ -202,6 +221,16 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                                 type="number"
                                 value={nodeCount}
                                 onChange={(e) => setNodeCount(e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl text-sm text-white border border-white/10 focus:outline-none focus:border-cyan-400/40 transition-all"
+                                style={{ background: "rgba(5,5,16,0.9)" }}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Connection Count</label>
+                            <input
+                                type="number"
+                                value={connectionCount}
+                                onChange={(e) => setConnectionCount(e.target.value)}
                                 className="w-full px-4 py-3 rounded-xl text-sm text-white border border-white/10 focus:outline-none focus:border-cyan-400/40 transition-all"
                                 style={{ background: "rgba(5,5,16,0.9)" }}
                             />
@@ -301,8 +330,21 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                                 />
                             </button>
                             <span className={`text-xs font-bold ${featured ? "text-gold-400" : "text-gray-500"}`}>
-                                {featured ? "⭐ MOST POPULAR" : "Normal"}
+                                {featured ? "⭐ FEATURED" : "Normal"}
                             </span>
+                        </label>
+
+                        <label className="flex items-center gap-3 cursor-pointer">
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">JSON Access:</span>
+                            <select
+                                value={jsonAccess}
+                                onChange={(e) => setJsonAccess(e.target.value as "free" | "paid")}
+                                className="px-3 py-1.5 rounded-lg text-xs font-bold border text-white transition-all appearance-none cursor-pointer"
+                                style={{ background: "rgba(5,5,16,0.9)", borderColor: "rgba(255,255,255,0.1)" }}
+                            >
+                                <option value="free">Free Access</option>
+                                <option value="paid">Paid Access</option>
+                            </select>
                         </label>
                     </div>
 

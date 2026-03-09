@@ -115,5 +115,12 @@ function getDefaultPaymentSettings() {
         tax_rate: 0,
         invoice_prefix: "BF",
         payment_terms: "Payment due within 7 days of invoice",
+        stripe_enabled: false,
+        stripe_publishable_key: "",
+        stripe_secret_key: "",
+        stripe_webhook_secret: "",
+        moyasar_enabled: false,
+        moyasar_publishable_key: "",
+        moyasar_secret_key: "",
     };
 }

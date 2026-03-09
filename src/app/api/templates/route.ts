@@ -51,6 +51,7 @@ export async function GET() {
             setupTime: t.setup_time || t.setupTime || "15 min",
             value: t.value || 0,
             description: t.description || "",
+            longDescription: t.long_description || t.longDescription || t.description || "",
             whatItDoes: t.what_it_does || t.whatItDoes || [],
             featured: t.featured || false,
             status: t.status || "published",

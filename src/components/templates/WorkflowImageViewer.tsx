@@ -8,15 +8,22 @@ import Image from "next/image";
 interface WorkflowImageViewerProps {
   slug: string;
   templateName: string;
+  imageUrls?: string[];
 }
 
-export function WorkflowImageViewer({ slug, templateName }: WorkflowImageViewerProps) {
-  const [images, setImages] = useState<string[]>([]);
+export function WorkflowImageViewer({ slug, templateName, imageUrls = [] }: WorkflowImageViewerProps) {
+  const [images, setImages] = useState<string[]>(imageUrls);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadImages = useCallback(async () => {
+    if (imageUrls && imageUrls.length > 0) {
+      setImages(imageUrls);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -26,31 +33,13 @@ export function WorkflowImageViewer({ slug, templateName }: WorkflowImageViewerP
 
     for (let i = 0; i < imageCount; i++) {
       const imageName = imageCount > 1 ? `${slug}-${i + 1}.png` : `${slug}.png`;
-
-      // Try Supabase storage first
-      const supabaseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/template-images/${imageName}`;
-
-      // Fallback to public folder
       const publicUrl = `/images/templates/${imageName}`;
-
-      try {
-        // Try to fetch from Supabase
-        const response = await fetch(supabaseUrl, { method: "HEAD" });
-        if (response.ok) {
-          loadedImages.push(supabaseUrl);
-        } else {
-          // Fallback to public folder
-          loadedImages.push(publicUrl);
-        }
-      } catch {
-        // If fetch fails, use public folder
-        loadedImages.push(publicUrl);
-      }
+      loadedImages.push(publicUrl);
     }
 
     setImages(loadedImages);
     setIsLoading(false);
-  }, [slug]);
+  }, [slug, imageUrls]);
 
   useEffect(() => {
     loadImages();
@@ -178,8 +167,8 @@ export function WorkflowImageViewer({ slug, templateName }: WorkflowImageViewerP
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
                         className={`w-2 h-2 rounded-full transition-colors ${index === currentImageIndex
-                            ? "bg-amber-500"
-                            : "bg-slate-600 hover:bg-slate-500"
+                          ? "bg-amber-500"
+                          : "bg-slate-600 hover:bg-slate-500"
                           }`}
                         title={`Go to image ${index + 1}`}
                       />

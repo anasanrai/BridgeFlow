@@ -4,6 +4,7 @@ import { Zap, ArrowRight } from "lucide-react";
 import PaymentModal from "@/components/PaymentModal";
 
 interface TemplatePurchaseButtonProps {
+    templateId?: number | string;
     templateName: string;
     templateValue: number;
     templateSlug: string;
@@ -12,6 +13,7 @@ interface TemplatePurchaseButtonProps {
 }
 
 export default function TemplatePurchaseButton({
+    templateId,
     templateName,
     templateValue,
     templateSlug,
@@ -44,6 +46,7 @@ export default function TemplatePurchaseButton({
                 planPrice={priceStr}
                 planPriceNumeric={templateValue}
                 templateSlug={templateSlug}
+                templateId={templateId}
             />
         </>
     );

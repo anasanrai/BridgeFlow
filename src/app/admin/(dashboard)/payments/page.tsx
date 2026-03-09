@@ -35,6 +35,13 @@ interface PaymentSettings {
     tax_rate: number;
     invoice_prefix: string;
     payment_terms: string;
+    stripe_enabled: boolean;
+    stripe_publishable_key: string;
+    stripe_secret_key: string;
+    stripe_webhook_secret: string;
+    moyasar_enabled: boolean;
+    moyasar_publishable_key: string;
+    moyasar_secret_key: string;
 }
 
 const defaultSettings: PaymentSettings = {
@@ -66,9 +73,16 @@ const defaultSettings: PaymentSettings = {
     tax_rate: 0,
     invoice_prefix: "BF",
     payment_terms: "Payment due within 7 days of invoice",
+    stripe_enabled: false,
+    stripe_publishable_key: "",
+    stripe_secret_key: "",
+    stripe_webhook_secret: "",
+    moyasar_enabled: false,
+    moyasar_publishable_key: "",
+    moyasar_secret_key: "",
 };
 
-type Tab = "paypal" | "bank" | "wallets" | "general";
+type Tab = "paypal" | "stripe" | "moyasar" | "bank" | "wallets" | "general";
 
 export default function PaymentsPage() {
     const [settings, setSettings] = useState<PaymentSettings>(defaultSettings);
@@ -119,6 +133,8 @@ export default function PaymentsPage() {
 
     const tabs: { id: Tab; label: string; icon: any; color: string }[] = [
         { id: "paypal", label: "PayPal", icon: Globe, color: "text-blue-400" },
+        { id: "stripe", label: "Stripe", icon: CreditCard, color: "text-indigo-400" },
+        { id: "moyasar", label: "Moyasar", icon: Shield, color: "text-emerald-400" },
         { id: "bank", label: "Bank Transfer", icon: Building2, color: "text-emerald-400" },
         { id: "wallets", label: "Digital Wallets", icon: Wallet, color: "text-purple-400" },
         { id: "general", label: "General", icon: DollarSign, color: "text-gold-400" },
@@ -169,26 +185,34 @@ export default function PaymentsPage() {
             )}
 
             {/* Status Overview */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {[
                     { label: "PayPal", enabled: settings.paypal_enabled, color: "blue" },
-                    { label: "Bank Transfer", enabled: settings.bank_enabled, color: "emerald" },
-                    { label: "Digital Wallets", enabled: settings.wallets_enabled, color: "purple" },
+                    { label: "Stripe", enabled: settings.stripe_enabled, color: "indigo" },
+                    { label: "Moyasar", enabled: settings.moyasar_enabled, color: "emerald" },
+                    { label: "Bank", enabled: settings.bank_enabled, color: "emerald" },
+                    { label: "Wallets", enabled: settings.wallets_enabled, color: "purple" },
                     {
-                        label: "Active Methods",
+                        label: "Active",
                         enabled: true,
-                        value: [settings.paypal_enabled, settings.bank_enabled, settings.wallets_enabled].filter(Boolean).length,
+                        value: [
+                            settings.paypal_enabled,
+                            settings.stripe_enabled,
+                            settings.moyasar_enabled,
+                            settings.bank_enabled,
+                            settings.wallets_enabled
+                        ].filter(Boolean).length,
                         color: "gold",
                     },
                 ].map((item) => (
                     <div key={item.label} className="glass rounded-xl p-4 border border-white/10">
-                        <div className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-2">{item.label}</div>
+                        <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">{item.label}</div>
                         {item.value !== undefined ? (
-                            <div className="text-2xl font-display font-bold text-gold-400">{item.value}</div>
+                            <div className="text-xl font-display font-bold text-gold-400">{item.value}</div>
                         ) : (
                             <div className={`flex items-center gap-2 ${item.enabled ? "text-emerald-400" : "text-gray-600"}`}>
                                 <div className={`w-2 h-2 rounded-full ${item.enabled ? "bg-emerald-400 animate-pulse" : "bg-gray-600"}`} />
-                                <span className="text-sm font-semibold">{item.enabled ? "Active" : "Inactive"}</span>
+                                <span className="text-[10px] font-bold uppercase">{item.enabled ? "Live" : "Off"}</span>
                             </div>
                         )}
                     </div>
@@ -310,6 +334,140 @@ export default function PaymentsPage() {
                             </a>
                             . Use Sandbox mode for testing and switch to Live when ready.
                         </p>
+                    </div>
+                </div>
+            )}
+
+            {/* Stripe Tab */}
+            {activeTab === "stripe" && (
+                <div className="glass rounded-2xl p-6 border border-white/10 space-y-6">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
+                                <CreditCard className="w-5 h-5 text-indigo-400" />
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-display font-bold text-white">Stripe Checkout</h2>
+                                <p className="text-xs text-gray-400">Accept global payments via Stripe Components</p>
+                            </div>
+                        </div>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <span className="text-xs text-gray-400">{settings.stripe_enabled ? "Enabled" : "Disabled"}</span>
+                            <div
+                                onClick={() => update("stripe_enabled", !settings.stripe_enabled)}
+                                className={`relative w-11 h-6 rounded-full transition-colors cursor-pointer ${settings.stripe_enabled ? "bg-indigo-500" : "bg-gray-700"}`}
+                            >
+                                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${settings.stripe_enabled ? "translate-x-6" : "translate-x-1"}`} />
+                            </div>
+                        </label>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                Publishable Key
+                            </label>
+                            <input
+                                type="text"
+                                value={settings.stripe_publishable_key}
+                                onChange={(e) => update("stripe_publishable_key", e.target.value)}
+                                placeholder="pk_live_..."
+                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                Secret Key
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type={showSecrets["stripe_secret"] ? "text" : "password"}
+                                    value={settings.stripe_secret_key}
+                                    onChange={(e) => update("stripe_secret_key", e.target.value)}
+                                    placeholder="sk_live_..."
+                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
+                                />
+                                <button
+                                    onClick={() => toggleSecret("stripe_secret")}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                                >
+                                    {showSecrets["stripe_secret"] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                Webhook Secret
+                            </label>
+                            <input
+                                type="text"
+                                value={settings.stripe_webhook_secret}
+                                onChange={(e) => update("stripe_webhook_secret", e.target.value)}
+                                placeholder="whsec_..."
+                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Moyasar Tab */}
+            {activeTab === "moyasar" && (
+                <div className="glass rounded-2xl p-6 border border-white/10 space-y-6">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                <Shield className="w-5 h-5 text-emerald-400" />
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-display font-bold text-white">Moyasar (MENA)</h2>
+                                <p className="text-xs text-gray-400">Accept Mada, STC Pay, and Apple Pay</p>
+                            </div>
+                        </div>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <span className="text-xs text-gray-400">{settings.moyasar_enabled ? "Enabled" : "Disabled"}</span>
+                            <div
+                                onClick={() => update("moyasar_enabled", !settings.moyasar_enabled)}
+                                className={`relative w-11 h-6 rounded-full transition-colors cursor-pointer ${settings.moyasar_enabled ? "bg-emerald-500" : "bg-gray-700"}`}
+                            >
+                                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${settings.moyasar_enabled ? "translate-x-6" : "translate-x-1"}`} />
+                            </div>
+                        </label>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                Publishable Key
+                            </label>
+                            <input
+                                type="text"
+                                value={settings.moyasar_publishable_key}
+                                onChange={(e) => update("moyasar_publishable_key", e.target.value)}
+                                placeholder="pk_..."
+                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                Secret Key
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type={showSecrets["moyasar_secret"] ? "text" : "password"}
+                                    value={settings.moyasar_secret_key}
+                                    onChange={(e) => update("moyasar_secret_key", e.target.value)}
+                                    placeholder="sk_..."
+                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
+                                />
+                                <button
+                                    onClick={() => toggleSecret("moyasar_secret")}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                                >
+                                    {showSecrets["moyasar_secret"] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,8 +1,8 @@
 [
     {
         "id": "1",
-        "name": "Real Estate Lead Capture & Notification",
-        "slug": "real-estate-lead-capture",
+        "name": "Lead Capture + Auto-Responder",
+        "slug": "lead-capture-autoresponder",
         "categories": [
             "Real Estate",
             "Lead Management"
@@ -10,232 +10,358 @@
         "difficulty": "Beginner",
         "nodes": [
             "Webhook",
+            "Gmail",
             "Google Sheets",
-            "Telegram",
-            "Gmail"
+            "Delay"
         ],
-        "nodeCount": 4,
-        "setupTime": "20 min",
-        "value": 200,
-        "description": "Instantly capture leads from any source, save to Google Sheets, and notify your team via Telegram and email.",
+        "nodeCount": 8,
+        "setupTime": "15 min",
+        "value": 197,
+        "description": "Capture leads from website forms and send instant follow-up emails",
+        "longDescription": "Automatically capture leads from your real estate website and send personalized follow-up emails instantly. This workflow integrates with your contact forms, saves leads to Google Sheets, and triggers automated email sequences to keep prospects engaged.",
         "whatItDoes": [
-            "Receives leads via webhook from any website or form",
-            "Saves lead data to Google Sheets automatically",
-            "Sends instant Telegram alert to agent",
-            "Sends welcome email to lead within seconds"
+            "Captures leads from webhooks/forms",
+            "Saves data to Google Sheets",
+            "Sends instant follow-up via Gmail",
+            "Includes delay for follow-up sequence"
         ],
-        "featured": false,
+        "featured": true,
         "status": "published",
-        "n8nWorkflowId": "wKBnBodZY46OaPoA",
+        "n8nWorkflowId": "",
         "order": 1,
-        "updatedAt": "2026-03-06T00:00:00Z"
+        "updatedAt": "2026-03-10T00:00:00Z",
+        "imageUrl": "/images/templates/workflow-placeholder.png",
+        "workflowJson": {
+            "version": "1.0",
+            "nodes": [
+                {
+                    "id": "webhook-1",
+                    "type": "webhook",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                {
+                    "id": "sheets-1",
+                    "type": "googleSheets",
+                    "position": {
+                        "x": 200,
+                        "y": 0
+                    }
+                },
+                {
+                    "id": "gmail-1",
+                    "type": "gmail",
+                    "position": {
+                        "x": 400,
+                        "y": 0
+                    }
+                },
+                {
+                    "id": "delay-1",
+                    "type": "delay",
+                    "position": {
+                        "x": 600,
+                        "y": 0
+                    }
+                }
+            ]
+        }
     },
     {
         "id": "2",
-        "name": "3-Email Follow-Up Sequence",
-        "slug": "follow-up-email-sequence",
+        "name": "Property Listing Syndication",
+        "slug": "property-listing-syndication",
         "categories": [
             "Real Estate",
-            "Communication"
+            "Marketing"
+        ],
+        "difficulty": "Intermediate",
+        "nodes": [
+            "Trigger",
+            "Airtable",
+            "Facebook",
+            "Instagram",
+            "Twitter",
+            "Slack"
+        ],
+        "nodeCount": 12,
+        "setupTime": "45 min",
+        "value": 297,
+        "description": "Post new listings to multiple platforms automatically",
+        "longDescription": "Save hours by automatically posting new property listings to Facebook, Instagram, Twitter, and your website. This workflow monitors your property database and syndicates listings across all your marketing channels with properly formatted images and descriptions.",
+        "whatItDoes": [
+            "Monitors property database (Airtable/Sheets)",
+            "Formats images/descriptions for social media",
+            "Posts to Facebook, Instagram, and Twitter",
+            "Notifies team via Slack on success"
+        ],
+        "featured": false,
+        "status": "published",
+        "n8nWorkflowId": "",
+        "order": 2,
+        "updatedAt": "2026-03-10T00:00:00Z",
+        "imageUrl": "/images/templates/workflow-placeholder.png",
+        "workflowJson": {
+            "version": "1.0",
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "trigger",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                {
+                    "id": "airtable-1",
+                    "type": "airtable",
+                    "position": {
+                        "x": 200,
+                        "y": 0
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "3",
+        "name": "Automated Showing Scheduler",
+        "slug": "showing-scheduler",
+        "categories": [
+            "Real Estate",
+            "Operations"
         ],
         "difficulty": "Beginner",
         "nodes": [
             "Webhook",
-            "Wait",
-            "Gmail"
-        ],
-        "nodeCount": 5,
-        "setupTime": "25 min",
-        "value": 150,
-        "description": "Automatically send a timed 3-email follow-up sequence to every lead without any manual work.",
-        "whatItDoes": [
-            "Sends instant welcome email on lead capture",
-            "Waits 24 hours then sends follow-up email",
-            "Waits 48 more hours then sends final check-in",
-            "Works 24/7 even while you sleep"
-        ],
-        "featured": false,
-        "status": "published",
-        "n8nWorkflowId": "BWepF6rYUerOW3fh",
-        "order": 2,
-        "updatedAt": "2026-03-06T00:00:00Z"
-    },
-    {
-        "id": "3",
-        "name": "Lead Routing by Area",
-        "slug": "lead-routing-system",
-        "categories": [
-            "Real Estate",
-            "Lead Management"
-        ],
-        "difficulty": "Intermediate",
-        "nodes": [
-            "Webhook",
-            "Google Sheets",
-            "Edit Fields",
-            "Switch",
+            "Google Calendar",
             "Gmail",
-            "Telegram"
+            "Calendly",
+            "Twilio"
         ],
-        "nodeCount": 10,
-        "setupTime": "45 min",
-        "value": 300,
-        "description": "Automatically route incoming leads to the right agent based on their area preference using Switch node logic.",
+        "nodeCount": 9,
+        "setupTime": "30 min",
+        "value": 247,
+        "description": "Let clients book property viewings with calendar sync",
+        "longDescription": "Allow prospects to book property showings online with automatic calendar sync and SMS reminders. This workflow integrates with your calendar, sends confirmation emails, and reminds both you and your clients 24 hours before the showing.",
         "whatItDoes": [
-            "Normalizes area data automatically",
-            "Routes leads to correct agent (North/South/Downtown)",
-            "Sends area-specific email and Telegram notification",
-            "Logs all leads with assigned agent to Google Sheets"
+            "Integrates with Calendly/Booking forms",
+            "Syncs with Google Calendar slots",
+            "Sends automated confirmation emails",
+            "Triggers Twilio SMS reminders"
         ],
-        "featured": false,
+        "featured": true,
         "status": "published",
-        "n8nWorkflowId": "dav9j1aEDKynzp0O",
+        "n8nWorkflowId": "",
         "order": 3,
-        "updatedAt": "2026-03-06T00:00:00Z"
+        "updatedAt": "2026-03-10T00:00:00Z",
+        "imageUrl": "/images/templates/workflow-placeholder.png",
+        "workflowJson": {
+            "version": "1.0",
+            "nodes": [
+                {
+                    "id": "webhook-1",
+                    "type": "webhook",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                }
+            ]
+        }
     },
     {
         "id": "4",
-        "name": "Missed Call Auto-Response System",
-        "slug": "missed-call-text-back",
-        "categories": [
-            "Real Estate",
-            "Communication"
-        ],
-        "difficulty": "Intermediate",
-        "nodes": [
-            "Webhook",
-            "Google Sheets",
-            "Gmail",
-            "Telegram",
-            "Schedule"
-        ],
-        "nodeCount": 8,
-        "setupTime": "35 min",
-        "value": 400,
-        "description": "Never lose a lead from a missed call again. Auto-sends email response and delivers daily missed call summary every morning.",
-        "whatItDoes": [
-            "Receives missed call webhook from GHL or any CRM",
-            "Instantly emails the caller with callback message",
-            "Sends Telegram alert to agent immediately",
-            "Delivers formatted daily summary every morning at 8am"
-        ],
-        "featured": false,
-        "status": "published",
-        "n8nWorkflowId": "2t0HPTKtNWo1y2OP",
-        "order": 4,
-        "updatedAt": "2026-03-06T00:00:00Z"
-    },
-    {
-        "id": "5",
-        "name": "AI Personalized Email Generator",
-        "slug": "ai-personalized-email",
+        "name": "Monthly Market Report Generator",
+        "slug": "market-report-generator",
         "categories": [
             "Real Estate",
             "AI-Powered"
         ],
+        "difficulty": "Advanced",
+        "nodes": [
+            "Schedule",
+            "HTTP Request",
+            "OpenAI",
+            "PDF Generator",
+            "Mailchimp",
+            "Google Drive"
+        ],
+        "nodeCount": 15,
+        "setupTime": "1 hour",
+        "value": 497,
+        "description": "Auto-generate and email market reports to your database",
+        "longDescription": "Automatically pull market data, generate professional PDF reports with AI-powered insights, and email them to your entire database monthly. This advanced workflow uses OpenAI to analyze market trends and create compelling narratives for your clients.",
+        "whatItDoes": [
+            "Pulls live market data via HTTP API",
+            "OpenAI generates insightful commentary",
+            "Generates professional PDF market reports",
+            "Emails via Mailchimp and archives to Drive"
+        ],
+        "featured": true,
+        "status": "published",
+        "n8nWorkflowId": "",
+        "order": 4,
+        "updatedAt": "2026-03-10T00:00:00Z",
+        "imageUrl": "/images/templates/workflow-placeholder.png",
+        "workflowJson": {
+            "version": "1.0",
+            "nodes": [
+                {
+                    "id": "schedule-1",
+                    "type": "schedule",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "5",
+        "name": "Client Birthday & Anniversary Campaigns",
+        "slug": "client-birthday-campaigns",
+        "categories": [
+            "Real Estate",
+            "Communication"
+        ],
         "difficulty": "Intermediate",
         "nodes": [
-            "Webhook",
-            "OpenAI/OpenRouter",
-            "Gmail",
+            "Schedule",
             "Google Sheets",
-            "Telegram"
+            "OpenRouter",
+            "Gmail",
+            "Twilio SMS"
         ],
-        "nodeCount": 5,
-        "setupTime": "30 min",
-        "value": 500,
-        "description": "GPT writes a unique personalized email for every single lead based on their specific interests, budget, and location.",
+        "nodeCount": 10,
+        "setupTime": "25 min",
+        "value": 247,
+        "description": "Send personalized messages on special dates automatically",
+        "longDescription": "Never forget a client birthday or home purchase anniversary again. This workflow checks your database daily and sends personalized messages via email or SMS, helping you stay top-of-mind and build lasting relationships.",
         "whatItDoes": [
-            "Reads lead interest, budget, and location",
-            "GPT writes completely unique email for each lead",
-            "Sends personalized email automatically",
-            "Logs AI-generated content to Google Sheets",
-            "Telegram preview of email sent to agent"
+            "Daily check of client database",
+            "AI personalization of messages",
+            "Sends emails via Gmail automatically",
+            "Sends birthday SMS via Twilio"
         ],
         "featured": false,
         "status": "published",
-        "n8nWorkflowId": "J5BbDcr2qrz0poja",
+        "n8nWorkflowId": "",
         "order": 5,
-        "updatedAt": "2026-03-06T00:00:00Z"
+        "updatedAt": "2026-03-10T00:00:00Z",
+        "imageUrl": "/images/templates/workflow-placeholder.png",
+        "workflowJson": {
+            "version": "1.0",
+            "nodes": [
+                {
+                    "id": "schedule-1",
+                    "type": "schedule",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                }
+            ]
+        }
     },
     {
         "id": "6",
-        "name": "AI Lead Scoring System",
-        "slug": "ai-lead-scoring",
+        "name": "Price Drop Alert System",
+        "slug": "price-drop-alerts",
         "categories": [
             "Real Estate",
-            "AI-Powered",
             "Lead Management"
         ],
         "difficulty": "Advanced",
         "nodes": [
-            "Webhook",
-            "OpenAI/OpenRouter",
-            "Code",
-            "IF",
+            "Schedule",
+            "HTTP Request",
+            "PostgreSQL",
+            "Filter",
             "Gmail",
-            "Telegram",
-            "Google Sheets"
+            "Slack"
         ],
-        "nodeCount": 12,
-        "setupTime": "60 min",
-        "value": 800,
-        "description": "AI automatically scores every lead 1-10 and routes HOT leads to instant booking while filing cold leads for later.",
+        "nodeCount": 13,
+        "setupTime": "50 min",
+        "value": 397,
+        "description": "Notify clients when properties in their area drop in price",
+        "longDescription": "Monitor MLS listings and automatically notify clients when properties matching their criteria drop in price. This workflow tracks price changes, filters by client preferences, and sends instant alerts to help your buyers find the best deals.",
         "whatItDoes": [
-            "AI analyzes budget, timeline, location, pre-approval status",
-            "Scores lead 1-10 with visual emoji score bar",
-            "HOT leads (7+) get urgent alert + booking email instantly",
-            "WARM leads get AI nurture email",
-            "COLD leads saved for future follow-up",
-            "All scores logged to Google Sheets"
+            "Tracks house price changes from database",
+            "Filters leads interested in specific areas",
+            "Sends instant price-drop email alerts",
+            "Updates internal Slack for agent follow-up"
         ],
         "featured": false,
         "status": "published",
-        "n8nWorkflowId": "Uca80DipBMoWBifX",
+        "n8nWorkflowId": "",
         "order": 6,
-        "updatedAt": "2026-03-06T00:00:00Z"
+        "updatedAt": "2026-03-10T00:00:00Z",
+        "imageUrl": "/images/templates/workflow-placeholder.png",
+        "workflowJson": {
+            "version": "1.0",
+            "nodes": [
+                {
+                    "id": "schedule-1",
+                    "type": "schedule",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                }
+            ]
+        }
     },
     {
         "id": "7",
-        "name": "Complete Real Estate Lead Machine",
-        "slug": "complete-lead-machine",
+        "name": "Expired Listing Outreach",
+        "slug": "expired-listing-outreach",
         "categories": [
             "Real Estate",
-            "AI-Powered",
-            "Lead Management",
-            "CRM"
+            "Lead Management"
         ],
         "difficulty": "Advanced",
         "nodes": [
-            "Webhook",
-            "Edit Fields",
-            "Google Sheets",
-            "OpenAI/OpenRouter",
-            "Code",
-            "Switch",
-            "IF",
+            "Schedule",
+            "HTTP Request",
+            "OpenAI",
             "Gmail",
-            "Telegram",
-            "Basic LLM Chain"
+            "Google Sheets",
+            "Twilio",
+            "Slack"
         ],
-        "nodeCount": 25,
-        "setupTime": "3 hours",
-        "value": 1497,
-        "description": "The complete done-for-you lead automation system. AI scoring + area routing + personalized emails + instant alerts + daily summaries.",
+        "nodeCount": 14,
+        "setupTime": "1.5 hours",
+        "value": 597,
+        "description": "Auto-detect expired listings and launch outreach campaigns",
+        "longDescription": "Automatically identify expired listings in your market and launch personalized outreach campaigns. This workflow scrapes MLS data, generates AI-powered personalized messages, and coordinates multi-channel outreach via email, SMS, and direct mail tracking.",
         "whatItDoes": [
-            "Captures and normalizes all lead data",
-            "AI scores every lead 1-10 automatically",
-            "Routes to correct agent by area (7 zones)",
-            "HOT leads: booking email + urgent Telegram alert",
-            "WARM leads: AI writes personalized follow-up email",
-            "COLD leads: saved for future without wasting agent time",
-            "All leads logged with score, category, agent, action taken",
-            "Final confirmation message for every processed lead"
+            "Scrapes/Fetches expired MLS listings",
+            "AI writes custom outreach messages",
+            "Coordinates Email and SMS campaigns",
+            "Logs every contact attempt to Google Sheets"
         ],
         "featured": true,
         "status": "published",
-        "n8nWorkflowId": "bwr0OQ2lH5Ylq4hP",
+        "n8nWorkflowId": "",
         "order": 7,
-        "updatedAt": "2026-03-06T00:00:00Z"
+        "updatedAt": "2026-03-10T00:00:00Z",
+        "imageUrl": "/images/templates/workflow-placeholder.png",
+        "workflowJson": {
+            "version": "1.0",
+            "nodes": [
+                {
+                    "id": "schedule-1",
+                    "type": "schedule",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                }
+            ]
+        }
     }
 ]

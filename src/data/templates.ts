@@ -18,6 +18,7 @@ export interface Template {
     setupTime: string;
     value: number;
     description: string;
+    longDescription?: string;
     whatItDoes: string[];
     featured: boolean;
     status: "published" | "draft";
@@ -46,6 +47,8 @@ export const templateCategories = [
     "Lead Management",
     "CRM",
     "Communication",
+    "Marketing",
+    "Operations",
 ] as const;
 
 export type TemplateCategory = (typeof templateCategories)[number];
@@ -57,6 +60,8 @@ export const categoryColors: Record<string, string> = {
     "Lead Management": "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
     "CRM": "bg-orange-500/15 text-orange-400 border-orange-500/20",
     "Communication": "bg-blue-500/15 text-blue-400 border-blue-500/20",
+    "Marketing": "bg-pink-500/15 text-pink-400 border-pink-500/20",
+    "Operations": "bg-amber-500/15 text-amber-400 border-amber-500/20",
 };
 
 /** Color map for difficulty badges */
