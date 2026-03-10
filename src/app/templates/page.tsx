@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Zap, Clock, ArrowRight, Search, Loader2, ExternalLink } from "lucide-react";
+import { Zap, Clock, Search, Loader2 } from "lucide-react";
 
 interface Template {
   id: string;
@@ -86,9 +86,6 @@ export default function TemplatesPage() {
       (t.description || "").toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesDifficulty && matchesSearch;
   });
-
-  // Get unique categories from templates
-  const uniqueCategories = [...new Set(templates.flatMap((t) => t.categories || []))];
 
   return (
     <div className="min-h-screen bg-navy-950 text-white pt-24 pb-20">
