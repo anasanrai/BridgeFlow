@@ -1,15 +1,21 @@
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import { createClient } from "@/utils/supabase/server";
 
-export default function AdminDashboardLayout({
+export default async function AdminDashboardLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const supabase = createClient();
+
+    // Get current user for header
+    const { data: { user } } = await supabase.auth.getUser();
+
     return (
-        <div className="min-h-screen bg-navy-950">
-            <AdminSidebar />
-            <main className="lg:ml-64 min-h-screen">
-                <div className="p-4 pt-16 lg:pt-6 lg:p-8">{children}</div>
+        <div className="min-h-screen bg-slate-50">
+            <AdminSidebar user={user} />
+            <main className="lg:ml-64 min-h-screen transition-all duration-300">
+                <div className="p-4 pt-20 lg:pt-6 lg:p-6">{children}</div>
             </main>
         </div>
     );
