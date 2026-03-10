@@ -49,7 +49,7 @@ export default async function TemplatesPage() {
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
             <span className="flex items-center gap-1.5">
               <span className="text-amber-400">✓</span>
-              {templates.length} templates available
+              {(templates || []).length} templates available
             </span>
             <span className="flex items-center gap-1.5">
               <span className="text-amber-400">✓</span>
