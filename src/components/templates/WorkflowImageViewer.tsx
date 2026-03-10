@@ -18,7 +18,7 @@ export function WorkflowImageViewer({ slug, templateName, imageUrls = [] }: Work
   const [error, setError] = useState<string | null>(null);
 
   const loadImages = useCallback(async () => {
-    if (imageUrls && imageUrls.length > 0) {
+    if (imageUrls && Array.isArray(imageUrls) && imageUrls.length > 0) {
       setImages(imageUrls);
       setIsLoading(false);
       return;
@@ -46,11 +46,11 @@ export function WorkflowImageViewer({ slug, templateName, imageUrls = [] }: Work
   }, [loadImages]);
 
   const goToPrevious = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setCurrentImageIndex((prev) => (prev === 0 ? (images?.length || 0) - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setCurrentImageIndex((prev) => (prev === (images?.length || 0) - 1 ? 0 : prev + 1));
   };
 
   const handleZoomToFit = (controls: any) => {
@@ -68,7 +68,7 @@ export function WorkflowImageViewer({ slug, templateName, imageUrls = [] }: Work
     );
   }
 
-  if (error || images.length === 0) {
+  if (error || !images || images.length === 0) {
     return (
       <div className="w-full h-[600px] bg-slate-900 rounded-lg flex items-center justify-center border border-slate-700">
         <div className="text-center">
@@ -80,7 +80,7 @@ export function WorkflowImageViewer({ slug, templateName, imageUrls = [] }: Work
   }
 
   const currentImage = images[currentImageIndex];
-  const isMultiImage = images.length > 1;
+  const isMultiImage = (images?.length || 0) > 1;
 
   return (
     <div className="w-full">

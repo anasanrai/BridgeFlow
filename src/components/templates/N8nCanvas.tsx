@@ -111,7 +111,7 @@ function buildDependencyGraph(workflowJson: any): Map<string, Set<string>> {
 
 function computeHierarchicalLayout(workflowJson: any): { nodes: LayoutNode[]; edges: LayoutEdge[]; width: number; height: number } {
     const rawNodes = workflowJson?.nodes || [];
-    if (rawNodes.length === 0) return { nodes: [], edges: [], width: 400, height: 300 };
+    if (!Array.isArray(rawNodes) || rawNodes.length === 0) return { nodes: [], edges: [], width: 400, height: 300 };
 
     const graph = buildDependencyGraph(workflowJson);
     const levels = new Map<string, number>();
@@ -148,7 +148,7 @@ function computeHierarchicalLayout(workflowJson: any): { nodes: LayoutNode[]; ed
     const nodeMap = new Map<string, LayoutNode>();
 
     levelGroups.forEach((nodeNames, level) => {
-        const count = nodeNames.length;
+        const count = (nodeNames || []).length;
         const totalWidth = count * LEVEL_WIDTH;
         const startX = Math.max(50, (800 - totalWidth) / 2);
 
@@ -214,7 +214,7 @@ function bezierPath(x1: number, y1: number, x2: number, y2: number): string {
 
 function N8nNodeSvg({ node }: { node: LayoutNode }) {
     const { x, y, width, height, style, name } = node;
-    const label = name.length > 22 ? name.slice(0, 21) + "…" : name;
+    const label = (name || "").length > 22 ? (name || "").slice(0, 21) + "…" : (name || "");
 
     return (
         <g>
@@ -351,10 +351,10 @@ export default function N8nCanvas({ workflowJson, compact = false, className = "
     );
 }
 
-export function N8nNodeIconStrip({ nodes }: { nodes: string[] }) {
+export function N8nNodeIconStrip({ nodes = [] }: { nodes?: string[] }) {
     return (
         <div className="flex -space-x-2">
-            {nodes.slice(0, 5).map((node, i) => (
+            {(nodes || []).slice(0, 5).map((node, i) => (
                 <div
                     key={i}
                     className="w-8 h-8 rounded-full border-2 border-navy-950 bg-gradient-to-br from-navy-800 to-navy-900 flex items-center justify-center text-xs font-semibold hover:scale-110 transition-transform"
@@ -363,9 +363,9 @@ export function N8nNodeIconStrip({ nodes }: { nodes: string[] }) {
                     {getN8nNodeStyle(node).icon}
                 </div>
             ))}
-            {nodes.length > 5 && (
+            {(nodes || []).length > 5 && (
                 <div className="w-8 h-8 rounded-full border-2 border-navy-950 bg-navy-800 flex items-center justify-center text-xs font-semibold text-gray-400">
-                    +{nodes.length - 5}
+                    +{(nodes || []).length - 5}
                 </div>
             )}
         </div>

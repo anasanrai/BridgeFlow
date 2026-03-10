@@ -13,9 +13,9 @@ interface TemplateCardProps {
 
 export default function TemplateCard({ template, compact = false }: TemplateCardProps) {
     const [showPayment, setShowPayment] = useState(false);
-    const primaryCategory = template.categories[0];
+    const primaryCategory = template.categories?.[0] || "General";
     const hasWorkflow = !!template.workflowJson;
-    const priceStr = template.value > 0 ? `$${template.value.toLocaleString()}` : "Free";
+    const priceStr = (template.value || 0) > 0 ? `$${(template.value || 0).toLocaleString()}` : "Free";
 
     return (
         <>
@@ -51,7 +51,7 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
                                     <rect width="100%" height="100%" fill="url(#grid-card)" />
                                 </svg>
                                 <div className="relative z-10 flex flex-wrap gap-2 justify-center px-4">
-                                    {template.nodes.slice(0, 5).map((name, i) => {
+                                    {(template.nodes || []).slice(0, 5).map((name, i) => {
                                         const style = getN8nNodeStyle("", name);
                                         return (
                                             <div
@@ -68,7 +68,7 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
                                             </div>
                                         );
                                     })}
-                                    {template.nodes.length > 5 && (
+                                    {Array.isArray(template.nodes) && template.nodes.length > 5 && (
                                         <div className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-500 border border-white/10">
                                             +{template.nodes.length - 5} more
                                         </div>

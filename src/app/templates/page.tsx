@@ -71,12 +71,12 @@ export default function TemplatesPage() {
   const filteredTemplates = templates.filter((t) => {
     const matchesCategory =
       activeCategory === "all" ||
-      t.categories.some(
+      (t.categories || []).some(
         (c) => c.toLowerCase() === activeCategory.toLowerCase()
       );
     const matchesSearch =
-      t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.description.toLowerCase().includes(searchQuery.toLowerCase());
+      (t.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (t.description || "").toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -119,7 +119,7 @@ export default function TemplatesPage() {
         {/* Stats Bar */}
         <div className="flex flex-wrap gap-6 mb-10 py-4 border-y border-white/5">
           <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span className="text-white font-bold">{loading ? "..." : templates.length}</span> templates available
+            <span className="text-white font-bold">{loading ? "..." : (templates?.length || 0)}</span> templates available
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-400">
             <span className="text-white font-bold">100%</span> ready to deploy
@@ -141,8 +141,8 @@ export default function TemplatesPage() {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${activeCategory === cat.id
-                      ? "bg-white/10 text-white font-bold"
-                      : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
+                    ? "bg-white/10 text-white font-bold"
+                    : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
                     }`}
                 >
                   <span className="flex items-center gap-3">
@@ -165,8 +165,8 @@ export default function TemplatesPage() {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all ${activeCategory === cat.id
-                      ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
-                      : "bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10"
+                    ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
+                    : "bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10"
                     }`}
                 >
                   <span>{cat.icon}</span>
@@ -181,7 +181,7 @@ export default function TemplatesPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-12">
-                {filteredTemplates.length > 0 ? (
+                {(filteredTemplates || []).length > 0 ? (
                   filteredTemplates.map((template) => (
                     <div key={template.id} className="group relative">
                       <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 items-start">
@@ -189,7 +189,7 @@ export default function TemplatesPage() {
                         {/* Left: Info (2 cols) */}
                         <div className="xl:col-span-2 space-y-6">
                           <div className="flex items-center gap-3 flex-wrap">
-                            {template.categories.map((c) => (
+                            {(template.categories || []).map((c) => (
                               <span key={c} className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
                                 {c}
                               </span>

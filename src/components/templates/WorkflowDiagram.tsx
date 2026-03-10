@@ -374,7 +374,7 @@ export default function WorkflowDiagram({ template, compact = false }: WorkflowD
     }
 
     // ── Static fallback mode ───────────────────────────────────────────────────
-    const nodes = template.nodes;
+    const nodes = Array.isArray(template.nodes) ? template.nodes : [];
     const count = nodes.length;
     const CANVAS_W = 800;
     const CANVAS_H = compact ? 150 : 220;
@@ -410,7 +410,7 @@ export default function WorkflowDiagram({ template, compact = false }: WorkflowD
                 const cx = PAD + col * colGap;
                 const cy = PAD + row * rowGap;
                 const style = getNodeStyle("", name);
-                const label = name.length > 14 ? name.slice(0, 13) + "…" : name;
+                const label = (name || "").length > 14 ? (name || "").slice(0, 13) + "…" : (name || "");
 
                 const nextI = i + 1;
                 const nextRow = Math.floor(nextI / perRow);

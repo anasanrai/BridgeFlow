@@ -7,6 +7,7 @@ import { WorkflowImageViewer } from "@/components/templates/WorkflowImageViewer"
 import TemplateCard from "@/components/templates/TemplateCard";
 import TemplatePurchaseButton from "@/components/templates/TemplatePurchaseButton";
 import JsonViewer from "@/components/templates/JsonViewer";
+import CopyJsonButton from "@/components/templates/CopyJsonButton";
 import { getSupabase } from "@/lib/supabase";
 
 interface Props {
@@ -99,7 +100,12 @@ export default async function TemplateDetailPage({ params }: Props) {
     const template = await getTemplateWithWorkflowId(params.slug);
     if (!template) notFound();
 
-    const related = templates.filter((t: any) => t.slug !== template.slug && t.categories?.some((c: string) => template.categories?.includes(c))).slice(0, 3);
+    const templateCategories = Array.isArray(template.categories) ? template.categories : [];
+    const related = templates.filter((t: any) =>
+        t && t.slug !== template.slug &&
+        Array.isArray(t.categories) &&
+        t.categories.some((c: string) => templateCategories.includes(c))
+    ).slice(0, 3);
 
     return (
         <>
@@ -120,7 +126,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                     </Link>
 
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {(template.categories as string[])?.map((cat: string) => (
+                        {(templateCategories || []).map((cat: string) => (
                             <span
                                 key={cat}
                                 className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${categoryColors[cat] || "bg-gray-500/15 text-gray-400 border-gray-500/20"}`}
@@ -180,7 +186,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                 />
                                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Key Features</h3>
                                 <ul className="space-y-3">
-                                    {(template.whatItDoes as string[])?.map((step: string, i: number) => (
+                                    {(Array.isArray(template.whatItDoes) ? template.whatItDoes : []).map((step: string, i: number) => (
                                         <li key={i} className="flex items-start gap-3 text-gray-300 text-sm leading-relaxed">
                                             <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
                                             {step}
@@ -192,7 +198,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                             <div>
                                 <h2 className="text-lg font-display font-bold text-white mb-3">Tools & Nodes</h2>
                                 <div className="flex flex-wrap gap-2">
-                                    {(template.nodes as string[])?.map((node: string) => (
+                                    {(Array.isArray(template.nodes) ? template.nodes : []).map((node: string) => (
                                         <span
                                             key={node}
                                             className="inline-block px-3 py-1.5 rounded-lg text-xs font-semibold border"
@@ -213,7 +219,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                     <WorkflowImageViewer
                                         slug={template.slug || ""}
                                         templateName={template.name || ""}
-                                        imageUrls={template.imageUrls}
+                                        imageUrls={Array.isArray(template.imageUrls) ? template.imageUrls : []}
                                     />
                                 </div>
                             </div>
@@ -278,16 +284,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                             <p className="text-gray-400 text-sm">Technical blueprint and node configuration.</p>
                         </div>
                         {template.jsonAccess === "free" && template.workflowJson && (
-                            <button
-                                onClick={async () => {
-                                    await navigator.clipboard.writeText(JSON.stringify(template.workflowJson, null, 2));
-                                    alert("Workflow JSON copied to clipboard!");
-                                }}
-                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 transition-all font-bold text-sm"
-                            >
-                                <Zap className="w-4 h-4" />
-                                Copy JSON
-                            </button>
+                            <CopyJsonButton json={template.workflowJson} />
                         )}
                     </div>
 
@@ -337,7 +334,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                 </div>
             </section>
 
-            {related.length > 0 && (
+            {Array.isArray(related) && related.length > 0 && (
                 <section className="section-padding bg-navy-900/20">
                     <div className="container-max px-4 sm:px-6 lg:px-8">
                         <h2 className="text-2xl font-display font-bold text-white mb-8">Related Templates</h2>
