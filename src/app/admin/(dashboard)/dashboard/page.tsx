@@ -30,6 +30,9 @@ import {
     Radio,
     Link2,
     Settings,
+    Download,
+    Star,
+    Workflow,
 } from "lucide-react";
 import AnalyticsCharts from "@/components/admin/AnalyticsCharts";
 
@@ -44,6 +47,20 @@ interface DashboardStats {
     webhooks: number;
     recent_activity: Array<{ action: string; section: string; details: string; created_at: string }>;
     telemetry: any[];
+    templates?: {
+        total: number;
+        published: number;
+        drafts: number;
+        featured: number;
+        totalDownloads: number;
+        totalViews: number;
+        topTemplates: Array<{
+            id: string;
+            name: string;
+            download_count: number;
+            view_count: number;
+        }>;
+    };
 }
 
 interface SystemHealth {
@@ -59,7 +76,7 @@ function StatusDot({ status }: { status: string }) {
         : status === "degraded" || status === "development" || status === "staging"
             ? "bg-amber-400"
             : "bg-red-400";
-    return <span className={`w-2.5 h-2.5 rounded-full ${color} animate-pulse`} />;
+    return <span className={`w-2.5 h-2.5 rounded-full ${color} animate-pulse"} />;
 }
 
 export default function Dashboard() {
@@ -90,6 +107,35 @@ export default function Dashboard() {
                 sections.map((s) => fetch(`/api/admin/content/${s}`).then((r) => r.json()))
             );
 
+            // Fetch template stats separately
+            let templateStats = null;
+            try {
+                const templatesRes = await fetch("/api/admin/templates");
+                const templatesData = await templatesRes.json();
+                if (templatesData.ok && templatesData.templates) {
+                    const templates = templatesData.templates;
+                    templateStats = {
+                        total: templates.length,
+                        published: templates.filter((t: any) => t.status === "published").length,
+                        drafts: templates.filter((t: any) => t.status === "draft").length,
+                        featured: templates.filter((t: any) => t.featured).length,
+                        totalDownloads: templates.reduce((s: number, t: any) => s + (t.downloadCount || t.download_count || 0), 0),
+                        totalViews: templates.reduce((s: number, t: any) => s + (t.viewCount || t.view_count || 0), 0),
+                        topTemplates: templates
+                            .sort((a: any, b: any) => (b.downloadCount || b.download_count || 0) - (a.downloadCount || a.download_count || 0))
+                            .slice(0, 5)
+                            .map((t: any) => ({
+                                id: t.id,
+                                name: t.name,
+                                download_count: t.downloadCount || t.download_count || 0,
+                                view_count: t.viewCount || t.view_count || 0,
+                            })),
+                    };
+                }
+            } catch (e) {
+                console.error("Failed to load template stats:", e);
+            }
+
             setStats({
                 blog_posts: results[0]?.data?.length || 0,
                 services: results[1]?.data?.length || 0,
@@ -101,6 +147,7 @@ export default function Dashboard() {
                 telemetry: results[7]?.data || [],
                 ai_models: results[8]?.data?.length || 0,
                 webhooks: results[9]?.data?.length || 0,
+                templates: templateStats,
             });
 
             // Check system health
@@ -147,6 +194,8 @@ export default function Dashboard() {
         { label: "Form Submissions", count: formSubmits, icon: Mail, color: "from-emerald-500 to-teal-400", href: "/admin/contacts" },
         { label: "Blog Posts", count: stats?.blog_posts || 0, icon: FileText, color: "from-indigo-500 to-blue-400", href: "/admin/blog" },
         { label: "Subscribers", count: stats?.subscribers || 0, icon: Bell, color: "from-rose-500 to-orange-400", href: "/admin/subscribers" },
+        { label: "Template Views", count: stats?.templates?.totalViews || 0, icon: Eye, color: "from-cyan-500 to-blue-400", href: "/admin/templates" },
+        { label: "Template Downloads", count: stats?.templates?.totalDownloads || 0, icon: Download, color: "from-green-500 to-emerald-400", href: "/admin/templates" },
     ];
 
     const quickActions = [
@@ -158,6 +207,7 @@ export default function Dashboard() {
         { label: "SEO Manager", href: "/admin/seo", icon: Globe, desc: "Meta & sitemaps" },
         { label: "New Blog Post", href: "/admin/blog", icon: FileText, desc: "Create content" },
         { label: "Manage Team", href: "/admin/about", icon: Users, desc: `${stats?.team_members || 0} members` },
+        { label: "Manage Templates", href: "/admin/templates", icon: Workflow, desc: `${stats?.templates?.total || 0} workflows` },
     ];
 
     return (
@@ -225,7 +275,7 @@ export default function Dashboard() {
             )}
 
             {/* ── Metric Cards ── */}
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {metricCards.map((card) => (
                     <Link
                         key={card.label}
@@ -259,7 +309,7 @@ export default function Dashboard() {
                         Quick Actions
                     </h2>
                     <p className="text-xs text-gray-500 mb-5">Jump to any section instantly.</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                         {quickActions.map((action) => (
                             <Link
                                 key={action.label}
@@ -346,6 +396,67 @@ export default function Dashboard() {
                 </div>
             </div>
 
+            {/* ── Template Analytics Strip ── */}
+            {stats?.templates && (
+                <div className="glass rounded-xl p-5 border border-white/5">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                            <Workflow className="w-4 h-4 text-cyan-400" />
+                            Template Performance
+                        </h3>
+                        <Link href="/admin/templates" className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
+                            View All Templates →
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+                        <div className="p-3 rounded-lg border border-white/5 bg-white/3">
+                            <div className="text-lg font-bold text-white">{stats.templates.total}</div>
+                            <div className="text-[10px] text-gray-500">Total Templates</div>
+                        </div>
+                        <div className="p-3 rounded-lg border border-emerald-500/20 bg-emerald-500/5">
+                            <div className="text-lg font-bold text-emerald-400">{stats.templates.published}</div>
+                            <div className="text-[10px] text-gray-500">Published</div>
+                        </div>
+                        <div className="p-3 rounded-lg border border-amber-500/20 bg-amber-500/5">
+                            <div className="text-lg font-bold text-amber-400">{stats.templates.drafts}</div>
+                            <div className="text-[10px] text-gray-500">Drafts</div>
+                        </div>
+                        <div className="p-3 rounded-lg border border-purple-500/20 bg-purple-500/5">
+                            <div className="text-lg font-bold text-purple-400">{stats.templates.featured}</div>
+                            <div className="text-[10px] text-gray-500">Featured</div>
+                        </div>
+                        <div className="p-3 rounded-lg border border-cyan-500/20 bg-cyan-500/5">
+                            <div className="text-lg font-bold text-cyan-400">{stats.templates.totalDownloads}</div>
+                            <div className="text-[10px] text-gray-500">Total Downloads</div>
+                        </div>
+                    </div>
+                    {/* Top Performing Templates */}
+                    {stats.templates.topTemplates && stats.templates.topTemplates.length > 0 && (
+                        <div>
+                            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Top Performing Templates</h4>
+                            <div className="space-y-2">
+                                {stats.templates.topTemplates.map((template, idx) => (
+                                    <div key={template.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
+                                        <span className="text-xs text-gray-600 w-4">#{idx + 1}</span>
+                                        <span className="text-sm text-gray-300 flex-1 truncate">{template.name}</span>
+                                        <div className="flex items-center gap-3 text-xs">
+                                            <span className="flex items-center gap-1 text-gray-500">
+                                                <Eye className="w-3 h-3" />
+                                                {template.view_count}
+                                            </span>
+                                            <span className="flex items-center gap-1 text-emerald-400">
+                                                <Download className="w-3 h-3" />
+                                                {template.download_count}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
             {/* ── Content Overview Strip ── */}
             <div className="glass rounded-xl p-5 border border-white/5">
                 <div className="flex items-center justify-between mb-4">
@@ -365,6 +476,7 @@ export default function Dashboard() {
                         { label: "Team Members", count: stats?.team_members || 0, icon: Users, href: "/admin/about" },
                         { label: "AI Models", count: stats?.ai_models || 0, icon: Cpu, href: "/admin/ai-models" },
                         { label: "Webhooks", count: stats?.webhooks || 0, icon: Link2, href: "/admin/integrations" },
+                        { label: "Templates", count: stats?.templates?.total || 0, icon: Workflow, href: "/admin/templates" },
                     ].map((item) => (
                         <Link
                             key={item.label}
