@@ -1,145 +1,123 @@
-import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { createClient } from "@supabase/supabase-js";
-
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
+import { NextRequest, NextResponse } from 'next/server'
+import { supabaseAdmin } from '@/lib/supabase'
+import { sendTelegram, newLeadMessage } from '@/lib/telegram'
 
 export async function POST(req: NextRequest) {
-    try {
-        const body = await req.json();
-        const { name, email, company, budget, message, service } = body;
+  try {
+    const body = await req.json()
+    const { name, email, phone, message, package_interest, source } = body
 
-        // Validation
-        if (!name || !email || !message) {
-            return NextResponse.json(
-                { error: "Name, email, and message are required." },
-                { status: 400 }
-            );
-        }
+    // Validate required fields
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: 'Name, email, and message are required.' },
+        { status: 400 }
+      )
+    }
 
-        // Email regex validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return NextResponse.json(
-                { error: "Please provide a valid email address." },
-                { status: 400 }
-            );
-        }
+    // Basic email validation
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRe.test(email)) {
+      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 })
+    }
 
-        // Always save to Supabase (primary storage)
-        const supabase = getAdminClient();
-        let submissionId: string | null = null;
-        if (supabase) {
-            try {
-                const { data, error } = await supabase
-                    .from("contact_submissions")
-                    .insert([{
-                        name,
-                        email,
-                        message,
-                        status: "new",
-                        notes: JSON.stringify({ company, budget, service, source: "contact_form" }),
-                    }])
-                    .select("id")
-                    .single();
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: 'Server configuration error.' }, { status: 500 })
+    }
 
-                if (error) {
-                    console.error("Supabase contact insert error:", error);
-                } else {
-                    submissionId = data?.id;
-                    // Log activity
-                    try {
-                        await supabase.from("activity_log").insert({
-                            action: "contact_form_submitted",
-                            section: "Contact",
-                            details: `New contact from ${name} (${email})${company ? ` — ${company}` : ""}`,
-                        });
-                    } catch (activityErr) {
-                        console.error("Activity log error:", activityErr);
-                    }
-                }
-            } catch (dbErr) {
-                console.error("Supabase error:", dbErr);
-            }
-        }
+    // 1. Save to leads table
+    const { error: leadsErr } = await supabaseAdmin.from('leads').insert({
+      name,
+      email,
+      phone: phone || null,
+      message,
+      package_interest: package_interest || null,
+      source: source || 'contact_form',
+      status: 'new',
+    })
 
-        // Dispatch n8n webhook if configured
-        const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
-        if (n8nWebhookUrl) {
-            fetch(n8nWebhookUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-BridgeFlow-Event": "contact.submitted",
-                },
-                body: JSON.stringify({
-                    event: "contact.submitted",
-                    timestamp: new Date().toISOString(),
-                    payload: { id: submissionId, name, email, company, budget, service, message },
-                }),
-            }).catch((err) => console.error("Webhook dispatch error:", err));
-        }
+    if (leadsErr) {
+      console.error('[Contact] Supabase leads insert error:', leadsErr)
+      return NextResponse.json(
+        { error: 'Failed to save your message. Please try again.' },
+        { status: 500 }
+      )
+    }
 
-        // Send email via SMTP if configured
-        const smtpHost = process.env.SMTP_HOST;
-        const smtpPort = parseInt(process.env.SMTP_PORT || "587");
-        const smtpUser = process.env.SMTP_USER;
-        const smtpPass = process.env.SMTP_PASS;
-        const contactEmail = process.env.CONTACT_EMAIL || "hello@bridgeflow.agency";
+    // 2. Also save to contact_submissions (legacy / dashboard compatibility)
+    await supabaseAdmin.from('contact_submissions').insert({
+      name,
+      email,
+      phone: phone || null,
+      message,
+      package_interest: package_interest || null,
+      source: source || 'contact_form',
+      status: 'new',
+    })
 
-        if (smtpHost && smtpUser && smtpPass) {
-            try {
-                const transporter = nodemailer.createTransport({
-                    host: smtpHost,
-                    port: smtpPort,
-                    secure: smtpPort === 465,
-                    auth: {
-                        user: smtpUser,
-                        pass: smtpPass,
-                    },
-                });
+    // 3. Fire Telegram notification (non-blocking)
+    sendTelegram(newLeadMessage({ name, email, phone, package_interest, message })).catch(
+      console.error
+    )
 
-                await transporter.sendMail({
-                    from: `"BridgeFlow Contact Form" <${smtpUser}>`,
-                    to: contactEmail,
-                    replyTo: email,
-                    subject: `New Contact: ${name} — ${company || "No Company"}`,
-                    html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #e6b422;">New Contact Form Submission</h2>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr><td style="padding: 8px 0; font-weight: bold; color: #666;">Name</td><td style="padding: 8px 0;">${name}</td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold; color: #666;">Email</td><td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold; color: #666;">Company</td><td style="padding: 8px 0;">${company || "Not specified"}</td></tr>
-              <tr><td style="padding: 8px 0; font-weight: bold; color: #666;">Budget</td><td style="padding: 8px 0;">${budget || "Not specified"}</td></tr>
-              ${service ? `<tr><td style="padding: 8px 0; font-weight: bold; color: #666;">Service</td><td style="padding: 8px 0;">${service}</td></tr>` : ""}
-            </table>
-            <h3 style="color: #e6b422; margin-top: 20px;">Message</h3>
-            <p style="line-height: 1.6; color: #333;">${message.replace(/\n/g, "<br>")}</p>
-            ${submissionId ? `<p style="color: #999; font-size: 12px; margin-top: 20px;">Submission ID: ${submissionId}</p>` : ""}
+    // 4. Send auto-reply email via Resend (if configured) or log
+    await sendAutoReply({ name, email, package_interest })
+
+    return NextResponse.json({ success: true, message: 'Message received! We\'ll respond within 24 hours.' })
+  } catch (err) {
+    console.error('[Contact] Unexpected error:', err)
+    return NextResponse.json({ error: 'An unexpected error occurred.' }, { status: 500 })
+  }
+}
+
+async function sendAutoReply({
+  name,
+  email,
+  package_interest,
+}: {
+  name: string
+  email: string
+  package_interest?: string
+}) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY
+  if (!RESEND_API_KEY) {
+    console.log('[AutoReply] RESEND_API_KEY not set, skipping email')
+    return
+  }
+
+  const pkg = package_interest ? ` about ${package_interest}` : ''
+
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'BridgeFlow <hello@bridgeflow.agency>',
+        to: email,
+        subject: `Got it, ${name.split(' ')[0]}! We'll be in touch soon 🚀`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #f59e0b;">Thanks for reaching out, ${name.split(' ')[0]}!</h2>
+            <p>We've received your message${pkg} and will get back to you within <strong>24 hours</strong>.</p>
+            <p>While you wait, you can:</p>
+            <ul>
+              <li><a href="https://bridgeflow.agency/templates">Browse our workflow templates</a></li>
+              <li><a href="https://calendly.com/raianasan10/30min">Book a free strategy call</a></li>
+              <li><a href="https://bridgeflow.agency/case-studies">Read our case studies</a></li>
+            </ul>
+            <hr style="border: 1px solid #e5e7eb; margin: 24px 0;" />
+            <p style="color: #6b7280; font-size: 14px;">
+              BridgeFlow — AI-Powered Automation Agency<br/>
+              hello@bridgeflow.agency · bridgeflow.agency
+            </p>
           </div>
         `,
-                });
-            } catch (emailErr) {
-                console.error("SMTP email error:", emailErr);
-                // Don't fail the request if email fails — data is already in Supabase
-            }
-        }
-
-        return NextResponse.json(
-            { success: true, message: "Message sent successfully!" },
-            { status: 200 }
-        );
-    } catch (error) {
-        console.error("Contact form error:", error);
-        return NextResponse.json(
-            { error: "Internal server error. Please try again later." },
-            { status: 500 }
-        );
-    }
+      }),
+    })
+  } catch (err) {
+    console.error('[AutoReply] Email send failed:', err)
+  }
 }

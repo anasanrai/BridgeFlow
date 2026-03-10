@@ -1,105 +1,88 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { NextRequest, NextResponse } from 'next/server'
 
-const PAYPAL_API = process.env.PAYPAL_MODE === "live"
-    ? "https://api-m.paypal.com"
-    : "https://api-m.sandbox.paypal.com";
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
+const PAYPAL_MODE = process.env.PAYPAL_MODE || 'sandbox'
 
-async function getAccessToken() {
-    const auth = Buffer.from(
-        `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`
-    ).toString("base64");
+const PAYPAL_BASE =
+  PAYPAL_MODE === 'live'
+    ? 'https://api-m.paypal.com'
+    : 'https://api-m.sandbox.paypal.com'
 
-    const res = await fetch(`${PAYPAL_API}/v1/oauth2/token`, {
-        method: "POST",
-        body: "grant_type=client_credentials",
-        headers: {
-            Authorization: `Basic ${auth}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-    });
+async function getAccessToken(): Promise<string> {
+  if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+    throw new Error('PayPal credentials not configured')
+  }
 
-    const data = await res.json();
-    return data.access_token;
+  const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString('base64')
+  const res = await fetch(`${PAYPAL_BASE}/v1/oauth2/token`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials',
+  })
+  const data = await res.json()
+  if (!data.access_token) throw new Error('Failed to get PayPal access token')
+  return data.access_token
+}
+
+// Package definitions — source of truth
+export const PACKAGES: Record<string, { name: string; price: number; description: string }> = {
+  starter: { name: 'Starter Package', price: 497, description: '1 custom n8n workflow + 14 days support' },
+  growth:  { name: 'Growth Package',  price: 797, description: '3 custom n8n workflows + CRM integration + 30 days monitoring' },
+  pro:     { name: 'Pro Package',     price: 1497, description: '5 workflows + full CRM + AI integrations + 60 days monitoring' },
 }
 
 export async function POST(req: NextRequest) {
-    try {
-        const { itemId, type } = await req.json(); // type: 'template' or 'package'
+  try {
+    const { packageSlug } = await req.json()
 
-        // 1. Get price from DB or config
-        let amount = "0.00";
-        let description = "";
-
-        if (type === "template") {
-            const supabase = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.SUPABASE_SERVICE_ROLE_KEY!
-            );
-            const { data: template } = await supabase
-                .from("templates")
-                .select("value, name")
-                .eq("id", itemId)
-                .single();
-
-            if (!template) return NextResponse.json({ error: "Item not found" }, { status: 404 });
-            amount = template.value.toString();
-            description = `BridgeFlow Template: ${template.name}`;
-        } else if (type === "package") {
-            const pricing: Record<string, string> = {
-                starter: "497.00",
-                growth: "797.00",
-                pro: "1497.00"
-            };
-            amount = pricing[itemId] || "0.00";
-            description = `BridgeFlow Package: ${itemId.toUpperCase()}`;
-        }
-
-        const accessToken = await getAccessToken();
-        const res = await fetch(`${PAYPAL_API}/v2/checkout/orders`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                intent: "CAPTURE",
-                purchase_units: [
-                    {
-                        description,
-                        amount: {
-                            currency_code: "USD",
-                            value: amount,
-                        },
-                    },
-                ],
-            }),
-        });
-
-        const order = await res.json();
-
-        if (order.id) {
-            const supabase = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.SUPABASE_SERVICE_ROLE_KEY!
-            );
-
-            await supabase.from("orders").insert({
-                order_id: order.id,
-                plan_name: description,
-                plan_price: parseFloat(amount),
-                payment_method: "paypal",
-                status: "pending",
-                metadata: {
-                    type,
-                    item_id: itemId
-                },
-                created_at: new Date().toISOString()
-            });
-        }
-
-        return NextResponse.json(order);
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    const pkg = PACKAGES[packageSlug]
+    if (!pkg) {
+      return NextResponse.json({ error: 'Invalid package' }, { status: 400 })
     }
+
+    const accessToken = await getAccessToken()
+
+    const res = await fetch(`${PAYPAL_BASE}/v2/checkout/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            reference_id: packageSlug,
+            description: pkg.description,
+            amount: {
+              currency_code: 'USD',
+              value: pkg.price.toString(),
+            },
+          },
+        ],
+        application_context: {
+          brand_name: 'BridgeFlow',
+          return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/packages/${packageSlug}/success`,
+          cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/packages/${packageSlug}`,
+          user_action: 'PAY_NOW',
+        },
+      }),
+    })
+
+    const order = await res.json()
+
+    if (!order.id) {
+      console.error('[PayPal] Create order failed:', order)
+      return NextResponse.json({ error: 'PayPal order creation failed' }, { status: 500 })
+    }
+
+    return NextResponse.json({ orderId: order.id })
+  } catch (err) {
+    console.error('[PayPal] Create order error:', err)
+    return NextResponse.json({ error: 'Failed to create PayPal order' }, { status: 500 })
+  }
 }
