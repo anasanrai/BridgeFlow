@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { sendTelegram, newPurchaseMessage } from '@/lib/telegram'
-import { PACKAGES } from '../create-order/route'
+import { PACKAGES } from '@/lib/packages'
 
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
@@ -131,8 +131,8 @@ async function sendConfirmationEmail({
 
   const packageFeatures: Record<string, string[]> = {
     starter: ['1 custom n8n workflow', 'Up to 5 integrations', '14 days support', '5 business day delivery'],
-    growth:  ['3 custom n8n workflows', 'CRM integration', 'Email automation', '30 days monitoring'],
-    pro:     ['5 custom workflows', 'Full CRM + GHL setup', 'AI integrations', '60 days monitoring', 'Team training'],
+    growth: ['3 custom n8n workflows', 'CRM integration', 'Email automation', '30 days monitoring'],
+    pro: ['5 custom workflows', 'Full CRM + GHL setup', 'AI integrations', '60 days monitoring', 'Team training'],
   }
   const features = packageFeatures[packageSlug] || []
   const featureList = features.map(f => `<li>${f}</li>`).join('')
