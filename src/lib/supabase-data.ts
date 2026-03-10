@@ -34,8 +34,8 @@ export const getSiteConfig = unstable_cache(
 
             if (config) {
                 // Ensure Templates is in navLinks
-                let navLinks = (config.nav_links && config.nav_links.length > 0) ? [...config.nav_links] : [...siteData.navLinks];
-                const hasTemplates = navLinks.some((link: any) => link.href === '/templates');
+                let navLinks = Array.isArray(config.nav_links) ? [...config.nav_links] : [...siteData.navLinks];
+                const hasTemplates = navLinks.some((link: any) => link?.href === '/templates');
                 if (!hasTemplates) {
                     // Inject Templates link after Services (index 2)
                     navLinks.splice(2, 0, { label: "Templates", href: "/templates" });
@@ -58,23 +58,23 @@ export const getSiteConfig = unstable_cache(
                         // DB stores as array [{title, links}] — convert to Record<string, Array<{label,href}>>
                         if (Array.isArray(fl) && fl.length > 0) {
                             const record: Record<string, Array<{ label: string; href: string }>> = {};
-                            fl.forEach((section: { title: string; links: Array<{ label: string; href: string }> }) => {
-                                if (section.title && Array.isArray(section.links)) {
+                            fl.forEach((section: any) => {
+                                if (section?.title && Array.isArray(section.links)) {
                                     record[section.title] = section.links;
                                 }
                             });
                             return Object.keys(record).length > 0 ? record : siteData.footerLinks;
                         }
                         // DB stores as Record already
-                        if (typeof fl === 'object' && Object.keys(fl).length > 0) return fl;
+                        if (typeof fl === 'object' && fl !== null && Object.keys(fl).length > 0) return fl;
                         return siteData.footerLinks;
                     })(),
-                    socialLinks: (settings?.social_links && settings.social_links.length > 0)
+                    socialLinks: Array.isArray(settings?.social_links) && settings.social_links.length > 0
                         ? settings.social_links
-                        : ((config.social_links && config.social_links.length > 0) ? config.social_links : siteData.socialLinks),
-                    liveDemos: (settings?.live_demos && settings.live_demos.length > 0)
+                        : (Array.isArray(config.social_links) && config.social_links.length > 0 ? config.social_links : siteData.socialLinks),
+                    liveDemos: Array.isArray(settings?.live_demos) && settings.live_demos.length > 0
                         ? settings.live_demos
-                        : null,
+                        : (Array.isArray(config.live_demos) && config.live_demos.length > 0 ? config.live_demos : null),
                 };
             }
         } catch { }
@@ -114,13 +114,13 @@ export const getHomeContent = unstable_cache(
             if (data) return {
                 // Merge DB hero with defaults to ensure all fields (ctaPrimary, ctaSecondary, heroImage) are present
                 hero: data.hero ? { ...homeData.hero, ...data.hero } : homeData.hero,
-                stats: data.stats?.length ? data.stats : homeData.stats,
-                servicesOverview: data.services_overview?.length ? data.services_overview : homeData.servicesOverview,
-                processSteps: data.process_steps?.length ? data.process_steps : homeData.processSteps,
+                stats: Array.isArray(data.stats) && data.stats.length > 0 ? data.stats : homeData.stats,
+                servicesOverview: Array.isArray(data.services_overview) && data.services_overview.length > 0 ? data.services_overview : homeData.servicesOverview,
+                processSteps: Array.isArray(data.process_steps) && data.process_steps.length > 0 ? data.process_steps : homeData.processSteps,
                 // Merge DB cta with defaults to ensure ctaPrimary, ctaSecondary are present
                 cta: data.cta ? { ...homeData.cta, ...data.cta } : homeData.cta,
-                offers: data.offers?.length ? data.offers : homeData.offers,
-                demos: data.demos?.length ? data.demos : homeData.demos,
+                offers: Array.isArray(data.offers) && data.offers.length > 0 ? data.offers : homeData.offers,
+                demos: Array.isArray(data.demos) && data.demos.length > 0 ? data.demos : homeData.demos,
             };
         } catch { }
         return {
@@ -154,10 +154,10 @@ export const getServices = unstable_cache(
                 description: metadataRes.data?.description || servicesData.servicesHero.description,
             };
 
-            let services = servicesRes.data && servicesRes.data.length > 0 ? servicesRes.data : servicesData.services;
+            let services = Array.isArray(servicesRes.data) && servicesRes.data.length > 0 ? servicesRes.data : servicesData.services;
 
             const hasGHL = services.some((s: { title?: string }) => {
-                const t = (s.title || "").toLowerCase();
+                const t = (s?.title || "").toLowerCase();
                 return t.includes("gohighlevel") || t.includes("highlevel") || t.includes("ghl");
             });
             if (!hasGHL) {
@@ -168,7 +168,7 @@ export const getServices = unstable_cache(
             return {
                 hero,
                 services,
-                benefits: benefitsRes.data && benefitsRes.data.length > 0 ? benefitsRes.data : servicesData.benefits,
+                benefits: Array.isArray(benefitsRes.data) && benefitsRes.data.length > 0 ? benefitsRes.data : servicesData.benefits,
             };
         } catch { }
         return {
@@ -197,7 +197,7 @@ export const getAboutContent = unstable_cache(
 
             const founderImageUrl = settingsRes.data?.founder_image;
             const teamMember = teamRes.data?.length ? teamRes.data[0] : aboutData.team[0];
-            
+
             // Override founder image if it exists in site_settings
             if (founderImageUrl && teamMember) {
                 teamMember.avatar_url = founderImageUrl;

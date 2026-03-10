@@ -19,6 +19,38 @@ async function getLocalTemplates() {
     }
 }
 
+// ── Helper: normalize DB snake_case → camelCase for the frontend ─────────────
+function normalizeTemplate(t: any) {
+    if (!t) return null;
+    return {
+        id: String(t.id || ''),
+        name: t.name || 'Untitled Template',
+        slug: t.slug || '',
+        categories: Array.isArray(t.categories) ? t.categories : [],
+        difficulty: t.difficulty || 'Beginner',
+        nodes: Array.isArray(t.nodes) ? t.nodes : [],
+        nodeCount: Number(t.node_count || t.nodeCount || 0),
+        setupTime: String(t.setup_time || t.setupTime || '15 min'),
+        value: Number(t.value || t.value || 0),
+        description: t.description || t.short_description || '',
+        longDescription: t.long_description || t.longDescription || t.description || '',
+        whatItDoes: Array.isArray(t.what_it_does) ? t.what_it_does : (Array.isArray(t.whatItDoes) ? t.whatItDoes : []),
+        featured: Boolean(t.featured),
+        status: t.status || 'published',
+        n8nWorkflowId: t.n8n_workflow_id || t.n8nWorkflowId || "",
+        order: Number(t.order || 0),
+        updatedAt: t.updated_at || t.updatedAt,
+        imageUrl: t.image_url || t.imageUrl || null,
+        imageUrls: Array.isArray(t.image_urls) ? t.image_urls : (Array.isArray(t.imageUrls) ? t.imageUrls : []),
+        workflowJson: t.workflow_json || t.workflowJson || null,
+        shortDescription: t.short_description || t.shortDescription || t.description || "",
+        connectionCount: Number(t.connection_count || t.connectionCount || 0),
+        jsonUrl: t.json_url || t.jsonUrl || "",
+        jsonAccess: t.json_access || t.jsonAccess || "free",
+        tools: Array.isArray(t.tools) ? t.tools : [],
+    };
+}
+
 // GET — list all templates
 export async function GET() {
     try {
@@ -29,39 +61,11 @@ export async function GET() {
             .order("order", { ascending: true });
 
         if (error) throw error;
-        // Normalize all rows from snake_case DB columns → camelCase for the frontend
         return NextResponse.json({ ok: true, templates: (data || []).map(normalizeTemplate) });
-    } catch {
-        // Fallback to local JSON if Supabase unavailable
+    } catch (err: any) {
+        console.error('[Admin Templates GET] Error:', err.message);
         const raw = await getLocalTemplates();
-        // Local JSON already uses camelCase — pass through a normalizer to ensure consistency
-        const templates = raw.map((t: Record<string, unknown>) => ({
-            id: String(t.id),
-            name: t.name,
-            slug: t.slug,
-            categories: t.categories,
-            difficulty: t.difficulty,
-            nodes: t.nodes,
-            nodeCount: t.nodeCount,
-            setupTime: t.setupTime,
-            value: t.value,
-            description: t.description,
-            whatItDoes: t.whatItDoes,
-            featured: t.featured,
-            status: t.status,
-            n8nWorkflowId: t.n8nWorkflowId,
-            order: t.order,
-            updatedAt: t.updatedAt,
-            imageUrl: t.imageUrl ?? null,
-            imageUrls: t.imageUrls ?? [],
-            workflowJson: t.workflowJson ?? null,
-            shortDescription: t.shortDescription ?? "",
-            longDescription: t.longDescription ?? "",
-            connectionCount: t.connectionCount ?? 0,
-            jsonUrl: t.jsonUrl ?? "",
-            jsonAccess: t.jsonAccess ?? "free",
-            tools: t.tools ?? [],
-        }));
+        const templates = raw.map(normalizeTemplate);
         return NextResponse.json({ ok: true, templates });
     }
 }
@@ -211,35 +215,4 @@ export async function DELETE(req: NextRequest) {
     } catch (err: any) {
         return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
     }
-}
-
-// ── Helper: normalize DB snake_case → camelCase for the frontend ─────────────
-function normalizeTemplate(row: Record<string, unknown>) {
-    return {
-        id: String(row.id),
-        name: row.name,
-        slug: row.slug,
-        categories: row.categories,
-        difficulty: row.difficulty,
-        nodes: row.nodes,
-        nodeCount: row.node_count,
-        setupTime: row.setup_time,
-        value: row.value,
-        description: row.description,
-        whatItDoes: row.what_it_does,
-        featured: row.featured,
-        status: row.status,
-        n8nWorkflowId: row.n8n_workflow_id,
-        order: row.order,
-        updatedAt: row.updated_at,
-        imageUrl: row.image_url ?? null,
-        imageUrls: row.image_urls ?? [],
-        workflowJson: row.workflow_json ?? null,
-        shortDescription: row.short_description ?? "",
-        longDescription: row.long_description ?? "",
-        connectionCount: row.connection_count ?? 0,
-        jsonUrl: row.json_url ?? "",
-        jsonAccess: row.json_access ?? "free",
-        tools: row.tools ?? [],
-    };
 }

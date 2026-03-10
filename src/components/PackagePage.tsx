@@ -113,12 +113,12 @@ export default function PackagePage({
           <div className="space-y-8">
             <div>
               <p className="text-gray-300 text-lg leading-relaxed mb-6">{description}</p>
-              
+
               <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <span className="text-green-400">✓</span> What's included
               </h2>
               <ul className="space-y-3">
-                {included.map((item, i) => (
+                {(Array.isArray(included) ? included : []).map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-gray-300">
                     <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 text-xs">✓</span>
                     {item}
@@ -127,7 +127,7 @@ export default function PackagePage({
               </ul>
             </div>
 
-            {notIncluded.length > 0 && (
+            {Array.isArray(notIncluded) && notIncluded.length > 0 && (
               <div>
                 <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                   <span className="text-red-400">✕</span> Not included

@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 interface Template {
-  id: number
+  id: number | string
   name: string
   slug: string
   categories: string[]
@@ -81,11 +81,10 @@ export default function TemplatesGrid({ initialTemplates }: { initialTemplates: 
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                activeCategory === cat.id
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === cat.id
                   ? 'bg-amber-500 text-black'
                   : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
-              }`}
+                }`}
             >
               {cat.label}
             </button>
@@ -132,7 +131,7 @@ export default function TemplatesGrid({ initialTemplates }: { initialTemplates: 
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     onError={(e) => {
-                      ;(e.target as HTMLImageElement).src =
+                      ; (e.target as HTMLImageElement).src =
                         `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect fill="%231a1a2e" width="800" height="450"/><text x="400" y="225" text-anchor="middle" fill="%23f59e0b" font-size="48" font-family="sans-serif">⚡</text></svg>`
                     }}
                   />
@@ -143,9 +142,8 @@ export default function TemplatesGrid({ initialTemplates }: { initialTemplates: 
                   )}
                   <div className="absolute top-3 right-3">
                     <span
-                      className={`text-xs font-medium px-2.5 py-1 rounded-full border ${
-                        DIFFICULTY_COLORS[template.difficulty] || DIFFICULTY_COLORS.Beginner
-                      }`}
+                      className={`text-xs font-medium px-2.5 py-1 rounded-full border ${DIFFICULTY_COLORS[template.difficulty] || DIFFICULTY_COLORS.Beginner
+                        }`}
                     >
                       {template.difficulty}
                     </span>

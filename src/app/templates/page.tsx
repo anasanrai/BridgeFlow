@@ -20,7 +20,22 @@ async function getTemplates() {
     return []
   }
 
-  return data || []
+  // Normalize field names safely
+  return (data || []).map((t: any) => ({
+    id: String(t.id || ''),
+    name: t.name || 'Untitled Template',
+    slug: t.slug || '',
+    categories: Array.isArray(t.categories) ? t.categories : [],
+    difficulty: t.difficulty || 'Beginner',
+    nodes: Array.isArray(t.nodes) ? t.nodes : [],
+    node_count: Number(t.node_count || 0),
+    setup_time: String(t.setup_time || '15 min'),
+    value: Number(t.value || 0),
+    description: t.description || t.short_description || '',
+    what_it_does: Array.isArray(t.what_it_does) ? t.what_it_does : [],
+    featured: Boolean(t.featured),
+    image_url: t.image_url || "/images/placeholder.png",
+  }));
 }
 
 export default async function TemplatesPage() {

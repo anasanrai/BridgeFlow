@@ -65,34 +65,42 @@ async function getTemplateWithWorkflowId(slug: string) {
         }
 
         return {
-            id: data.id,
-            name: data.name,
-            slug: data.slug,
-            categories: data.categories || [],
+            id: data.id || '',
+            name: data.name || 'Untitled Template',
+            slug: data.slug || '',
+            categories: Array.isArray(data.categories) ? data.categories : [],
             difficulty: data.difficulty || "Beginner",
-            nodes: data.nodes || [],
-            nodeCount: data.node_count || 0,
-            setupTime: data.setup_time || "30 min",
-            value: data.value || 0,
+            nodes: Array.isArray(data.nodes) ? data.nodes : [],
+            nodeCount: Number(data.node_count || 0),
+            setupTime: String(data.setup_time || "30 min"),
+            value: Number(data.value || 0),
             description: data.short_description || data.description || "",
             shortDescription: data.short_description || data.description || "",
             longDescription: data.long_description || data.description || "",
-            whatItDoes: data.what_it_does || [],
-            featured: data.featured || false,
-            status: data.status || "draft",
+            whatItDoes: Array.isArray(data.what_it_does) ? data.what_it_does : [],
+            featured: Boolean(data.featured),
+            status: data.status || "published",
             n8nWorkflowId: data.n8n_workflow_id || "",
             updatedAt: data.updated_at,
-            imageUrl: data.image_url,
-            imageUrls: data.image_urls || [],
-            workflowJson: data.workflow_json,
-            jsonAccess: data.json_access || "free",
-            connectionCount: data.connection_count || 0,
-            tools: data.tools || data.nodes || [],
+            imageUrl: data.image_url || null,
+            imageUrls: Array.isArray(data.image_urls) ? data.image_urls : [],
+            workflowJson: data.workflow_json || null,
+            jsonAccess: data.json_access || "paid",
+            connectionCount: Number(data.connection_count || 0),
+            tools: Array.isArray(data.tools) ? data.tools : (Array.isArray(data.nodes) ? data.nodes : []),
         };
     } catch (err) {
         console.warn(`[Template] Error fetching from Supabase: ${err}`);
         const local = templates.find((t) => t.slug === slug);
-        return local ? { ...local, jsonAccess: "free" } : null;
+        return local ? {
+            ...local,
+            jsonAccess: "free",
+            shortDescription: local.description,
+            longDescription: local.description,
+            imageUrls: [],
+            whatItDoes: [],
+            nodes: local.nodes || []
+        } : null;
     }
 }
 
