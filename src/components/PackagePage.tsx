@@ -1,17 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
-
-const PayPalCheckout = dynamic(() => import('@/components/PayPalCheckout'), {
-  loading: () => (
-    <div className="h-16 rounded-xl bg-white/5 border border-white/10 animate-pulse flex items-center justify-center text-gray-500 text-sm">
-      Loading payment options...
-    </div>
-  ),
-  ssr: false,
-})
+import PaymentModal from '@/components/payments/PaymentModal'
 
 interface PackagePageProps {
   slug: 'starter' | 'growth' | 'pro'
@@ -38,6 +29,7 @@ export default function PackagePage({
   accentFrom = 'from-amber-400',
   accentTo = 'to-orange-500',
 }: PackagePageProps) {
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false)
   const [purchased, setPurchased] = useState(false)
   const [purchaseData, setPurchaseData] = useState<{ transactionId: string; buyerName: string; buyerEmail: string } | null>(null)
   const [payError, setPayError] = useState<string | null>(null)
@@ -187,15 +179,19 @@ export default function PackagePage({
                 </div>
               )}
 
-              <PayPalCheckout
-                packageSlug={slug}
-                packageName={name}
-                price={price}
-                onSuccess={(data) => {
-                  setPurchaseData(data)
-                  setPurchased(true)
-                }}
-                onError={(err) => setPayError(err)}
+              <button
+                onClick={() => setIsPaymentOpen(true)}
+                className="w-full px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-black font-bold rounded-xl hover:shadow-lg hover:shadow-amber-400/50 transition"
+              >
+                Proceed to Checkout
+              </button>
+
+              <PaymentModal
+                isOpen={isPaymentOpen}
+                onClose={() => setIsPaymentOpen(false)}
+                planName={name}
+                planPrice={`$${price}`}
+                planPriceNumeric={price}
               />
 
               <p className="text-center text-xs text-gray-600 mt-4">

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import AdminTemplateForm from "@/components/AdminTemplateForm";
+import AdminTemplateForm from "@/components/forms/AdminTemplateForm";
 import N8nCanvas, { N8nNodeIconStrip } from "@/components/templates/N8nCanvas";
 import { difficultyColors as difficultyColor } from "@/data/templates";
 import Image from "next/image";

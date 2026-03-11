@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowRight, Clock, Zap, DollarSign, ShoppingCart } from "lucide-react";
 import { Template, categoryColors, difficultyColors } from "@/data/templates";
 import N8nCanvas, { N8nNodeIconStrip, getN8nNodeStyle } from "./N8nCanvas";
-import PaymentModal from "@/components/PaymentModal";
+import PaymentModal from "@/components/payments/PaymentModal";
 
 interface TemplateCardProps {
     template: Template;

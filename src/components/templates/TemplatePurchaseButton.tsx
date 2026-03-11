@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Zap, ArrowRight } from "lucide-react";
-import PaymentModal from "@/components/PaymentModal";
+import PaymentModal from "@/components/payments/PaymentModal";
 
 interface TemplatePurchaseButtonProps {
     templateId?: number | string;

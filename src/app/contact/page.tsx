@@ -17,7 +17,7 @@ import {
     MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui";
-import ContactForm from "@/components/ContactForm";
+import ContactForm from "@/components/forms/ContactForm";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 import { getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
