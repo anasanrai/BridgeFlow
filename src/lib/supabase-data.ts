@@ -112,26 +112,18 @@ export const getHomeContent = unstable_cache(
             if (!sb) throw new Error("No Supabase");
             const { data } = await sb.from("home_content").select("*").limit(1).single();
             if (data) return {
-                // Merge DB hero with defaults to ensure all fields (ctaPrimary, ctaSecondary, heroImage) are present
-                hero: data.hero ? { ...homeData.hero, ...data.hero } : homeData.hero,
-                stats: Array.isArray(data.stats) && data.stats.length > 0 ? data.stats : homeData.stats,
-                servicesOverview: Array.isArray(data.services_overview) && data.services_overview.length > 0 ? data.services_overview : homeData.servicesOverview,
-                processSteps: Array.isArray(data.process_steps) && data.process_steps.length > 0 ? data.process_steps : homeData.processSteps,
-                // Merge DB cta with defaults to ensure ctaPrimary, ctaSecondary are present
-                cta: data.cta ? { ...homeData.cta, ...data.cta } : homeData.cta,
-                offers: Array.isArray(data.offers) && data.offers.length > 0 ? data.offers : homeData.offers,
-                demos: Array.isArray(data.demos) && data.demos.length > 0 ? data.demos : homeData.demos,
+                // Merge DB values with defaults to ensure all enterprise fields are present
+                hero: data.hero ? { ...homeData.defaultHomeContent.hero, ...data.hero } : homeData.defaultHomeContent.hero,
+                stats: Array.isArray(data.stats) && data.stats.length > 0 ? data.stats : homeData.defaultHomeContent.stats,
+                trustedBy: data.trustedBy ? { ...homeData.defaultHomeContent.trustedBy, ...data.trustedBy } : homeData.defaultHomeContent.trustedBy,
+                features: Array.isArray(data.features) && data.features.length > 0 ? data.features : homeData.defaultHomeContent.features,
+                results: Array.isArray(data.results) && data.results.length > 0 ? data.results : homeData.defaultHomeContent.results,
+                process: Array.isArray(data.process) && data.process.length > 0 ? data.process : homeData.defaultHomeContent.process,
+                testimonials: Array.isArray(data.testimonials) && data.testimonials.length > 0 ? data.testimonials : homeData.defaultHomeContent.testimonials,
+                cta: data.cta ? { ...homeData.defaultHomeContent.cta, ...data.cta } : homeData.defaultHomeContent.cta,
             };
         } catch { }
-        return {
-            hero: homeData.hero,
-            stats: homeData.stats,
-            servicesOverview: homeData.servicesOverview,
-            processSteps: homeData.processSteps,
-            cta: homeData.cta,
-            offers: homeData.offers,
-            demos: homeData.demos,
-        };
+        return homeData.defaultHomeContent;
     },
     ["home-content"],
     { revalidate: 60, tags: ["home-content"] }

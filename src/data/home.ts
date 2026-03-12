@@ -1,119 +1,163 @@
 /**
  * =============================================
- *  HOME PAGE DATA — Edit this file to update
- *  the Home page content. No code changes needed.
+ *  HOME PAGE DATA — Enterprise Edition
+ *  Edit this file to update home page content.
+ *  Admin dashboard can override these defaults.
  * =============================================
  */
 
-export const hero = {
-    badge: "AI-Powered Automation Agency",
-    title: "Scale Your Operations with",
-    titleLine2: "Intelligent Automation",
-    highlight: "Systems",
+export const defaultHomeContent = {
+  hero: {
+    badge: 'Enterprise Automation Platform',
+    title: 'Automate Your Business',
+    titleLine2: 'With Zero Code Required',
+    highlight: 'Enterprise-Grade Workflow Automation',
     description:
-        "BridgeFlow diagnoses exactly where your business is leaking time and revenue — then builds AI-powered systems to fix it. Permanently.",
-    ctaPrimary: { text: "Get My Free Audit →", href: "/audit" },
-    ctaSecondary: { text: "See How It Works", href: "/how-it-works" },
-    heroImage: "/images/hero-automation.png",
-    heroImageAlt: "AI Automation Workflows",
-};
-
-export const stats = [
-    { end: 50, suffix: "+", label: "Workflows Built" },
-    { end: 10, suffix: "+", label: "Hours Saved Per Client Weekly" },
-    { end: 100, suffix: "%", label: "Client Satisfaction" },
-    { end: 14, suffix: " days", label: "Average Time to Launch" },
-];
-
-export const servicesOverview = [
+      'BridgeFlow connects your business systems and automates complex workflows without writing a single line of code. Save thousands of hours and eliminate human error.',
+    ctaPrimary: { text: 'Start Free Trial', href: '/pricing' },
+    ctaSecondary: { text: 'Watch Demo', href: '#demo' },
+    image: '/images/hero-automation.png',
+  },
+  stats: [
+    { label: 'Enterprises Automated', value: 500, suffix: '+', icon: 'building' },
+    { label: 'Hours Saved', value: 2, suffix: 'M+', icon: 'clock' },
+    { label: 'Workflows Active', value: 50, suffix: 'K+', icon: 'zap' },
+    { label: 'Uptime', value: 99, suffix: '.99%', icon: 'shield' },
+  ],
+  trustedBy: {
+    title: 'Trusted by Industry Leaders',
+    description: 'Join hundreds of enterprises automating their operations',
+    companies: [
+      { name: 'Acme Corp', logo: '/images/companies/acme.png' },
+      { name: 'TechFlow', logo: '/images/companies/techflow.png' },
+      { name: 'InnovateLabs', logo: '/images/companies/innovate.png' },
+      { name: 'Digital First', logo: '/images/companies/digital-first.png' },
+    ],
+  },
+  features: [
     {
-        icon: "Zap",
-        title: "n8n Automation",
-        description:
-            "Custom workflow builds using n8n for any business process. Automate lead gen, onboarding, reporting, and more.",
-        href: "/services#n8n",
+      title: 'Visual Workflow Builder',
+      description: 'Drag-and-drop interface to create complex workflows without coding',
+      icon: 'workflow',
+      color: 'bg-blue-500/20',
     },
     {
-        icon: "BarChart3",
-        title: "GoHighLevel CRM",
-        description:
-            "Full-stack CRM setup with automated funnels, SMS/email sequences, and appointment booking to close more deals.",
-        href: "/services#gohighlevel",
+      title: '1000+ Integrations',
+      description: 'Connect to your favorite business tools and applications',
+      icon: 'connect',
+      color: 'bg-purple-500/20',
     },
     {
-        icon: "Bot",
-        title: "AI Integration",
-        description:
-            "Connect your tools with AI to work smarter. GPT-4, Claude, and custom models integrated into your workflows.",
-        href: "/services#ai",
+      title: 'Real-Time Monitoring',
+      description: 'Monitor all workflows with detailed logs and performance metrics',
+      icon: 'chart',
+      color: 'bg-green-500/20',
     },
     {
-        icon: "Boxes",
-        title: "SaaS Tools",
-        description:
-            "Access our growing suite of automation SaaS products built for specific business verticals.",
-        href: "/services#saas",
-    },
-];
-
-export const processSteps = [
-    {
-        step: "01",
-        title: "Consult",
-        description:
-            "We analyze your business processes and identify automation opportunities that deliver the highest ROI.",
+      title: 'Enterprise Security',
+      description: 'Bank-level encryption and compliance with SOC 2, GDPR, and HIPAA',
+      icon: 'lock',
+      color: 'bg-red-500/20',
     },
     {
-        step: "02",
-        title: "Design",
-        description:
-            "Our team architects the optimal automation system — selecting the right tools, integrations, and AI models for your use case.",
+      title: 'Advanced Automation',
+      description: 'Conditional logic, data transformation, and AI-powered workflows',
+      icon: 'zap',
+      color: 'bg-yellow-500/20',
     },
     {
-        step: "03",
-        title: "Build",
-        description:
-            "We build your custom workflows with built-in error handling, retry logic, and comprehensive testing before deployment.",
+      title: '24/7 Support',
+      description: 'Dedicated support team available round the clock',
+      icon: 'support',
+      color: 'bg-pink-500/20',
+    },
+  ],
+  results: [
+    {
+      metric: '75%',
+      description: 'Reduction in operational costs',
+      improvement: 'Average client savings',
     },
     {
-        step: "04",
-        title: "Scale",
-        description:
-            "We monitor, optimize, and scale your automations as your business grows — with ongoing support and zero downtime.",
-    },
-];
-
-export const offers = [
-    {
-        title: "Free Automation Audit",
-        description: "A complimentary 30-minute deep-dive into your current workflows. We'll identify your top 3 automation opportunities with estimated ROI — no commitment required.",
-        badge: "Free",
-        href: "/audit",
-        highlight: true,
+      metric: '90%',
+      description: 'Faster process completion times',
+      improvement: 'Time efficiency gained',
     },
     {
-        title: "Quick Win Automation",
-        description: "1 custom n8n workflow, up to 5 integrated tools, full documentation, and 14 days of post-launch support. Perfect for teams that want fast results.",
-        badge: "$497",
-        href: "/contact",
-        highlight: false,
+      metric: '99.99%',
+      description: 'System uptime and reliability',
+      improvement: 'Enterprise SLA guaranteed',
+    },
+  ],
+  process: [
+    {
+      number: '1',
+      title: 'Connect',
+      description: 'Integrate your business systems with a few clicks',
+      icon: 'plug',
     },
     {
-        title: "Starter Automation Package",
-        description: "5 custom n8n workflows, CRM integration, email automation, and 30 days of monitoring. Ideal for small teams ready to scale operations.",
-        badge: "$997",
-        href: "/contact",
-        highlight: false,
+      number: '2',
+      title: 'Design',
+      description: 'Build workflows visually without writing code',
+      icon: 'pencil',
     },
-];
-
-export const demos: unknown[] = [];
-
-export const cta = {
-    title: "Ready to automate your",
-    highlight: "growth?",
+    {
+      number: '3',
+      title: 'Deploy',
+      description: 'Launch your automations in minutes',
+      icon: 'rocket',
+    },
+    {
+      number: '4',
+      title: 'Optimize',
+      description: 'Monitor and improve workflow performance continuously',
+      icon: 'trending',
+    },
+  ],
+  testimonials: [
+    {
+      content:
+        'BridgeFlow has transformed how we handle our business processes. Weve saved thousands of hours and reduced errors significantly.',
+      author: 'Sarah Johnson',
+      role: 'Operations Director',
+      company: 'Tech Innovations Inc',
+      image: '/images/testimonials/sarah.jpg',
+      rating: 5,
+    },
+    {
+      content:
+        'The ease of use combined with powerful features makes BridgeFlow a game-changer for enterprise automation.',
+      author: 'Michael Chen',
+      role: 'CTO',
+      company: 'Digital Solutions Ltd',
+      image: '/images/testimonials/michael.jpg',
+      rating: 5,
+    },
+    {
+      content:
+        'Best decision weve made for our automation strategy. The ROI is incredible and the support is exceptional.',
+      author: 'Emma Davis',
+      role: 'VP of Technology',
+      company: 'Enterprise Systems Group',
+      image: '/images/testimonials/emma.jpg',
+      rating: 5,
+    },
+  ],
+  cta: {
+    title: 'Ready to Transform Your Business?',
     description:
-        "Book a free 30-minute automation audit and we'll show you the top 3 workflows that'll save you 10+ hours a week.",
-    ctaPrimary: { text: "Claim Free Audit", href: "/audit" },
-    ctaSecondary: { text: "View Services", href: "/services" },
-};
+      'Join hundreds of enterprises already automating their operations and saving thousands of hours every year.',
+    primaryCta: { text: 'Start Your Free Trial', href: '/pricing' },
+    secondaryCta: { text: 'Schedule a Demo', href: '/contact' },
+  },
+}
+
+// Legacy exports for backward compatibility
+export const hero = defaultHomeContent.hero
+export const stats = defaultHomeContent.stats
+export const servicesOverview = defaultHomeContent.features
+export const processSteps = defaultHomeContent.process
+export const demos: unknown[] = []
+export const cta = defaultHomeContent.cta
+export const offers = []
