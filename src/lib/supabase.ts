@@ -1,37 +1,67 @@
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient, createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+import { Database } from '@/types/database'
 
-let publicClient: SupabaseClient | null = null;
-
-export function getSupabase(): SupabaseClient {
-    if (!publicClient) {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-        if (!supabaseUrl || !supabaseAnonKey) {
-            throw new Error(
-                "Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
-            );
-        }
-
-        publicClient = createClient(supabaseUrl, supabaseAnonKey);
-    }
-    return publicClient;
+/**
+ * For use in Client Components
+ */
+export function createClientSideClient<T = Database>() {
+  return createBrowserClient<T>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 }
 
-export function createAdminClient(): SupabaseClient {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+/**
+ * For use in Server Components, Server Actions, and Route Handlers
+ */
+export function createServerSideClient<T = Database>() {
+  const cookieStore = cookies()
 
-    if (!supabaseUrl || !serviceRoleKey) {
-        throw new Error(
-            "Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY"
-        );
+  return createServerClient<T>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
+          try {
+            cookieStore.set({ name, value, ...options })
+          } catch (error) {
+            // The `set` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+        remove(name: string, options: any) {
+          try {
+            cookieStore.set({ name, value: '', ...options })
+          } catch (error) {
+            // The `remove` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+      },
     }
-
-    return createClient(supabaseUrl, serviceRoleKey);
+  )
 }
 
-// Singleton admin client for API routes
-export const supabaseAdmin = (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY)
-    ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
-    : null;
+/**
+ * For administrative tasks (node-side only)
+ */
+export function createAdminClient<T = Database>() {
+  return createServerClient<T>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      cookies: {
+        get(name: string) { return undefined },
+        set(name: string, value: string, options: any) {},
+        remove(name: string, options: any) {},
+      },
+    }
+  )
+}

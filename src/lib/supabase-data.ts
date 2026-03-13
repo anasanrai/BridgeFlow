@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClientSideClient } from "@/lib/supabase";
 import { unstable_cache } from "next/cache";
 
 // Import local fallbacks
@@ -10,10 +10,7 @@ import * as caseStudiesData from "@/data/case-studies";
 import * as siteData from "@/data/site";
 
 function getPublicClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
+    return createClientSideClient();
 }
 
 // ─── Cached data fetchers (ISR — revalidate every 60 seconds) ───

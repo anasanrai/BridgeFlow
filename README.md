@@ -1,68 +1,75 @@
-# BridgeFlow — Enterprise AI Automation Agency
+# BridgeFlow - Enterprise SaaS Foundation
 
-BridgeFlow is a high-performance web application built with Next.js 14, Tailwind CSS, and Supabase. It features a professional landing page and a secure admin dashboard for managing site content.
+BridgeFlow is a high-performance, scalable SaaS ecosystem built with Next.js 14, Supabase, and TypeScript. This repository serves as the production-ready foundation for AI automation tools, internal dashboards, and micro-SaaS products.
 
-## Features
+## 🏗 Architecture Overview
 
-- **Enterprise Design**: Premium dark-mode UI with Framer Motion animations.
-- **Dynamic Content**: Fully manageable via a secure Admin Dashboard.
-- **AI-Powered**: Integrated AI models (Modal, Ollama, Gemini) for intelligent interactions.
-- **Edge Ready**: Built for deployment on Vercel or similar edge platforms.
-- **SEO Optimized**: Dynamic metadata, sitemaps, and robots.txt generation.
+The project follows a modular, enterprise-grade directory structure:
 
-## Getting Started
+- **`src/app/(marketing)`**: SEO-optimized marketing pages (Home, Pricing, About, etc.)
+- **`src/app/dashboard`**: Protected user dashboard with layout shell.
+- **`src/app/api`**: Structured API routes (Auth, Billing, Automation, Webhooks).
+- **`src/components/ui`**: Atomic design system components (Button, Card, Modal, etc.)
+- **`src/components/marketing`**: Domain-specific marketing components.
+- **`src/components/dashboard`**: Dashboard-specific UI (Sidebar, Navbar).
+- **`src/modules`**: Domain-specific logic and business services.
+- **`src/lib`**: Shared services (Supabase, Auth, Logger).
+- **`src/hooks & src/utils`**: Reusable logic and helper functions.
 
-### Prerequisites
+## 🚀 Tech Stack
 
-- Node.js 18.x or later
-- Supabase Project
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS
+- **Auth & Database**: Supabase (@supabase/ssr)
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Infrastructure**: Docker & Docker Compose
 
-### Installation
+## 🛠 Getting Started
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd BridgeFlow
-   ```
+### 1. Prerequisites
+- Node.js 18+
+- pnpm / npm
+- Supabase Account
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Set up environment variables:
-   Copy `.env.example` to `.env.local` and fill in your credentials.
-   ```bash
-   cp .env.example .env.local
-   ```
-
-### Development
-
-Run the development server:
+### 2. Environment Setup
+Copy the example environment file and fill in your credentials:
 ```bash
-npm run dev
+cp .env.example .env.local
 ```
 
-### Production Build
-
+### 3. Installation
 ```bash
-npm run build
-npm run start
+pnpm install
 ```
 
-## Deployment
+### 4. Development
+```bash
+pnpm dev
+```
 
-### Vercel (Recommended)
+## 🐳 Docker Production Setup
 
-1. Connect your GitHub repository to Vercel.
-2. Add all environment variables from `.env.local` to the Vercel project settings.
-3. Deploy!
+Build and run the production container:
+```bash
+docker-compose up --build
+```
+The application will be available at `http://localhost:3000`.
 
-### Database Setup
+## 📜 Available Scripts
 
-1. Run the SQL scripts in `supabase-schema.sql` and `seed-data.sql` in your Supabase SQL Editor.
-2. Use the admin dashboard to manage content.
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run start`: Start production server
+- `npm run lint`: Run ESLint
+- `npm run typecheck`: Run TypeScript compiler check
+- `npm run format`: Format code with Prettier
 
-## License
+## 🔒 Security
+- **Auth**: sessions are handled via Supabase Auth with PKCE flow.
+- **Middleware**: Routes under `/dashboard` and API routes under `/api/private` are protected.
+- **Environment**: Sensitive keys are kept on the server and never exposed to the client.
 
-All rights reserved — BridgeFlow Agency.
+---
+Built by [BridgeFlow Team](https://bridgeflow.com)

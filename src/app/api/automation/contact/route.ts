@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { createServerSideClient } from '@/lib/supabase'
 import { sendTelegram, newLeadMessage } from '@/lib/telegram'
+import { Database } from '@/types/database'
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,12 +22,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 })
     }
 
-    if (!supabaseAdmin) {
-      return NextResponse.json({ error: 'Server configuration error.' }, { status: 500 })
-    }
+    const supabase = createServerSideClient<Database>()
 
-    // 1. Save to leads table
-    const { error: leadsErr } = await supabaseAdmin.from('leads').insert({
+    // 1. Save to leads table (primary source of truth)
+    const { error: leadsErr } = await supabase.from('leads').insert({
       name,
       email,
       phone: phone || null,
@@ -43,17 +42,6 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       )
     }
-
-    // 2. Also save to contact_submissions (legacy / dashboard compatibility)
-    await supabaseAdmin.from('contact_submissions').insert({
-      name,
-      email,
-      phone: phone || null,
-      message,
-      package_interest: package_interest || null,
-      source: source || 'contact_form',
-      status: 'new',
-    })
 
     // 3. Fire Telegram notification (non-blocking)
     sendTelegram(newLeadMessage({ name, email, phone, package_interest, message })).catch(

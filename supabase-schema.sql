@@ -3,23 +3,16 @@
 -- Run this in your Supabase SQL Editor
 -- ============================================
 
--- Site Configuration (single row)
-CREATE TABLE IF NOT EXISTS site_config (
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Site Settings (Private/Service Role only)
+CREATE TABLE IF NOT EXISTS site_settings (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  name TEXT NOT NULL DEFAULT 'BridgeFlow',
-  tagline TEXT DEFAULT 'AI-Powered Automation Agency',
-  description TEXT,
-  url TEXT DEFAULT 'https://www.bridgeflow.agency',
-  email TEXT DEFAULT 'hello@bridgeflow.agency',
-  location TEXT DEFAULT 'Remote-first, Global',
-  copyright TEXT DEFAULT '© 2026 BridgeFlow. All rights reserved.',
-  logo TEXT DEFAULT '/images/logo.png',
-  nav_links JSONB DEFAULT '[{"href":"/","label":"Home"},{"href":"/services","label":"Services"},{"href":"/pricing","label":"Pricing"},{"href":"/calculator","label":"AI Calculator"},{"href":"/about","label":"About"},{"href":"/case-studies","label":"Case Studies"},{"href":"/blog","label":"Blog"},{"href":"/contact","label":"Contact"}]'::jsonb,
-  footer_links JSONB DEFAULT '{}'::jsonb,
-  social_links JSONB DEFAULT '[{"platform":"Twitter","href":"#"},{"platform":"LinkedIn","href":"#"},{"platform":"GitHub","href":"#"}]'::jsonb,
-  seo_title TEXT,
-  seo_description TEXT,
-  og_image TEXT,
+  founder_image TEXT,
+  social_links JSONB DEFAULT '[]'::jsonb,
+  live_demos JSONB DEFAULT '[]'::jsonb,
+  payment_settings JSONB DEFAULT '{"paypal_enabled":false,"currency":"USD"}'::jsonb,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -203,6 +196,7 @@ CREATE TABLE IF NOT EXISTS telemetry (
 
 -- Enable Row Level Security
 ALTER TABLE site_config ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE home_content ENABLE ROW LEVEL SECURITY;
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE benefits ENABLE ROW LEVEL SECURITY;
@@ -218,6 +212,9 @@ ALTER TABLE activity_log ENABLE ROW LEVEL SECURITY;
 ALTER TABLE telemetry ENABLE ROW LEVEL SECURITY;
 ALTER TABLE page_metadata ENABLE ROW LEVEL SECURITY;
 
+-- Only service role can read/write site_settings
+CREATE POLICY "Service role full access" ON site_settings FOR ALL USING (true) WITH CHECK (true);
+
 -- Public read policies (for frontend)
 CREATE POLICY "Public read" ON site_config FOR SELECT USING (true);
 CREATE POLICY "Public read" ON home_content FOR SELECT USING (true);
@@ -231,7 +228,7 @@ CREATE POLICY "Public read" ON blog_posts FOR SELECT USING (is_published = true)
 CREATE POLICY "Public read" ON case_studies FOR SELECT USING (is_published = true);
 CREATE POLICY "Public read" ON page_metadata FOR SELECT USING (true);
 
--- Service role has full access (used by admin API)
+-- Generic Service role access for other tables
 CREATE POLICY "Service role full access" ON site_config FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Service role full access" ON home_content FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Service role full access" ON services FOR ALL USING (true) WITH CHECK (true);
@@ -248,11 +245,8 @@ CREATE POLICY "Service role full access" ON activity_log FOR ALL USING (true) WI
 CREATE POLICY "Service role full access" ON telemetry FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Service role full access" ON page_metadata FOR ALL USING (true) WITH CHECK (true);
 
--- Insert policy for public contact/newsletter/telemetry
+-- Public insert policies
 CREATE POLICY "Public insert" ON contact_submissions FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public insert" ON newsletter_subscribers FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public insert" ON telemetry FOR INSERT WITH CHECK (true);
-
--- Payment Settings column for site_config (run if not exists)
-ALTER TABLE site_config ADD COLUMN IF NOT EXISTS payment_settings JSONB DEFAULT '{"paypal_enabled":false,"paypal_client_id":"","paypal_client_secret":"","paypal_mode":"sandbox","paypal_currency":"USD","bank_enabled":false,"bank_name":"","bank_account_name":"","bank_account_number":"","bank_routing_number":"","bank_swift_code":"","bank_iban":"","bank_instructions":"","wallets_enabled":false,"wallet_payoneer_enabled":false,"wallet_payoneer_email":"","wallet_wise_enabled":false,"wallet_wise_email":"","wallet_usdt_enabled":false,"wallet_usdt_address":"","wallet_esewa_enabled":false,"wallet_esewa_id":"","wallet_khalti_enabled":false,"wallet_khalti_id":"","currency":"USD","payment_terms":"50% deposit required before work begins"}'::jsonb;
 

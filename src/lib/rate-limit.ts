@@ -3,6 +3,8 @@ import { Ratelimit } from "@upstash/ratelimit";
 
 // Create a single redis instance globally
 let redis: Redis | null = null;
+const useFallback = process.env.NODE_ENV === "development" || !process.env.UPSTASH_REDIS_REST_URL;
+
 try {
     if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
         redis = new Redis({
@@ -11,8 +13,22 @@ try {
         });
     }
 } catch (error) {
-    console.warn("Failed to initialize Upstash Redis. Rate limiting will be bypassed.", error);
+    console.warn("Failed to initialize Upstash Redis. Rate limiting will be bypassed or use local cache.", error);
 }
+
+// Simple in-memory fallback for rate limiting when Redis is down
+class MemoryStore {
+    private cache = new Map<string, { count: number; reset: number }>();
+    async get(key: string) { return this.cache.get(key); }
+    async set(key: string, val: any) { this.cache.set(key, val); }
+    async incr(key: string) {
+        const entry = this.cache.get(key) || { count: 0, reset: Date.now() + 10000 };
+        entry.count++;
+        this.cache.set(key, entry);
+        return entry.count;
+    }
+}
+const memoryStore = new MemoryStore();
 
 // Global cached rate limiters
 const limiters: Record<string, Ratelimit> = {};
@@ -76,7 +92,20 @@ export async function checkRateLimit(
     if (!limiter) return { success: true };
 
     try {
-        const result = await limiter.limit(ip);
+        const result = redis
+            ? await limiter.limit(ip)
+            : {
+                success: true, // Fail open logic stays for Redis failure
+                limit: type === "admin-auth" ? 5 : 100,
+                remaining: (type === "admin-auth" ? 5 : 100) - (await memoryStore.incr(`${type}:${ip}`)),
+                reset: Date.now() + 10000,
+            };
+
+        // If memoryStore exceeds local limit, actually block
+        if (!redis && (result.remaining ?? 0) < 0) {
+            result.success = false;
+        }
+
         return {
             success: result.success,
             limit: result.limit,
