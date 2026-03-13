@@ -1,4 +1,5 @@
 import { createAdminClient } from "./supabase";
+import { Database } from "@/types/database";
 
 /**
  * Dispatches a webhook event to all active webhooks registered in the database.
@@ -13,11 +14,11 @@ export async function dispatchWebhook(event: string, payload: unknown) {
 
     // ── 1. Dispatch to all active webhooks stored in Supabase ──
     try {
-        const supabase = createAdminClient();
+        const supabase = createAdminClient<Database>();
         const { data: webhooks, error } = await supabase
             .from("webhooks")
             .select("*")
-            .eq("is_active", true);
+            .eq("is_active", true) as { data: Database['public']['Tables']['webhooks']['Row'][] | null, error: any };
 
         if (!error && webhooks && webhooks.length > 0) {
             for (const webhook of webhooks) {

@@ -9,8 +9,10 @@ import * as blogData from "@/data/blog";
 import * as caseStudiesData from "@/data/case-studies";
 import * as siteData from "@/data/site";
 
+import { Database } from "@/types/database";
+
 function getPublicClient() {
-    return createClientSideClient();
+    return createClientSideClient<Database>();
 }
 
 // ─── Cached data fetchers (ISR — revalidate every 60 seconds) ───
@@ -26,8 +28,8 @@ export const getSiteConfig = unstable_cache(
                 sb.from("site_settings").select("*").limit(1).single()
             ]);
 
-            const config = configRes.data;
-            const settings = settingsRes.data;
+            const config = configRes.data as Database['public']['Tables']['site_config']['Row'] | null;
+            const settings = settingsRes.data as Database['public']['Tables']['site_settings']['Row'] | null;
 
             if (config) {
                 // Ensure Templates is in navLinks
@@ -66,12 +68,12 @@ export const getSiteConfig = unstable_cache(
                         if (typeof fl === 'object' && fl !== null && Object.keys(fl).length > 0) return fl;
                         return siteData.footerLinks;
                     })(),
-                    socialLinks: Array.isArray(settings?.social_links) && settings.social_links.length > 0
+                    socialLinks: Array.isArray(settings?.social_links) && (settings.social_links as any[]).length > 0
                         ? settings.social_links
-                        : (Array.isArray(config.social_links) && config.social_links.length > 0 ? config.social_links : siteData.socialLinks),
-                    liveDemos: Array.isArray(settings?.live_demos) && settings.live_demos.length > 0
+                        : (Array.isArray((config as any).social_links) && (config as any).social_links.length > 0 ? (config as any).social_links : siteData.socialLinks),
+                    liveDemos: Array.isArray(settings?.live_demos) && (settings.live_demos as any[]).length > 0
                         ? settings.live_demos
-                        : (Array.isArray(config.live_demos) && config.live_demos.length > 0 ? config.live_demos : null),
+                        : (Array.isArray((config as any).live_demos) && (config as any).live_demos.length > 0 ? (config as any).live_demos : null),
                 };
             }
         } catch { }
@@ -107,17 +109,16 @@ export const getHomeContent = unstable_cache(
         try {
             const sb = getPublicClient();
             if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("home_content").select("*").limit(1).single();
+            const { data } = await sb.from("home_content").select("*").limit(1).single() as { data: Database['public']['Tables']['home_content']['Row'] | null };
             if (data) return {
                 // Merge DB values with defaults to ensure all enterprise fields are present
-                hero: data.hero ? { ...homeData.defaultHomeContent.hero, ...data.hero } : homeData.defaultHomeContent.hero,
+                hero: data.hero ? { ...homeData.defaultHomeContent.hero, ...data.hero as any } : homeData.defaultHomeContent.hero,
                 stats: Array.isArray(data.stats) && data.stats.length > 0 ? data.stats : homeData.defaultHomeContent.stats,
-                trustedBy: data.trustedBy ? { ...homeData.defaultHomeContent.trustedBy, ...data.trustedBy } : homeData.defaultHomeContent.trustedBy,
-                features: Array.isArray(data.features) && data.features.length > 0 ? data.features : homeData.defaultHomeContent.features,
-                results: Array.isArray(data.results) && data.results.length > 0 ? data.results : homeData.defaultHomeContent.results,
-                process: Array.isArray(data.process) && data.process.length > 0 ? data.process : homeData.defaultHomeContent.process,
+                features: Array.isArray(data.services_overview) && data.services_overview.length > 0 ? data.services_overview : homeData.defaultHomeContent.features,
+                results: homeData.defaultHomeContent.results,
+                process: Array.isArray(data.process_steps) && data.process_steps.length > 0 ? data.process_steps : homeData.defaultHomeContent.process,
                 testimonials: Array.isArray(data.testimonials) && data.testimonials.length > 0 ? data.testimonials : homeData.defaultHomeContent.testimonials,
-                cta: data.cta ? { ...homeData.defaultHomeContent.cta, ...data.cta } : homeData.defaultHomeContent.cta,
+                cta: data.cta ? { ...homeData.defaultHomeContent.cta, ...data.cta as any } : homeData.defaultHomeContent.cta,
             };
         } catch { }
         return homeData.defaultHomeContent;
@@ -139,8 +140,8 @@ export const getServices = unstable_cache(
 
             const hero = {
                 ...servicesData.servicesHero,
-                title: metadataRes.data?.title?.split("|")[0].trim() || servicesData.servicesHero.title,
-                description: metadataRes.data?.description || servicesData.servicesHero.description,
+                title: (metadataRes.data as any)?.title?.split("|")[0].trim() || servicesData.servicesHero.title,
+                description: (metadataRes.data as any)?.description || servicesData.servicesHero.description,
             };
 
             let services = Array.isArray(servicesRes.data) && servicesRes.data.length > 0 ? servicesRes.data : servicesData.services;
@@ -181,15 +182,18 @@ export const getAboutContent = unstable_cache(
                 sb.from("team_members").select("*").eq("is_active", true).order("sort_order"),
                 sb.from("tech_stack").select("*").order("sort_order"),
                 sb.from("milestones").select("*").order("sort_order"),
-                sb.from("site_settings").select("founder_image").limit(1).single(),
+                sb.from("site_settings").select("*").limit(1).single(),
             ]);
 
-            const founderImageUrl = settingsRes.data?.founder_image;
+            const config = (await sb.from("site_config").select("*").limit(1).single()).data as Database['public']['Tables']['site_config']['Row'] | null;
+            const settings = settingsRes.data as Database['public']['Tables']['site_settings']['Row'] | null;
+
+            const founderImageUrl = settings?.founder_image;
             const teamMember = teamRes.data?.length ? teamRes.data[0] : aboutData.team[0];
 
             // Override founder image if it exists in site_settings
             if (founderImageUrl && teamMember) {
-                teamMember.avatar_url = founderImageUrl;
+                (teamMember as any).avatar_url = founderImageUrl;
             }
 
             return {
@@ -225,10 +229,10 @@ export const getBlogPosts = unstable_cache(
         try {
             const sb = getPublicClient();
             if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("blog_posts").select("*").eq("is_published", true).order("created_at", { ascending: false });
-            if (data && data.length > 0) return data.map((p: Record<string, unknown>) => ({
+            const { data } = await sb.from("blog_posts").select("*").eq("is_published", true).order("created_at", { ascending: false }) as { data: Database['public']['Tables']['blog_posts']['Row'][] | null };
+            if (data && data.length > 0) return data.map((p) => ({
                 ...p,
-                date: new Date(p.created_at as string).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                date: new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
                 readTime: p.read_time,
             }));
         } catch { }
@@ -242,7 +246,7 @@ export async function getBlogPost(slug: string) {
     try {
         const sb = getPublicClient();
         if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("blog_posts").select("*").eq("slug", slug).single();
+        const { data } = await sb.from("blog_posts").select("*").eq("slug", slug).single() as { data: Database['public']['Tables']['blog_posts']['Row'] | null };
         if (data) return {
             ...data,
             readTime: data.read_time,

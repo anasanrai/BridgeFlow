@@ -66,12 +66,13 @@ export interface Database {
           id: string;
           hero: any;
           stats: any;
-          trustedBy: any;
-          features: any;
-          results: any;
-          process: any;
+          services_overview: any;
+          process_steps: any;
           testimonials: any;
           cta: any;
+          seo_title: string | null;
+          seo_description: string | null;
+          og_image: string | null;
           updated_at: string;
         };
       };
@@ -85,6 +86,9 @@ export interface Database {
           color: string | null;
           sort_order: number | null;
           is_active: boolean | null;
+          seo_title: string | null;
+          seo_description: string | null;
+          og_image: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -105,10 +109,10 @@ export interface Database {
         Row: { id: string; icon: string | null; name: string; description: string | null; sort_order: number | null; created_at: string; };
       };
       blog_posts: {
-        Row: { id: string; slug: string; title: string; excerpt: string | null; content: string | null; category: string | null; read_time: string | null; featured: boolean | null; is_published: boolean | null; created_at: string; updated_at: string; };
+        Row: { id: string; slug: string; title: string; excerpt: string | null; content: string | null; category: string | null; read_time: string | null; featured: boolean | null; is_published: boolean | null; seo_title: string | null; seo_description: string | null; og_image: string | null; created_at: string; updated_at: string; };
       };
       case_studies: {
-        Row: { id: string; slug: string; title: string; industry: string | null; client: string | null; excerpt: string | null; challenge: string | null; solution: string | null; results: any; tags: any; is_published: boolean | null; sort_order: number | null; created_at: string; updated_at: string; };
+        Row: { id: string; slug: string; title: string; industry: string | null; client: string | null; excerpt: string | null; challenge: string | null; solution: string | null; results: any; tags: any; is_published: boolean | null; sort_order: number | null; seo_title: string | null; seo_description: string | null; og_image: string | null; created_at: string; updated_at: string; };
       };
       page_metadata: {
         Row: { id: string; path: string; title: string | null; description: string | null; og_image: string | null; created_at: string; updated_at: string; };
@@ -117,6 +121,26 @@ export interface Database {
         Row: { id: string; name: string; email: string; phone: string | null; message: string; package_interest: string | null; source: string | null; status: string | null; created_at: string; };
         Insert: { id?: string; name: string; email: string; phone?: string | null; message: string; package_interest?: string | null; source?: string | null; status?: string | null; created_at?: string; };
         Update: { id?: string; name?: string; email?: string; phone?: string | null; message?: string; package_interest?: string | null; source?: string | null; status?: string | null; created_at?: string; };
+      };
+      contact_submissions: {
+        Row: { id: string; name: string; email: string; company: string | null; budget: string | null; message: string; status: string | null; notes: string | null; created_at: string; };
+        Insert: { id?: string; name: string; email: string; company?: string | null; budget?: string | null; message: string; status?: string | null; notes?: string | null; created_at?: string; };
+      };
+      newsletter_subscribers: {
+        Row: { id: string; email: string; is_active: boolean | null; subscribed_at: string; };
+        Insert: { id?: string; email: string; is_active?: boolean | null; subscribed_at?: string; };
+      };
+      webhooks: {
+        Row: { id: string; name: string; url: string; secret: string | null; events: string[]; is_active: boolean | null; created_at: string; updated_at: string; };
+        Insert: { id?: string; name: string; url: string; secret?: string | null; events: string[]; is_active?: boolean | null; created_at?: string; updated_at?: string; };
+      };
+      telemetry: {
+        Row: { id: string; event_type: string; path: string | null; session_id: string | null; referrer: string | null; user_agent: string | null; data: any; created_at: string; };
+        Insert: { id?: string; event_type: string; path?: string | null; session_id?: string | null; referrer?: string | null; user_agent?: string | null; data?: any; created_at?: string; };
+      };
+      activity_log: {
+        Row: { id: string; action: string; section: string; details: string | null; created_at: string; };
+        Insert: { id?: string; action: string; section: string; details?: string | null; created_at?: string; };
       };
     };
     Views: {
