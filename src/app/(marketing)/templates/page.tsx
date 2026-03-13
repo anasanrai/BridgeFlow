@@ -1,13 +1,12 @@
 import { Suspense } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { createServerSideClient } from '@/lib/supabase/server'
 import TemplatesGrid from './TemplatesGrid'
 
 // Server component — fetch on the server to avoid RLS anon key issues
 async function getTemplates() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = createServerSideClient()
+  if (!supabase) return []
+
 
   const { data, error } = await supabase
     .from('templates')

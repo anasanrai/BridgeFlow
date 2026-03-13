@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSideClient } from '@/lib/supabase'
+import { createServerSideClient } from '@/lib/supabase/server'
 import { sendTelegram, newLeadMessage } from '@/lib/telegram'
 import { Database } from '@/types/database'
 
@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
     const supabase = createServerSideClient<Database>()
 
     // 1. Save to leads table (primary source of truth)
-    const { error: leadsErr } = await supabase.from('leads').insert({
+    const { error: leadsErr } = await (supabase.from('leads' as any) as any).insert({
+
       name,
       email,
       phone: phone || null,

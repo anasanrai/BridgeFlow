@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerSideClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-function getPublicClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
+
 
 async function getLocalTemplates() {
     try {
@@ -22,7 +17,7 @@ async function getLocalTemplates() {
 // GET — list published templates (public, no auth required)
 export async function GET() {
     try {
-        const sb = getPublicClient();
+        const sb = createServerSideClient();
         if (!sb) {
             const local = await getLocalTemplates();
             return NextResponse.json({ templates: local });

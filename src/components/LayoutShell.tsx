@@ -1,12 +1,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import ParticleBackground from "./ParticleBackground";
-import ChatWidget from "./ChatWidget";
-import CookieConsent from "./CookieConsent";
-import BackToTop from "./BackToTop";
+import Navbar from "./marketing/Navbar";
+import Footer from "./marketing/Footer";
+import ParticleBackground from "./marketing/ParticleBackground";
+import ChatWidget from "./marketing/ChatWidget";
+import CookieConsent from "./marketing/CookieConsent";
+import BackToTop from "./marketing/BackToTop";
 
 interface SiteConfig {
     name: string;

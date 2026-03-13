@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight, Sparkles, Zap } from "lucide-react";
-import PaymentModal from "./payments/PaymentModal";
+import PaymentModal from "@/components/payments/PaymentModal";
+
 import Link from "next/link";
 
 interface Plan {

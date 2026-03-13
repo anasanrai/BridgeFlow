@@ -1,68 +1,97 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { requireAdmin } from "@/lib/admin-auth";
+import { createAdminClient } from "@/lib/supabase/server";
 
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
+function defaultPaymentSettings() {
+    return {
+        provider: "paypal",
+        mode: "sandbox",
+        is_active: false,
+        supports_cards: true,
+        supports_bank: true,
+        supports_wallets: true,
+        paypal_enabled: false,
+        paypal_mode: "sandbox",
+        paypal_currency: "USD",
+        bank_enabled: false,
+        bank_account_name: "BridgeFlow Agency",
+        bank_instructions: "Please include your invoice number as the payment reference.",
+        wallets_enabled: false,
+        currency: "USD",
+        tax_rate: 0,
+        invoice_prefix: "BF",
+        payment_terms: "Payment due within 7 days of invoice",
+        stripe_enabled: false,
+        moyasar_enabled: false,
+    };
 }
 
-// GET — fetch payment gateway settings
+// GET — payment gateway configuration (keys come from env vars, not DB)
 export async function GET() {
-    try {
-        const sb = getAdminClient();
-        if (!sb) {
-            return NextResponse.json(getDefaultPaymentSettings());
-        }
+    const authError = await requireAdmin();
+    if (authError) return authError;
 
+    try {
+        const sb = createAdminClient();
         const { data, error } = await sb
-            .from("payment_settings")
+            .from("payment_settings" as any)
             .select("*")
             .limit(1)
             .single();
 
         if (error || !data) {
-            return NextResponse.json(getDefaultPaymentSettings());
+            return NextResponse.json(defaultPaymentSettings());
         }
 
-        return NextResponse.json(data);
-    } catch (err: any) {
-        return NextResponse.json(getDefaultPaymentSettings());
+        // Strip any secret keys that may have been stored previously
+        const safeData = data as Record<string, unknown>;
+        delete safeData.stripe_secret_key;
+        delete safeData.stripe_webhook_secret;
+        delete safeData.moyasar_secret_key;
+        delete safeData.paypal_client_secret;
+
+        return NextResponse.json({ ...defaultPaymentSettings(), ...safeData });
+    } catch {
+        return NextResponse.json(defaultPaymentSettings());
     }
 }
 
-// POST — save payment gateway settings
+// POST — save payment gateway configuration (non-secret settings only)
 export async function POST(req: NextRequest) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
-        const body = await req.json();
-        const sb = getAdminClient();
+        const body = await req.json() as Record<string, unknown>;
+        const sb = createAdminClient();
 
-        if (!sb) {
-            return NextResponse.json({ error: "No DB connection" }, { status: 500 });
-        }
+        // Never persist secret keys to DB — they must stay in env vars
+        const safeBody = { ...body };
+        delete safeBody.stripe_secret_key;
+        delete safeBody.stripe_webhook_secret;
+        delete safeBody.moyasar_secret_key;
+        delete safeBody.paypal_client_secret;
+        delete safeBody.client_secret;
 
-        const { data: existing } = await sb
-            .from("payment_settings")
-            .select("id")
-            .limit(1);
+        const { data: existing } = await sb.from("payment_settings" as any).select("id").limit(1);
+        const existingRow = (existing as Array<{ id: string }> | null)?.[0];
 
-        const existingRow = existing && existing[0];
         let result;
-
         if (existingRow?.id) {
-            result = await sb
-                .from("payment_settings")
-                .update({ ...body, updated_at: new Date().toISOString() })
+            result = await (sb
+                .from("payment_settings" as any) as any)
+                .update({ ...safeBody, updated_at: new Date().toISOString() })
                 .eq("id", existingRow.id)
                 .select()
                 .single();
+
         } else {
-            result = await sb
-                .from("payment_settings")
-                .insert(body)
+            result = await (sb
+                .from("payment_settings" as any) as any)
+                .insert(safeBody)
                 .select()
                 .single();
+
         }
 
         if (result.error) {
@@ -70,57 +99,8 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ success: true, data: result.data });
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
-}
-
-function getDefaultPaymentSettings() {
-    return {
-        provider: "paypal",
-        mode: "sandbox",
-        client_id: "",
-        client_secret: "",
-        webhook_id: "",
-        is_active: false,
-        supports_cards: true,
-        supports_bank: true,
-        supports_wallets: true,
-        // Keep existing fields for backward compatibility if needed by UI
-        paypal_enabled: false,
-        paypal_client_id: "",
-        paypal_client_secret: "",
-        paypal_mode: "sandbox",
-        paypal_currency: "USD",
-        bank_enabled: false,
-        bank_name: "",
-        bank_account_name: "BridgeFlow Agency",
-        bank_account_number: "",
-        bank_routing_number: "",
-        bank_swift_code: "",
-        bank_iban: "",
-        bank_instructions: "Please include your invoice number as the payment reference.",
-        wallets_enabled: false,
-        wallet_payoneer_enabled: false,
-        wallet_payoneer_email: "",
-        wallet_wise_enabled: false,
-        wallet_wise_email: "",
-        wallet_usdt_enabled: false,
-        wallet_usdt_address: "",
-        wallet_esewa_enabled: false,
-        wallet_esewa_id: "",
-        wallet_khalti_enabled: false,
-        wallet_khalti_id: "",
-        currency: "USD",
-        tax_rate: 0,
-        invoice_prefix: "BF",
-        payment_terms: "Payment due within 7 days of invoice",
-        stripe_enabled: false,
-        stripe_publishable_key: "",
-        stripe_secret_key: "",
-        stripe_webhook_secret: "",
-        moyasar_enabled: false,
-        moyasar_publishable_key: "",
-        moyasar_secret_key: "",
-    };
 }

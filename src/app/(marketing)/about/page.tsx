@@ -8,7 +8,8 @@ import {
     Card,
 } from "@/components/ui";
 import { ArrowRight, Linkedin, Twitter, Globe, MapPin } from "lucide-react";
-import LucideIcon from "@/components/LucideIcon";
+import LucideIcon from "@/components/shared/LucideIcon";
+
 import { getAboutContent, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
 export const revalidate = 60;
@@ -133,7 +134,8 @@ export default async function About() {
                                     <div className="relative flex-shrink-0">
                                         <div className="relative w-40 h-40 sm:w-44 sm:h-44 rounded-full overflow-hidden shadow-2xl" style={{ background: "linear-gradient(135deg, rgba(230,180,34,0.15) 0%, rgba(6,182,212,0.10) 100%)", border: "3px solid rgba(230,180,34,0.40)" }}>
                                             <Image
-                                                src={teamMember?.avatar_url || teamMember?.image_url || "/images/founder-portrait.png"}
+                                                src={(teamMember as any)?.avatar_url || (teamMember as any)?.image_url || "/images/founder-portrait.png"}
+
                                                 alt={`${teamMember?.name || "Anasan Rai"} — ${teamMember?.role || "Founder & CEO of BridgeFlow"}`}
                                                 fill
                                                 className="object-cover object-top"

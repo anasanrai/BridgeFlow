@@ -1,1 +1,1 @@
-<Solutions>...</Solutions>
+export default function Solutions() { return null; }

@@ -1,27 +1,16 @@
-import { createBrowserClient, createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { Database } from '@/types/database'
-
-/**
- * For use in Client Components
- */
-export function createClientSideClient<T = Database>() {
-  return createBrowserClient<T>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
 
 /**
  * For use in Server Components, Server Actions, and Route Handlers
  */
 export function createServerSideClient<T = Database>() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dummy-build.supabase.co";
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy-key";
   const cookieStore = cookies()
 
-  return createServerClient<T>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  return createServerClient<T>(url, key, {
       cookies: {
         get(name: string) {
           return cookieStore.get(name)?.value
@@ -30,18 +19,12 @@ export function createServerSideClient<T = Database>() {
           try {
             cookieStore.set({ name, value, ...options })
           } catch (error) {
-            // The `set` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
           }
         },
         remove(name: string, options: any) {
           try {
             cookieStore.set({ name, value: '', ...options })
           } catch (error) {
-            // The `remove` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
           }
         },
       },
@@ -53,10 +36,9 @@ export function createServerSideClient<T = Database>() {
  * For administrative tasks (node-side only)
  */
 export function createAdminClient<T = Database>() {
-  return createServerClient<T>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dummy-build.supabase.co";
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || "dummy-key";
+  return createServerClient<T>(url, key, {
       cookies: {
         get(name: string) { return undefined },
         set(name: string, value: string, options: any) {},

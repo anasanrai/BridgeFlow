@@ -58,12 +58,18 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Protect /dashboard routes
-  if (pathname.startsWith('/dashboard')) {
+  // Protect all product and dashboard routes
+  const protectedRoutes = ['/dashboard', '/cashpilot', '/n8n-galaxy', '/automation-tools'];
+  const isProtectedPath = protectedRoutes.some(path => pathname.startsWith(path));
+
+  if (isProtectedPath) {
     if (!user) {
-      return NextResponse.redirect(new URL('/login', request.url))
+      const url = new URL('/login', request.url);
+      url.searchParams.set('next', pathname);
+      return NextResponse.redirect(url);
     }
   }
+
 
   // Protect /api/private routes
   if (pathname.startsWith('/api/private')) {

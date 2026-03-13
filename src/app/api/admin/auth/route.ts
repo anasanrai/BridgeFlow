@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SignJWT, jwtVerify } from "jose";
 
-const secret = new TextEncoder().encode(
-    process.env.JWT_SECRET || "bridgeflow-admin-secret-change-me"
-);
+const secret = new TextEncoder().encode(process.env.JWT_SECRET || "bridgeflow-build-time-dummy-secret");
+
 
 export async function POST(req: NextRequest) {
     try {

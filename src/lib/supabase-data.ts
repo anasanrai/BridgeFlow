@@ -1,4 +1,4 @@
-import { createClientSideClient } from "@/lib/supabase";
+import { createClientSideClient } from "@/lib/supabase/client";
 import { unstable_cache } from "next/cache";
 
 // Import local fallbacks
@@ -11,9 +11,7 @@ import * as siteData from "@/data/site";
 
 import { Database } from "@/types/database";
 
-function getPublicClient() {
-    return createClientSideClient<Database>();
-}
+const getPublicClient = createClientSideClient;
 
 // ─── Cached data fetchers (ISR — revalidate every 60 seconds) ───
 
@@ -24,9 +22,10 @@ export const getSiteConfig = unstable_cache(
             if (!sb) throw new Error("No Supabase");
 
             const [configRes, settingsRes] = await Promise.all([
-                sb.from("site_config").select("*").limit(1).single(),
-                sb.from("site_settings").select("*").limit(1).single()
+                (sb.from("site_config" as any) as any).select("*").limit(1).single(),
+                (sb.from("site_settings" as any) as any).select("*").limit(1).single()
             ]);
+
 
             const config = configRes.data as Database['public']['Tables']['site_config']['Row'] | null;
             const settings = settingsRes.data as Database['public']['Tables']['site_settings']['Row'] | null;
@@ -64,6 +63,7 @@ export const getSiteConfig = unstable_cache(
                             });
                             return Object.keys(record).length > 0 ? record : siteData.footerLinks;
                         }
+
                         // DB stores as Record already
                         if (typeof fl === 'object' && fl !== null && Object.keys(fl).length > 0) return fl;
                         return siteData.footerLinks;
@@ -246,13 +246,15 @@ export async function getBlogPost(slug: string) {
     try {
         const sb = getPublicClient();
         if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("blog_posts").select("*").eq("slug", slug).single() as { data: Database['public']['Tables']['blog_posts']['Row'] | null };
-        if (data) return {
-            ...data,
-            readTime: data.read_time,
-            date: new Date(data.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-            content: data.content ? data.content.split("\n\n") : [],
+        const { data } = await (sb.from("blog_posts" as any) as any).select("*").eq("slug", slug).single();
+        const p = data as any;
+        if (p) return {
+            ...p,
+            readTime: p.read_time,
+            date: new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+            content: p.content ? p.content.split("\n\n") : [],
         };
+
     } catch { }
     return blogData.blogPostContent?.[slug] || null;
 }
@@ -285,8 +287,10 @@ export async function getPageMetadata(path: string) {
     try {
         const sb = getPublicClient();
         if (!sb) throw new Error("No Supabase");
-        const { data } = await sb.from("page_metadata").select("*").eq("path", path).single();
-        return data;
+        const { data } = await (sb.from("page_metadata" as any) as any).select("*").eq("path", path).single();
+        return data as any;
+
+
     } catch { }
     return null;
 }
@@ -297,10 +301,12 @@ export async function getPageSEO(path: string) {
         getSiteConfig(),
     ]);
 
+    const overrideData = override as any;
     return {
-        title: override?.title || (path === "/" ? `${site.name} | ${site.tagline}` : `${site.name}`),
-        description: override?.description || site.description,
-        ogImage: override?.og_image || site.og_image || "/images/og-default.png",
+        title: overrideData?.title || (path === "/" ? `${site.name} | ${site.tagline}` : `${site.name}`),
+        description: overrideData?.description || site.description,
+        ogImage: overrideData?.og_image || site.og_image || "/images/og-default.png",
+
         siteName: site.name,
         url: site.url,
     };
@@ -314,9 +320,11 @@ export const getAllSearchItems = unstable_cache(
             if (!sb) throw new Error("No Supabase");
 
             const [blogRes, caseStudiesRes] = await Promise.all([
-                sb.from("blog_posts").select("title, slug, excerpt").eq("is_published", true),
-                sb.from("case_studies").select("title, slug, excerpt").eq("is_published", true),
+                (sb.from("blog_posts" as any) as any).select("title, slug, excerpt").eq("is_published", true),
+                (sb.from("case_studies" as any) as any).select("title, slug, excerpt").eq("is_published", true),
             ]);
+
+
 
             const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
 

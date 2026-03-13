@@ -9,7 +9,8 @@ import {
     ArrowRight,
     CheckCircle2,
 } from "lucide-react";
-import LucideIcon from "@/components/LucideIcon";
+import LucideIcon from "@/components/shared/LucideIcon";
+
 import { getServices, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
 export const revalidate = 60;

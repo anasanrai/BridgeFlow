@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
-
-function getPublicClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
 
 const SYSTEM_PROMPT = `You are BridgeFlow's internal AI content assistant for the admin dashboard. Help admins generate and improve website content.
 
@@ -29,6 +22,9 @@ Guidelines:
 - Use markdown formatting for structured content`;
 
 export async function POST(req: NextRequest) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const { messages, template } = await req.json();
 

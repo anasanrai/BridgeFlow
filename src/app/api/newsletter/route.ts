@@ -1,12 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { NextRequest } from "next/server";
+import { createAdminClient } from "@/lib/supabase/server";
+import { apiSuccess, apiError } from "@/lib/api-response";
 
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
 
 export async function POST(req: NextRequest) {
     try {
@@ -15,38 +10,38 @@ export async function POST(req: NextRequest) {
 
         // Validation
         if (!email) {
-            return NextResponse.json(
-                { error: "Email is required." },
-                { status: 400 }
-            );
+            return apiError("Email is required", 400);
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            return NextResponse.json(
-                { error: "Please provide a valid email address." },
-                { status: 400 }
-            );
+            return apiError("Please provide a valid email address.", 400);
         }
 
         // Always save to Supabase (primary storage)
-        const supabase = getAdminClient();
+        const supabase = createAdminClient();
         if (supabase) {
             try {
                 // Upsert to avoid duplicate errors
-                const { error } = await supabase
-                    .from("newsletter_subscribers")
+                const { error } = await (supabase
+                    .from("newsletter_subscribers" as any) as any)
                     .upsert(
                         [{ email, is_active: true, subscribed_at: new Date().toISOString() }],
                         { onConflict: "email", ignoreDuplicates: false }
                     );
 
-                if (error && error.code !== "23505") {
-                    // 23505 = unique violation (already subscribed) — that's fine
+
+                if (error) {
+                    // Check if user is already subscribed (PostgREST error code 23505)
+                    if (error.code === '23505') {
+                        return apiSuccess({ message: "Already subscribed" });
+                    }
                     console.error("Supabase newsletter insert error:", error);
+                    return apiError(error.message, 500);
                 }
             } catch (dbErr) {
                 console.error("Supabase newsletter error:", dbErr);
+                return apiError("Failed to subscribe due to a database error.", 500);
             }
         }
 
@@ -74,15 +69,9 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        return NextResponse.json(
-            { success: true, message: "Successfully subscribed!" },
-            { status: 200 }
-        );
+        return apiSuccess({ message: "Subscribed successfully" });
     } catch (error) {
         console.error("Newsletter error:", error);
-        return NextResponse.json(
-            { error: "Internal server error. Please try again later." },
-            { status: 500 }
-        );
+        return apiError("Internal server error. Please try again later.", 500);
     }
 }

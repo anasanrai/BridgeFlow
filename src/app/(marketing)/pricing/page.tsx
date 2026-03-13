@@ -8,7 +8,8 @@ import {
 import { ArrowRight, CheckCircle2, Sparkles, Shield, Clock, Globe, Zap } from "lucide-react";
 import { plans, pricingHero, pricingFAQ } from "@/data/pricing";
 import { getSiteConfig } from "@/lib/supabase-data";
-import PricingCard from "@/components/PricingCard";
+import PricingCard from "@/components/marketing/PricingCard";
+
 
 export const revalidate = 60;
 

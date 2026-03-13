@@ -1,12 +1,12 @@
 import AdminSidebar from "@/components/admin/AdminSidebar";
-import { createClient } from "@/utils/supabase/server";
+import { createServerSideClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const supabase = createClient();
+    const supabase = createServerSideClient();
 
     // Get current user for header
     const { data: { user } } = await supabase.auth.getUser();

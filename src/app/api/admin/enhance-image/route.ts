@@ -1,27 +1,20 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { requireAdmin } from "@/lib/admin-auth";
+import { createAdminClient } from "@/lib/supabase/server";
 import Replicate from "replicate";
 
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
-
 export async function POST(req: Request) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const replicateToken = process.env.REPLICATE_API_TOKEN;
         if (!replicateToken) {
             return NextResponse.json({ error: "Replicate API token not configured." }, { status: 500 });
         }
 
-        const replicate = new Replicate({
-            auth: replicateToken,
-        });
-
-        const sb = getAdminClient();
-        if (!sb) return NextResponse.json({ error: "Database not configured." }, { status: 500 });
+        const replicate = new Replicate({ auth: replicateToken });
+        const sb = createAdminClient();
 
         const formData = await req.formData();
         const file = formData.get("file") as File | null;

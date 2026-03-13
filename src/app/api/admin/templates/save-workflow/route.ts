@@ -1,18 +1,15 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin-auth";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
-/**
- * POST /api/admin/templates/save-workflow
- * Body: { slug: string; workflowJson: object }
- *
- * Patches the matching template's `workflowJson` field in
- * src/data/templates.ts and writes the file back to disk.
- */
 export async function POST(req: Request) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const body = await req.json();
-        const { slug, workflowJson } = body as { slug: string; workflowJson: Record<string, any> };
+        const { slug, workflowJson } = body as { slug: string; workflowJson: Record<string, unknown> };
 
         if (!slug || !workflowJson) {
             return NextResponse.json({ error: "Missing slug or workflowJson" }, { status: 400 });

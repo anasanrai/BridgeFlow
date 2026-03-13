@@ -1,17 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/supabase/server";
 import Stripe from "stripe";
+import { checkRateLimit } from "@/lib/rate-limit";
 
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
-
-// POST — create a checkout session / payment intent
 export async function POST(req: NextRequest) {
     try {
+        // Rate limit checkout attempts
+        const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+        const rateLimitResult = await checkRateLimit(req, "api-public");
+
+
+        if (!rateLimitResult.success) {
+            return NextResponse.json(
+                { error: "Too many requests. Please try again later." },
+                { status: 429 }
+            );
+        }
+
         const body = await req.json();
         const { planName, planPrice, customerEmail, customerName, paymentMethod, currency = "USD", metadata = {} } = body;
 
@@ -22,60 +27,42 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const sb = getAdminClient();
-        if (!sb) {
-            return NextResponse.json({ error: "No DB connection" }, { status: 500 });
-        }
-
-        // Fetch payment settings to get API keys
-        const { data: settings } = await sb
-            .from("payment_settings")
-            .select("*")
-            .limit(1)
-            .single();
+        const sb = createAdminClient();
 
         // Generate a unique order ID
         const orderId = `BF-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
-        // 1. Stripe Checkout
+        // 1. Stripe Checkout — keys from environment variables (not DB)
         if (paymentMethod === "stripe") {
-            if (!settings?.stripe_secret_key) {
+            const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+            if (!stripeSecretKey) {
                 return NextResponse.json({ error: "Stripe not configured" }, { status: 400 });
             }
 
-            const stripe = new Stripe(settings.stripe_secret_key, {
+            const stripe = new Stripe(stripeSecretKey, {
                 apiVersion: "2023-10-16" as any,
             });
 
-            // Create a checkout session
+            const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ["card"],
-                line_items: [
-                    {
-                        price_data: {
-                            currency: currency.toLowerCase(),
-                            product_data: {
-                                name: planName,
-                            },
-                            unit_amount: Math.round(Number(planPrice) * 100), // Stripe uses cents
-                        },
-                        quantity: 1,
+                line_items: [{
+                    price_data: {
+                        currency: currency.toLowerCase(),
+                        product_data: { name: planName },
+                        unit_amount: Math.round(Number(planPrice) * 100),
                     },
-                ],
+                    quantity: 1,
+                }],
                 mode: "payment",
-                success_url: `${process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin}/thank-you?session_id={CHECKOUT_SESSION_ID}&id=${orderId}`,
-                cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin}/pricing`,
+                success_url: `${siteUrl}/thank-you?session_id={CHECKOUT_SESSION_ID}&id=${orderId}`,
+                cancel_url: `${siteUrl}/pricing`,
                 customer_email: customerEmail,
                 client_reference_id: orderId,
-                metadata: {
-                    orderId,
-                    planName,
-                    ...metadata
-                },
+                metadata: { orderId, planName, ...metadata },
             });
 
-            // Record pending order
-            await sb.from("orders").insert({
+            await (sb.from("orders" as any) as any).insert({
                 order_id: orderId,
                 plan_name: planName,
                 plan_price: planPrice,
@@ -87,77 +74,44 @@ export async function POST(req: NextRequest) {
                 created_at: new Date().toISOString(),
             });
 
-            return NextResponse.json({
-                success: true,
-                orderId,
-                url: session.url, // Redirect client to this URL
-            });
+            return NextResponse.json({ success: true, orderId, url: session.url });
         }
 
-        // 2. Moyasar simulated or API call (Moyasar uses a simpler form-based integration often)
+        // 2. Moyasar — publishable key from environment
         if (paymentMethod === "moyasar") {
-            // For Moyasar, we'll return the publishable key for their frontend form
-            // and record the order
-            await sb.from("orders").insert({
-                order_id: orderId,
-                plan_name: planName,
-                plan_price: planPrice,
-                customer_email: customerEmail,
-                customer_name: customerName,
-                payment_method: "moyasar",
-                status: "pending",
+            await (sb.from("orders" as any) as any).insert({
+                order_id: orderId, plan_name: planName, plan_price: planPrice,
+                customer_email: customerEmail, customer_name: customerName,
+                payment_method: "moyasar", status: "pending",
                 created_at: new Date().toISOString(),
             });
 
             return NextResponse.json({
-                success: true,
-                orderId,
-                publishableKey: settings?.moyasar_publishable_key,
-                amount: Math.round(Number(planPrice) * 100), // Moyasar also uses subunits
-                callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin}/thank-you?id=${orderId}`
+                success: true, orderId,
+                publishableKey: process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY,
+                amount: Math.round(Number(planPrice) * 100),
+                callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin}/thank-you?id=${orderId}`,
             });
         }
 
-        // 3. PayPal, Bank, etc. (handled same as before but recording to orders)
-        await sb.from("orders").insert({
-            order_id: orderId,
-            plan_name: planName,
-            plan_price: planPrice,
-            customer_email: customerEmail,
-            customer_name: customerName,
-            payment_method: paymentMethod,
-            status: "pending",
+        // 3. PayPal / Bank / Wallet fallback
+        await (sb.from("orders" as any) as any).insert({
+            order_id: orderId, plan_name: planName, plan_price: planPrice,
+            customer_email: customerEmail, customer_name: customerName,
+            payment_method: paymentMethod, status: "pending",
             created_at: new Date().toISOString(),
         });
 
-        if (paymentMethod === "paypal") {
-            return NextResponse.json({
-                success: true,
-                orderId,
-                method: "paypal",
-            });
-        }
 
-        if (paymentMethod === "bank_transfer") {
-            return NextResponse.json({
-                success: true,
-                orderId,
-                method: "bank_transfer",
-            });
-        }
-
-        if (paymentMethod.startsWith("wallet_")) {
-            return NextResponse.json({
-                success: true,
-                orderId,
-                method: paymentMethod,
-            });
+        if (["paypal", "bank_transfer"].includes(paymentMethod) || paymentMethod.startsWith("wallet_")) {
+            return NextResponse.json({ success: true, orderId, method: paymentMethod });
         }
 
         return NextResponse.json({ error: "Unknown payment method" }, { status: 400 });
-    } catch (err: any) {
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Internal server error";
         console.error("Checkout Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
 
@@ -166,33 +120,26 @@ export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
         const orderId = searchParams.get("orderId");
-        const sessionId = searchParams.get("sessionId");
 
-        if (!orderId && !sessionId) {
-            return NextResponse.json({ error: "Missing orderId or sessionId" }, { status: 400 });
+        if (!orderId) {
+            return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
         }
 
-        const sb = getAdminClient();
-        if (!sb) {
-            return NextResponse.json({ error: "No DB connection" }, { status: 500 });
-        }
+        const sb = createAdminClient();
+        const { data, error } = await (sb
+            .from("orders" as any) as any)
+            .select("*")
+            .eq("order_id", orderId)
+            .single();
 
-        let query = sb.from("orders").select("*");
-
-        if (orderId) {
-            query = query.eq("order_id", orderId);
-        } else if (sessionId) {
-            query = query.eq("checkout_session_id", sessionId);
-        }
-
-        const { data, error } = await query.single();
 
         if (error || !data) {
             return NextResponse.json({ error: "Order not found" }, { status: 404 });
         }
 
         return NextResponse.json(data);
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Internal server error";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import ContactForm from "@/components/forms/ContactForm";
-import CalendlyEmbed from "@/components/CalendlyEmbed";
+import CalendlyEmbed from "@/components/marketing/CalendlyEmbed";
+
 import { getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
 export async function generateMetadata(): Promise<Metadata> {

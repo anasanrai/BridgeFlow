@@ -1,1 +1,1 @@
-<Hero>...</Hero>
+export default function Hero() { return null; }

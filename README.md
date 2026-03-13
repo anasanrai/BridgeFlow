@@ -1,75 +1,78 @@
-# BridgeFlow - Enterprise SaaS Foundation
+# BridgeFlow — Unified SaaS Automation Platform
 
-BridgeFlow is a high-performance, scalable SaaS ecosystem built with Next.js 14, Supabase, and TypeScript. This repository serves as the production-ready foundation for AI automation tools, internal dashboards, and micro-SaaS products.
+BridgeFlow is a production-ready, modular SaaS platform designed to power elite automation agencies and AI-driven products. Built with Next.js 14, Supabase, and n8n, it offers a secure, scalable, and multi-tenant environment for managing automations, AI agents, and client ecosystems.
 
-## 🏗 Architecture Overview
+## 🚀 Unified Product Suite
 
-The project follows a modular, enterprise-grade directory structure:
+BridgeFlow serves as the core platform for a specialized product ecosystem:
 
-- **`src/app/(marketing)`**: SEO-optimized marketing pages (Home, Pricing, About, etc.)
-- **`src/app/dashboard`**: Protected user dashboard with layout shell.
-- **`src/app/api`**: Structured API routes (Auth, Billing, Automation, Webhooks).
-- **`src/components/ui`**: Atomic design system components (Button, Card, Modal, etc.)
-- **`src/components/marketing`**: Domain-specific marketing components.
-- **`src/components/dashboard`**: Dashboard-specific UI (Sidebar, Navbar).
-- **`src/modules`**: Domain-specific logic and business services.
-- **`src/lib`**: Shared services (Supabase, Auth, Logger).
-- **`src/hooks & src/utils`**: Reusable logic and helper functions.
+- **BridgeFlow Agency**: Manage client automations and lead capture systems.
+- **Cashpilot (AI CFO)**: Financial intelligence and real-time cash flow forecasting.
+- **n8n Galaxy**: Enterprise-grade fleet management for n8n automations.
+- **AI Agent Framework**: Multi-provider agent execution with tool-calling support.
 
-## 🚀 Tech Stack
+## 🛠 Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript (Strict Mode)
-- **Styling**: Tailwind CSS
-- **Auth & Database**: Supabase (@supabase/ssr)
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Infrastructure**: Docker & Docker Compose
+- **Framework**: Next.js 14 (App Router, Server Actions, Standalone Output)
+- **Database & Auth**: Supabase (PostgreSQL, RLS, Edge Auth)
+- **Automation**: n8n (Custom Service Layer)
+- **Payments**: Stripe (Subscriptions & One-off), PayPal, Moyasar
+- **AI**: Unified Provider Chain (OpenAI, Gemini, Replicate)
+- **Deployment**: Docker (Production-optimized), Vercel
 
-## 🛠 Getting Started
+## 🏗 Modular Architecture
 
-### 1. Prerequisites
-- Node.js 18+
-- pnpm / npm
-- Supabase Account
+The platform follows a strict modular structure to ensure maintainability and scalability:
 
-### 2. Environment Setup
-Copy the example environment file and fill in your credentials:
 ```bash
-cp .env.example .env.local
+src/
+├── app/             # Next.js App Router (Products & Dashboard Groups)
+├── components/      # Shared UI & Modular Dashboard Shell
+├── hooks/           # Platform-wide state & Auth hooks
+├── lib/             # Core utilities & API response helpers
+├── modules/         # Domain-driven logic (Auth, Billing, AI)
+├── services/        # Third-party integrations (Supabase, Stripe, n8n)
+└── types/           # Centralized TypeScript definitions
 ```
 
-### 3. Installation
-```bash
-pnpm install
-```
+## 🔒 Security First
 
-### 4. Development
-```bash
-pnpm dev
-```
+- **Admin Hardening**: JWT-based auth guards on all sensitive routes.
+- **Data Isolation**: Row Level Security (RLS) for multi-tenant workspace protection.
+- **Secret Management**: Zero hardcoded secrets; strictly environment-managed.
+- **Rate Limiting**: Integrated Upstash/MemoryStore rate limiting for API protection.
 
-## 🐳 Docker Production Setup
+## 🔧 Getting Started
 
-Build and run the production container:
-```bash
-docker-compose up --build
-```
-The application will be available at `http://localhost:3000`.
+### Local Development
 
-## 📜 Available Scripts
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/anasanrai/BridgeFlow
+   npm install
+   ```
+2. **Setup Env**: Copy `.env.example` to `.env.local` and populate required keys.
+3. **Run**:
+   ```bash
+   npm run dev
+   ```
 
-- `npm run dev`: Start development server
-- `npm run build`: Build for production
-- `npm run start`: Start production server
-- `npm run lint`: Run ESLint
-- `npm run typecheck`: Run TypeScript compiler check
-- `npm run format`: Format code with Prettier
+### Docker Production
 
-## 🔒 Security
-- **Auth**: sessions are handled via Supabase Auth with PKCE flow.
-- **Middleware**: Routes under `/dashboard` and API routes under `/api/private` are protected.
-- **Environment**: Sensitive keys are kept on the server and never exposed to the client.
+1. **Build & Run**:
+   ```bash
+   docker-compose up --build
+   ```
+   The application will be available at `http://localhost:3000`.
 
----
-Built by [BridgeFlow Team](https://bridgeflow.com)
+## 📜 Database Schema
+
+The core SaaS schema is defined in `supabase-schema.sql`. It includes:
+- `organizations` & `memberships` (Multi-tenancy)
+- `projects` & `automations` (Workflow Management)
+- `subscriptions` & `purchases` (Monetization)
+- `profiles` & `leads` (Identity & CRM)
+
+## 🤝 Contributing
+
+BridgeFlow is built for scale. When contributing, please follow the domain-driven modular patterns established in Phase 1 of the architecture refactor.

@@ -3,7 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { useState } from "react";
-import Logo from "./Logo";
+import Logo from "../shared/Logo";
+
 import {
     Mail,
     MapPin,

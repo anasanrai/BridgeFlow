@@ -1,1 +1,1 @@
-<Navigation>...</Navigation>
+export default function Navigation() { return null; }

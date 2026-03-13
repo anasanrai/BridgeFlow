@@ -152,17 +152,29 @@ CREATE TABLE IF NOT EXISTS page_metadata (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Contact Submissions
-CREATE TABLE IF NOT EXISTS contact_submissions (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  company TEXT,
-  budget TEXT,
-  message TEXT NOT NULL,
-  status TEXT DEFAULT 'new',
-  notes TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+-- User Profiles
+CREATE TABLE IF NOT EXISTS profiles (
+  id uuid REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  email text,
+  full_name text,
+  avatar_url text,
+  billing_address jsonb,
+  payment_method jsonb,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Leads (Standardized Contact Submissions)
+CREATE TABLE IF NOT EXISTS leads (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL,
+  email text NOT NULL,
+  phone text,
+  message text NOT NULL,
+  package_interest text,
+  source text,
+  status text DEFAULT 'new',
+  created_at timestamptz DEFAULT now()
 );
 
 -- Newsletter Subscribers
@@ -245,8 +257,303 @@ CREATE POLICY "Service role full access" ON activity_log FOR ALL USING (true) WI
 CREATE POLICY "Service role full access" ON telemetry FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Service role full access" ON page_metadata FOR ALL USING (true) WITH CHECK (true);
 
--- Public insert policies
-CREATE POLICY "Public insert" ON contact_submissions FOR INSERT WITH CHECK (true);
-CREATE POLICY "Public insert" ON newsletter_subscribers FOR INSERT WITH CHECK (true);
-CREATE POLICY "Public insert" ON telemetry FOR INSERT WITH CHECK (true);
+
+-- ============================================
+-- SaaS PLATFORM SCHEMA (Phase 2)
+-- ============================================
+
+-- Multi-tenant SaaS core
+CREATE TABLE IF NOT EXISTS organizations (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL,
+  slug text UNIQUE NOT NULL,
+  plan text DEFAULT 'free',
+  stripe_customer_id text,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS memberships (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
+  org_id uuid REFERENCES organizations(id) ON DELETE CASCADE,
+  role text DEFAULT 'member' CHECK (role IN ('owner','admin','member')),
+  created_at timestamptz DEFAULT now(),
+  UNIQUE(user_id, org_id)
+);
+
+CREATE TABLE IF NOT EXISTS projects (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES organizations(id) ON DELETE CASCADE,
+  name text NOT NULL,
+  description text,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS automations (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  project_id uuid REFERENCES projects(id) ON DELETE CASCADE,
+  name text NOT NULL,
+  description text,
+  n8n_workflow_id text,
+  trigger_type text,
+  status text DEFAULT 'draft',
+  config jsonb DEFAULT '{}',
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS agents (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  project_id uuid REFERENCES projects(id) ON DELETE CASCADE,
+  name text NOT NULL,
+  model text DEFAULT 'gpt-4.1-mini',
+  system_prompt text,
+  tools jsonb DEFAULT '[]',
+  config jsonb DEFAULT '{}',
+  is_active boolean DEFAULT true,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS subscriptions (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES organizations(id) ON DELETE CASCADE,
+  stripe_subscription_id text,
+  plan text NOT NULL,
+  status text DEFAULT 'active',
+  current_period_start timestamptz,
+  current_period_end timestamptz,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_id text UNIQUE NOT NULL,
+  org_id uuid REFERENCES organizations(id),
+  plan_name text,
+  plan_price numeric,
+  customer_email text,
+  customer_name text,
+  payment_method text,
+  status text DEFAULT 'pending',
+  gateway_id text,
+  metadata jsonb DEFAULT '{}',
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS purchases (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_email text NOT NULL,
+  template_id uuid,
+  amount numeric,
+  currency text DEFAULT 'USD',
+  gateway text,
+  transaction_id text,
+  status text DEFAULT 'completed',
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS templates (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL,
+  slug text UNIQUE NOT NULL,
+  description text,
+  short_description text,
+  long_description text,
+  categories jsonb DEFAULT '[]',
+  difficulty text DEFAULT 'Beginner',
+  nodes jsonb DEFAULT '[]',
+  node_count integer DEFAULT 0,
+  setup_time text DEFAULT '15 min',
+  value numeric DEFAULT 0,
+  what_it_does jsonb DEFAULT '[]',
+  featured boolean DEFAULT false,
+  status text DEFAULT 'draft',
+  image_url text,
+  image_urls jsonb DEFAULT '[]',
+  workflow_json jsonb,
+  n8n_workflow_id text,
+  "order" integer DEFAULT 0,
+  connection_count integer DEFAULT 0,
+  json_url text,
+  json_access text,
+  tools jsonb DEFAULT '[]',
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+
+
+-- ============================================
+-- SaaS PLATFORM SCHEMA (Phase 2 Consolidated)
+-- ============================================
+
+-- Multi-tenant SaaS core
+CREATE TABLE IF NOT EXISTS organizations (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL,
+  slug text UNIQUE NOT NULL,
+  plan text DEFAULT 'free',
+  stripe_customer_id text,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS memberships (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
+  org_id uuid REFERENCES organizations(id) ON DELETE CASCADE,
+  role text DEFAULT 'member' CHECK (role IN ('owner','admin','member')),
+  created_at timestamptz DEFAULT now(),
+  UNIQUE(user_id, org_id)
+);
+
+CREATE TABLE IF NOT EXISTS projects (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES organizations(id) ON DELETE CASCADE,
+  name text NOT NULL,
+  description text,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS automations (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  project_id uuid REFERENCES projects(id) ON DELETE CASCADE,
+  name text NOT NULL,
+  description text,
+  n8n_workflow_id text,
+  trigger_type text,
+  status text DEFAULT 'draft',
+  config jsonb DEFAULT '{}',
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS agents (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  project_id uuid REFERENCES projects(id) ON DELETE CASCADE,
+  name text NOT NULL,
+  model text DEFAULT 'gpt-4.1-mini',
+  system_prompt text,
+  tools jsonb DEFAULT '[]',
+  config jsonb DEFAULT '{}',
+  is_active boolean DEFAULT true,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS subscriptions (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES organizations(id) ON DELETE CASCADE,
+  stripe_subscription_id text,
+  plan text NOT NULL,
+  status text DEFAULT 'active',
+  current_period_start timestamptz,
+  current_period_end timestamptz,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_id text UNIQUE NOT NULL,
+  org_id uuid REFERENCES organizations(id),
+  plan_name text,
+  plan_price numeric,
+  customer_email text,
+  customer_name text,
+  payment_method text,
+  status text DEFAULT 'pending',
+  gateway_id text,
+  metadata jsonb DEFAULT '{}',
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS purchases (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_email text NOT NULL,
+  template_id uuid,
+  amount numeric,
+  currency text DEFAULT 'USD',
+  gateway text,
+  transaction_id text,
+  status text DEFAULT 'completed',
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS payment_settings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    provider TEXT,
+    mode TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    paypal_enabled BOOLEAN DEFAULT FALSE,
+    paypal_mode TEXT DEFAULT 'sandbox',
+    paypal_currency TEXT DEFAULT 'USD',
+    stripe_enabled BOOLEAN DEFAULT FALSE,
+    moyasar_enabled BOOLEAN DEFAULT FALSE,
+    tax_rate NUMERIC DEFAULT 0,
+    currency TEXT DEFAULT 'USD',
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
+-- RLS POLICIES (Consolidated)
+-- ============================================
+
+-- Enable RLS for ALL tables
+ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE memberships ENABLE ROW LEVEL SECURITY;
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE automations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE agents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
+ALTER TABLE templates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE payment_settings ENABLE ROW LEVEL SECURITY;
+
+-- Tenant Isolation Policies
+CREATE POLICY "Users see own orgs" ON organizations
+  FOR SELECT USING (id IN (SELECT org_id FROM memberships WHERE user_id = auth.uid()));
+
+CREATE POLICY "Members see org projects" ON projects
+  FOR SELECT USING (org_id IN (SELECT org_id FROM memberships WHERE user_id = auth.uid()));
+
+CREATE POLICY "Members see org automations" ON automations
+  FOR SELECT USING (project_id IN (SELECT id FROM projects WHERE org_id IN (SELECT org_id FROM memberships WHERE user_id = auth.uid())));
+
+CREATE POLICY "Members see org agents" ON agents
+  FOR SELECT USING (project_id IN (SELECT id FROM projects WHERE org_id IN (SELECT org_id FROM memberships WHERE user_id = auth.uid())));
+
+-- Template Public Read
+CREATE POLICY "Public read templates" ON templates 
+  FOR SELECT USING (status = 'published');
+
+-- Profiles Protection
+CREATE POLICY "Users can view own profile" ON profiles 
+  FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile" ON profiles 
+  FOR UPDATE USING (auth.uid() = id);
+
+-- Universal Service Role Access (for internal APIs)
+CREATE POLICY "Service role full access on organizations" ON organizations FOR ALL USING (true);
+CREATE POLICY "Service role full access on memberships" ON memberships FOR ALL USING (true);
+CREATE POLICY "Service role full access on projects" ON projects FOR ALL USING (true);
+CREATE POLICY "Service role full access on automations" ON automations FOR ALL USING (true);
+CREATE POLICY "Service role full access on agents" ON agents FOR ALL USING (true);
+CREATE POLICY "Service role full access on subscriptions" ON subscriptions FOR ALL USING (true);
+CREATE POLICY "Service role full access on orders" ON orders FOR ALL USING (true);
+CREATE POLICY "Service role full access on purchases" ON purchases FOR ALL USING (true);
+CREATE POLICY "Service role full access on templates" ON templates FOR ALL USING (true);
+CREATE POLICY "Service role full access on payment_settings" ON payment_settings FOR ALL USING (true);
+CREATE POLICY "Service role full access on profiles" ON profiles FOR ALL USING (true);
+CREATE POLICY "Service role full access on leads" ON leads FOR ALL USING (true);
+
+-- Public Insert for Leads
+CREATE POLICY "Public insert leads" ON leads FOR INSERT WITH CHECK (true);
+
+
 

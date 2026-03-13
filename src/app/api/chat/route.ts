@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/supabase/server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
-function getPublicClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
 
 const SYSTEM_PROMPT = `You are BridgeFlow's AI assistant — a helpful, professional chatbot on the BridgeFlow website. BridgeFlow is an AI-powered automation agency.
 
@@ -47,6 +42,15 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Invalid messages array" }, { status: 400 });
         }
 
+        // Rate limit: 60 requests per minute per IP
+        const rateLimit = await checkRateLimit(req, "api-public");
+        if (!rateLimit.success) {
+            return NextResponse.json(
+                { error: "Too many messages. Please wait a moment before trying again." },
+                { status: 429 }
+            );
+        }
+
         const openaiKey = process.env.OPENAI_API_KEY;
         const modalKey = process.env.MODAL_API_KEY;
         const ollamaKey = process.env.OLLAMA_API_KEY;
@@ -55,11 +59,13 @@ export async function POST(req: NextRequest) {
         // Fetch primary AI model preference from DB (non-blocking)
         let primaryModel = "openai";
         try {
-            const sb = getPublicClient();
+            const sb = createAdminClient();
             if (sb) {
-                const { data } = await sb.from("site_settings").select("primary_ai_model").limit(1).single();
-                if (data?.primary_ai_model) primaryModel = data.primary_ai_model;
+                const { data } = await (sb.from("site_settings" as any) as any).select("primary_ai_model").limit(1).single();
+                const settings = data as any;
+                if (settings?.primary_ai_model) primaryModel = settings.primary_ai_model;
             }
+
         } catch { /* site_settings table may not exist, use default */ }
 
         // --- DYNAMIC AI PROVIDER CHAIN ---

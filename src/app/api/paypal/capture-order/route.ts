@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { createAdminClient } from '@/lib/supabase/server'
+
 import { sendTelegram, newPurchaseMessage } from '@/lib/telegram'
 import { PACKAGES } from '@/lib/packages'
 
@@ -64,8 +65,10 @@ export async function POST(req: NextRequest) {
     const buyerEmail = payer?.email_address || ''
 
     // Save to Supabase purchases table
-    if (supabaseAdmin) {
-      const { error: dbErr } = await supabaseAdmin.from('purchases').insert({
+    try {
+      const sb = createAdminClient();
+      const { error: dbErr } = await (sb.from('purchases' as any) as any).insert({
+
         buyer_name: buyerName,
         buyer_email: buyerEmail,
         email: buyerEmail,
@@ -76,13 +79,16 @@ export async function POST(req: NextRequest) {
         transaction_id: transactionId,
         status: 'completed',
         payment_method: 'paypal',
-      })
+      });
 
       if (dbErr) {
-        console.error('[Purchase] Supabase insert error:', dbErr)
+        console.error('[Purchase] Supabase insert error:', dbErr);
         // Don't fail the request — payment succeeded, just log
       }
+    } catch (dbConnErr) {
+      console.error('[Purchase] Supabase connection error:', dbConnErr);
     }
+
 
     // Fire Telegram notification
     sendTelegram(

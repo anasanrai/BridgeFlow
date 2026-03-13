@@ -27,5 +27,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
     const content = await getHomeContent();
 
-    return <EnterpriseHomePage content={content} />;
+    return <EnterpriseHomePage content={content as any} />;
+
 }

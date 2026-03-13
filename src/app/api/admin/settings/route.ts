@@ -1,184 +1,99 @@
-import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin-auth";
+import { createAdminClient } from "@/lib/supabase/server";
 
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
-
+// GET — fetch admin settings
 export async function GET() {
-    try {
-        const sb = getAdminClient();
-        if (!sb) return NextResponse.json({ error: "No DB" }, { status: 500 });
+    const authError = await requireAdmin();
+    if (authError) return authError;
 
-        const { data, error } = await sb.from("site_settings").select("*").limit(1).single();
+    try {
+        const sb = createAdminClient();
+
+        const { data, error } = await sb.from("site_settings" as any).select("*").limit(1).single();
         if (error || !data) {
-            // Return defaults if not configured
             return NextResponse.json({
-                primary_ai_model: "modal-glm5",
+                primary_ai_model: "openai",
                 maintenance_mode: false,
                 social_links: [],
                 affiliate_links: [],
                 live_demos: [],
-                smtp_host: "smtp.hostinger.com",
+                smtp_host: "",
                 smtp_port: "465",
-                from_email: "hello@bridgeflow.agency"
+                from_email: "",
             });
         }
 
-        // Ensure arrays exist for new columns in existing row
+        const row = data as Record<string, unknown>;
         return NextResponse.json({
-            ...data,
-            social_links: data.social_links || [],
-            affiliate_links: data.affiliate_links || [],
-            live_demos: data.live_demos || [],
-            custom_webhook_url: data.custom_webhook_url || "",
-            custom_webhook_name: data.custom_webhook_name || "Custom Model",
-            custom_webhook_enabled: data.custom_webhook_enabled || false,
+            ...row,
+            social_links: row.social_links || [],
+            affiliate_links: row.affiliate_links || [],
+            live_demos: row.live_demos || [],
+            custom_webhook_url: row.custom_webhook_url || "",
+            custom_webhook_name: row.custom_webhook_name || "Custom Model",
+            custom_webhook_enabled: row.custom_webhook_enabled || false,
         });
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
+}
+
+// POST / PUT — upsert admin settings
+async function upsertSettings(body: Record<string, unknown>) {
+    const sb = createAdminClient();
+
+    const { data: existing } = await sb.from("site_settings" as any).select("id").limit(1);
+    const existingRow = (existing as Array<{ id: string }> | null)?.[0];
+
+    let result;
+    if (existingRow?.id) {
+        result = await (sb
+            .from("site_settings" as any) as any)
+            .update({ ...body, updated_at: new Date().toISOString() })
+            .eq("id", existingRow.id)
+            .select()
+            .single();
+
+    } else {
+        result = await (sb
+            .from("site_settings" as any) as any)
+            .insert(body)
+            .select()
+            .single();
+
+    }
+
+    if (result.error) {
+        return NextResponse.json({ error: result.error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ success: true, data: result.data });
 }
 
 export async function POST(req: Request) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const body = await req.json();
-        const sb = getAdminClient();
-        if (!sb) return NextResponse.json({ error: "No DB" }, { status: 500 });
-
-        // Try to create/update the table if it doesn't exist or is missing columns
-        try {
-            await sb.rpc("exec_sql", {
-                sql: `
-                CREATE TABLE IF NOT EXISTS site_settings (
-                    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-                    primary_ai_model text DEFAULT 'modal-glm5',
-                    maintenance_mode boolean DEFAULT false,
-                    social_links jsonb DEFAULT '[]'::jsonb,
-                    affiliate_links jsonb DEFAULT '[]'::jsonb,
-                    smtp_host text,
-                    smtp_port text,
-                    smtp_user text,
-                    smtp_pass text,
-                    from_email text,
-                    created_at timestamptz DEFAULT now(),
-                    updated_at timestamptz DEFAULT now()
-                );
-                
-                -- Ensure columns exist if table was already created
-                DO $$ 
-                BEGIN 
-                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='social_links') THEN
-                        ALTER TABLE site_settings ADD COLUMN social_links jsonb DEFAULT '[]'::jsonb;
-                    END IF;
-                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='affiliate_links') THEN
-                        ALTER TABLE site_settings ADD COLUMN affiliate_links jsonb DEFAULT '[]'::jsonb;
-                    END IF;
-                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='smtp_host') THEN
-                        ALTER TABLE site_settings ADD COLUMN smtp_host text, 
-                                          ADD COLUMN smtp_port text,
-                                          ADD COLUMN smtp_user text,
-                                          ADD COLUMN smtp_pass text,
-                                          ADD COLUMN from_email text;
-                    END IF;
-                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='live_demos') THEN
-                        ALTER TABLE site_settings ADD COLUMN live_demos jsonb DEFAULT '[]'::jsonb;
-                    END IF;
-                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='custom_webhook_url') THEN
-                        ALTER TABLE site_settings ADD COLUMN custom_webhook_url text,
-                                          ADD COLUMN custom_webhook_name text DEFAULT 'Custom Model',
-                                          ADD COLUMN custom_webhook_enabled boolean DEFAULT false;
-                    END IF;
-                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='founder_image') THEN
-                        ALTER TABLE site_settings ADD COLUMN founder_image text;
-                    END IF;
-                END $$;`
-            });
-        } catch (e) { console.error("DDL Error:", e); }
-
-        // Try upsert — first check if any row exists
-        const { data: existing } = await sb.from("site_settings").select("id").limit(1);
-        const existingRow = existing && existing[0];
-
-        let result;
-        if (existingRow?.id) {
-            // Update existing row
-            result = await sb
-                .from("site_settings")
-                .update({ ...body, updated_at: new Date().toISOString() })
-                .eq("id", existingRow.id)
-                .select()
-                .single();
-        } else {
-            // Insert new row
-            result = await sb
-                .from("site_settings")
-                .insert(body)
-                .select()
-                .single();
-        }
-
-        if (result.error) {
-            return NextResponse.json({ error: result.error.message }, { status: 400 });
-        }
-
-        return NextResponse.json({ success: true, data: result.data });
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return await upsertSettings(body);
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const body = await req.json();
-        const sb = getAdminClient();
-        if (!sb) return NextResponse.json({ error: "No DB" }, { status: 500 });
-
-        // Ensure founder_image column exists
-        try {
-            await sb.rpc("exec_sql", {
-                sql: `
-                DO $$ 
-                BEGIN 
-                    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='site_settings' AND column_name='founder_image') THEN
-                        ALTER TABLE site_settings ADD COLUMN founder_image text;
-                    END IF;
-                END $$;
-                `
-            });
-        } catch (e) { console.error("DDL Error:", e); }
-
-        // Try upsert — first check if any row exists
-        const { data: existing } = await sb.from("site_settings").select("id").limit(1);
-        const existingRow = existing && existing[0];
-
-        let result;
-        if (existingRow?.id) {
-            // Update existing row
-            result = await sb
-                .from("site_settings")
-                .update({ ...body, updated_at: new Date().toISOString() })
-                .eq("id", existingRow.id)
-                .select()
-                .single();
-        } else {
-            // Insert new row
-            result = await sb
-                .from("site_settings")
-                .insert(body)
-                .select()
-                .single();
-        }
-
-        if (result.error) {
-            return NextResponse.json({ error: result.error.message }, { status: 400 });
-        }
-
-        return NextResponse.json({ success: true, data: result.data });
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return await upsertSettings(body);
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

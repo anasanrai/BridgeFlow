@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/supabase/server";
 import Replicate from "replicate";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120; // Replicate can take time
 
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return null;
-    return createClient(url, key);
-}
+
 
 export async function POST(req: Request) {
     try {
@@ -20,7 +15,7 @@ export async function POST(req: Request) {
         }
 
         const replicate = new Replicate({ auth: replicateToken });
-        const sb = getAdminClient();
+        const sb = createAdminClient();
         if (!sb) return NextResponse.json({ error: "No DB connection" }, { status: 500 });
 
         const formData = await req.formData();

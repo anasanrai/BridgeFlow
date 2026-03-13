@@ -1,1 +1,1 @@
-<Portfolio>...</Portfolio>
+export default function Portfolio() { return null; }

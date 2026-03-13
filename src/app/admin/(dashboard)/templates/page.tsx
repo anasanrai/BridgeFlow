@@ -36,8 +36,8 @@ import {
     ShieldCheck,
 } from "lucide-react";
 
-// Dynamic import for live React Flow canvas in preview modal
-const WorkflowCanvas = dynamic(() => import("@/components/WorkflowCanvas"), {
+// Use N8nCanvas in place of the deprecated WorkflowCanvas import
+const WorkflowCanvas = dynamic(() => import("@/components/templates/N8nCanvas").then(m => ({ default: m.default as React.ComponentType<any> })), {
     ssr: false,
     loading: () => (
         <div className="flex items-center justify-center" style={{ height: 400, background: "#0a0a0f" }}>

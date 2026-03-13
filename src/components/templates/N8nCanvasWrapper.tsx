@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 
-import type { WorkflowCanvasProps } from "@/components/WorkflowCanvas";
+import type { N8nCanvasProps as WorkflowCanvasProps } from "./N8nCanvas";
 
 /**
  * WorkflowCanvasWrapper
@@ -12,7 +12,7 @@ import type { WorkflowCanvasProps } from "@/components/WorkflowCanvas";
  * For the listing page and admin table (compact SVG previews),
  * import N8nCanvas directly from ./N8nCanvas instead.
  */
-const WorkflowCanvas = dynamic(() => import("@/components/WorkflowCanvas"), {
+const WorkflowCanvas = dynamic(() => import("./N8nCanvas"), {
     ssr: false,
     loading: () => (
         <div className="flex items-center justify-center rounded-xl" style={{ height: 500, background: "#0a0a0f" }}>

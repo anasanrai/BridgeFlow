@@ -8,7 +8,8 @@ import TemplateCard from "@/components/templates/TemplateCard";
 import TemplatePurchaseButton from "@/components/templates/TemplatePurchaseButton";
 import JsonViewer from "@/components/templates/JsonViewer";
 import CopyJsonButton from "@/components/templates/CopyJsonButton";
-import { getSupabase } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase/server";
+
 
 interface Props {
     params: { slug: string };
@@ -42,7 +43,8 @@ const whatYouGet = [
 
 async function getTemplateWithWorkflowId(slug: string) {
     try {
-        const sb = getSupabase();
+        const sb = createAdminClient();
+
         const { data, error } = await sb
             .from("templates")
             .select("*")
@@ -64,31 +66,33 @@ async function getTemplateWithWorkflowId(slug: string) {
             } : null;
         }
 
+        const d = data as any;
         return {
-            id: data.id || '',
-            name: data.name || 'Untitled Template',
-            slug: data.slug || '',
-            categories: Array.isArray(data.categories) ? data.categories : [],
-            difficulty: data.difficulty || "Beginner",
-            nodes: Array.isArray(data.nodes) ? data.nodes : [],
-            nodeCount: Number(data.node_count || 0),
-            setupTime: String(data.setup_time || "30 min"),
-            value: Number(data.value || 0),
-            description: data.short_description || data.description || "",
-            shortDescription: data.short_description || data.description || "",
-            longDescription: data.long_description || data.description || "",
-            whatItDoes: Array.isArray(data.what_it_does) ? data.what_it_does : [],
-            featured: Boolean(data.featured),
-            status: data.status || "published",
-            n8nWorkflowId: data.n8n_workflow_id || "",
-            updatedAt: data.updated_at,
-            imageUrl: data.image_url || null,
-            imageUrls: Array.isArray(data.image_urls) ? data.image_urls : [],
-            workflowJson: data.workflow_json || null,
-            jsonAccess: data.json_access || "paid",
-            connectionCount: Number(data.connection_count || 0),
-            tools: Array.isArray(data.tools) ? data.tools : (Array.isArray(data.nodes) ? data.nodes : []),
+            id: d.id || '',
+            name: d.name || 'Untitled Template',
+            slug: d.slug || '',
+            categories: Array.isArray(d.categories) ? d.categories : [],
+            difficulty: d.difficulty || "Beginner",
+            nodes: Array.isArray(d.nodes) ? d.nodes : [],
+            nodeCount: Number(d.node_count || 0),
+            setupTime: String(d.setup_time || "30 min"),
+            value: Number(d.value || 0),
+            description: d.short_description || d.description || "",
+            shortDescription: d.short_description || d.description || "",
+            longDescription: d.long_description || d.description || "",
+            whatItDoes: Array.isArray(d.what_it_does) ? d.what_it_does : [],
+            featured: Boolean(d.featured),
+            status: d.status || "published",
+            n8nWorkflowId: d.n8n_workflow_id || "",
+            updatedAt: d.updated_at,
+            imageUrl: d.image_url || null,
+            imageUrls: Array.isArray(d.image_urls) ? d.image_urls : [],
+            workflowJson: d.workflow_json || null,
+            jsonAccess: d.json_access || "paid",
+            connectionCount: Number(d.connection_count || 0),
+            tools: Array.isArray(d.tools) ? d.tools : (Array.isArray(d.nodes) ? d.nodes : []),
         };
+
     } catch (err) {
         console.warn(`[Template] Error fetching from Supabase: ${err}`);
         const local = templates.find((t) => t.slug === slug);

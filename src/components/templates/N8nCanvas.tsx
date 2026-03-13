@@ -269,7 +269,8 @@ function N8nNodeSvg({ node }: { node: LayoutNode }) {
     );
 }
 
-interface N8nCanvasProps {
+export interface N8nCanvasProps {
+
     workflowJson: any;
     compact?: boolean;
     className?: string;

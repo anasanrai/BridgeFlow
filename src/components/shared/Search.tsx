@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Search as SearchIcon, X, FileText, FolderOpen, ArrowRight, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getAllSearchItems } from "@/lib/supabase-data";
 import Link from "next/link";
 
 interface SearchItem {
@@ -21,16 +20,23 @@ export default function Search() {
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // Load data on first open
-    useEffect(() => {
-        if (isOpen && items.length === 0) {
-            setLoading(true);
-            getAllSearchItems().then(data => {
+    // Load data on first open via API (avoids importing server-only supabase-data)
+    const loadItems = useCallback(async () => {
+        if (items.length > 0) return;
+        setLoading(true);
+        try {
+            const res = await fetch("/api/search");
+            if (res.ok) {
+                const data: SearchItem[] = await res.json();
                 setItems(data);
-                setLoading(false);
-            });
-        }
-    }, [isOpen, items.length]);
+            }
+        } catch { /* silently fail — search is non-critical */ }
+        finally { setLoading(false); }
+    }, [items.length]);
+
+    useEffect(() => {
+        if (isOpen) loadItems();
+    }, [isOpen, loadItems]);
 
     // Handle search logic
     useEffect(() => {

@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-// ── Supabase admin client (uses service role key for write access) ────────────
-function getAdminClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) throw new Error("Supabase env vars not set");
-    return createClient(url, key);
-}
+import { requireAdmin } from "@/lib/admin-auth";
+import { createAdminClient } from "@/lib/supabase/server";
 
 // ── Local JSON fallback (read-only) ──────────────────────────────────────────
 async function getLocalTemplates() {
@@ -53,12 +46,16 @@ function normalizeTemplate(t: any) {
 
 // GET — list all templates
 export async function GET() {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
-        const sb = getAdminClient();
-        const { data, error } = await sb
-            .from("templates")
+        const sb = createAdminClient();
+        const { data, error } = await (sb
+            .from("templates" as any) as any)
             .select("*")
             .order("order", { ascending: true });
+
 
         if (error) throw error;
         return NextResponse.json({ ok: true, templates: (data || []).map(normalizeTemplate) });
@@ -72,16 +69,20 @@ export async function GET() {
 
 // POST — add new template
 export async function POST(req: NextRequest) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const body = await req.json();
-        const sb = getAdminClient();
+        const sb = createAdminClient();
 
         // Calculate next order number
-        const { data: existing } = await sb
-            .from("templates")
+        const { data: existing } = await (sb
+            .from("templates" as any) as any)
             .select("order")
             .order("order", { ascending: false })
             .limit(1);
+
 
         const nextOrder = existing && existing.length > 0 ? (existing[0].order || 0) + 1 : 1;
 
@@ -110,11 +111,12 @@ export async function POST(req: NextRequest) {
             tools: body.tools || [],
         };
 
-        const { data, error } = await sb
-            .from("templates")
+        const { data, error } = await (sb
+            .from("templates" as any) as any)
             .insert(template)
             .select()
             .single();
+
 
         if (error) throw error;
         return NextResponse.json({ ok: true, template: normalizeTemplate(data) });
@@ -125,9 +127,12 @@ export async function POST(req: NextRequest) {
 
 // PUT — update existing template
 export async function PUT(req: NextRequest) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const body = await req.json();
-        const sb = getAdminClient();
+        const sb = createAdminClient();
 
         const updatePayload: Record<string, unknown> = {
             updated_at: new Date().toISOString(),
@@ -158,12 +163,13 @@ export async function PUT(req: NextRequest) {
         if (body.jsonAccess !== undefined) updatePayload.json_access = body.jsonAccess;
         if (body.tools !== undefined) updatePayload.tools = body.tools;
 
-        const { data, error } = await sb
-            .from("templates")
+        const { data, error } = await (sb
+            .from("templates" as any) as any)
             .update(updatePayload)
             .eq("id", body.id)
             .select()
             .single();
+
 
         if (error) throw error;
         if (!data) {
@@ -178,6 +184,9 @@ export async function PUT(req: NextRequest) {
 
 // PATCH — reorder templates
 export async function PATCH(req: NextRequest) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const body = await req.json();
         const { orderedIds } = body;
@@ -186,10 +195,11 @@ export async function PATCH(req: NextRequest) {
             return NextResponse.json({ ok: false, error: "orderedIds must be an array" }, { status: 400 });
         }
 
-        const sb = getAdminClient();
+        const sb = createAdminClient();
         const updates = orderedIds.map((id: string, idx: number) =>
-            sb.from("templates").update({ order: idx + 1 }).eq("id", id)
+            (sb.from("templates" as any) as any).update({ order: idx + 1 }).eq("id", id)
         );
+
 
         await Promise.all(updates);
         return NextResponse.json({ ok: true });
@@ -200,6 +210,9 @@ export async function PATCH(req: NextRequest) {
 
 // DELETE — remove template
 export async function DELETE(req: NextRequest) {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         const { searchParams } = new URL(req.url);
         const id = searchParams.get("id");
@@ -207,8 +220,9 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
         }
 
-        const sb = getAdminClient();
-        const { error } = await sb.from("templates").delete().eq("id", id);
+        const sb = createAdminClient();
+        const { error } = await (sb.from("templates" as any) as any).delete().eq("id", id);
+
         if (error) throw error;
 
         return NextResponse.json({ ok: true });

@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabase } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { event_type, path, session_id, referrer, data } = body;
 
-        const sb = getSupabase();
+        const sb = createAdminClient();
         const userAgent = req.headers.get("user-agent") || "unknown";
 
-        const { error } = await sb.from("telemetry").insert({
+        const { error } = await (sb.from("telemetry" as any) as any).insert({
             event_type,
             path,
             session_id,
@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
             user_agent: userAgent,
             data: data || {},
         });
+
 
         if (error) {
             // If table is missing or other DB error, log it but don't break the frontend

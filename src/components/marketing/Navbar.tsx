@@ -5,8 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import Search from "./Search";
-import Logo from "./Logo";
+import Search from "../shared/Search";
+
+import Logo from "../shared/Logo";
 
 interface NavLink {
     label: string;
