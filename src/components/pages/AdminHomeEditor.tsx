@@ -84,37 +84,37 @@ export default function AdminHomeEditor() {
   ]
 
   return (
-    <div className="min-h-screen bg-navy-900">
+    <div className="min-h-screen bg-neutral-950 text-white selection:bg-brand-coral/30">
       <div className="flex h-screen">
         {/* Editor Panel */}
-        <div className="w-1/2 overflow-y-auto bg-white">
+        <div className="w-1/2 overflow-y-auto bg-neutral-900 border-r border-white/5">
           <div className="p-8">
             {/* Header */}
             <div className="mb-8 flex items-center justify-between">
-              <h1 className="text-3xl font-bold text-navy-950">Home Page Editor</h1>
+              <h1 className="text-3xl font-black uppercase tracking-tighter text-white italic">Home Page Editor</h1>
               <div className="flex items-center gap-4">
                 {saveStatus === 'saving' && (
-                  <div className="flex items-center gap-2 text-blue-600">
-                    <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-r-transparent rounded-full" />
-                    <span>Saving...</span>
+                  <div className="flex items-center gap-2 text-brand-teal">
+                    <div className="animate-spin h-4 w-4 border-2 border-brand-teal border-r-transparent rounded-full" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Saving...</span>
                   </div>
                 )}
                 {saveStatus === 'success' && (
-                  <div className="flex items-center gap-2 text-green-600">
+                  <div className="flex items-center gap-2 text-brand-teal">
                     <Check className="w-4 h-4" />
-                    <span>Saved</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Saved</span>
                   </div>
                 )}
                 {saveStatus === 'error' && (
-                  <div className="flex items-center gap-2 text-red-600">
+                  <div className="flex items-center gap-2 text-brand-coral">
                     <AlertCircle className="w-4 h-4" />
-                    <span>Error saving</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Error saving</span>
                   </div>
                 )}
 
                 <button
                   onClick={() => setShowPreview(!showPreview)}
-                  className="flex items-center gap-2 px-4 py-2 bg-navy-950 text-white rounded-lg hover:bg-navy-900"
+                  className="flex items-center gap-2 px-6 py-2 bg-white/5 border border-white/10 text-white rounded-full hover:bg-white/10 text-[10px] font-black uppercase tracking-widest transition-all"
                 >
                   {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   {showPreview ? 'Hide Preview' : 'Show Preview'}
@@ -123,15 +123,15 @@ export default function AdminHomeEditor() {
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-2 mb-8 border-b border-gray-200">
+            <div className="flex gap-2 mb-8 border-b border-white/5">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 font-medium border-b-2 transition-colors ${
+                  className={`px-4 py-3 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${
                     activeTab === tab.id
-                      ? 'border-blue-600 text-blue-600'
-                      : 'border-transparent text-gray-600 hover:text-navy-900'
+                      ? 'border-brand-coral text-brand-coral'
+                      : 'border-transparent text-neutral-500 hover:text-white'
                   }`}
                 >
                   {tab.label}
@@ -143,58 +143,58 @@ export default function AdminHomeEditor() {
             {activeTab === 'hero' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-navy-900 mb-2">Badge</label>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">Badge</label>
                   <input
                     type="text"
                     value={content.hero.badge}
                     onChange={e => updateHero('badge', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-white/10 rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-navy-900 mb-2">Title Line 1</label>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">Title Line 1</label>
                   <input
                     type="text"
                     value={content.hero.title}
                     onChange={e => updateHero('title', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-white/10 rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-navy-900 mb-2">Title Line 2</label>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">Title Line 2</label>
                   <input
                     type="text"
                     value={content.hero.titleLine2}
                     onChange={e => updateHero('titleLine2', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-white/10 rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-navy-900 mb-2">Highlight</label>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">Highlight</label>
                   <input
                     type="text"
                     value={content.hero.highlight}
                     onChange={e => updateHero('highlight', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-white/10 rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-navy-900 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">Description</label>
                   <textarea
                     value={content.hero.description}
                     onChange={e => updateHero('description', e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-white/10 rounded-lg"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-navy-900 mb-2">Primary CTA Text</label>
+                    <label className="block text-sm font-medium text-neutral-400 mb-2">Primary CTA Text</label>
                     <input
                       type="text"
                       value={content.hero.ctaPrimary.text}
@@ -202,11 +202,11 @@ export default function AdminHomeEditor() {
                         ...content.hero.ctaPrimary,
                         text: e.target.value
                       })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-4 py-2 border border-white/10 rounded-lg"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-navy-900 mb-2">Primary CTA URL</label>
+                    <label className="block text-sm font-medium text-neutral-400 mb-2">Primary CTA URL</label>
                     <input
                       type="text"
                       value={content.hero.ctaPrimary.href}
@@ -214,7 +214,7 @@ export default function AdminHomeEditor() {
                         ...content.hero.ctaPrimary,
                         href: e.target.value
                       })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-4 py-2 border border-white/10 rounded-lg"
                     />
                   </div>
                 </div>
@@ -225,9 +225,9 @@ export default function AdminHomeEditor() {
             {activeTab === 'stats' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                 {content.stats.map((stat, index) => (
-                  <div key={index} className="p-4 border border-gray-300 rounded-lg">
+                  <div key={index} className="p-4 border border-white/10 rounded-lg">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="font-medium text-navy-900">Stat #{index + 1}</h3>
+                      <h3 className="font-medium text-neutral-400">Stat #{index + 1}</h3>
                       <button
                         onClick={() => {
                           setContent(prev => ({
@@ -246,21 +246,21 @@ export default function AdminHomeEditor() {
                         placeholder="Label"
                         value={stat.label}
                         onChange={e => updateStats(index, 'label', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-4 py-2 border border-white/10 rounded-lg"
                       />
                       <input
                         type="number"
                         placeholder="Value"
                         value={stat.value}
                         onChange={e => updateStats(index, 'value', parseInt(e.target.value) || 0)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-4 py-2 border border-white/10 rounded-lg"
                       />
                       <input
                         type="text"
                         placeholder="Suffix (%, +, etc)"
                         value={stat.suffix}
                         onChange={e => updateStats(index, 'suffix', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-4 py-2 border border-white/10 rounded-lg"
                       />
                     </div>
                   </div>
@@ -285,9 +285,9 @@ export default function AdminHomeEditor() {
             {activeTab === 'features' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                 {content.features.map((feature, index) => (
-                  <div key={index} className="p-4 border border-gray-300 rounded-lg">
+                  <div key={index} className="p-4 border border-white/10 rounded-lg">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="font-medium text-navy-900">Feature #{index + 1}</h3>
+                      <h3 className="font-medium text-neutral-400">Feature #{index + 1}</h3>
                       <button
                         onClick={() => {
                           setContent(prev => ({
@@ -306,21 +306,21 @@ export default function AdminHomeEditor() {
                         placeholder="Title"
                         value={feature.title}
                         onChange={e => updateFeatures(index, 'title', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-4 py-2 border border-white/10 rounded-lg"
                       />
                       <textarea
                         placeholder="Description"
                         value={feature.description}
                         onChange={e => updateFeatures(index, 'description', e.target.value)}
                         rows={2}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-4 py-2 border border-white/10 rounded-lg"
                       />
                       <input
                         type="text"
                         placeholder="Color (bg-blue-500/20)"
                         value={feature.color}
                         onChange={e => updateFeatures(index, 'color', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-4 py-2 border border-white/10 rounded-lg"
                       />
                     </div>
                   </div>
@@ -350,28 +350,28 @@ export default function AdminHomeEditor() {
             {activeTab === 'cta' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-navy-900 mb-2">Title</label>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">Title</label>
                   <input
                     type="text"
                     value={content.cta.title}
                     onChange={e => updateCTA('title', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-white/10 rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-navy-900 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">Description</label>
                   <textarea
                     value={content.cta.description}
                     onChange={e => updateCTA('description', e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-white/10 rounded-lg"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-navy-900 mb-2">Primary CTA Text</label>
+                    <label className="block text-sm font-medium text-neutral-400 mb-2">Primary CTA Text</label>
                     <input
                       type="text"
                       value={content.cta.primaryCta.text}
@@ -379,11 +379,11 @@ export default function AdminHomeEditor() {
                         ...content.cta.primaryCta,
                         text: e.target.value
                       })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-4 py-2 border border-white/10 rounded-lg"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-navy-900 mb-2">Primary CTA URL</label>
+                    <label className="block text-sm font-medium text-neutral-400 mb-2">Primary CTA URL</label>
                     <input
                       type="text"
                       value={content.cta.primaryCta.href}
@@ -391,7 +391,7 @@ export default function AdminHomeEditor() {
                         ...content.cta.primaryCta,
                         href: e.target.value
                       })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-4 py-2 border border-white/10 rounded-lg"
                     />
                   </div>
                 </div>
@@ -402,8 +402,10 @@ export default function AdminHomeEditor() {
 
         {/* Preview Panel */}
         {showPreview && (
-          <div className="w-1/2 overflow-y-auto border-l border-gray-200">
-            <EnterpriseHomePage content={content} />
+          <div className="w-1/2 overflow-y-auto border-l border-white/5 bg-neutral-950">
+            <div className="scale-90 origin-top transform">
+              <EnterpriseHomePage content={content} />
+            </div>
           </div>
         )}
       </div>

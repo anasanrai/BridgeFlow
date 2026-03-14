@@ -102,23 +102,24 @@ function MetricCard({ title, value, change, changeLabel, icon: Icon, iconBg, ico
 
     return (
         <Link href={href || "#"} className="group">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
-                <div className="flex items-start justify-between mb-4">
-                    <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center`}>
+            <div className="bg-neutral-900 rounded-[32px] p-8 border border-white/5 hover:border-brand-coral/50 hover:shadow-2xl hover:shadow-brand-coral/10 transition-all duration-500 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-coral/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="flex items-start justify-between mb-6">
+                    <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center border border-white/5`}>
                         <Icon className={`w-6 h-6 ${iconColor}`} />
                     </div>
                     {change !== undefined && (
-                        <div className={`flex items-center gap-1 text-sm font-medium ${isPositive ? "text-emerald-500" : isNegative ? "text-red-500" : "text-slate-400"}`}>
+                        <div className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-widest ${isPositive ? "text-brand-teal" : isNegative ? "text-brand-coral" : "text-neutral-500"}`}>
                             {isPositive ? <ArrowUpRight className="w-4 h-4" /> : isNegative ? <ArrowDownRight className="w-4 h-4" /> : null}
                             {Math.abs(change)}%
                         </div>
                     )}
                 </div>
-                <div className="space-y-1">
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{title}</p>
-                    <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">{value}</p>
+                <div className="space-y-2">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">{title}</p>
+                    <p className="text-4xl font-black text-white tracking-tighter italic">{value}</p>
                     {changeLabel && (
-                        <p className="text-xs text-slate-400">{changeLabel}</p>
+                        <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">{changeLabel}</p>
                     )}
                 </div>
             </div>
@@ -128,30 +129,30 @@ function MetricCard({ title, value, change, changeLabel, icon: Icon, iconBg, ico
 
 function OrderRow({ order }: { order: Order }) {
     const statusColors: Record<string, { bg: string; text: string }> = {
-        completed: { bg: "bg-emerald-50 dark:bg-emerald-900/20", text: "text-emerald-600 dark:text-emerald-400" },
-        pending: { bg: "bg-amber-50 dark:bg-amber-900/20", text: "text-amber-600 dark:text-amber-400" },
-        failed: { bg: "bg-red-50 dark:bg-red-900/20", text: "text-red-600 dark:text-red-400" },
+        completed: { bg: "bg-brand-teal/10", text: "text-brand-teal" },
+        pending: { bg: "bg-brand-purple/10", text: "text-brand-purple" },
+        failed: { bg: "bg-brand-coral/10", text: "text-brand-coral" },
     };
 
     const status = statusColors[order.status] || statusColors.pending;
 
     return (
-        <div className="flex items-center justify-between py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-            <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
-                    <ShoppingCart className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+        <div className="flex items-center justify-between py-4 px-6 rounded-2xl border border-transparent hover:border-white/5 hover:bg-white/5 transition-all group">
+            <div className="flex items-center gap-5">
+                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <ShoppingCart className="w-5 h-5 text-neutral-400 group-hover:text-white transition-colors" />
                 </div>
                 <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-white">{order.plan_name}</p>
-                    <p className="text-xs text-slate-500">{order.customer_email}</p>
+                    <p className="text-sm font-black uppercase tracking-tight text-white">{order.plan_name}</p>
+                    <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">{order.customer_email}</p>
                 </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
                 <div className="text-right">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">${order.plan_price}</p>
-                    <p className="text-xs text-slate-500">{new Date(order.created_at).toLocaleDateString()}</p>
+                    <p className="text-sm font-black text-white italic">${order.plan_price}</p>
+                    <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">{new Date(order.created_at).toLocaleDateString()}</p>
                 </div>
-                <span className={`px-2.5 py-1 rounded-full text-xs font-medium capitalize ${status.bg} ${status.text}`}>
+                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${status.bg} ${status.text}`}>
                     {order.status}
                 </span>
             </div>
@@ -161,27 +162,27 @@ function OrderRow({ order }: { order: Order }) {
 
 function TemplateRow({ template, index }: { template: Template; index: number }) {
     return (
-        <div className="flex items-center justify-between py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-            <div className="flex items-center gap-4">
-                <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-semibold text-slate-500">
+        <div className="flex items-center justify-between py-4 px-6 rounded-2xl border border-transparent hover:border-white/5 hover:bg-white/5 transition-all group">
+            <div className="flex items-center gap-5">
+                <span className="w-6 h-6 rounded-lg bg-neutral-800 flex items-center justify-center text-[10px] font-black text-neutral-500">
                     {index + 1}
                 </span>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-purple to-brand-coral flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-brand-purple/20">
                     <Workflow className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-white">{template.name}</p>
-                    <p className="text-xs text-slate-500">{template.slug}</p>
+                    <p className="text-sm font-black uppercase tracking-tight text-white">{template.name}</p>
+                    <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">{template.slug}</p>
                 </div>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-8">
                 <div className="text-center">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{template.view_count}</p>
-                    <p className="text-xs text-slate-400">views</p>
+                    <p className="text-sm font-black text-white italic">{template.view_count}</p>
+                    <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">Views</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">{template.download_count}</p>
-                    <p className="text-xs text-slate-400">downloads</p>
+                    <p className="text-sm font-black text-brand-teal italic">{template.download_count}</p>
+                    <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">Pulls</p>
                 </div>
             </div>
         </div>
@@ -280,27 +281,27 @@ export default function EnterpriseDashboard() {
     const maxRevenue = stats ? Math.max(...stats.revenueByDay.map(d => d.value)) : 100;
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-12">
             {/* Header */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 py-4">
                 <div>
-                    <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white">
-                        Dashboard
+                    <h1 className="text-4xl lg:text-5xl font-black uppercase tracking-tighter text-white italic">
+                        Command <span className="text-brand-coral">Center</span>
                     </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-1">
-                        Welcome back! Here&apos;s what&apos;s happening with your business.
+                    <p className="text-neutral-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-2">
+                        Operational Intelligence & Protocol Status
                     </p>
                 </div>
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-1">
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1 bg-white/5 rounded-full border border-white/10 p-1.5">
                         {["24h", "7d", "30d", "90d"].map((range) => (
                             <button
                                 key={range}
                                 onClick={() => setDateRange(range)}
-                                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                                className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
                                     dateRange === range
-                                        ? "bg-blue-600 text-white"
-                                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                                        ? "bg-brand-coral text-white shadow-lg shadow-brand-coral/20"
+                                        : "text-neutral-500 hover:text-white hover:bg-white/5"
                                 }`}
                             >
                                 {range}
@@ -309,7 +310,7 @@ export default function EnterpriseDashboard() {
                     </div>
                     <button
                         onClick={fetchStats}
-                        className="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-600 transition-colors"
+                        className="p-3 rounded-full bg-white/5 border border-white/10 text-neutral-400 hover:text-brand-coral hover:border-brand-coral transition-all"
                     >
                         <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
                     </button>
@@ -362,25 +363,30 @@ export default function EnterpriseDashboard() {
             {/* Charts Row */}
             <div className="grid lg:grid-cols-2 gap-6">
                 {/* Views Chart */}
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
-                    <div className="flex items-center justify-between mb-6">
+                <div className="bg-neutral-900 rounded-[40px] p-10 border border-white/5 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/5 blur-[100px] -z-10" />
+                    <div className="flex items-center justify-between mb-10">
                         <div>
-                            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Views Overview</h3>
-                            <p className="text-sm text-slate-500">Daily page views</p>
+                            <h3 className="text-xl font-black uppercase tracking-tight text-white italic">Views Engine</h3>
+                            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mt-1">Daily Traffic Analysis</p>
                         </div>
-                        <div className="flex items-center gap-2 text-emerald-500">
+                        <div className="flex items-center gap-2 text-brand-teal">
                             <TrendingUp className="w-4 h-4" />
-                            <span className="text-sm font-medium">+12.5%</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest">+12.5%</span>
                         </div>
                     </div>
-                    <div className="h-48 flex items-end gap-2">
+                    <div className="h-56 flex items-end gap-3 px-2">
                         {stats?.viewsByDay.map((day, i) => (
-                            <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                            <div key={i} className="flex-1 flex flex-col items-center gap-3 group">
                                 <div
-                                    className="w-full bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-lg transition-all duration-500 hover:from-blue-500 hover:to-blue-300"
-                                    style={{ height: `${(day.value / maxViews) * 100}%`, minHeight: "4px" }}
-                                />
-                                <span className="text-[10px] text-slate-400">
+                                    className="w-full bg-gradient-to-t from-brand-purple to-brand-coral rounded-t-xl transition-all duration-700 hover:opacity-100 opacity-60 relative"
+                                    style={{ height: `${(day.value / maxViews) * 100}%`, minHeight: "8px" }}
+                                >
+                                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {day.value}
+                                    </div>
+                                </div>
+                                <span className="text-[9px] font-black uppercase tracking-widest text-neutral-600 group-hover:text-neutral-400 transition-colors">
                                     {new Date(day.date).toLocaleDateString("en-US", { weekday: "short" })}
                                 </span>
                             </div>
@@ -389,25 +395,30 @@ export default function EnterpriseDashboard() {
                 </div>
 
                 {/* Revenue Chart */}
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
-                    <div className="flex items-center justify-between mb-6">
+                <div className="bg-neutral-900 rounded-[40px] p-10 border border-white/5 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-teal/5 blur-[100px] -z-10" />
+                    <div className="flex items-center justify-between mb-10">
                         <div>
-                            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Revenue Overview</h3>
-                            <p className="text-sm text-slate-500">Daily revenue</p>
+                            <h3 className="text-xl font-black uppercase tracking-tight text-white italic">Capital Flow</h3>
+                            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mt-1">Daily Revenue Stream</p>
                         </div>
-                        <div className="flex items-center gap-2 text-emerald-500">
+                        <div className="flex items-center gap-2 text-brand-teal">
                             <TrendingUp className="w-4 h-4" />
-                            <span className="text-sm font-medium">+8.3%</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest">+8.3%</span>
                         </div>
                     </div>
-                    <div className="h-48 flex items-end gap-2">
+                    <div className="h-56 flex items-end gap-3 px-2">
                         {stats?.revenueByDay.map((day, i) => (
-                            <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                            <div key={i} className="flex-1 flex flex-col items-center gap-3 group">
                                 <div
-                                    className="w-full bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-lg transition-all duration-500 hover:from-emerald-500 hover:to-emerald-300"
-                                    style={{ height: `${(day.value / maxRevenue) * 100}%`, minHeight: "4px" }}
-                                />
-                                <span className="text-[10px] text-slate-400">
+                                    className="w-full bg-gradient-to-t from-brand-teal to-brand-coral rounded-t-xl transition-all duration-700 hover:opacity-100 opacity-60 relative"
+                                    style={{ height: `${(day.value / maxRevenue) * 100}%`, minHeight: "8px" }}
+                                >
+                                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                        ${day.value}
+                                    </div>
+                                </div>
+                                <span className="text-[9px] font-black uppercase tracking-widest text-neutral-600 group-hover:text-neutral-400 transition-colors">
                                     {new Date(day.date).toLocaleDateString("en-US", { weekday: "short" })}
                                 </span>
                             </div>
@@ -419,56 +430,56 @@ export default function EnterpriseDashboard() {
             {/* Data Tables */}
             <div className="grid lg:grid-cols-2 gap-6">
                 {/* Recent Orders */}
-                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-                    <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-700">
+                <div className="bg-neutral-900 rounded-[40px] border border-white/5 overflow-hidden">
+                    <div className="flex items-center justify-between p-8 border-b border-white/5">
                         <div>
-                            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Recent Orders</h3>
-                            <p className="text-sm text-slate-500">Latest transactions</p>
+                            <h3 className="text-lg font-black uppercase tracking-tight text-white italic">Transaction Log</h3>
+                            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mt-1">Latest Client Orders</p>
                         </div>
                         <Link
                             href="/admin/purchases"
-                            className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                            className="text-[10px] font-black uppercase tracking-widest text-brand-coral hover:text-white flex items-center gap-2 transition-colors"
                         >
-                            View all <ArrowRight className="w-4 h-4" />
+                            History <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
-                    <div className="p-2">
+                    <div className="p-4 space-y-2">
                         {loading ? (
-                            <div className="space-y-3">
+                            <div className="space-y-3 p-4">
                                 {[1, 2, 3].map((i) => (
-                                    <div key={i} className="h-16 bg-slate-100 dark:bg-slate-700 rounded-xl animate-pulse" />
+                                    <div key={i} className="h-16 bg-white/5 rounded-2xl animate-pulse" />
                                 ))}
                             </div>
                         ) : stats?.recentOrders && stats.recentOrders.length > 0 ? (
                             stats.recentOrders.map((order) => <OrderRow key={order.id} order={order} />)
                         ) : (
-                            <div className="text-center py-8">
-                                <ShoppingCart className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                                <p className="text-slate-500">No orders yet</p>
+                            <div className="text-center py-16">
+                                <ShoppingCart className="w-12 h-12 text-neutral-800 mx-auto mb-4" />
+                                <p className="text-neutral-600 font-bold uppercase tracking-widest text-xs">Awaiting first protocol conversion</p>
                             </div>
                         )}
                     </div>
                 </div>
 
                 {/* Top Templates */}
-                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-                    <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-700">
+                <div className="bg-neutral-900 rounded-[40px] border border-white/5 overflow-hidden">
+                    <div className="flex items-center justify-between p-8 border-b border-white/5">
                         <div>
-                            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Top Templates</h3>
-                            <p className="text-sm text-slate-500">Most downloaded</p>
+                            <h3 className="text-lg font-black uppercase tracking-tight text-white italic">Market Performance</h3>
+                            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mt-1">Most Pulled Assets</p>
                         </div>
                         <Link
                             href="/admin/templates"
-                            className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                            className="text-[10px] font-black uppercase tracking-widest text-brand-coral hover:text-white flex items-center gap-2 transition-colors"
                         >
-                            View all <ArrowRight className="w-4 h-4" />
+                            Library <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
-                    <div className="p-2">
+                    <div className="p-4 space-y-2">
                         {loading ? (
-                            <div className="space-y-3">
+                            <div className="space-y-3 p-4">
                                 {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="h-16 bg-slate-100 dark:bg-slate-700 rounded-xl animate-pulse" />
+                                    <div key={i} className="h-16 bg-white/5 rounded-2xl animate-pulse" />
                                 ))}
                             </div>
                         ) : stats?.topTemplates && stats.topTemplates.length > 0 ? (
@@ -476,9 +487,9 @@ export default function EnterpriseDashboard() {
                                 <TemplateRow key={template.id} template={template} index={i} />
                             ))
                         ) : (
-                            <div className="text-center py-8">
-                                <Workflow className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                                <p className="text-slate-500">No templates yet</p>
+                            <div className="text-center py-16">
+                                <Workflow className="w-12 h-12 text-neutral-800 mx-auto mb-4" />
+                                <p className="text-neutral-600 font-bold uppercase tracking-widest text-xs">Inventory empty</p>
                             </div>
                         )}
                     </div>
@@ -487,37 +498,37 @@ export default function EnterpriseDashboard() {
 
             {/* Quick Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-5 text-white">
-                    <div className="flex items-center justify-between mb-3">
+                <div className="bg-gradient-to-br from-brand-coral to-brand-purple rounded-3xl p-6 text-white shadow-xl shadow-brand-coral/10 hover:-translate-y-1 transition-transform">
+                    <div className="flex items-center justify-between mb-4">
                         <CheckCircle2 className="w-5 h-5 text-white/80" />
-                        <span className="text-xs text-white/60">Status</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-white/60">Protocol Status</span>
                     </div>
-                    <p className="text-2xl font-bold">Operational</p>
-                    <p className="text-xs text-white/60">All systems running</p>
+                    <p className="text-2xl font-black italic tracking-tighter">OPERATIONAL</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/60 mt-1">All systems nominal</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
-                    <div className="flex items-center justify-between mb-3">
-                        <Cpu className="w-5 h-5 text-blue-600" />
-                        <span className="text-xs text-slate-400">AI Models</span>
+                <div className="bg-neutral-900 rounded-3xl p-6 border border-white/5 hover:border-brand-purple/50 transition-all group">
+                    <div className="flex items-center justify-between mb-4">
+                        <Cpu className="w-5 h-5 text-brand-purple group-hover:animate-pulse" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500 whitespace-nowrap">Neural Compute Layer</span>
                     </div>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">3 Active</p>
-                    <p className="text-xs text-slate-400">GPT-4, Claude, Gemini</p>
+                    <p className="text-2xl font-black italic tracking-tighter text-white">3 ACTIVE</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-600 mt-1">GPT-4, Claude, Gemini</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
-                    <div className="flex items-center justify-between mb-3">
-                        <Database className="w-5 h-5 text-emerald-600" />
-                        <span className="text-xs text-slate-400">Database</span>
+                <div className="bg-neutral-900 rounded-3xl p-6 border border-white/5 hover:border-brand-teal/50 transition-all group">
+                    <div className="flex items-center justify-between mb-4">
+                        <Database className="w-5 h-5 text-brand-teal group-hover:rotate-12 transition-transform" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500">Core Ledger</span>
                     </div>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">Online</p>
-                    <p className="text-xs text-slate-400">Supabase</p>
+                    <p className="text-2xl font-black italic tracking-tighter text-white">ONLINE</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-600 mt-1">Supabase Cluster V4</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
-                    <div className="flex items-center justify-between mb-3">
-                        <Users className="w-5 h-5 text-purple-600" />
-                        <span className="text-xs text-slate-400">Users</span>
+                <div className="bg-neutral-900 rounded-3xl p-6 border border-white/5 hover:border-brand-coral/50 transition-all group">
+                    <div className="flex items-center justify-between mb-4">
+                        <Users className="w-5 h-5 text-brand-coral" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500">Capital Partners</span>
                     </div>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">{stats?.totalOrders || 0}</p>
-                    <p className="text-xs text-slate-400">Total customers</p>
+                    <p className="text-2xl font-black italic tracking-tighter text-white">{stats?.totalOrders || 0}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-600 mt-1">Verified customers</p>
                 </div>
             </div>
         </div>

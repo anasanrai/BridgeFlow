@@ -1,4 +1,4 @@
-import { createServerSideClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import { unstable_cache } from "next/cache";
 import { logger } from "@/lib/logger";
 
@@ -12,7 +12,7 @@ import * as siteData from "@/data/site";
 
 import { Database } from "@/types/database";
 
-const getPublicClient = createServerSideClient;
+const getPublicClient = createPublicClient;
 
 // ─── Cached data fetchers (ISR — revalidate every 60 seconds) ───
 
@@ -38,45 +38,24 @@ export const getSiteConfig = unstable_cache(
             const settings = settingsRes.data as Database['public']['Tables']['site_settings']['Row'] | null;
 
             if (config) {
-                // Ensure Templates is in navLinks for production consistency
-                let navLinks = Array.isArray(config.nav_links) ? [...config.nav_links] : [...siteData.navLinks];
-                const hasTemplates = navLinks.some((link: any) => link?.href === '/templates');
-                if (!hasTemplates) {
-                    navLinks.splice(2, 0, { label: "Templates", href: "/templates" });
-                }
-
                 return {
-                    name: config.name || siteData.siteConfig.name,
+                    name: config.site_name || siteData.siteConfig.name,
                     tagline: config.tagline || siteData.siteConfig.tagline,
-                    description: config.description || siteData.siteConfig.description,
-                    email: config.email || siteData.siteConfig.email,
-                    url: config.url || siteData.siteConfig.url,
-                    location: config.location || siteData.siteConfig.location,
-                    copyright: config.copyright || siteData.siteConfig.copyright,
-                    logo: config.logo || siteData.siteConfig.logo,
-                    og_image: config.og_image || siteData.siteConfig.og_image,
-                    navLinks: navLinks,
-                    footerLinks: (() => {
-                        const fl = config.footer_links;
-                        if (!fl) return siteData.footerLinks;
-                        if (Array.isArray(fl) && fl.length > 0) {
-                            const record: Record<string, Array<{ label: string; href: string }>> = {};
-                            fl.forEach((section: any) => {
-                                if (section?.title && Array.isArray(section.links)) {
-                                    record[section.title] = section.links;
-                                }
-                            });
-                            return Object.keys(record).length > 0 ? record : siteData.footerLinks;
-                        }
-                        if (typeof fl === 'object' && fl !== null && Object.keys(fl).length > 0) return fl;
-                        return siteData.footerLinks;
-                    })(),
+                    description: (config.seo_defaults as any)?.description || siteData.siteConfig.description,
+                    email: config.contact_email || siteData.siteConfig.email,
+                    url: siteData.siteConfig.url,
+                    location: config.address || siteData.siteConfig.location,
+                    copyright: siteData.siteConfig.copyright,
+                    logo: config.logo_url || siteData.siteConfig.logo,
+                    og_image: siteData.siteConfig.og_image,
+                    navLinks: siteData.navLinks,
+                    footerLinks: siteData.footerLinks,
                     socialLinks: Array.isArray(settings?.social_links) && (settings.social_links as any[]).length > 0
                         ? settings.social_links
                         : (Array.isArray((config as any).social_links) && (config as any).social_links.length > 0 ? (config as any).social_links : siteData.socialLinks),
                     liveDemos: Array.isArray(settings?.live_demos) && (settings.live_demos as any[]).length > 0
                         ? settings.live_demos
-                        : (Array.isArray((config as any).live_demos) && (config as any).live_demos.length > 0 ? (config as any).live_demos : null),
+                        : null,
                 };
             }
         } catch (err) {

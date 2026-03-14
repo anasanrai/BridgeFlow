@@ -36,18 +36,14 @@ export interface Database {
       site_config: {
         Row: {
           id: string;
-          name: string;
+          site_name: string | null;
           tagline: string | null;
-          description: string | null;
-          url: string | null;
-          email: string | null;
-          location: string | null;
-          copyright: string | null;
-          logo: string | null;
-          nav_links: any;
-          footer_links: any;
+          logo_url: string | null;
+          contact_email: string | null;
+          contact_phone: string | null;
+          address: string | null;
           social_links: any;
-          og_image: string | null;
+          seo_defaults: any;
           updated_at: string;
         };
       };

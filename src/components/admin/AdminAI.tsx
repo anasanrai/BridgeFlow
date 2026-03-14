@@ -66,30 +66,36 @@ export default function AdminAI({ onClose }: { onClose: () => void }) {
             <div className="flex-1 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
             {/* Panel */}
-            <div className="w-[480px] max-w-full h-full bg-navy-950 border-l border-white/5 flex flex-col">
+            <div className="w-[480px] max-w-full h-full bg-neutral-950 border-l border-white/5 flex flex-col relative overflow-hidden shadow-2xl">
+                {/* Decorative background glow */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-coral/5 blur-[100px] pointer-events-none" />
+
                 {/* Header */}
-                <div className="px-5 py-4 border-b border-white/5 flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/10 border border-purple-500/30 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-purple-400" />
+                <div className="px-6 py-5 border-b border-white/5 flex items-center gap-4 bg-white/5 backdrop-blur-md relative z-10">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-coral to-brand-purple border border-brand-coral/30 flex items-center justify-center shadow-lg shadow-brand-coral/20">
+                        <Sparkles className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                        <h2 className="text-sm font-display font-bold text-white">AI Content Assistant</h2>
-                        <p className="text-[10px] text-gray-500">Powered by Gemini</p>
+                        <h2 className="text-sm font-black uppercase tracking-tighter text-white">AI Command <span className="text-brand-coral">Assistant</span></h2>
+                        <p className="text-[9px] font-bold text-brand-teal uppercase tracking-widest flex items-center gap-1.5 mt-0.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-brand-teal animate-pulse" /> Operational Engine v4.0
+                        </p>
                     </div>
-                    <button onClick={onClose} className="ml-auto p-2 text-gray-500 hover:text-white rounded-lg hover:bg-white/5">
+                    <button onClick={onClose} className="ml-auto p-2 text-neutral-500 hover:text-white rounded-lg hover:bg-white/5 transition-colors">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
                 {/* Templates */}
                 {messages.length <= 1 && (
-                    <div className="p-4 border-b border-white/5">
-                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-medium mb-3">Quick Templates</p>
-                        <div className="grid grid-cols-2 gap-2">
+                    <div className="p-6 border-b border-white/5 bg-white/[0.02]">
+                        <p className="text-[10px] text-neutral-500 uppercase tracking-[0.2em] font-black mb-4">Tactical Protocols</p>
+                        <div className="grid grid-cols-2 gap-3">
                             {TEMPLATES.map((t, i) => (
                                 <button key={i} onClick={() => setInput(t.prompt + " ")}
-                                    className="flex items-center gap-2 px-3 py-2.5 text-left text-xs text-gray-400 bg-white/[0.02] border border-white/5 rounded-lg hover:border-purple-500/20 hover:text-purple-300 hover:bg-purple-500/[0.03] transition-all">
-                                    <t.icon className="w-4 h-4 flex-shrink-0" />{t.label}
+                                    className="flex items-center gap-3 px-4 py-3 text-left text-[10px] font-bold uppercase tracking-widest text-neutral-400 bg-neutral-900 border border-white/5 rounded-xl hover:border-brand-coral/30 hover:text-white hover:bg-brand-coral/5 transition-all group">
+                                    <t.icon className="w-4 h-4 flex-shrink-0 text-neutral-600 group-hover:text-brand-coral transition-colors" />
+                                    {t.label}
                                 </button>
                             ))}
                         </div>
@@ -97,51 +103,51 @@ export default function AdminAI({ onClose }: { onClose: () => void }) {
                 )}
 
                 {/* Messages */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin">
                     {messages.map((msg, i) => (
-                        <div key={i}>
-                            <div className="flex items-center gap-2 mb-1">
-                                <span className={`text-[10px] font-medium uppercase tracking-wider ${msg.role === "user" ? "text-gray-500" : "text-purple-400"}`}>
-                                    {msg.role === "user" ? "You" : "AI Assistant"}
+                        <div key={i} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className={`text-[9px] font-black uppercase tracking-[0.2em] ${msg.role === "user" ? "text-neutral-600" : "text-brand-coral"}`}>
+                                    {msg.role === "user" ? "Operator" : "Command Console"}
                                 </span>
                                 {msg.role === "assistant" && i > 0 && (
-                                    <button onClick={() => copyToClipboard(msg.content, i)} className="ml-auto p-1 text-gray-600 hover:text-white rounded transition-colors">
-                                        {copied === i ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                                    <button onClick={() => copyToClipboard(msg.content, i)} className="ml-auto p-1.5 text-neutral-700 hover:text-brand-teal rounded-lg transition-colors bg-white/5 border border-transparent hover:border-brand-teal/20">
+                                        {copied === i ? <Check className="w-3.5 h-3.5 text-brand-teal" /> : <Copy className="w-3.5 h-3.5" />}
                                     </button>
                                 )}
                             </div>
-                            <div className={`text-sm leading-relaxed whitespace-pre-wrap ${msg.role === "user" ? "text-gray-300" : "text-gray-200 bg-white/[0.02] border border-white/5 rounded-lg p-3"}`}>
+                            <div className={`text-sm leading-relaxed whitespace-pre-wrap ${msg.role === "user" ? "text-neutral-400 pl-2 border-l border-white/5" : "text-neutral-200 bg-white/5 border border-white/5 rounded-2xl p-4 shadow-xl shadow-black/20"}`}>
                                 {msg.content}
                             </div>
                         </div>
                     ))}
                     {loading && (
-                        <div>
-                            <span className="text-[10px] font-medium uppercase tracking-wider text-purple-400">AI Assistant</span>
-                            <div className="mt-1 bg-white/[0.02] border border-white/5 rounded-lg p-3">
-                                <div className="flex items-center gap-2 text-sm text-gray-400">
-                                    <Loader2 className="w-4 h-4 animate-spin text-purple-400" /> Generating content...
-                                </div>
+                        <div className="animate-pulse">
+                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-coral">Processing...</span>
+                            <div className="mt-2 bg-white/5 border border-white/5 rounded-2xl p-4 flex items-center gap-3">
+                                <Loader2 className="w-4 h-4 animate-spin text-brand-coral" />
+                                <span className="text-sm text-neutral-500 font-medium">Synthesizing protocol response...</span>
                             </div>
                         </div>
                     )}
                 </div>
 
                 {/* Input */}
-                <div className="p-4 border-t border-white/5">
-                    <form onSubmit={e => { e.preventDefault(); sendMessage(input); }} className="flex gap-2">
+                <div className="p-6 border-t border-white/5 bg-neutral-900/50">
+                    <form onSubmit={e => { e.preventDefault(); sendMessage(input); }} className="flex gap-3">
                         <input
                             value={input}
                             onChange={e => setInput(e.target.value)}
-                            placeholder="Describe what you want to create..."
-                            className="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-gray-600 text-sm focus:outline-none focus:border-purple-500/30"
+                            placeholder="Awaiting command input..."
+                            className="flex-1 px-5 py-4 bg-neutral-900 border border-white/10 rounded-xl text-white placeholder:text-neutral-700 text-sm focus:outline-none focus:border-brand-coral/30 transition-all font-medium"
                             disabled={loading}
                         />
                         <button type="submit" disabled={!input.trim() || loading}
-                            className="w-10 h-10 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white flex items-center justify-center disabled:opacity-30 hover:opacity-90">
-                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                            className="w-14 h-14 rounded-xl coral-gradient text-white flex items-center justify-center disabled:opacity-30 hover:opacity-90 hover:scale-105 transition-all shadow-lg shadow-brand-coral/20">
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                         </button>
                     </form>
+                    <p className="text-[8px] font-bold text-neutral-800 uppercase tracking-[0.3em] text-center mt-4">Command Terminal • Port 443 Active • Secure Session</p>
                 </div>
             </div>
         </div>

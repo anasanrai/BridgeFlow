@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { motion } from 'framer-motion'
+import { ScrollReveal } from '@/components/ui'
 import { createServerSideClient } from '@/lib/supabase/server'
 import TemplatesGrid from './TemplatesGrid'
 
@@ -11,14 +11,13 @@ async function getTemplates() {
   const { data, error } = await supabase
     .from('templates')
     .select(`
-      id, slug, name, tagline, description,
-      level, price, is_free, image_url,
-      nodes_used, node_count, download_count,
-      average_rating, review_count, is_featured,
-      is_active
+      id, slug, name, description,
+      difficulty, value, image_url,
+      nodes, node_count,
+      featured, status
     `)
-    .eq('is_active', true)
-    .order('is_featured', { ascending: false })
+    .eq('status', 'published')
+    .order('featured', { ascending: false })
 
   if (error) {
     console.error('[Templates] Fetch error:', error)
@@ -32,16 +31,16 @@ async function getTemplates() {
     slug: t.slug || '',
     tagline: t.tagline || '',
     description: t.description || '',
-    level: t.level || 'Beginner',
-    price: Number(t.price || 0),
-    is_free: Boolean(t.is_free),
+    level: t.difficulty || 'Beginner',
+    price: Number(t.value || 0),
+    is_free: Number(t.value || 0) === 0,
     image_url: t.image_url || '/images/placeholder.png',
-    nodes_used: Array.isArray(t.nodes_used) ? t.nodes_used : [],
+    nodes_used: Array.isArray(t.nodes) ? t.nodes : [],
     node_count: Number(t.node_count || 0),
-    download_count: Number(t.download_count || 0),
-    average_rating: Number(t.average_rating || 0),
-    review_count: Number(t.review_count || 0),
-    is_featured: Boolean(t.is_featured),
+    download_count: 0,
+    average_rating: 5,
+    review_count: 0,
+    is_featured: Boolean(t.featured),
   }));
 }
 
@@ -55,14 +54,12 @@ export default async function TemplatesPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-brand-coral/5 blur-[120px] rounded-full -z-10" />
         
         <div className="relative max-w-7xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 mb-10"
-          >
-            <span className="w-2.5 h-2.5 rounded-full bg-brand-coral animate-ping" />
-            n8n Marketplace
-          </motion.div>
+          <ScrollReveal>
+            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 mb-10">
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-coral animate-ping" />
+              n8n Marketplace
+            </div>
+          </ScrollReveal>
           
           <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
             Pre-Built <span className="text-brand-coral">Workflows</span>

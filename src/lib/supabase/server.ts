@@ -33,6 +33,22 @@ export function createServerSideClient<T = Database>() {
 }
 
 /**
+ * For fetching public data in cached scopes (no cookies)
+ */
+export function createPublicClient<T = Database>() {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dummy-build.supabase.co";
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy-key";
+    return createServerClient<T>(url, key, {
+        cookies: {
+            get(name: string) { return undefined },
+            set(name: string, value: string, options: any) { },
+            remove(name: string, options: any) { },
+        },
+    }
+    )
+}
+
+/**
  * For administrative tasks (node-side only)
  */
 export function createAdminClient<T = Database>() {

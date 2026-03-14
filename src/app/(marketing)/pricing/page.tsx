@@ -5,12 +5,12 @@ import {
     Button,
     Card,
 } from "@/components/ui";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Sparkles, Shield, Clock, Globe, Zap } from "lucide-react";
 import { plans, pricingHero, pricingFAQ } from "@/data/pricing";
 import { getSiteConfig } from "@/lib/supabase-data";
 import PricingCard from "@/components/marketing/PricingCard";
+import ROICalculator from "@/components/marketing/ROICalculator";
 
 
 export const revalidate = 60;
@@ -56,16 +56,14 @@ export default function Pricing() {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-brand-coral/5 blur-[120px] rounded-full -z-10" />
                 
                 <div className="container mx-auto px-4 text-center relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10"
-                    >
-                        <Sparkles className="w-4 h-4 text-brand-coral" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">
-                            {pricingHero.badge}
-                        </span>
-                    </motion.div>
+                    <ScrollReveal>
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10">
+                            <Sparkles className="w-4 h-4 text-brand-coral" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">
+                                {pricingHero.badge}
+                            </span>
+                        </div>
+                    </ScrollReveal>
                     
                     <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
                         {pricingHero.title} <span className="text-brand-coral">{pricingHero.highlight}</span>
@@ -111,6 +109,13 @@ export default function Pricing() {
                             ))}
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* ROI Calculator Section */}
+            <section className="py-32 border-t border-white/5 bg-neutral-900/20">
+                <div className="container mx-auto px-4">
+                    <ROICalculator />
                 </div>
             </section>
 
