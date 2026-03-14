@@ -1,7 +1,8 @@
 import { createServerSideClient } from "@/lib/supabase/server";
 import { unstable_cache } from "next/cache";
+import { logger } from "@/lib/logger";
 
-// Import local fallbacks
+// Import local fallbacks to ensure the UI stays functional even if DB is unavailable
 import * as homeData from "@/data/home";
 import * as servicesData from "@/data/services";
 import * as aboutData from "@/data/about";
@@ -15,6 +16,10 @@ const getPublicClient = createServerSideClient;
 
 // ─── Cached data fetchers (ISR — revalidate every 60 seconds) ───
 
+/**
+ * Fetches the global site configuration and settings.
+ * Merges Supabase data with local static fallbacks.
+ */
 export const getSiteConfig = unstable_cache(
     async () => {
         try {
@@ -26,18 +31,17 @@ export const getSiteConfig = unstable_cache(
                 (sb.from("site_settings" as any) as any).select("*").limit(1).single()
             ]);
 
-            if (configRes.error) console.error("Error fetching site_config:", configRes.error);
-            if (settingsRes.error) console.error("Error fetching site_settings:", settingsRes.error);
+            if (configRes.error) logger.warn("Error fetching site_config:", configRes.error);
+            if (settingsRes.error) logger.warn("Error fetching site_settings:", settingsRes.error);
 
             const config = configRes.data as Database['public']['Tables']['site_config']['Row'] | null;
             const settings = settingsRes.data as Database['public']['Tables']['site_settings']['Row'] | null;
 
             if (config) {
-                // Ensure Templates is in navLinks
+                // Ensure Templates is in navLinks for production consistency
                 let navLinks = Array.isArray(config.nav_links) ? [...config.nav_links] : [...siteData.navLinks];
                 const hasTemplates = navLinks.some((link: any) => link?.href === '/templates');
                 if (!hasTemplates) {
-                    // Inject Templates link after Services (index 2)
                     navLinks.splice(2, 0, { label: "Templates", href: "/templates" });
                 }
 
@@ -55,7 +59,6 @@ export const getSiteConfig = unstable_cache(
                     footerLinks: (() => {
                         const fl = config.footer_links;
                         if (!fl) return siteData.footerLinks;
-                        // DB stores as array [{title, links}] — convert to Record<string, Array<{label,href}>>
                         if (Array.isArray(fl) && fl.length > 0) {
                             const record: Record<string, Array<{ label: string; href: string }>> = {};
                             fl.forEach((section: any) => {
@@ -65,8 +68,6 @@ export const getSiteConfig = unstable_cache(
                             });
                             return Object.keys(record).length > 0 ? record : siteData.footerLinks;
                         }
-
-                        // DB stores as Record already
                         if (typeof fl === 'object' && fl !== null && Object.keys(fl).length > 0) return fl;
                         return siteData.footerLinks;
                     })(),
@@ -79,10 +80,9 @@ export const getSiteConfig = unstable_cache(
                 };
             }
         } catch (err) {
-            console.error("Critical error in getSiteConfigCached:", err);
+            logger.error("Critical error in getSiteConfigCached:", err);
         }
 
-        // Fallback logic
         return {
             name: siteData.siteConfig.name,
             tagline: siteData.siteConfig.tagline,
@@ -103,6 +103,10 @@ export const getSiteConfig = unstable_cache(
     { revalidate: 60, tags: ["site-config"] }
 );
 
+/**
+ * Fetches homepage content from Supabase.
+ * Falls back to local static content on error.
+ */
 export const getHomeContent = unstable_cache(
     async () => {
         try {
@@ -111,7 +115,7 @@ export const getHomeContent = unstable_cache(
             const { data, error } = await sb.from("home_content").select("*").limit(1).single() as { data: Database['public']['Tables']['home_content']['Row'] | null, error: any };
             
             if (error) {
-                console.error("Error fetching home_content:", error);
+                logger.warn("Error fetching home_content:", error);
                 throw error;
             }
 
@@ -125,7 +129,7 @@ export const getHomeContent = unstable_cache(
                 cta: data.cta ? { ...homeData.defaultHomeContent.cta, ...data.cta as any } : homeData.defaultHomeContent.cta,
             };
         } catch (err) {
-            console.error("Critical error in getHomeContentCached:", err);
+            logger.error("Critical error in getHomeContentCached:", err);
         }
         return homeData.defaultHomeContent;
     },

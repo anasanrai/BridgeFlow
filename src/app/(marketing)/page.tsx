@@ -2,7 +2,7 @@
 export const revalidate = 60;
 
 import { getHomeContent, getPageSEO, getSiteConfig } from "@/lib/supabase-data";
-import EnterpriseHomePage from "@/components/pages/EnterprisHomePage";
+import EnterpriseHomePage from "@/components/pages/EnterpriseHomePage";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
