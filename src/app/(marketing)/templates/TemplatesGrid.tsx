@@ -99,14 +99,22 @@ export default function TemplatesGrid({ initialTemplates }: { initialTemplates: 
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-20 text-gray-500">
-          <div className="text-5xl mb-4">🔍</div>
-          <p className="text-lg">No templates found for this filter.</p>
+        <div className="text-center py-24 glass rounded-3xl border border-dashed border-white/10">
+          <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
+            <span className="text-4xl">🔍</span>
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-3">No templates found</h3>
+          <p className="text-gray-400 max-w-md mx-auto mb-8">
+            We couldn&apos;t find any templates matching your current filters.
+          </p>
           <button
-            onClick={() => { setActiveCategory('all'); setSearch('') }}
-            className="mt-4 text-amber-400 hover:underline text-sm"
+            onClick={() => {
+              setActiveCategory('all');
+              setSearch('');
+            }}
+            className="px-8 py-3 bg-amber-500 text-black font-bold rounded-xl hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-95"
           >
-            Clear filters
+            Reset All Filters
           </button>
         </div>
       ) : (

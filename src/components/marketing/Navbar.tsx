@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import Search from "../shared/Search";
 import ThemeToggle from "../shared/ThemeToggle";
 
@@ -116,8 +116,8 @@ export default function Navbar({ siteConfig }: { siteConfig: SiteConfig }) {
 
                     {/* Desktop CTA + Search */}
                     <div className="hidden lg:flex items-center gap-2.5">
-                        <ThemeToggle />
                         <Search />
+                        <ThemeToggle />
                         <Link
                             href="/audit"
                             className="relative inline-flex items-center gap-2 px-5 py-2 text-[13px] font-semibold text-white glass rounded-full hover:bg-white/10 transition-all duration-300 border border-white/10"
@@ -129,27 +129,14 @@ export default function Navbar({ siteConfig }: { siteConfig: SiteConfig }) {
                             className="relative inline-flex items-center gap-2 px-5 py-2 text-[13px] font-semibold text-navy-950 gold-gradient rounded-full hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300 hover:scale-105"
                         >
                             Get Started
-                            <svg
-                                className="w-3.5 h-3.5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                />
-                            </svg>
+                            <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                     </div>
 
                     {/* Mobile Icons */}
                     <div className="flex lg:hidden items-center gap-2 relative z-50">
-                        <ThemeToggle />
                         <Search />
+                        <ThemeToggle />
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className="p-2 text-white rounded-lg hover:bg-white/10 transition-colors"
@@ -226,20 +213,7 @@ export default function Navbar({ siteConfig }: { siteConfig: SiteConfig }) {
                                                 className="flex items-center justify-center gap-2 w-full px-6 py-3 text-sm font-semibold text-navy-950 gold-gradient rounded-full"
                                             >
                                                 Get Started
-                                                <svg
-                                                    className="w-4 h-4"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                                    />
-                                                </svg>
+                                                <ArrowRight className="w-4 h-4" />
                                             </Link>
                                         </motion.div>
                                     </div>

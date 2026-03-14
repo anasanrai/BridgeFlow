@@ -162,6 +162,12 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                                                         <span className="text-xs text-gray-500">
                                                             {post.date}
                                                         </span>
+                                                        {post.readTime && (
+                                                            <span className="text-xs text-gray-500 flex items-center gap-1">
+                                                                <Clock className="w-3 h-3" />
+                                                                {post.readTime}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                     <h3 className="text-lg font-display font-bold mb-2 group-hover:text-gold-400 transition-colors leading-tight line-clamp-2">
                                                         {post.title}

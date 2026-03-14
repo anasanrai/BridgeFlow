@@ -65,6 +65,7 @@ export const footerLinks = {
         { label: "Terms of Service", href: "/terms-of-service" },
         { label: "Refund Policy", href: "/refund-policy" },
         { label: "Client Agreement", href: "/client-service-agreement" },
+        { label: "Sitemap", href: "/sitemap" },
     ],
 };
 
