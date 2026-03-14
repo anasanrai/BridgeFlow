@@ -111,8 +111,8 @@ export default async function RootLayout({
         },
         "address": {
             "@type": "PostalAddress",
-            "addressLocality": "Riyadh",
-            "addressCountry": "SA",
+            "addressLocality": "Kathmandu",
+            "addressCountry": "NP",
         },
         "contactPoint": {
             "@type": "ContactPoint",
@@ -132,14 +132,14 @@ export default async function RootLayout({
     };
 
     return (
-        <html lang="en" className={`${inter.variable} ${outfit.variable} scroll-smooth`}>
+        <html lang="en" className={`${inter.variable} ${outfit.variable} scroll-smooth dark`}>
             <head>
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
                 />
             </head>
-            <body className="font-sans antialiased bg-navy-950 text-white min-h-screen">
+            <body className="font-sans antialiased bg-neutral-950 text-white min-h-screen">
                 <TelemetryProvider>
                     <LayoutShell siteConfig={siteConfig}>{children}</LayoutShell>
                 </TelemetryProvider>

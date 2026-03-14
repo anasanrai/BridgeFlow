@@ -1,29 +1,31 @@
 /**
  * =============================================
- *  SITE-WIDE DATA — Edit this file to update
- *  company info, nav links, footer links,
+ *  SITE-WIDE DATA — Source of Truth
+ *  Edit this file to update company info, nav,
  *  social media, and SEO.
- *  No code changes needed.
  * =============================================
  */
 
 export const siteConfig = {
     name: "BridgeFlow",
-    tagline: "Architecting the Future of Enterprise Automation",
+    tagline: "Automate Everything. Launch in Days.",
     description:
-        "BridgeFlow is a premier AI automation agency specializing in building high-performance, enterprise-grade workflows and intelligent decision systems for the world's most ambitious companies.",
-    url: "https://www.bridgeflow.agency",
+        "BridgeFlow is an AI automation agency from Kathmandu, Nepal. We build custom n8n workflows that eliminate manual work from your business — lead capture, CRM updates, email sequences, and AI-powered operations.",
+    url: "https://bridgeflow.agency",
     email: "hello@bridgeflow.agency",
-    location: "Riyadh, KSA · Remote-first, Global",
-    copyright: "© 2026 BridgeFlow. All rights reserved.",
-    logo: "/images/logo.png",
-    og_image: "/images/og-default.png",
+    admin_email: "anasan@bridgeflow.agency",
+    location: "Kathmandu, Nepal · Remote-first, Global",
+    operating_location: "Riyadh, KSA",
+    founder: "Anasan Rai",
+    founded: 2025,
+    copyright: `© ${new Date().getFullYear()} BridgeFlow. All rights reserved.`,
+    logo: "/images/logo-coral.png", // Will need to ensure this exists or use text logo
+    og_image: "/images/og-bridgeflow.png",
     stats: {
-        total_revenue: 125430,
-        total_templates: 27,
-        total_views: 8432,
-        total_orders: 156,
-        active_models: 3,
+        total_workflows_built: 7,
+        client_satisfaction: "100%",
+        avg_delivery: "5 Days",
+        global_presence: "Remote-first",
     }
 };
 
@@ -39,68 +41,32 @@ export const navLinks = [
 export const footerLinks = {
     company: [
         { label: "About", href: "/about" },
-        { label: "Blog", href: "/blog" },
-        { label: "Case Studies", href: "/case-studies" },
-        { label: "Careers", href: "/careers" },
+        { label: "Our Story", href: "/about#story" },
+        { label: "Founder", href: "/about#founder" },
+        { label: "Mission", href: "/about#mission" },
     ],
     services: [
         { label: "n8n Automation", href: "/services#n8n" },
         { label: "AI Integration", href: "/services/ai" },
-        { label: "Consulting", href: "/services#consulting" },
-        { label: "Pricing", href: "/pricing" },
-        { label: "Templates", href: "/templates" },
+        { label: "Starter Package", href: "/pricing" },
+        { label: "Growth Package", href: "/pricing" },
+        { label: "Pro Package", href: "/pricing" },
     ],
     resources: [
+        { label: "n8nGalaxy", href: "https://n8ngalaxy.com" },
+        { label: "Automation Audit", href: "/audit" },
         { label: "Documentation", href: "/docs" },
-        { label: "API Reference", href: "/api-reference" },
-        { label: "AI ROI Calculator", href: "/calculator" },
-        { label: "Free Audit", href: "/audit" },
-        { label: "Contact Us", href: "/contact" },
+        { label: "Sitemap", href: "/sitemap" },
     ],
     legal: [
         { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Terms of Service", href: "/terms-of-service" },
         { label: "Refund Policy", href: "/refund-policy" },
-        { label: "Client Agreement", href: "/client-service-agreement" },
-        { label: "Sitemap", href: "/sitemap" },
     ],
 };
 
-/**
- * Social media links — add more platforms here, they will render in footer
- */
 export const socialLinks = [
+    { platform: "LinkedIn", href: "https://linkedin.com/in/anasanrai" },
     { platform: "X", href: "https://x.com/bridgeflowai" },
-    { platform: "LinkedIn", href: "https://linkedin.com/company/bridgeflow-agency" },
-    { platform: "GitHub", href: "https://github.com/bridgeflow-agency" },
-    { platform: "Instagram", href: "https://instagram.com/bridgeflow.agency" },
-    { platform: "YouTube", href: "https://youtube.com/@bridgeflow" },
-    { platform: "Facebook", href: "https://facebook.com/bridgeflowagency" },
-];
-
-/**
- * Default affiliate/advertise links — can be overridden from admin settings
- */
-export const defaultAffiliateLinks = [
-    {
-        title: "n8n Cloud",
-        description: "The most flexible workflow automation tool. Start building powerful automations today.",
-        href: "https://n8n.io/?ref=bridgeflow",
-        badge: "Recommended",
-        logo: "Zap",
-    },
-    {
-        title: "GoHighLevel",
-        description: "All-in-one CRM, funnels, and marketing automation platform for agencies.",
-        href: "https://www.gohighlevel.com/?fp_ref=bridgeflow",
-        badge: "Partner",
-        logo: "BarChart3",
-    },
-    {
-        title: "Hostinger",
-        description: "Premium web hosting with 99.9% uptime. AI-powered website builder included.",
-        href: "https://hostinger.com?ref=bridgeflow",
-        badge: "Hosting",
-        logo: "Globe",
-    },
+    { platform: "GitHub", href: "https://github.com/anasanrai" },
 ];

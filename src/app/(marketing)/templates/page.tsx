@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { motion } from 'framer-motion'
 import { createServerSideClient } from '@/lib/supabase/server'
 import TemplatesGrid from './TemplatesGrid'
 
@@ -48,48 +49,47 @@ export default async function TemplatesPage() {
   const templates = await getTemplates()
 
   return (
-    <main className="min-h-screen bg-gray-950 text-white">
-      {/* Hero */}
-      <section className="relative pt-32 pb-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent" />
+    <main className="min-h-screen bg-neutral-950 text-white">
+      {/* Hero Section */}
+      <section className="relative pt-40 pb-24 px-4 overflow-hidden border-b border-white/5">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-brand-coral/5 blur-[120px] rounded-full -z-10" />
+        
         <div className="relative max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 text-sm text-amber-400 mb-6">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-            n8n Workflow Marketplace
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            n8n Workflow{' '}
-            <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              Templates
-            </span>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 mb-10"
+          >
+            <span className="w-2.5 h-2.5 rounded-full bg-brand-coral animate-ping" />
+            n8n Marketplace
+          </motion.div>
+          
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
+            Pre-Built <span className="text-brand-coral">Workflows</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-            Ready-to-deploy automations for every business. Every template includes the full n8n
-            workflow JSON, setup documentation, and lifetime support.
+          
+          <p className="text-xl text-neutral-400 max-w-2xl mx-auto mb-12 font-medium">
+            Ready-to-deploy enterprise automations. Every template includes full JSON, technical setup guides, and human support.
           </p>
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-            <span className="flex items-center gap-1.5">
-              <span className="text-amber-400">✓</span>
-              {templates.length} templates available
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="text-amber-400">✓</span>
-              Free &amp; Paid
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="text-amber-400">✓</span>
-              Instant download
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="text-amber-400">✓</span>
-              n8n compatible
-            </span>
+
+          <div className="flex flex-wrap justify-center gap-10">
+            {[
+              { label: "Templates", value: templates.length },
+              { label: "Standard", value: "Enterprise" },
+              { label: "Support", value: "Lifetime" },
+              { label: "Builds", value: "Tested" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-2xl font-black text-white mb-1 uppercase tracking-tighter">{stat.value}</div>
+                <div className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Templates Grid */}
-      <section className="max-w-7xl mx-auto px-4 pb-24">
+      <section className="max-w-7xl mx-auto px-4 py-24">
         <TemplatesGrid initialTemplates={templates} />
       </section>
     </main>

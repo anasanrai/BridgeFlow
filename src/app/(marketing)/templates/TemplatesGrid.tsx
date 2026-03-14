@@ -36,9 +36,9 @@ const CATEGORIES = [
 ]
 
 const LEVEL_COLORS: Record<string, string> = {
-  Beginner: 'bg-green-500/10 text-green-400 border-green-500/30',
-  Intermediate: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-  Advanced: 'bg-red-500/10 text-red-400 border-red-500/30',
+  Beginner: 'bg-brand-teal/10 text-brand-teal border-brand-teal/20',
+  Intermediate: 'bg-brand-purple/10 text-brand-purple border-brand-purple/20',
+  Advanced: 'bg-brand-coral/10 text-brand-coral border-brand-coral/20',
 }
 
 export default function TemplatesGrid({ initialTemplates }: { initialTemplates: Template[] }) {
@@ -47,37 +47,40 @@ export default function TemplatesGrid({ initialTemplates }: { initialTemplates: 
 
   const filtered = useMemo(() => {
     return initialTemplates.filter((t) => {
-      // Categories are not in the new schema at this level — just do search filter
       const matchSearch =
         !search ||
         t.name.toLowerCase().includes(search.toLowerCase()) ||
         t.description?.toLowerCase().includes(search.toLowerCase())
       return matchSearch
     })
-  }, [initialTemplates, activeCategory, search])
+  }, [initialTemplates, search])
 
   return (
     <div>
-      {/* Search + Filter */}
-      <div className="mb-8 space-y-4">
-        <input
-          type="search"
-          placeholder="Search workflows..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full md:w-96 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition"
-        />
+      {/* Search + Filter Header */}
+      <div className="mb-16 flex flex-col md:flex-row gap-8 items-center justify-between">
+        <div className="relative w-full md:w-[450px] group">
+          <input
+            type="search"
+            placeholder="Search enterprise workflows..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-8 py-5 rounded-full bg-neutral-900 border border-white/5 text-white placeholder-neutral-600 focus:outline-none focus:border-brand-coral/50 transition-all font-medium"
+          />
+          <div className="absolute right-6 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-brand-coral transition-colors">
+            🔍
+          </div>
+        </div>
 
-        {/* Category scroll pills */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`flex-shrink-0 px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
                 activeCategory === cat.id
-                  ? 'bg-amber-500 text-black'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                  ? 'bg-brand-coral text-white shadow-[0_0_30px_-5px_rgba(255,109,90,0.4)]'
+                  : 'bg-white/5 text-neutral-500 hover:text-white border border-white/5'
               }`}
             >
               {cat.label}
@@ -86,112 +89,72 @@ export default function TemplatesGrid({ initialTemplates }: { initialTemplates: 
         </div>
       </div>
 
-      {/* Results count */}
-      <div className="flex items-center justify-between mb-6">
-        <p className="text-sm text-gray-500">
-          Showing {filtered.length} template{filtered.length !== 1 ? 's' : ''}
-        </p>
-        {(search || activeCategory !== 'all') && (
-          <button
-            onClick={() => { setSearch(''); setActiveCategory('all') }}
-            className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
-          >
-            Clear filters ×
-          </button>
-        )}
-      </div>
-
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-24 rounded-3xl border border-dashed border-white/10">
-          <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
-            <span className="text-4xl">😕</span>
-          </div>
-          <h3 className="text-2xl font-bold text-white mb-3">No templates found</h3>
-          <p className="text-gray-400 max-w-md mx-auto mb-8">
-            Try a different search or browse all categories
-          </p>
+        <div className="text-center py-32 rounded-[60px] border border-dashed border-white/10 bg-neutral-900/30">
+          <h3 className="text-3xl font-black uppercase tracking-tighter text-white mb-4">No builds found</h3>
+          <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs mb-8">Refine your search parameters</p>
           <button
             onClick={() => { setActiveCategory('all'); setSearch('') }}
-            className="px-8 py-3 bg-amber-500 text-black font-bold rounded-xl hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-95"
+            className="px-12 py-5 bg-brand-coral text-white font-black uppercase tracking-widest rounded-full"
           >
-            Clear Search
+            Reset Search
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map((template) => (
             <Link
               key={template.id}
               href={`/templates/${template.slug}`}
-              className="group rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 hover:border-amber-500/30 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10"
+              className="group rounded-[40px] border border-white/5 bg-neutral-900/30 hover:bg-neutral-900/60 transition-all duration-500 hover:border-brand-coral/30"
             >
-              {/* Thumbnail */}
-              <div className="relative aspect-video overflow-hidden bg-gray-900">
-                <Image
-                  src={template.image_url || '/images/placeholder.png'}
-                  alt={template.name}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  onError={(e) => {
-                    ;(e.target as HTMLImageElement).src =
-                      `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect fill="%231a1a2e" width="800" height="450"/><text x="400" y="225" text-anchor="middle" fill="%23f59e0b" font-size="48" font-family="sans-serif">⚡</text></svg>`
-                  }}
-                />
-                {template.is_featured && (
-                  <div className="absolute top-3 left-3 bg-amber-500 text-black text-xs font-bold px-2.5 py-1 rounded-full">
-                    ⭐ Featured
+              <div className="p-4">
+                {/* Thumbnail */}
+                <div className="relative aspect-video rounded-[30px] overflow-hidden bg-neutral-950">
+                  <Image
+                    src={template.image_url || '/images/placeholder.png'}
+                    alt={template.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  {template.is_featured && (
+                    <div className="absolute top-4 left-4 bg-brand-coral text-white text-[9px] font-black uppercase tracking-widest px-4 py-2 rounded-full">
+                      Featured Build
+                    </div>
+                  )}
+                  <div className="absolute top-4 right-4">
+                    <span className={`text-[9px] font-black uppercase tracking-widest px-4 py-2 rounded-full border backdrop-blur-md ${LEVEL_COLORS[template.level] || LEVEL_COLORS.Beginner}`}>
+                      {template.level}
+                    </span>
                   </div>
-                )}
-                <div className="absolute top-3 right-3">
-                  <span
-                    className={`text-xs font-medium px-2.5 py-1 rounded-full border ${
-                      LEVEL_COLORS[template.level] || LEVEL_COLORS.Beginner
-                    }`}
-                  >
-                    {template.level}
-                  </span>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <h3 className="font-semibold text-base text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug">
+              <div className="px-8 pb-8 pt-4">
+                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-4 group-hover:text-brand-coral transition-colors">
                   {template.name}
                 </h3>
-                <p className="text-sm text-gray-400 mb-4 line-clamp-2">
+                <p className="text-neutral-500 font-medium line-clamp-2 text-sm mb-8 leading-relaxed">
                   {template.tagline || template.description}
                 </p>
 
-                {/* Meta row */}
-                <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
-                  {template.node_count > 0 && (
-                    <span className="flex items-center gap-1">
-                      <span className="text-amber-400">⚡</span> {template.node_count} nodes
+                {/* Meta + Price */}
+                <div className="flex items-center justify-between pt-8 border-t border-white/5">
+                  <div className="flex items-center gap-4">
+                    <span className="text-[10px] font-black text-white uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full">
+                      {template.node_count} Nodes
                     </span>
-                  )}
-                  {template.download_count > 0 && (
-                    <span className="flex items-center gap-1">
-                      <span>⬇</span> {template.download_count}
-                    </span>
-                  )}
-                </div>
-
-                {/* Price + CTA */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                  </div>
                   {template.is_free ? (
-                    <span className="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                      FREE
-                    </span>
+                    <span className="text-sm font-black text-brand-teal uppercase tracking-widest">Free</span>
                   ) : (
-                    <span className="text-sm font-bold text-amber-400">
-                      ${template.price.toLocaleString()}
+                    <span className="text-xl font-black text-white uppercase tracking-tighter">
+                      ${template.price}
                     </span>
                   )}
-                  <span className="text-xs font-semibold text-gray-300 group-hover:text-amber-400 transition-colors">
-                    Get Template →
-                  </span>
                 </div>
               </div>
             </Link>

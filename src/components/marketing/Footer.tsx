@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import Logo from "../shared/Logo";
 
 import {
@@ -86,107 +87,91 @@ export default function Footer({ siteConfig }: { siteConfig: FooterSiteConfig })
     };
 
     return (
-        <footer className="wave-separator relative z-10 border-t border-white/5 bg-navy-950/80 backdrop-blur-sm">
-            <div className="container-max section-padding pb-10 pt-16">
-                {/* Newsletter Banner */}
-                <div className="relative mb-16 p-8 lg:p-12 rounded-2xl overflow-hidden glass card-glow">
-                    <div className="absolute inset-0 bg-hero-glow opacity-50" />
-                    <div className="relative flex flex-col lg:flex-row items-center justify-between gap-6">
-                        <div>
-                            <h3 className="text-2xl lg:text-3xl font-display font-bold mb-2">
-                                Stay in the <span className="gold-text">loop</span>
-                            </h3>
-                            <p className="text-gray-400 max-w-md">
-                                Get automation tips, AI insights, and product updates delivered
-                                to your inbox.
-                            </p>
-                        </div>
+        <footer className="relative z-10 border-t border-white/5 bg-neutral-950 pt-32 pb-16 overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-brand-coral/5 blur-[120px] rounded-full -z-10" />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Newsletter Box */}
+                <div className="relative mb-32 p-12 lg:p-20 rounded-3xl overflow-hidden glass-strong border border-white/10 text-center">
+                    <div className="max-w-2xl mx-auto">
+                        <h3 className="text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6">
+                            Scale your <span className="text-brand-coral">Output</span>
+                        </h3>
+                        <p className="text-neutral-400 text-lg mb-10">
+                            The best n8n automation tips and AI insights, delivered to your inbox weekly.
+                        </p>
+                        
                         {subscribed ? (
-                            <div className="flex items-center gap-3 text-gold-400 font-medium animate-scale-in">
-                                <div className="w-10 h-10 rounded-full bg-gold-400/10 border border-gold-400/30 flex items-center justify-center animate-pulse-glow">
-                                    <svg
-                                        className="w-5 h-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            className="success-check"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M5 13l4 4L19 7"
-                                        />
-                                    </svg>
-                                </div>
-                                <span>You&apos;re subscribed! 🎉</span>
-                            </div>
-                        ) : (
-                            <form
-                                onSubmit={handleSubscribe}
-                                className="flex w-full lg:w-auto"
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="inline-flex items-center gap-4 text-brand-teal font-bold px-8 py-4 rounded-full bg-brand-teal/10 border border-brand-teal/20"
                             >
+                                <span>Successfully Subscribed!</span>
+                            </motion.div>
+                        ) : (
+                            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Enter your email"
-                                    className="flex-1 lg:w-72 px-5 py-3 bg-navy-900/80 border border-white/10 rounded-l-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
+                                    placeholder="your@email.com"
+                                    className="flex-grow px-8 py-5 bg-white/5 border border-white/10 rounded-full text-white placeholder:text-neutral-600 focus:outline-none focus:border-brand-coral/50 transition-all font-bold"
                                     required
                                 />
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="px-6 py-3 gold-gradient text-navy-950 font-semibold rounded-r-xl hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300 disabled:opacity-50 whitespace-nowrap"
+                                    className="px-10 py-5 bg-brand-coral text-white font-black uppercase tracking-widest rounded-full hover:shadow-2xl hover:shadow-brand-coral/40 transition-all disabled:opacity-50"
                                 >
-                                    {loading ? "..." : "Subscribe"}
+                                    {loading ? "..." : "Join"}
                                 </button>
                             </form>
                         )}
                     </div>
                 </div>
 
-                {/* Footer Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
-                    {/* Brand Column */}
-                    <div className="col-span-2 md:col-span-4 lg:col-span-1">
-                        <div className="mb-4">
-                            <Logo src={logo || "/images/logo.png"} />
-                        </div>
-                        <p className="text-gray-400 text-sm mb-4 max-w-xs">
-                            AI-powered automation agency helping B2B businesses streamline
-                            workflows and scale operations.
+                {/* Main Link Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-32">
+                    {/* Brand Meta */}
+                    <div className="lg:col-span-1">
+                        <Logo src={logo || "/images/logo-coral.png"} />
+                        <p className="mt-8 text-neutral-400 text-sm leading-relaxed max-w-xs">
+                            Architecting the future of enterprise operations from Kathmandu, Nepal. Custom systems for the world's most ambitious companies.
                         </p>
-                        <div className="flex items-center gap-2 text-gray-400 text-sm mb-2">
-                            <Mail className="w-4 h-4 text-gold-400" />
-                            <a
-                                href={`mailto:${siteEmail}`}
-                                className="hover:text-white transition-colors"
-                            >
-                                {siteEmail}
-                            </a>
-                        </div>
-                        <div className="flex items-center gap-2 text-gray-400 text-sm">
-                            <MapPin className="w-4 h-4 text-gold-400" />
-                            <span>{location}</span>
+                        <div className="mt-10 flex gap-4">
+                            {(socialLinks || []).map((social: any) => {
+                                const Icon = iconMap[social.platform];
+                                return Icon ? (
+                                    <a
+                                        key={social.platform}
+                                        href={social.href || social.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-3 text-neutral-500 hover:text-brand-coral hover:bg-white/5 rounded-full border border-white/5 transition-all"
+                                    >
+                                        <Icon className="w-5 h-5" />
+                                    </a>
+                                ) : null;
+                            })}
                         </div>
                     </div>
 
-                    {/* Link Columns */}
+                    {/* Links */}
                     {Object.entries(footerLinks || {}).map(([category, links]: [string, any]) => (
                         <div key={category}>
-                            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+                            <h4 className="text-[11px] font-black text-brand-coral uppercase tracking-[0.2em] mb-8">
                                 {category}
                             </h4>
-                            <ul className="space-y-3">
-                                {links.map((link: { label: string; href: string }) => (
+                            <ul className="space-y-4">
+                                {links.map((link: any) => (
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-1 group"
+                                            className="text-sm font-bold text-neutral-400 hover:text-white transition-all hover:translate-x-1 inline-block"
                                         >
                                             {link.label}
-                                            <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                                         </Link>
                                     </li>
                                 ))}
@@ -195,33 +180,23 @@ export default function Footer({ siteConfig }: { siteConfig: FooterSiteConfig })
                     ))}
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                        <p className="text-sm text-gray-500">
-                            {copyright}
-                        </p>
-
+                {/* Legal & Local */}
+                <div className="pt-16 border-t border-white/5 flex flex-col lg:flex-row items-center justify-between gap-8">
+                    <div className="flex items-center gap-10 text-[11px] font-bold text-neutral-500 uppercase tracking-widest">
+                        <span>{copyright}</span>
+                        <div className="flex items-center gap-2">
+                            <MapPin className="w-3.5 h-3.5 text-brand-coral" />
+                            <span>{location}</span>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-3 flex-wrap justify-center">
-                        {(socialLinks || []).map((social: { platform: string; url: string; icon?: string; href?: string }) => {
-                            const Icon = iconMap[social.platform];
-                            return Icon ? (
-                                <a
-                                    key={social.platform}
-                                    href={social.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={social.platform}
-                                    className="social-bounce p-2.5 text-gray-400 hover:text-gold-400 hover:bg-gold-400/5 rounded-xl border border-transparent hover:border-gold-400/10 transition-all duration-200"
-                                >
-                                    <Icon className="w-5 h-5" />
-                                </a>
-                            ) : null;
-                        })}
+                    
+                    <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-brand-teal animate-pulse" />
+                        <span className="text-[11px] font-black text-white uppercase tracking-[0.2em]">Service Status: Operational</span>
                     </div>
                 </div>
             </div>
         </footer>
+
     );
 }

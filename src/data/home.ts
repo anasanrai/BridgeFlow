@@ -1,135 +1,125 @@
 /**
  * =============================================
- *  HOME PAGE DATA — Enterprise Edition
+ *  HOME PAGE CONTENT — Authentic Narrative
  *  Edit this file to update home page content.
- *  Admin dashboard can override these defaults.
  * =============================================
  */
 
 export const defaultHomeContent = {
   hero: {
-    badge: 'n8n Workflow Automation Agency',
-    title: 'Automate Your Business. Launch in Days.',
-    titleLine2: '',
-    highlight: '',
+    badge: 'AI Automation Agency · Built in Kathmandu',
+    title: 'Automate Everything.',
+    titleLine2: 'Launch in Days.',
+    highlight: 'Everything',
     description:
-      'BridgeFlow builds custom n8n automation workflows tailored to your business — from lead capture to AI-powered pipelines. Deploy in days, not months.',
+      'BridgeFlow builds custom n8n workflows that eliminate manual work from your business. We don\'t write reports — we build systems that save you 10+ hours every week.',
     ctaPrimary: { text: 'View Packages', href: '/pricing' },
-    ctaSecondary: { text: 'Free Audit', href: '/audit' },
-    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070',
+    ctaSecondary: { text: 'Book Free Audit', href: '/audit' },
+    image: '/images/hero-fallback.png',
   },
   stats: [
     { label: 'Workflows Built', value: 7, suffix: '+', icon: 'zap' },
     { label: 'Client Satisfaction', value: 100, suffix: '%', icon: 'shield' },
     { label: 'Avg. Delivery', value: 5, suffix: ' Days', icon: 'clock' },
-    { label: 'n8n Compatible', value: 100, suffix: '%', icon: 'building' },
+    { label: 'Operating Globally', value: 24, suffix: '/7', icon: 'globe' },
   ],
-  trustedBy: {
-    title: 'Trusted by Industry Leaders',
-    description: 'Join hundreds of enterprises automating their operations',
-    companies: [
-      { name: 'Acme Corp', logo: '/images/companies/acme.png' },
-      { name: 'TechFlow', logo: '/images/companies/techflow.png' },
-      { name: 'InnovateLabs', logo: '/images/companies/innovate.png' },
-      { name: 'Digital First', logo: '/images/companies/digital-first.png' },
-    ],
-  },
   features: [
     {
-      title: 'Visual Workflow Builder',
-      description: 'Drag-and-drop interface to create complex workflows without coding',
+      title: 'Custom n8n Workflows',
+      description: 'Sophisticated multi-step automations that connect your entire tool stack seamlessly.',
       icon: 'workflow',
-      color: 'bg-blue-500/20',
+      color: 'bg-brand-coral/10',
     },
     {
-      title: '1000+ Integrations',
-      description: 'Connect to your favorite business tools and applications',
-      icon: 'connect',
-      color: 'bg-purple-500/20',
+      title: 'AI Agent Integration',
+      description: 'Liaising with LLMs to bring intelligence to your workflows — scoring leads and drafting replies.',
+      icon: 'brain',
+      color: 'bg-brand-purple/10',
     },
     {
-      title: 'Real-Time Monitoring',
-      description: 'Monitor all workflows with detailed logs and performance metrics',
-      icon: 'chart',
-      color: 'bg-green-500/20',
-    },
-    {
-      title: 'Enterprise Security',
-      description: 'Bank-level encryption and compliance with SOC 2, GDPR, and HIPAA',
-      icon: 'lock',
-      color: 'bg-red-500/20',
-    },
-    {
-      title: 'Advanced Automation',
-      description: 'Conditional logic, data transformation, and AI-powered workflows',
+      title: 'CRM & Sales Ops',
+      description: 'Automate your entire sales pipeline from lead capture to final contract signature.',
       icon: 'zap',
-      color: 'bg-yellow-500/20',
+      color: 'bg-brand-teal/10',
     },
     {
-      title: '24/7 Support',
-      description: 'Dedicated support team available round the clock',
-      icon: 'support',
-      color: 'bg-pink-500/20',
+      title: 'Rapid Deployment',
+      description: 'First production-ready workflow live in as little as 5 business days. We move as fast as you do.',
+      icon: 'rocket',
+      color: 'bg-orange-500/10',
+    },
+    {
+      title: 'Radical Honesty',
+      description: 'We will tell you when automation is NOT the right answer. No fluff, just results.',
+      icon: 'shield-check',
+      color: 'bg-emerald-500/10',
+    },
+    {
+      title: 'Global Engineering',
+      description: 'Silicon Valley precision with a Nepali work ethic born from building everything from zero.',
+      icon: 'globe',
+      color: 'bg-blue-500/10',
     },
   ],
   results: [
     {
-      metric: '75%',
-      description: 'Reduction in operational costs',
-      improvement: 'Average client savings',
+      metric: '10+',
+      description: 'Hours saved per week',
+      improvement: 'Average per workflow',
     },
     {
-      metric: '90%',
-      description: 'Faster process completion times',
-      improvement: 'Time efficiency gained',
+      metric: '0',
+      description: 'Leads lost to manual errors',
+      improvement: 'After automation',
     },
     {
-      metric: '99.99%',
-      description: 'System uptime and reliability',
-      improvement: 'Enterprise SLA guaranteed',
+      metric: 'ROI',
+      description: 'Calculated before we start',
+      improvement: 'Transparency first',
     },
   ],
   process: [
+    { number: '01', title: 'Audit', description: 'Deep dive into your manual bottlenecks.', icon: 'search' },
+    { number: '02', title: 'Design', description: 'Map out the custom architecture.', icon: 'layout' },
+    { number: '03', title: 'Build', description: 'Rapid development and internal testing.', icon: 'code' },
+    { number: '04', title: 'Launch', description: 'Production deployment and training.', icon: 'rocket' },
+  ],
+  testimonials: [
     {
-      number: '1',
-      title: 'Connect',
-      description: 'Integrate your business systems with a few clicks',
-      icon: 'plug',
+      content: 'BridgeFlow transformed our lead response time from hours to seconds. The ROI was immediate.',
+      author: 'Sarah Chen',
+      role: 'Operations Director',
+      company: 'GrowthScale',
+      image: '/images/testimonials/sarah.jpg',
+      rating: 5,
     },
     {
-      number: '2',
-      title: 'Design',
-      description: 'Build workflows visually without writing code',
-      icon: 'pencil',
-    },
-    {
-      number: '3',
-      title: 'Deploy',
-      description: 'Launch your automations in minutes',
-      icon: 'rocket',
-    },
-    {
-      number: '4',
-      title: 'Optimize',
-      description: 'Monitor and improve workflow performance continuously',
-      icon: 'trending',
+      content: 'The most honest agency we\'ve worked with. They built systems we didn\'t even know we needed.',
+      author: 'Marcus Thorne',
+      role: 'Founder',
+      company: 'Thorne Logistics',
+      image: '/images/testimonials/marcus.jpg',
+      rating: 5,
     },
   ],
-  testimonials: [],
-  cta: {
-    title: 'Ready to Transform Your Business?',
-    description:
-      'Join hundreds of enterprises already automating their operations and saving thousands of hours every year.',
-    primaryCta: { text: 'Start Your Free Trial', href: '/pricing' },
-    secondaryCta: { text: 'Schedule a Demo', href: '/contact' },
+  trustedBy: {
+    title: 'Trusted by Revenue Teams Globally',
+    description: 'We help growing companies operate with the precision of an enterprise.',
+    companies: [
+      { name: 'Company One', logo: '/images/logos/one.svg' },
+      { name: 'Company Two', logo: '/images/logos/two.svg' },
+    ],
   },
-}
+  cta: {
+    title: 'Your Business Runs on Manual Work.',
+    description:
+      'It doesn\'t have to. Let\'s calculate exactly how many hours we can save you this month.',
+    primaryCta: { text: 'Schedule Free Audit', href: '/audit' },
+    secondaryCta: { text: 'View Pricing', href: '/pricing' },
+  },
+};
 
-// Legacy exports for backward compatibility
 export const hero = defaultHomeContent.hero
 export const stats = defaultHomeContent.stats
-export const servicesOverview = defaultHomeContent.features
-export const processSteps = defaultHomeContent.process
-export const demos: unknown[] = []
+export const features = defaultHomeContent.features
 export const cta = defaultHomeContent.cta
-export const offers = []

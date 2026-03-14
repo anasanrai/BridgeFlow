@@ -82,147 +82,115 @@ export default function Navbar({ siteConfig }: { siteConfig: SiteConfig }) {
 
             <header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                    ? "glass-strong shadow-lg shadow-black/20"
+                    ? "glass-strong shadow-2xl shadow-black/40 border-b border-white/5"
                     : "bg-transparent"
                     }`}
             >
                 <nav
-                    className="container-max flex items-center justify-between h-16 lg:h-20 px-4 sm:px-6 lg:px-8"
+                    className="max-w-7xl mx-auto flex items-center justify-between h-20 lg:h-24 px-4 sm:px-6 lg:px-8"
                     aria-label="Main navigation"
                 >
-                    {/* Logo */}
-                    <Logo src={logo || "/images/logo.png"} alt={name || "BridgeFlow"} />
-
-                    {/* Desktop Nav */}
-                    <div className="hidden lg:flex items-center gap-0" role="list">
-                        {navLinks.map((link) => {
-                            const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-                            return (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    role="listitem"
-                                    aria-current={isActive ? "page" : undefined}
-                                    className={`nav-active-indicator relative px-3 py-2 text-[13px] font-medium transition-colors duration-300 group whitespace-nowrap ${isActive
-                                        ? "text-gold-400 active"
-                                        : "text-gray-300 hover:text-white"
-                                        }`}
-                                >
-                                    {link.label}
-                                </Link>
-                            );
-                        })}
+                    {/* Logo Lockup */}
+                    <div className="flex items-center gap-10">
+                        <Logo src={logo || "/images/logo-coral.png"} alt={name || "BridgeFlow"} />
+                        
+                        {/* Desktop Nav Links */}
+                        <div className="hidden lg:flex items-center gap-8" role="list">
+                            {navLinks.map((link) => {
+                                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        role="listitem"
+                                        aria-current={isActive ? "page" : undefined}
+                                        className={`relative py-1 text-[13px] tracking-widest uppercase font-bold transition-all duration-300 group whitespace-nowrap ${isActive
+                                            ? "text-brand-coral"
+                                            : "text-neutral-400 hover:text-white"
+                                            }`}
+                                    >
+                                        {link.label}
+                                        <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-coral transition-all duration-300 group-hover:w-full ${isActive ? 'w-full' : ''}`} />
+                                    </Link>
+                                );
+                            })}
+                        </div>
                     </div>
 
-                    {/* Desktop CTA + Search */}
-                    <div className="hidden lg:flex items-center gap-2.5">
-                        <Search />
+                    {/* Action Bar */}
+                    <div className="hidden lg:flex items-center gap-6">
                         <ThemeToggle />
                         <Link
-                            href="/audit"
-                            className="relative inline-flex items-center gap-2 px-5 py-2 text-[13px] font-semibold text-white glass rounded-full hover:bg-white/10 transition-all duration-300 border border-white/10"
-                        >
-                            Free Audit
-                        </Link>
-                        <Link
                             href="/contact"
-                            className="relative inline-flex items-center gap-2 px-5 py-2 text-[13px] font-semibold text-navy-950 gold-gradient rounded-full hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300 hover:scale-105"
+                            className="relative inline-flex items-center gap-2 px-8 py-3 text-[13px] font-bold tracking-widest uppercase text-white coral-gradient rounded-full hover:shadow-2xl hover:shadow-brand-coral/40 transition-all duration-300 hover:-translate-y-0.5"
                         >
                             Get Started
-                            <ArrowRight className="w-3.5 h-3.5" />
+                            <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
 
-                    {/* Mobile Icons */}
-                    <div className="flex lg:hidden items-center gap-2 relative z-50">
-                        <Search />
+                    {/* Mobile Toggle */}
+                    <div className="flex lg:hidden items-center gap-4 relative z-50">
                         <ThemeToggle />
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="p-2 text-white rounded-lg hover:bg-white/10 transition-colors"
-                            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-                            aria-expanded={isOpen}
-                            aria-controls="mobile-menu"
+                            className="p-3 text-white rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+                            aria-label={isOpen ? "Close menu" : "Open menu"}
                         >
-                            {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
+                            {isOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
                 </nav>
 
-                {/* Mobile Menu */}
+                {/* Mobile Menu Overlay */}
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div
-                            id="mobile-menu"
-                            initial={{ opacity: 0, x: "100%" }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: "100%" }}
-                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="fixed inset-0 z-40 lg:hidden"
-                            role="dialog"
-                            aria-modal="true"
-                            aria-label="Navigation menu"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="fixed inset-0 z-40 lg:hidden bg-neutral-950/98 backdrop-blur-2xl"
                         >
-                            <div
-                                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                                onClick={() => setIsOpen(false)}
-                                aria-hidden="true"
-                            />
-                            <div className="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-navy-900/95 backdrop-blur-xl border-l border-white/5 p-8 pt-24">
-                                <nav aria-label="Mobile navigation">
-                                    <div className="flex flex-col gap-2">
-                                        {navLinks.map((link, index) => {
-                                            const isActive = pathname === link.href;
-                                            return (
-                                                <motion.div
-                                                    key={link.href}
-                                                    initial={{ opacity: 0, x: 20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ delay: index * 0.05 }}
-                                                >
-                                                    <Link
-                                                        href={link.href}
-                                                        onClick={() => setIsOpen(false)}
-                                                        aria-current={isActive ? "page" : undefined}
-                                                        className={`block px-4 py-3 text-lg font-medium rounded-xl transition-all duration-200 ${isActive
-                                                            ? "text-gold-400 bg-gold-400/5"
-                                                            : "text-gray-300 hover:text-white hover:bg-white/5"
-                                                            }`}
-                                                    >
-                                                        {link.label}
-                                                    </Link>
-                                                </motion.div>
-                                            );
-                                        })}
+                            <div className="flex flex-col items-center justify-center min-h-screen gap-8 p-12">
+                                {navLinks.map((link, index) => {
+                                    const isActive = pathname === link.href;
+                                    return (
                                         <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.3 }}
-                                            className="mt-6 pt-6 border-t border-white/10 space-y-4"
+                                            key={link.href}
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ delay: index * 0.05 }}
                                         >
                                             <Link
-                                                href="/audit"
+                                                href={link.href}
                                                 onClick={() => setIsOpen(false)}
-                                                className="flex items-center justify-center gap-2 w-full px-6 py-3 text-sm font-semibold text-white glass rounded-full border border-white/10"
+                                                className={`text-3xl font-black uppercase tracking-tighter transition-all ${isActive ? "text-brand-coral" : "text-neutral-500 hover:text-white"}`}
                                             >
-                                                Free Audit
-                                            </Link>
-                                            <Link
-                                                href="/contact"
-                                                onClick={() => setIsOpen(false)}
-                                                className="flex items-center justify-center gap-2 w-full px-6 py-3 text-sm font-semibold text-navy-950 gold-gradient rounded-full"
-                                            >
-                                                Get Started
-                                                <ArrowRight className="w-4 h-4" />
+                                                {link.label}
                                             </Link>
                                         </motion.div>
-                                    </div>
-                                </nav>
+                                    );
+                                })}
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.4 }}
+                                    className="mt-8 pt-8 border-t border-white/5 w-full flex flex-col gap-4 items-center"
+                                >
+                                    <Link
+                                        href="/contact"
+                                        onClick={() => setIsOpen(false)}
+                                        className="w-full text-center px-12 py-5 text-xl font-bold uppercase tracking-widest text-white coral-gradient rounded-full"
+                                    >
+                                        Get Started
+                                    </Link>
+                                </motion.div>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
             </header>
+
         </>
     );
 }

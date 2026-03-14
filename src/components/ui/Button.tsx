@@ -47,17 +47,17 @@ export function Button({
 
     const variants = {
         primary:
-            "gold-gradient text-navy-950 hover:shadow-[0_0_40px_rgba(230,180,34,0.5)] hover:scale-[1.03] active:scale-95",
+            "coral-gradient text-white hover:shadow-[0_0_40px_rgba(255,109,90,0.5)] hover:scale-[1.03] active:scale-95",
         secondary:
-            "glass-strong border border-gold-400/30 text-gold-400 hover:bg-gold-400/10 hover:border-gold-400/50 hover:shadow-[0_0_20px_rgba(230,180,34,0.1)] hover:scale-[1.03] active:scale-95",
-        ghost: "text-gray-400 hover:text-white hover:bg-white/5 active:scale-95",
-        outline: "border border-white/10 text-white hover:border-gold-400/50 hover:text-gold-400 hover:bg-gold-400/5 active:scale-95",
+            "glass-strong border border-white/10 text-white hover:bg-white/5 hover:border-white/20 hover:scale-[1.03] active:scale-95",
+        ghost: "text-neutral-400 hover:text-white hover:bg-white/5 active:scale-95",
+        outline: "border border-white/10 text-white hover:border-brand-coral/50 hover:text-brand-coral hover:bg-brand-coral/5 active:scale-95",
     };
 
     const sizes = {
-        sm: "px-4 py-2 text-[10px] uppercase tracking-widest",
-        md: "px-7 py-3 text-xs uppercase tracking-widest",
-        lg: "px-10 py-4 text-sm uppercase tracking-widest",
+        sm: "px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em]",
+        md: "px-8 py-4 text-xs font-black uppercase tracking-[0.2em]",
+        lg: "px-12 py-5 text-sm font-black uppercase tracking-[0.2em]",
     };
 
     const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""} ${className}`;

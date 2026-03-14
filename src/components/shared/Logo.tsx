@@ -14,57 +14,25 @@ interface LogoProps {
  * Logo component — clicking the gold 'B' icon toggles the theme.
  * The "BridgeFlow" text still navigates home.
  */
-export default function Logo({ src = "/images/logo.png", alt = "BridgeFlow", className = "" }: LogoProps) {
-    const [isDark, setIsDark] = useState(true);
-
-    useEffect(() => {
-        const saved = localStorage.getItem("bf-theme");
-        if (saved === "light") {
-            setIsDark(false);
-            document.documentElement.classList.add("light");
-        }
-    }, []);
-
-    const toggleTheme = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const newIsDark = !isDark;
-        setIsDark(newIsDark);
-        if (newIsDark) {
-            document.documentElement.classList.remove("light");
-            localStorage.setItem("bf-theme", "dark");
-        } else {
-            document.documentElement.classList.add("light");
-            localStorage.setItem("bf-theme", "light");
-        }
-    };
-
+export default function Logo({ src = "/images/logo-coral.png", alt = "BridgeFlow", className = "" }: LogoProps) {
     return (
-        <div className={`flex items-center gap-2.5 group ${className}`}>
-            {/* Premium Gold B Image — click to toggle theme */}
-            <button
-                onClick={toggleTheme}
-                className="relative h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden hover:scale-110 active:scale-95 transition-transform duration-300 group/icon cursor-pointer"
-                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            >
+        <Link
+            href="/"
+            className={`flex items-center gap-3 group ${className}`}
+        >
+            <div className="relative h-10 w-10 flex-shrink-0 flex items-center justify-center rounded-lg overflow-hidden transition-transform duration-500 group-hover:scale-110">
                 <Image
                     src={src}
                     alt="B"
-                    width={120}
-                    height={120}
-                    className="w-[200%] h-full object-cover object-left"
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-cover"
                     priority
                 />
-            </button>
-            {/* BridgeFlow text — click navigates home */}
-            <Link
-                href="/"
-                className="text-lg lg:text-xl font-semibold tracking-tight text-white dark:text-white transition-colors duration-300 hover:text-gold-400"
-                style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}
-            >
+            </div>
+            <span className="text-xl font-black tracking-tighter text-white uppercase group-hover:text-brand-coral transition-colors">
                 BridgeFlow
-            </Link>
-        </div>
+            </span>
+        </Link>
     );
 }

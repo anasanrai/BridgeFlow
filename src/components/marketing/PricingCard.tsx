@@ -42,113 +42,69 @@ export default function PricingCard({ plan, index }: PricingCardProps) {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -4 }}
-                className={`relative rounded-2xl overflow-hidden flex flex-col h-full transition-all duration-300 ${plan.popular
-                    ? "border border-gold-400/30 bg-gradient-to-b from-gold-400/5 to-navy-900/80 shadow-[0_0_40px_rgba(230,180,34,0.1)]"
-                    : "border border-white/10 bg-navy-900/50 hover:border-white/20"
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative rounded-[40px] overflow-hidden flex flex-col h-full transition-all duration-500 ${plan.popular
+                    ? "border-2 border-brand-coral bg-neutral-900 shadow-[0_0_80px_-20px_rgba(255,109,90,0.3)] scale-[1.02] z-10"
+                    : "border border-white/5 bg-neutral-900/50 hover:bg-neutral-900 transition-colors"
                     }`}
             >
                 {plan.popular && (
-                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
+                    <div className="bg-brand-coral py-2 text-center text-[10px] font-black uppercase tracking-[0.3em] text-white">
+                        Most Popular
+                    </div>
                 )}
 
-                <div className="p-6 flex-1 flex flex-col">
-                    {/* Badge */}
-                    {plan.badge && (
-                        <div className="mb-4">
-                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${plan.popular
-                                ? "bg-gold-400/10 text-gold-400 border border-gold-400/20"
-                                : "bg-white/5 text-gray-400 border border-white/10"
-                                }`}>
-                                {plan.popular && <Sparkles className="w-3 h-3" />}
-                                {plan.badge ?? ''}
-                            </span>
-                        </div>
-                    )}
-
-                    {/* Plan Name */}
-                    <h3 className="text-lg font-display font-bold text-white mb-2">{plan.name}</h3>
+                <div className="p-10 flex-1 flex flex-col">
+                    {/* Header */}
+                    <div className="mb-10 text-center lg:text-left">
+                        <h3 className="text-3xl font-black uppercase tracking-tighter text-white mb-2">{plan.name}</h3>
+                        <p className="text-sm text-neutral-500 font-bold uppercase tracking-widest">{plan.badge}</p>
+                    </div>
 
                     {/* Price */}
-                    <div className="mb-4">
-                        <div className="flex items-baseline gap-2">
-                            <span className={`text-3xl font-display font-bold ${plan.popular ? "gold-text" : "text-white"}`}>
+                    <div className="mb-10 text-center lg:text-left">
+                        <div className="flex items-baseline justify-center lg:justify-start gap-2">
+                            <span className="text-6xl font-black tracking-tighter text-white">
                                 {plan.price}
                             </span>
                             {plan.period && (
-                                <span className="text-sm text-gray-500">{plan.period}</span>
+                                <span className="text-sm text-neutral-500 font-bold uppercase tracking-widest">{plan.period}</span>
                             )}
                         </div>
-                        {plan.originalPrice && (
-                            <div className="flex items-center gap-2 mt-1">
-                                <span className="text-sm text-gray-600 line-through">{plan.originalPrice}</span>
-                                {plan.savingsTag && (
-                                    <span className="text-xs font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full">
-                                        {plan.savingsTag}
-                                    </span>
-                                )}
+                        {plan.spotsRemaining && (
+                            <div className="mt-4 inline-block px-4 py-1.5 bg-brand-coral/10 border border-brand-coral/20 rounded-full">
+                                <span className="text-[10px] font-black text-brand-coral uppercase tracking-widest">{plan.spotsRemaining}</span>
                             </div>
                         )}
                     </div>
 
-                    {/* Description */}
-                    <p className="text-sm text-gray-400 leading-relaxed mb-5">{plan.description}</p>
-
                     {/* Features */}
-                    <ul className="space-y-2.5 mb-6 flex-1">
+                    <ul className="space-y-4 mb-12 flex-1">
                         {plan.features.map((feature) => (
-                            <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-300">
-                                <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${plan.popular ? "text-gold-400" : "text-emerald-400"}`} />
+                            <li key={feature} className="flex items-start gap-3 text-sm text-neutral-300 font-medium">
+                                <div className={`mt-1 p-0.5 rounded-full ${plan.popular ? "bg-brand-coral" : "bg-brand-teal"}`}>
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                                </div>
                                 {feature}
                             </li>
                         ))}
                     </ul>
 
-                    {/* CTA Buttons */}
-                    <div className="space-y-2">
-                        {showBuyNow ? (
-                            <>
-                                <button
-                                    onClick={() => setShowPayment(true)}
-                                    className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${plan.popular
-                                        ? "bg-gold-400 hover:bg-gold-300 text-navy-950 shadow-[0_0_20px_rgba(230,180,34,0.2)] hover:shadow-[0_0_30px_rgba(230,180,34,0.4)]"
-                                        : "bg-white/10 hover:bg-white/15 text-white border border-white/10"
-                                        }`}
-                                >
-                                    <Zap className="w-4 h-4" />
-                                    Buy Now — {plan.price}
-                                </button>
-                                <Link
-                                    href={plan.cta.href}
-                                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white border border-white/5 hover:border-white/10 transition-all"
-                                >
-                                    {plan.cta.text}
-                                    <ArrowRight className="w-3.5 h-3.5" />
-                                </Link>
-                            </>
-                        ) : (
-                            <Link
-                                href={plan.cta.href}
-                                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${plan.popular
-                                    ? "bg-gold-400 hover:bg-gold-300 text-navy-950"
-                                    : "bg-white/10 hover:bg-white/15 text-white border border-white/10"
-                                    }`}
-                            >
-                                {plan.cta.text}
-                                <ArrowRight className="w-4 h-4" />
-                            </Link>
-                        )}
+                    {/* Actions */}
+                    <div className="space-y-4 mt-auto">
+                        <button
+                            onClick={() => setShowPayment(true)}
+                            className={`w-full py-6 rounded-full text-sm font-black uppercase tracking-[0.2em] transition-all transform active:scale-95 ${plan.popular
+                                ? "bg-brand-coral text-white shadow-[0_0_40px_-10px_rgba(255,109,90,0.5)] hover:shadow-[0_0_60px_-10px_rgba(255,109,90,0.7)]"
+                                : "bg-white/5 text-white border border-white/10 hover:bg-white/10"
+                                }`}
+                        >
+                            Select Plan
+                        </button>
                     </div>
-
-                    {/* Spots remaining */}
-                    {plan.spotsRemaining && (
-                        <p className="text-center text-xs text-gold-400 mt-3 font-medium">
-                            {plan.spotsRemaining}
-                        </p>
-                    )}
                 </div>
             </motion.div>
+
 
             {/* Payment Modal */}
             <PaymentModal

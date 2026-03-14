@@ -78,113 +78,89 @@ interface HomePageProps {
  * Enterprise-level home page component
  * Dynamically renders all sections from admin-managed content
  */
-export default function EnterprisHomePage({ content }: HomePageProps) {
+export default function EnterpriseHomePage({ content }: HomePageProps) {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-navy-950 via-navy-900 to-navy-950">
-      {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-screen flex items-center py-20 lg:py-0 overflow-hidden">
-        {/* Gradient background */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-gold-400/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+    <main className="min-h-screen bg-neutral-950 text-white">
+      {/* ===== PREMIUM HERO SECTION ===== */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+        {/* Abstract Background Elements */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-brand-coral/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] opacity-[0.03]" />
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="z-10"
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10"
+          >
+            <div className="w-2.5 h-2.5 rounded-full bg-brand-coral animate-ping" />
+            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-neutral-400">
+              {content.hero.badge}
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="max-w-5xl mx-auto"
+          >
+            <h1 className="text-6xl md:text-8xl lg:text-[120px] font-black uppercase tracking-tighter leading-[0.85] mb-8">
+              {content.hero.title} <span className="text-brand-coral">{content.hero.highlight}</span>
+            </h1>
+          </motion.div>
+
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="max-w-2xl mx-auto text-xl md:text-2xl text-neutral-400 font-medium mb-12 leading-relaxed"
+          >
+            {content.hero.description}
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
+          >
+            <Link
+              href={content.hero.ctaPrimary.href}
+              className="px-12 py-6 bg-brand-coral text-white text-xl font-black uppercase tracking-widest rounded-full hover:shadow-[0_0_50px_-12px_rgba(255,109,90,0.5)] transition-all transform hover:-translate-y-1 active:scale-95"
             >
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/30 bg-gold-400/5 mb-6 w-fit"
-              >
-                <div className="w-2 h-2 rounded-full bg-gold-400 animate-pulse" />
-                <span className="text-gold-400 text-sm font-semibold">
-                  {content.hero.badge}
-                </span>
-              </motion.div>
-
-              {/* Title */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-4">
-                  {content.hero.title}
-                  <br />
-                  <span className="text-5xl lg:text-6xl xl:text-7xl">
-                    {content.hero.titleLine2}
-                  </span>
-                  <br />
-                  <span className="bg-gradient-to-r from-gold-400 to-gold-500 bg-clip-text text-transparent">
-                    {content.hero.highlight}
-                  </span>
-                </h1>
-              </motion.div>
-
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-lg text-gray-300 leading-relaxed mb-8 max-w-xl"
-              >
-                {content.hero.description}
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <Link
-                  href={content.hero.ctaPrimary.href}
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-gold-400 to-gold-500 text-navy-950 font-bold rounded-xl hover:shadow-lg hover:shadow-gold-400/50 transition-all group"
-                >
-                  {content.hero.ctaPrimary.text}
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href={content.hero.ctaSecondary.href}
-                  className="inline-flex items-center justify-center px-8 py-4 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/5 transition-all"
-                >
-                  {content.hero.ctaSecondary.text}
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            {/* Right: Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="relative hidden lg:block"
+              {content.hero.ctaPrimary.text}
+            </Link>
+            <Link
+              href={content.hero.ctaSecondary.href}
+              className="px-12 py-6 border-2 border-white/10 bg-white/5 text-white text-xl font-black uppercase tracking-widest rounded-full hover:bg-white/10 transition-all transform hover:-translate-y-1 active:scale-95"
             >
-              <div className="relative aspect-square">
-                <Image
-                  src={content.hero.image || '/images/hero-automation.png'}
-                  alt="Hero"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </motion.div>
-          </div>
+              Learn More
+            </Link>
+          </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        >
+          <div className="w-[1px] h-12 bg-gradient-to-b from-brand-coral to-transparent" />
+          <span className="text-[10px] uppercase tracking-widest text-neutral-600 font-bold">Scroll</span>
+        </motion.div>
       </section>
+
 
       {/* ===== STATS SECTION ===== */}
       <section className="py-16 lg:py-24 border-t border-white/5">
@@ -209,25 +185,49 @@ export default function EnterprisHomePage({ content }: HomePageProps) {
           </div>
         </div>
       </section>
+      {/* ===== STATS BAR ===== */}
+      <section className="py-20 border-y border-white/5 bg-neutral-900/50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+            {content.stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-4xl md:text-5xl font-black text-brand-coral mb-2">
+                  {stat.value}{stat.suffix}
+                </div>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-500 font-bold">
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* ===== FEATURES SECTION ===== */}
-      <section className="py-24 lg:py-32 border-t border-white/5">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center max-w-3xl mx-auto mb-16"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-              Enterprise-Grade Features
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Everything you need to scale your automation operations
-            </p>
-          </motion.div>
+      {/* ===== FEATURES / CAPABILITIES ===== */}
+      <section className="py-32 lg:py-48 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row justify-between items-end mb-24 gap-8">
+            <div className="max-w-2xl">
+              <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-4">
+                Enterprise <span className="text-brand-purple">Capabilities</span>
+              </h2>
+              <p className="text-xl text-neutral-400 font-medium">
+                We don't build toys. We build mission-critical infrastructure that scales.
+              </p>
+            </div>
+            <Link href="/services" className="text-brand-coral font-black uppercase tracking-widest text-sm hover:underline">
+              View All Services →
+            </Link>
+          </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {content.features.map((feature, index) => (
               <motion.div
                 key={index}
@@ -235,21 +235,17 @@ export default function EnterprisHomePage({ content }: HomePageProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                onMouseEnter={() => setHoveredCard(index)}
-                onMouseLeave={() => setHoveredCard(null)}
-                className={`p-8 rounded-2xl border border-white/10 transition-all duration-300 ${
-                  hoveredCard === index
-                    ? 'bg-white/5 border-gold-400/30 shadow-lg shadow-gold-400/10'
-                    : 'bg-white/2.5'
-                }`}
+                className="group p-10 rounded-[40px] border border-white/5 bg-neutral-900/30 hover:bg-neutral-900/60 hover:border-brand-coral/20 transition-all duration-500"
               >
-                <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center ${feature.color}`}>
-                  <Zap className="w-6 h-6 text-white" />
+                <div className={`w-16 h-16 rounded-2xl mb-8 flex items-center justify-center bg-white/5 group-hover:bg-brand-coral/10 transition-colors`}>
+                  <Zap className="w-8 h-8 text-neutral-400 group-hover:text-brand-coral transition-colors" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">
+                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-4">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 text-sm">{feature.description}</p>
+                <p className="text-neutral-400 leading-relaxed font-medium">
+                  {feature.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -257,201 +253,120 @@ export default function EnterprisHomePage({ content }: HomePageProps) {
       </section>
 
       {/* ===== RESULTS SECTION ===== */}
-      {content.results && content.results.length > 0 && (
-        <section className="py-24 lg:py-32 border-t border-white/5">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center max-w-3xl mx-auto mb-16"
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-                Real Results from Real Clients
-              </h2>
-              <p className="text-gray-400 text-lg">
-                See the tangible impact of enterprise automation
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {content.results.map((result, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="p-8 rounded-2xl bg-gradient-to-br from-gold-400/10 to-transparent border border-gold-400/20"
-                >
-                  <div className="text-3xl font-bold text-gold-400 mb-2">
-                    {result.metric}
-                  </div>
-                  <p className="text-gray-300 mb-3">{result.description}</p>
-                  <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold">
-                    <TrendingUp className="w-4 h-4" />
-                    {result.improvement}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+      <section className="py-32 lg:py-48 bg-neutral-900/20 border-y border-white/5">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-4xl mx-auto mb-24">
+            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 underline decoration-brand-teal decoration-8 underline-offset-8">
+              Proven ROI
+            </h2>
+            <p className="text-xl text-neutral-400 font-medium">
+              Real metrics from global enterprise implementations.
+            </p>
           </div>
-        </section>
-      )}
+
+          <div className="grid md:grid-cols-3 gap-12">
+            {content.results.map((result, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="p-12 rounded-[50px] bg-neutral-900 border border-white/5 relative group"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-teal/5 blur-[60px] group-hover:bg-brand-teal/10 transition-colors" />
+                <div className="text-6xl font-black text-brand-teal mb-6">
+                  {result.metric}
+                </div>
+                <p className="text-lg font-bold text-white mb-4 uppercase tracking-tight">
+                  {result.description}
+                </p>
+                <div className="inline-flex items-center gap-2 text-neutral-500 text-[11px] font-black uppercase tracking-widest border border-white/10 px-4 py-2 rounded-full">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  {result.improvement}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ===== PROCESS SECTION ===== */}
-      {content.process && content.process.length > 0 && (
-        <section className="py-24 lg:py-32 border-t border-white/5">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center max-w-3xl mx-auto mb-16"
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-                Our Process
-              </h2>
-              <p className="text-gray-400 text-lg">
-                A proven approach to enterprise automation success
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-4 gap-6">
-              {content.process.map((step, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="relative"
-                >
-                  {/* Connector line */}
-                  {index < content.process.length - 1 && (
-                    <div className="hidden md:block absolute top-16 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-gold-400/50 to-transparent" />
-                  )}
-
-                  <div className="p-6 rounded-2xl border border-white/10 bg-white/2.5 relative z-10">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gold-400 to-gold-500 flex items-center justify-center mb-4 text-navy-950 font-bold text-lg">
-                      {step.number}
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-2">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-400 text-sm">{step.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+      <section className="py-32 lg:py-48">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center mb-32">
+            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8">
+              The <span className="text-brand-purple">Flow</span> State
+            </h2>
+            <p className="text-xl text-neutral-400 font-medium max-w-2xl mx-auto">
+              Deployment in days, not months. A lean, high-velocity approach for the modern enterprise.
+            </p>
           </div>
-        </section>
-      )}
 
-      {/* ===== TESTIMONIALS SECTION ===== */}
-      {content.testimonials && content.testimonials.length > 0 && (
-        <section className="py-24 lg:py-32 border-t border-white/5">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center max-w-3xl mx-auto mb-16"
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-                Loved by Industry Leaders
-              </h2>
-              <p className="text-gray-400 text-lg">
-                See what our clients say about working with us
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {content.testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="p-8 rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10"
-                >
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-4">
-                    {Array(testimonial.rating).fill(null).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-gold-400 text-gold-400" />
-                    ))}
-                  </div>
-
-                  {/* Content */}
-                  <p className="text-gray-300 mb-6 italic">"{testimonial.content}"</p>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-4">
-                    {testimonial.image && (
-                      <Image
-                        src={testimonial.image}
-                        alt={testimonial.author}
-                        width={48}
-                        height={48}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                    )}
-                    <div>
-                      <div className="font-semibold text-white">
-                        {testimonial.author}
-                      </div>
-                      <div className="text-sm text-gray-400">
-                        {testimonial.role} at {testimonial.company}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid md:grid-cols-4 gap-4">
+            {content.process.map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative group p-8"
+              >
+                <div className="text-9xl font-black text-white/5 absolute -top-10 -left-4 pointer-events-none group-hover:text-brand-purple/10 transition-colors">
+                  {step.number}
+                </div>
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-neutral-400 font-medium leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* ===== FINAL CTA SECTION ===== */}
-      <section className="py-24 lg:py-32 border-t border-white/5">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative rounded-3xl overflow-hidden"
-          >
-            {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-gold-400/10 to-blue-500/5 -z-10" />
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-gold-400/20 to-transparent rounded-3xl -z-10 blur" />
-
-            <div className="p-12 lg:p-20 text-center max-w-4xl mx-auto">
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-                {content.cta.title}
+      <section className="py-48 lg:py-64 relative overflow-hidden border-t border-white/5">
+        <div className="absolute inset-0 bg-brand-coral/5 opacity-30 blur-[150px] -z-10" />
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto rounded-[60px] border border-white/10 bg-neutral-900/50 backdrop-blur-xl p-16 md:p-32 text-center relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-coral/50 to-transparent" />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8">
+                Ready to <span className="text-brand-coral">Bridge</span> the Gap?
               </h2>
-              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                {content.cta.description}
+              <p className="text-2xl text-neutral-400 font-medium mb-16 max-w-3xl mx-auto">
+                Stop talking about efficiency. Start operating with it.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Link
                   href={content.cta.primaryCta.href}
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-gold-400 to-gold-500 text-navy-950 font-bold rounded-xl hover:shadow-lg hover:shadow-gold-400/50 transition-all group"
+                  className="px-16 py-8 bg-brand-coral text-white text-2xl font-black uppercase tracking-widest rounded-full hover:shadow-[0_0_80px_-15px_rgba(255,109,90,0.6)] transition-all transform hover:-translate-y-2 active:scale-95"
                 >
-                  {content.cta.primaryCta.text}
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Book Your Audit
                 </Link>
                 <Link
-                  href={content.cta.secondaryCta.href}
-                  className="inline-flex items-center justify-center px-8 py-4 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/5 transition-all"
+                  href="/solutions"
+                  className="px-16 py-8 border-2 border-white/10 bg-white/5 text-white text-2xl font-black uppercase tracking-widest rounded-full hover:bg-white/10 transition-all transform hover:-translate-y-2 active:scale-95"
                 >
-                  {content.cta.secondaryCta.text}
+                  Our Solutions
                 </Link>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
     </main>
   )
 }
+

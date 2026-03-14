@@ -66,115 +66,113 @@ export default async function Services() {
     };
 
     return (
-        <>
+        <main className="min-h-screen bg-neutral-950 text-white">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             {/* Hero */}
-            <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-400/[0.03] rounded-full blur-[120px] animate-pulse" />
-
-                <div className="relative z-10 container-max text-center px-4 sm:px-6">
+            <section className="relative pt-40 pb-24 overflow-hidden border-b border-white/5">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-brand-coral/5 blur-[120px] rounded-full -z-10" />
+                
+                <div className="container mx-auto px-4 relative z-10 text-center">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
-                            {hero.badge}
-                        </span>
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10">
+                            <span className="w-2 h-2 rounded-full bg-brand-coral animate-pulse" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">
+                                {hero.badge}
+                            </span>
+                        </div>
                     </ScrollReveal>
                     <ScrollReveal delay={0.1}>
-                        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-tight mb-6">
+                        <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-10">
                             {hero.title}{" "}
                             {(hero as any).titleLine2 && <><br className="hidden sm:block" />{(hero as any).titleLine2} </>}
-                            <span className="gold-text text-glow">{hero.highlight}</span>
+                            <span className="text-brand-coral">{hero.highlight}</span>
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
-                        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 mb-10 leading-relaxed">
+                        <p className="max-w-3xl mx-auto text-xl text-neutral-400 font-medium leading-relaxed mb-12">
                             {hero.description}
                         </p>
                     </ScrollReveal>
                     <ScrollReveal delay={0.3}>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <Button variant="primary" size="lg" href={hero.ctaLink}>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                            <Button variant="primary" size="lg" href={hero.ctaLink} className="px-12 py-8 rounded-full !text-base">
                                 {hero.ctaText}
-                                <ArrowRight className="w-4 h-4" />
+                                <ArrowRight className="w-5 h-5" />
                             </Button>
-                            <Button variant="secondary" size="lg" href="#featured">
-                                Explore Features
+                            <Button variant="secondary" size="lg" href="#featured" className="px-12 py-8 rounded-full !text-base bg-white/5 border-white/10 hover:bg-white/10">
+                                System Capabilities
                             </Button>
                         </div>
                     </ScrollReveal>
                 </div>
             </section>
 
-            {/* Premium GoHighLevel Section */}
+            {/* Premium GoHighLevel Protocol */}
             {ghlService && (
-                <section id="gohighlevel" className="section-padding relative overflow-hidden scroll-mt-24">
-                    <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
-                    <div className="container-max">
-                        <ScrollReveal>
-                            <div className="relative rounded-[2.5rem] overflow-hidden p-8 lg:p-16 glass card-glow border-gold-400/20">
-                                <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gold-400/5 blur-[100px] pointer-events-none" />
+                <section id="gohighlevel" className="py-32 relative overflow-hidden scroll-mt-24 border-b border-white/5">
+                    <div className="container mx-auto px-4">
+                        <div className="relative rounded-[60px] overflow-hidden p-10 lg:p-20 border-2 border-brand-coral/20 bg-neutral-900/30">
+                            <div className="absolute top-0 right-0 w-1/2 h-full bg-brand-coral/5 blur-[120px] pointer-events-none" />
 
-                                <div className="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                                    <div>
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-[10px] font-bold uppercase tracking-widest text-navy-950 gold-gradient rounded-full">
-                                            Premium Feature
-                                        </div>
-                                        <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 leading-tight">
-                                            The Ultimate <br /><span className="gold-text">HighLevel</span> Experience
-                                        </h2>
-                                        <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                                            We don&apos;t just set up CRM accounts. We build intelligent, self-sustaining sales machines using the world&apos;s most powerful marketing platform.
-                                        </p>
+                            <div className="relative z-10 grid lg:grid-cols-2 gap-20 items-center">
+                                <div>
+                                    <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 text-[9px] font-black uppercase tracking-[0.3em] text-white coral-gradient rounded-full">
+                                        Enterprise Grade
+                                    </div>
+                                    <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
+                                        HighLevel <br /><span className="text-brand-coral">Protocol</span>
+                                    </h2>
+                                    <p className="text-neutral-400 text-xl font-medium mb-12 leading-relaxed">
+                                        BridgeFlow custom-engineers intelligent, self-sustaining sales machines using HighLevel&apos;s architecture. We don&apos;t just manage CRM — we deploy revenue systems.
+                                    </p>
 
-                                        <div className="grid sm:grid-cols-2 gap-x-6 gap-y-4 mb-10">
-                                            {ghlService.features.map((feature: string, idx: number) => (
-                                                <div key={idx} className="flex items-start gap-3 group">
-                                                    <div className="mt-1 w-5 h-5 rounded-full bg-gold-400/10 border border-gold-400/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                                                        <CheckCircle2 className="w-3 h-3 text-gold-400" />
-                                                    </div>
-                                                    <span className="text-sm text-gray-300 font-medium">{feature}</span>
+                                    <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6 mb-12">
+                                        {ghlService.features.map((feature: string, idx: number) => (
+                                            <div key={idx} className="flex items-start gap-4 group">
+                                                <div className="mt-1 w-6 h-6 rounded-lg bg-brand-coral/10 border border-brand-coral/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                                    <CheckCircle2 className="w-4 h-4 text-brand-coral" />
                                                 </div>
-                                            ))}
-                                        </div>
-
-                                        <Button variant="primary" size="lg" href="/contact" className="w-full sm:w-auto">
-                                            Get GHL Expert Help
-                                            <ArrowRight className="w-4 h-4" />
-                                        </Button>
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-300 group-hover:text-white transition-colors">{feature}</span>
+                                            </div>
+                                        ))}
                                     </div>
 
-                                    <div className="relative group">
-                                        <div className="absolute -inset-4 bg-gold-400/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                                        <div className="relative aspect-[4/3] rounded-2xl overflow-hidden glass border border-white/10 shadow-2xl">
-                                            <div className="absolute inset-0 bg-gradient-to-br from-gold-400/5 to-navy-950/50" />
-                                            <div className="p-8 h-full flex flex-col">
-                                                <div className="flex items-center justify-between mb-8">
-                                                    <div className="flex gap-2">
-                                                        <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                                                        <div className="w-3 h-3 rounded-full bg-amber-500/50" />
-                                                        <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
+                                    <Button variant="primary" size="lg" href="/contact" className="px-12 py-8 rounded-full !text-base">
+                                        Deploy Expert Solution
+                                        <ArrowRight className="w-5 h-5" />
+                                    </Button>
+                                </div>
+
+                                <div className="relative group">
+                                    <div className="absolute -inset-10 bg-brand-coral/10 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                                    <div className="relative aspect-square rounded-[40px] overflow-hidden border border-white/10 bg-neutral-950 p-1 lg:p-1">
+                                        <div className="h-full w-full rounded-[38px] border border-white/5 p-10 flex flex-col bg-neutral-900/50">
+                                            <div className="flex items-center justify-between mb-12">
+                                                <div className="flex gap-2">
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-brand-coral/40" />
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-brand-purple/40" />
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-brand-teal/40" />
+                                                </div>
+                                                <div className="text-[10px] text-neutral-600 font-black uppercase tracking-widest">GHL_INTEGRATOR_V.4.0</div>
+                                            </div>
+
+                                            <div className="space-y-8 flex-1">
+                                                {[1, 2, 3].map((i) => (
+                                                    <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/5 space-y-3">
+                                                        <div className="h-1.5 w-1/4 bg-brand-coral/30 rounded-full" />
+                                                        <div className="h-1.5 w-full bg-neutral-800 rounded-full" />
                                                     </div>
-                                                    <div className="text-[10px] text-gray-500 font-mono">FLOW_GEN_V.2.0</div>
-                                                </div>
+                                                ))}
+                                            </div>
 
-                                                <div className="space-y-4">
-                                                    {[1, 2, 3].map((i) => (
-                                                        <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/5 animate-shimmer" style={{ animationDelay: `${i * 0.2}s` }}>
-                                                            <div className="h-2 w-1/3 bg-gold-400/20 rounded mb-2" />
-                                                            <div className="h-2 w-full bg-white/5 rounded" />
-                                                        </div>
-                                                    ))}
-                                                </div>
-
-                                                <div className="mt-auto pt-8 flex items-center justify-center">
-                                                    <div className="relative">
-                                                        <div className="absolute inset-0 bg-gold-400/20 blur-xl animate-pulse" />
-                                                        <div className="relative px-6 py-3 rounded-xl gold-gradient text-navy-950 font-bold text-sm shadow-xl">
-                                                            PIPELINE ACTIVE
-                                                        </div>
+                                            <div className="mt-auto pt-12 flex items-center justify-center">
+                                                <div className="relative">
+                                                    <div className="absolute inset-0 bg-brand-coral/20 blur-2xl animate-pulse" />
+                                                    <div className="relative px-8 py-4 rounded-full border border-brand-coral/30 bg-neutral-950 text-brand-coral text-[10px] font-black uppercase tracking-[0.3em]">
+                                                        PIPELINE_SYNCHRONIZED
                                                     </div>
                                                 </div>
                                             </div>
@@ -182,21 +180,27 @@ export default async function Services() {
                                     </div>
                                 </div>
                             </div>
-                        </ScrollReveal>
+                        </div>
                     </div>
                 </section>
             )}
 
-            {/* Other Services Detail */}
-            <section className="section-padding">
-                <div className="container-max">
-                    <SectionHeader
-                        badge="Our Expertise"
-                        title="Specialized"
-                        highlight="solutions"
-                        description="Tailored automation systems built on industry-leading technologies."
-                    />
-                    <div className="space-y-24 mt-16">
+            {/* specialized Solutions Detail */}
+            <section className="py-32">
+                <div className="container mx-auto px-4">
+                    <div className="mb-24">
+                        <ScrollReveal>
+                            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-8">
+                                <span className="w-2 h-2 rounded-full bg-brand-teal" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">Our Expertise</span>
+                            </div>
+                        </ScrollReveal>
+                        <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
+                            Specialized <br /><span className="text-neutral-600">Infrastructure</span>
+                        </h2>
+                    </div>
+
+                    <div className="space-y-32">
                         {otherServices.map((service: any, i: number) => {
                             const lowerTitle = (service.title || "").toLowerCase();
                             const slug = lowerTitle.includes("n8n") ? "n8n" : 
@@ -206,52 +210,57 @@ export default async function Services() {
                                 <ScrollReveal key={service.title}>
                                     <div
                                         id={slug}
-                                        className="scroll-mt-24 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center"
+                                        className={`scroll-mt-40 grid lg:grid-cols-2 gap-20 items-center`}
                                     >
                                         <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                                            <div
-                                                className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-8 shadow-lg shadow-black/20 group-hover:scale-110 transition-transform`}
-                                            >
-                                                <LucideIcon name={service.icon} className="w-7 h-7 text-white" />
+                                            <div className="w-20 h-20 rounded-[24px] bg-neutral-900 border-2 border-white/5 flex items-center justify-center mb-10 group-hover:border-brand-coral/50 transition-all">
+                                                <LucideIcon name={service.icon} className="w-10 h-10 text-brand-coral" />
                                             </div>
-                                            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-6">
+                                            <h2 className="text-5xl font-black uppercase tracking-tighter mb-8 italic">
                                                 {service.title}
                                             </h2>
-                                            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                                            <p className="text-neutral-400 text-xl font-medium leading-relaxed mb-10">
                                                 {service.description}
                                             </p>
-                                            {lowerTitle.includes("consult") ? (
-                                                <Button variant="primary" href="/services/consulting" className="group">
-                                                    View Consulting Packages
-                                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                                </Button>
-                                            ) : (
-                                                <Button variant="secondary" href="/contact" className="group">
-                                                    Get Started
-                                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                                </Button>
-                                            )}
+                                            <div className="flex gap-4">
+                                                {lowerTitle.includes("consult") ? (
+                                                    <Button variant="primary" href="/services/consulting" className="px-10 py-6 rounded-full !text-[11px] font-black uppercase tracking-widest">
+                                                        View Consulting Packages
+                                                        <ArrowRight className="w-4 h-4 ml-2" />
+                                                    </Button>
+                                                ) : (
+                                                    <Button variant="secondary" href="/contact" className="px-10 py-6 rounded-full border-white/10 bg-white/5 hover:bg-white/10 !text-[11px] font-black uppercase tracking-widest">
+                                                        Initiate Onboarding
+                                                        <ArrowRight className="w-4 h-4 ml-2" />
+                                                    </Button>
+                                                )}
+                                            </div>
                                         </div>
+                                        
                                         <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                                            <Card hover={false} className="!p-0 relative overflow-hidden group premium-card">
-                                                <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-transparent via-gold-400/20 to-transparent" />
-                                                <div className="p-8 lg:p-10">
-                                                    <h4 className="text-xs font-bold text-gold-400 uppercase tracking-widest mb-6">
-                                                        Inside the Engine
-                                                    </h4>
-                                                    <ul className="grid sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                                            <div className="relative rounded-[40px] overflow-hidden p-1 lg:p-1 bg-gradient-to-br from-white/10 to-transparent">
+                                                <div className="bg-neutral-900/50 rounded-[38px] p-10 lg:p-12">
+                                                    <div className="flex items-center gap-3 mb-10">
+                                                        <div className="w-1 h-3 bg-brand-coral rounded-full" />
+                                                        <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500">
+                                                            Module architecture
+                                                        </h4>
+                                                    </div>
+                                                    <div className="grid gap-6">
                                                         {service.features.map((feature: string) => (
-                                                            <li
+                                                            <div
                                                                 key={feature}
-                                                                className="flex items-start gap-3 text-gray-300 group/item"
+                                                                className="flex items-center gap-6 group/item"
                                                             >
-                                                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-400 group-hover/item:scale-125 transition-transform" />
-                                                                <span className="text-sm leading-relaxed">{feature}</span>
-                                                            </li>
+                                                                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center group-hover/item:border-brand-coral/30 transition-all">
+                                                                    <div className="w-1.5 h-1.5 rounded-full bg-brand-coral/60" />
+                                                                </div>
+                                                                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 group-hover/item:text-white transition-colors">{feature}</span>
+                                                            </div>
                                                         ))}
-                                                    </ul>
+                                                    </div>
                                                 </div>
-                                            </Card>
+                                            </div>
                                         </div>
                                     </div>
                                 </ScrollReveal>
@@ -261,65 +270,64 @@ export default async function Services() {
                 </div>
             </section>
 
-            {/* Benefits Grid */}
-            <section className="section-padding relative overflow-hidden">
-                <div className="absolute inset-0 bg-navy-900/40" />
-                <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
+            {/* Benefit Grid */}
+            <section className="py-32 bg-neutral-900/30 border-y border-white/5">
+                <div className="container mx-auto px-4">
+                    <div className="mb-24 text-center">
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-8">
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">Operational Excellence</span>
+                        </div>
+                        <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
+                            The BridgeFlow <br /><span className="text-brand-coral">Advantage</span>
+                        </h2>
+                    </div>
 
-                <div className="container-max relative z-10">
-                    <SectionHeader
-                        badge="Why BridgeFlow"
-                        title="Built for"
-                        highlight="high performance"
-                        description="Every solution we deliver is designed to make a measurable impact on your bottom line."
-                    />
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {benefits.map((b: any, i: number) => (
                             <ScrollReveal key={b.title} delay={i * 0.05}>
-                                <Card className="text-center group hover:bg-white/[0.02] transition-colors premium-card">
-                                    <div className="w-14 h-14 rounded-2xl gold-gradient flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-gold-400/10">
-                                        <LucideIcon name={b.icon} className="w-7 h-7 text-navy-950" />
+                                <div className="p-10 rounded-[40px] border border-white/5 bg-neutral-950/50 group hover:border-brand-coral/30 transition-all duration-500 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-brand-coral/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    <div className="w-16 h-16 rounded-[20px] bg-brand-coral/10 border border-brand-coral/20 flex items-center justify-center mb-10 group-hover:scale-110 transition-transform shadow-lg shadow-brand-coral/5">
+                                        <LucideIcon name={b.icon} className="w-8 h-8 text-brand-coral" />
                                     </div>
-                                    <h3 className="text-xl font-display font-bold mb-3">
+                                    <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-6">
                                         {b.title}
                                     </h3>
-                                    <p className="text-sm text-gray-400 leading-relaxed">{b.description}</p>
-                                </Card>
+                                    <p className="text-neutral-500 font-medium leading-relaxed">{b.description}</p>
+                                </div>
                             </ScrollReveal>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="section-padding">
-                <div className="container-max">
+            {/* Strategic Intervention */}
+            <section className="py-40">
+                <div className="container mx-auto px-4">
                     <ScrollReveal>
-                        <div className="relative rounded-[3rem] overflow-hidden p-10 lg:p-20 text-center glass border border-white/10 shadow-2xl">
-                            <div className="absolute inset-0 bg-hero-glow opacity-30 pointer-events-none" />
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gold-400/[0.02] blur-[150px] pointer-events-none" />
-
-                            <div className="relative z-10 max-w-3xl mx-auto">
-                                <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 leading-tight">
-                                    Ready to <span className="gold-text">automate</span> your success?
-                                </h2>
-                                <p className="text-gray-400 text-lg md:text-xl mb-10 leading-relaxed">
-                                    Book a strategy session with our automation architects and we&apos;ll help you map out a roadmap for exponential growth.
-                                </p>
-                                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                                    <Button variant="primary" size="lg" href="/contact" className="w-full sm:w-auto">
-                                        Book Free Session
-                                        <ArrowRight className="w-4 h-4" />
-                                    </Button>
-                                    <Button variant="secondary" size="lg" href="/pricing" className="w-full sm:w-auto">
-                                        View Full Pricing
-                                    </Button>
-                                </div>
+                        <div className="relative rounded-[80px] overflow-hidden p-20 md:p-32 border border-white/10 bg-neutral-900/50 text-center">
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-brand-coral/10 blur-[100px] rounded-full pointer-events-none" />
+                            
+                            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] mb-12 relative z-10">
+                                Automate Your <br /> <span className="text-brand-coral">Success Vector</span>
+                            </h2>
+                            <p className="max-w-2xl mx-auto text-xl text-neutral-400 font-medium mb-16 relative z-10">
+                                Schedule a technical audit with our leads to map your path to autonomous operations.
+                            </p>
+                            
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10">
+                                <Button variant="primary" size="lg" href="/contact" className="px-12 py-8 rounded-full !text-base">
+                                    Initiate Technical Audit
+                                    <ArrowRight className="w-5 h-5" />
+                                </Button>
+                                <Button variant="secondary" href="/pricing" className="px-12 py-8 rounded-full !text-base bg-white/5 border-white/10 hover:bg-white/10">
+                                    Analyze Packages
+                                </Button>
                             </div>
                         </div>
                     </ScrollReveal>
                 </div>
             </section>
-        </>
+        </main>
     );
 }

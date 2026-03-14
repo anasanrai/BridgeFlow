@@ -86,18 +86,18 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-8 text-center"
+        className="rounded-[40px] border border-brand-teal/30 bg-brand-teal/5 p-16 text-center"
       >
-        <div className="flex justify-center mb-4">
-          <CheckCircle className="w-16 h-16 text-emerald-400" />
+        <div className="flex justify-center mb-10">
+          <CheckCircle className="w-20 h-20 text-brand-teal" />
         </div>
-        <h3 className="text-2xl font-bold text-white mb-2">Message Received! 🎉</h3>
-        <p className="text-gray-400 mb-6">{serverMessage}</p>
+        <h3 className="text-4xl font-black uppercase tracking-tighter text-white mb-4">Brief Received</h3>
+        <p className="text-neutral-400 font-bold uppercase tracking-widest text-xs mb-10">{serverMessage}</p>
         <button
           onClick={() => setStatus('idle')}
-          className="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+          className="px-12 py-5 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-white hover:bg-white/10 transition-all"
         >
-          Send another message →
+          Send New Brief
         </button>
       </motion.div>
     )
@@ -109,171 +109,115 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       onSubmit={handleSubmit}
-      className="space-y-6"
+      className="space-y-10"
       noValidate
     >
-      {/* Name + Email */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
-            <User className="w-4 h-4" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="space-y-3">
+          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500 ml-6">Engineering Lead</label>
+          <div className="relative group">
+            <div className="absolute left-8 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-brand-coral transition-colors pointer-events-none">
+              <User className="w-4 h-4" />
+            </div>
+            <input
+              type="text"
+              placeholder="Full Name"
+              {...field('name')}
+              className={`w-full pl-16 pr-8 py-6 rounded-full bg-neutral-900 border ${
+                errors.name ? 'border-brand-coral/50' : 'border-white/5 focus:border-brand-coral/50'
+              } text-white placeholder-neutral-700 focus:outline-none transition-all font-medium`}
+            />
           </div>
-          <input
-            id="name"
-            type="text"
-            placeholder="Full Name"
-            {...field('name')}
-            className={`w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border ${
-              errors.name ? 'border-red-500/50 focus:border-red-500/50' : 'border-white/10 focus:border-gold-400/50'
-            } text-white placeholder-gray-600 focus:outline-none focus:ring-1 ${
-              errors.name ? 'focus:ring-red-500/30' : 'focus:ring-gold-400/20'
-            } transition-all`}
-          />
-          {errors.name && (
-            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="w-3 h-3" /> {errors.name}
-            </p>
-          )}
         </div>
 
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
-            <Mail className="w-4 h-4" />
+        <div className="space-y-3">
+          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500 ml-6">Secure Email</label>
+          <div className="relative group">
+            <div className="absolute left-8 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-brand-coral transition-colors pointer-events-none">
+              <Mail className="w-4 h-4" />
+            </div>
+            <input
+              type="email"
+              placeholder="work@enterprise.com"
+              {...field('email')}
+              className={`w-full pl-16 pr-8 py-6 rounded-full bg-neutral-900 border ${
+                errors.email ? 'border-brand-coral/50' : 'border-white/5 focus:border-brand-coral/50'
+              } text-white placeholder-neutral-700 focus:outline-none transition-all font-medium`}
+            />
           </div>
-          <input
-            id="email"
-            type="email"
-            placeholder="Email Address"
-            {...field('email')}
-            className={`w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border ${
-              errors.email ? 'border-red-500/50 focus:border-red-500/50' : 'border-white/10 focus:border-gold-400/50'
-            } text-white placeholder-gray-600 focus:outline-none focus:ring-1 ${
-              errors.email ? 'focus:ring-red-500/30' : 'focus:ring-gold-400/20'
-            } transition-all`}
-          />
-          {errors.email && (
-            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="w-3 h-3" /> {errors.email}
-            </p>
-          )}
         </div>
       </div>
 
-      {/* Phone + Company */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
-            <Phone className="w-4 h-4" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="space-y-3">
+          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500 ml-6">Communications</label>
+          <div className="relative group">
+            <div className="absolute left-8 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-brand-coral transition-colors pointer-events-none">
+              <Phone className="w-4 h-4" />
+            </div>
+            <input
+              type="tel"
+              placeholder="Phone (optional)"
+              {...field('phone')}
+              className="w-full pl-16 pr-8 py-6 rounded-full bg-neutral-900 border border-white/5 text-white placeholder-neutral-700 focus:outline-none focus:border-brand-coral/50 transition-all font-medium"
+            />
           </div>
-          <input
-            id="phone"
-            type="tel"
-            placeholder="Phone (optional)"
-            {...field('phone')}
-            className="w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all"
+        </div>
+
+        <div className="space-y-3">
+          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500 ml-6">Selection</label>
+          <div className="relative group">
+            <div className="absolute left-8 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-brand-coral transition-colors pointer-events-none z-10">
+              <Package className="w-4 h-4" />
+            </div>
+            <select
+              {...field('package_interest')}
+              className="w-full pl-16 pr-12 py-6 rounded-full bg-neutral-900 border border-white/5 text-white focus:outline-none focus:border-brand-coral/50 transition-all appearance-none cursor-pointer font-medium"
+            >
+              {PACKAGES.map((p) => (
+                <option key={p.value} value={p.value} className="bg-neutral-900">
+                  {p.label}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-600 group-focus-within:text-brand-coral">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500 ml-6">Technical Brief</label>
+        <div className="relative group">
+          <div className="absolute left-8 top-8 text-neutral-600 group-focus-within:text-brand-coral transition-colors pointer-events-none">
+            <MessageSquare className="w-4 h-4" />
+          </div>
+          <textarea
+            rows={6}
+            placeholder="Tell us about your automation goals..."
+            {...field('message')}
+            className={`w-full pl-16 pr-8 py-8 rounded-[40px] bg-neutral-900 border ${
+              errors.message ? 'border-brand-coral/50' : 'border-white/5 focus:border-brand-coral/50'
+            } text-white placeholder-neutral-700 focus:outline-none transition-all resize-none font-medium`}
           />
         </div>
-
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
-            <User className="w-4 h-4" />
-          </div>
-          <input
-            id="company"
-            type="text"
-            placeholder="Company (optional)"
-            {...field('company')}
-            className="w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all"
-          />
-        </div>
       </div>
 
-      {/* Package Interest */}
-      <div className="relative group">
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none z-10">
-          <Package className="w-4 h-4" />
-        </div>
-        <select
-          id="package_interest"
-          {...field('package_interest')}
-          className="w-full pl-12 pr-12 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all appearance-none cursor-pointer"
-        >
-          {PACKAGES.map((p) => (
-            <option key={p.value} value={p.value} className="bg-navy-900">
-              {p.label}
-            </option>
-          ))}
-        </select>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 group-focus-within:text-gold-400 transition-colors">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Message */}
-      <div className="relative group">
-        <div className="absolute left-4 top-4 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
-          <MessageSquare className="w-4 h-4" />
-        </div>
-        <textarea
-          id="message"
-          rows={5}
-          placeholder="Tell us about your project..."
-          {...field('message')}
-          className={`w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border ${
-            errors.message ? 'border-red-500/50 focus:border-red-500/50' : 'border-white/10 focus:border-gold-400/50'
-          } text-white placeholder-gray-600 focus:outline-none focus:ring-1 ${
-            errors.message ? 'focus:ring-red-500/30' : 'focus:ring-gold-400/20'
-          } transition-all resize-none`}
-        />
-        {errors.message && (
-          <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
-            <AlertCircle className="w-3 h-3" /> {errors.message}
-          </p>
-        )}
-        <p className="mt-2 text-xs text-gray-500">
-          {form.message.length}/500 characters
-        </p>
-      </div>
-
-      {/* Error Message */}
-      <AnimatePresence>
-        {status === 'error' && (
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            className="rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-sm text-red-400 flex items-center gap-2"
-          >
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
-            {serverMessage}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full relative py-4 px-6 bg-gold-400 hover:bg-gold-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group/btn overflow-hidden shadow-lg hover:shadow-gold-400/25"
+        className="w-full py-8 coral-gradient text-white text-sm font-black uppercase tracking-[0.3em] rounded-full hover:shadow-[0_0_80px_-15px_rgba(255,109,90,0.6)] transition-all transform hover:-translate-y-1 active:scale-95 disabled:opacity-50"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
-        {status === 'loading' ? (
-          <>
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span className="relative z-10">Processing...</span>
-          </>
-        ) : (
-          <span className="relative z-10 flex items-center gap-2">
-            Send Message <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
-          </span>
-        )}
+        {status === 'loading' ? "TRANSMITTING..." : "SEND Project Brief"}
       </button>
 
-      <p className="text-center text-xs text-gray-500 flex items-center justify-center gap-1">
-        🔒 Your data is encrypted and secure
-      </p>
+      <div className="flex items-center justify-center gap-2 text-neutral-600">
+        <div className="w-1.5 h-1.5 rounded-full bg-brand-teal" />
+        <p className="text-[9px] font-black uppercase tracking-[0.2em]">Encrypted Transmission Protocol Active</p>
+      </div>
     </motion.form>
   )
 }

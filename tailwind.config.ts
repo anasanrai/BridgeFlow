@@ -9,29 +9,21 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                navy: {
-                    950: "#050510",
-                    900: "#0a0a1a",
-                    800: "#0f0f2a",
-                    700: "#15153a",
-                    600: "#1a1a4a",
+                brand: {
+                    coral: "#ff6d5a",
+                    purple: "#8b6dff",
+                    teal: "#14b8a6",
                 },
-                gold: {
-                    50: "#fdf8e8",
-                    100: "#f9ecc4",
-                    200: "#f3d98a",
-                    300: "#ecbf4a",
-                    400: "#e6b422",
-                    500: "#c9a227",
-                    600: "#a68520",
-                    700: "#836819",
-                    800: "#6b5416",
-                    900: "#584514",
+                neutral: {
+                    950: "#0a0a0a",
+                    900: "#141414",
+                    800: "#1f1f1f",
+                    700: "#2a2a2a",
                 },
                 surface: {
-                    card: "#12122a",
-                    hover: "#1a1a3a",
-                    border: "rgba(255, 255, 255, 0.06)",
+                    card: "#141414",
+                    hover: "#1f1f1f",
+                    border: "rgba(255, 255, 255, 0.08)",
                 },
             },
             fontFamily: {

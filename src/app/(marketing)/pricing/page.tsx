@@ -5,6 +5,8 @@ import {
     Button,
     Card,
 } from "@/components/ui";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import { ArrowRight, CheckCircle2, Sparkles, Shield, Clock, Globe, Zap } from "lucide-react";
 import { plans, pricingHero, pricingFAQ } from "@/data/pricing";
 import { getSiteConfig } from "@/lib/supabase-data";
@@ -43,142 +45,119 @@ export default function Pricing() {
     };
 
     return (
-        <>
+        <main className="bg-neutral-950 min-h-screen text-white">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
             />
 
-            {/* Hero */}
-            <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
-                <div className="relative z-10 container-max text-center px-4 sm:px-6">
-                    <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
-                            <Sparkles className="w-3.5 h-3.5" />
+            {/* Hero Section */}
+            <section className="relative pt-40 pb-32 overflow-hidden bg-neutral-950">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-brand-coral/5 blur-[120px] rounded-full -z-10" />
+                
+                <div className="container mx-auto px-4 text-center relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10"
+                    >
+                        <Sparkles className="w-4 h-4 text-brand-coral" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">
                             {pricingHero.badge}
                         </span>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.1}>
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
-                            {pricingHero.title}{" "}
-                            <span className="gold-text">{pricingHero.highlight}</span>
-                        </h1>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.2}>
-                        <p className="max-w-2xl mx-auto text-lg text-gray-400 mb-8">
-                            {pricingHero.description}
-                        </p>
-                    </ScrollReveal>
+                    </motion.div>
+                    
+                    <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
+                        {pricingHero.title} <span className="text-brand-coral">{pricingHero.highlight}</span>
+                    </h1>
+                    
+                    <p className="max-w-2xl mx-auto text-xl text-neutral-400 font-medium mb-12">
+                        {pricingHero.description}
+                    </p>
 
-                    {/* Trust badges */}
-                    <ScrollReveal delay={0.3}>
-                        <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
-                            {[
-                                { icon: Shield, text: "Secure Checkout" },
-                                { icon: Clock, text: "No Long-term Contracts" },
-                                { icon: Zap, text: "ROI Guarantee" },
-                                { icon: Globe, text: "Remote-first, Global" },
-                            ].map(({ icon: Icon, text }) => (
-                                <div key={text} className="flex items-center gap-1.5">
-                                    <Icon className="w-3.5 h-3.5 text-gold-400/60" />
-                                    <span>{text}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </ScrollReveal>
+                    <div className="flex flex-wrap items-center justify-center gap-10">
+                        {[
+                            { icon: Shield, text: "Secure Infrastructure" },
+                            { icon: Clock, text: "Fast Delivery" },
+                            { icon: Zap, text: "ROI Focused" },
+                            { icon: Globe, text: "Global Standards" },
+                        ].map(({ icon: Icon, text }) => (
+                            <div key={text} className="flex items-center gap-3">
+                                <Icon className="w-4 h-4 text-brand-coral" />
+                                <span className="text-[11px] font-black uppercase tracking-widest text-neutral-500">{text}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            {/* Plans */}
-            <section className="section-padding -mt-10">
-                <div className="container-max">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Plans Grid */}
+            <section className="pb-32 relative">
+                <div className="container mx-auto px-4">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {plans.map((plan, i) => (
                             <PricingCard key={plan.name} plan={plan} index={i} />
                         ))}
                     </div>
 
-                    {/* Payment Methods Note */}
-                    <ScrollReveal>
-                        <div className="mt-10 p-5 rounded-2xl bg-white/[0.02] border border-white/5 text-center">
-                            <p className="text-sm text-gray-500 mb-2">
-                                <span className="text-gray-400 font-semibold">Accepted Payment Methods:</span>
-                            </p>
-                            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-600">
-                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
-                                    <Globe className="w-3 h-3 text-blue-400" /> PayPal
+                    {/* Payment Network */}
+                    <div className="mt-24 p-12 rounded-[40px] border border-white/5 bg-neutral-900/50 text-center">
+                        <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-neutral-500 mb-8">Global Payment Network</h4>
+                        <div className="flex flex-wrap items-center justify-center gap-6">
+                            {["PayPal", "Bank Transfer", "Wise", "USDT", "ESewa", "Khalti"].map((method) => (
+                                <span key={method} className="px-6 py-3 rounded-full bg-white/5 border border-white/5 text-[11px] font-bold text-white uppercase tracking-widest">
+                                    {method}
                                 </span>
-                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
-                                    🏦 Bank Transfer
-                                </span>
-                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
-                                    💳 Payoneer
-                                </span>
-                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
-                                    🌐 Wise
-                                </span>
-                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
-                                    🪙 USDT
-                                </span>
-                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
-                                    🇳🇵 eSewa / Khalti
-                                </span>
-                            </div>
+                            ))}
                         </div>
-                    </ScrollReveal>
+                    </div>
                 </div>
             </section>
 
-            {/* FAQ */}
-            <section className="section-padding bg-navy-900/20">
-                <div className="container-max max-w-3xl">
-                    <SectionHeader
-                        badge="FAQ"
-                        title="Frequently asked"
-                        highlight="questions"
-                    />
-                    <div className="space-y-6">
+            {/* FAQ Overhaul */}
+            <section className="py-32 lg:py-64 border-t border-white/5">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div className="text-center mb-20">
+                        <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-4">
+                            Transparent <span className="text-brand-teal">Intel</span>
+                        </h2>
+                        <p className="text-lg text-neutral-400 font-bold uppercase tracking-widest">Common Questions Answered</p>
+                    </div>
+
+                    <div className="space-y-4">
                         {pricingFAQ.map((item) => (
-                            <ScrollReveal key={item.q}>
-                                <Card>
-                                    <h4 className="text-lg font-display font-bold mb-2">
-                                        {item.q}
-                                    </h4>
-                                    <p className="text-gray-400 text-sm leading-relaxed">
-                                        {item.a}
-                                    </p>
-                                </Card>
-                            </ScrollReveal>
+                            <div key={item.q} className="p-10 rounded-[40px] border border-white/5 bg-neutral-900/30">
+                                <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+                                    {item.q}
+                                </h4>
+                                <p className="text-neutral-400 font-medium leading-relaxed">
+                                    {item.a}
+                                </p>
+                            </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="section-padding">
-                <div className="container-max">
-                    <ScrollReveal>
-                        <div className="relative rounded-3xl overflow-hidden p-10 lg:p-16 text-center glass card-glow">
-                            <div className="absolute inset-0 bg-hero-glow opacity-50" />
-                            <div className="relative z-10">
-                                <h2 className="text-3xl sm:text-4xl font-display font-bold mb-4">
-                                    Need something{" "}
-                                    <span className="gold-text">custom?</span>
-                                </h2>
-                                <p className="text-gray-400 text-lg max-w-xl mx-auto mb-8">
-                                    Every business is different. Let&apos;s build a plan
-                                    that fits your exact needs and budget.
-                                </p>
-                                <Button variant="primary" size="lg" href="/contact">
-                                    Talk to Sales
-                                    <ArrowRight className="w-4 h-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    </ScrollReveal>
+            {/* Final CTA */}
+            <section className="py-32 lg:py-64">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-5xl mx-auto rounded-[60px] border border-white/10 p-20 text-center relative overflow-hidden bg-brand-coral">
+                        <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-white mb-6">
+                            Enterprise Custom?
+                        </h2>
+                        <p className="text-xl text-white/80 font-bold uppercase tracking-widest mb-12">
+                            Hybrid plans for unique requirements
+                        </p>
+                        <Link
+                            href="/contact"
+                            className="inline-block px-16 py-8 bg-white text-brand-coral text-2xl font-black uppercase tracking-widest rounded-full hover:shadow-[0_0_80px_-15px_rgba(255,255,255,0.4)] transition-all transform hover:-translate-y-2 active:scale-95"
+                        >
+                            Talk to Scale
+                        </Link>
+                    </div>
                 </div>
             </section>
-        </>
+        </main>
     );
 }

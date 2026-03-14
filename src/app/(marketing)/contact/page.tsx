@@ -82,201 +82,125 @@ export default async function Contact() {
     ];
 
     return (
-        <>
-            {/* Hero */}
-            <section className="relative pt-32 pb-12 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
-                <div className="relative z-10 container-max text-center px-4 sm:px-6">
+        <main className="min-h-screen bg-neutral-950 text-white">
+            {/* Hero Section */}
+            <section className="relative pt-40 pb-20 overflow-hidden border-b border-white/5">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-brand-coral/5 blur-[120px] rounded-full -z-10" />
+                
+                <div className="container mx-auto px-4 text-center relative z-10">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
-                            Contact Us
-                        </span>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.1}>
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
-                            Let&apos;s build something{" "}
-                            <span className="gold-text">amazing</span>
-                        </h1>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.2}>
-                        <p className="max-w-2xl mx-auto text-lg text-gray-400">
-                            Book a free 30-minute strategy call or fill out
-                            the form below. We respond within 24 hours.
-                        </p>
-                    </ScrollReveal>
-                </div>
-            </section>
-
-            {/* Calendly Section */}
-            <section className="section-padding pt-12 pb-6">
-                <div className="container-max max-w-4xl">
-                    <ScrollReveal>
-                        <div className="text-center mb-8">
-                            <h2 className="text-2xl sm:text-3xl font-display font-bold mb-3">
-                                Book a Free{" "}
-                                <span className="gold-text">
-                                    Strategy Call
-                                </span>
-                            </h2>
-                            <p className="text-gray-400">
-                                Pick a time that works for you — no back
-                                and forth emails.
-                            </p>
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10">
+                            <Mail className="w-4 h-4 text-brand-coral" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">
+                                Contact Infrastructure
+                            </span>
                         </div>
                     </ScrollReveal>
-                    <ScrollReveal delay={0.1}>
-                        <CalendlyEmbed url="https://calendly.com/raianasan10/30min" />
-                    </ScrollReveal>
+                    
+                    <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
+                        Secure Your <span className="text-brand-coral">Pipeline</span>
+                    </h1>
+                    
+                    <p className="max-w-2xl mx-auto text-xl text-neutral-400 font-medium">
+                        Book a strategic consultation or send a direct brief. Our engineering team responds within 24 hours.
+                    </p>
                 </div>
             </section>
 
-            {/* Divider */}
-            <div className="container-max max-w-4xl py-8">
-                <div className="flex items-center gap-4">
-                    <div className="flex-1 h-px bg-white/10" />
-                    <span className="text-gray-500 text-sm whitespace-nowrap">
-                        — Or fill out the form below —
-                    </span>
-                    <div className="flex-1 h-px bg-white/10" />
-                </div>
-            </div>
+            {/* Main Interaction Area */}
+            <section className="py-24">
+                <div className="container mx-auto px-4">
+                    <div className="grid lg:grid-cols-12 gap-16">
+                        {/* Form & Calendly Side */}
+                        <div className="lg:col-span-8 space-y-16">
+                            {/* Calendly */}
+                            <div>
+                                <div className="mb-10">
+                                    <h2 className="text-4xl font-black uppercase tracking-tighter mb-2">Strategy Call</h2>
+                                    <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs">Direct Access to Engineering</p>
+                                </div>
+                                <div className="rounded-[40px] overflow-hidden border border-white/5 bg-neutral-900/30">
+                                    <CalendlyEmbed url="https://calendly.com/raianasan10/30min" />
+                                </div>
+                            </div>
 
-            {/* Contact Form + Info */}
-            <section className="section-padding pt-6">
-                <div className="container-max">
-                    <div className="grid lg:grid-cols-5 gap-10 lg:gap-16">
-                        {/* Form */}
-                        <div className="lg:col-span-3">
-                            <ScrollReveal>
-                                <Card
-                                    hover={false}
-                                    className="!p-8 lg:!p-10"
-                                >
+                            {/* Direct Form */}
+                            <div id="brief">
+                                <div className="mb-10">
+                                    <h2 className="text-4xl font-black uppercase tracking-tighter mb-2">Project Brief</h2>
+                                    <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs">Send detailed requirements</p>
+                                </div>
+                                <div className="p-10 rounded-[40px] border border-white/5 bg-neutral-900/50">
                                     <ContactForm />
-                                </Card>
-                            </ScrollReveal>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Info Sidebar */}
-                        <div className="lg:col-span-2 space-y-6">
-                            <ScrollReveal delay={0.1}>
-                                <Card hover={false}>
-                                    <h3 className="text-lg font-display font-bold mb-6">
-                                        Get in touch
-                                    </h3>
-                                    <div className="space-y-5">
-                                        {contactInfo.map((info) => (
-                                            <div
-                                                key={info.label}
-                                                className="flex items-start gap-4"
-                                            >
-                                                <div className="w-10 h-10 rounded-lg gold-gradient flex items-center justify-center flex-shrink-0">
-                                                    <info.icon className="w-5 h-5 text-navy-950" />
-                                                </div>
-                                                <div>
-                                                    <div className="text-xs text-gray-500 uppercase tracking-wider mb-0.5">
-                                                        {info.label}
-                                                    </div>
-                                                    {info.href ? (
-                                                        <a
-                                                            href={
-                                                                info.href
-                                                            }
-                                                            className="text-sm text-white hover:text-gold-400 transition-colors"
-                                                        >
-                                                            {info.value}
-                                                        </a>
-                                                    ) : (
-                                                        <div className="text-sm text-white">
-                                                            {info.value}
-                                                        </div>
-                                                    )}
-                                                </div>
+                        <div className="lg:col-span-4 space-y-8">
+                            {/* Contact Details */}
+                            <div className="p-10 rounded-[40px] border border-white/5 bg-neutral-900/30">
+                                <h3 className="text-xl font-black uppercase tracking-tight text-white mb-8">Global Access</h3>
+                                <div className="space-y-8">
+                                    {contactInfo.map((info) => (
+                                        <div key={info.label} className="flex items-start gap-4">
+                                            <div className="w-12 h-12 rounded-2xl bg-brand-coral/10 border border-brand-coral/20 flex items-center justify-center flex-shrink-0">
+                                                <info.icon className="w-5 h-5 text-brand-coral" />
                                             </div>
-                                        ))}
-                                    </div>
-                                </Card>
-                            </ScrollReveal>
+                                            <div>
+                                                <div className="text-[10px] font-black text-neutral-600 uppercase tracking-widest mb-1">{info.label}</div>
+                                                {info.href ? (
+                                                    <a href={info.href} className="text-sm font-bold text-white hover:text-brand-coral transition-colors">
+                                                        {info.value}
+                                                    </a>
+                                                ) : (
+                                                    <div className="text-sm font-bold text-white">{info.value}</div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
 
-                            <ScrollReveal delay={0.2}>
-                                <Card hover={false}>
-                                    <h3 className="text-lg font-display font-bold mb-4">
-                                        Connect With Us
-                                    </h3>
-                                    <div className="flex flex-wrap gap-3">
-                                        {([
-                                            { href: "https://www.linkedin.com/company/bridgeflow-agency", Icon: Linkedin, label: "LinkedIn", hoverCls: "hover:text-[#0A66C2] hover:border-[#0A66C2]/30" },
-                                            { href: "https://twitter.com/bridgeflowai", Icon: Twitter, label: "Twitter / X", hoverCls: "hover:text-[#1DA1F2] hover:border-[#1DA1F2]/30" },
-                                            { href: "https://www.youtube.com/@bridgeflow", Icon: Youtube, label: "YouTube", hoverCls: "hover:text-[#FF0000] hover:border-[#FF0000]/30" },
-                                            { href: "https://www.instagram.com/bridgeflowai", Icon: Instagram, label: "Instagram", hoverCls: "hover:text-[#E1306C] hover:border-[#E1306C]/30" },
-                                            { href: "https://github.com/bridgeflow", Icon: Github, label: "GitHub", hoverCls: "hover:text-white hover:border-white/30" },
-                                            { href: "https://www.facebook.com/bridgeflowai", Icon: Facebook, label: "Facebook", hoverCls: "hover:text-[#1877F2] hover:border-[#1877F2]/30" },
-                                            { href: "https://t.me/bridgeflowai", Icon: MessageCircle, label: "Telegram", hoverCls: "hover:text-[#26A5E4] hover:border-[#26A5E4]/30" },
-                                            { href: `mailto:${site.email || "hello@bridgeflow.agency"}`, Icon: Mail, label: "Email", hoverCls: "hover:text-gold-400 hover:border-gold-400/30" },
-                                        ] as const).map(({ href, Icon, label, hoverCls }) => (
-                                            <a
-                                                key={label}
-                                                href={href}
-                                                target={href.startsWith("mailto") ? undefined : "_blank"}
-                                                rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                                                aria-label={label}
-                                                title={label}
-                                                className={`w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 transition-all ${hoverCls}`}
-                                            >
-                                                <Icon className="w-5 h-5" />
-                                            </a>
-                                        ))}
-                                    </div>
-                                </Card>
-                            </ScrollReveal>
+                            {/* Social Presence */}
+                            <div className="p-10 rounded-[40px] border border-white/5 bg-neutral-900/30">
+                                <h3 className="text-xl font-black uppercase tracking-tight text-white mb-8">Network</h3>
+                                <div className="grid grid-cols-4 gap-4">
+                                    {[
+                                        { Icon: Linkedin, href: "https://www.linkedin.com/company/bridgeflow-agency" },
+                                        { Icon: Twitter, href: "https://twitter.com/bridgeflowai" },
+                                        { Icon: Github, href: "https://github.com/bridgeflow" },
+                                        { Icon: Youtube, href: "https://www.youtube.com/@bridgeflow" },
+                                    ].map((social, i) => (
+                                        <a
+                                            key={i}
+                                            href={social.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-full aspect-square rounded-2xl border border-white/5 bg-white/5 flex items-center justify-center text-neutral-400 hover:text-brand-coral hover:border-brand-coral/50 transition-all"
+                                        >
+                                            <social.Icon className="w-5 h-5" />
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
 
-                            <ScrollReveal delay={0.3}>
-                                <Card
-                                    hover={false}
-                                    className="!bg-gold-400/5 !border-gold-400/15"
-                                >
-                                    <h3 className="text-lg font-display font-bold mb-2">
-                                        Free Consultation
-                                    </h3>
-                                    <p className="text-sm text-gray-400 mb-4">
-                                        Not sure where to start? Book a
-                                        free 30-minute strategy call with
-                                        one of our automation experts.
-                                    </p>
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        href="https://calendly.com/raianasan10/30min"
-                                    >
-                                        <Calendar className="w-3 h-3" />
-                                        Book a Call
-                                        <ArrowRight className="w-3 h-3" />
-                                    </Button>
-                                </Card>
-                            </ScrollReveal>
+                            {/* Quick Stats/Trust */}
+                            <div className="p-10 rounded-[40px] border-2 border-brand-teal/20 bg-brand-teal/5">
+                                <h3 className="text-xl font-black uppercase tracking-tight text-brand-teal mb-4">Enterprise Standard</h3>
+                                <ul className="space-y-4">
+                                    {trustBadges.map((badge) => (
+                                        <li key={badge.text} className="flex items-center gap-3">
+                                            <span className="text-lg">{badge.emoji}</span>
+                                            <span className="text-[11px] font-black uppercase tracking-widest text-neutral-300">{badge.text}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     </div>
-
-                    {/* Trust Badges */}
-                    <ScrollReveal>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
-                            {trustBadges.map((badge) => (
-                                <div
-                                    key={badge.text}
-                                    className="rounded-xl glass border border-white/10 p-4 text-center"
-                                >
-                                    <span className="text-2xl block mb-2">
-                                        {badge.emoji}
-                                    </span>
-                                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                        {badge.text}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </ScrollReveal>
                 </div>
             </section>
-        </>
+        </main>
     );
 }
