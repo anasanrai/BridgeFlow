@@ -1,4 +1,4 @@
-import { createClientSideClient } from "@/lib/supabase/client";
+import { createServerSideClient } from "@/lib/supabase/server";
 import { unstable_cache } from "next/cache";
 
 // Import local fallbacks
@@ -11,7 +11,7 @@ import * as siteData from "@/data/site";
 
 import { Database } from "@/types/database";
 
-const getPublicClient = createClientSideClient;
+const getPublicClient = createServerSideClient;
 
 // ─── Cached data fetchers (ISR — revalidate every 60 seconds) ───
 
@@ -19,13 +19,15 @@ export const getSiteConfig = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
+            if (!sb) throw new Error("No Supabase client");
 
             const [configRes, settingsRes] = await Promise.all([
                 (sb.from("site_config" as any) as any).select("*").limit(1).single(),
                 (sb.from("site_settings" as any) as any).select("*").limit(1).single()
             ]);
 
+            if (configRes.error) console.error("Error fetching site_config:", configRes.error);
+            if (settingsRes.error) console.error("Error fetching site_settings:", settingsRes.error);
 
             const config = configRes.data as Database['public']['Tables']['site_config']['Row'] | null;
             const settings = settingsRes.data as Database['public']['Tables']['site_settings']['Row'] | null;
@@ -76,14 +78,11 @@ export const getSiteConfig = unstable_cache(
                         : (Array.isArray((config as any).live_demos) && (config as any).live_demos.length > 0 ? (config as any).live_demos : null),
                 };
             }
-        } catch { }
-
-        // 3. Fallback logic: Ensure standard links exist in local data before returning
-        const hasTemplates = siteData.navLinks.some(link => link.href === '/templates');
-        if (!hasTemplates) {
-            siteData.navLinks.splice(2, 0, { label: "Templates", href: "/templates" });
+        } catch (err) {
+            console.error("Critical error in getSiteConfigCached:", err);
         }
 
+        // Fallback logic
         return {
             name: siteData.siteConfig.name,
             tagline: siteData.siteConfig.tagline,
@@ -108,10 +107,15 @@ export const getHomeContent = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("home_content").select("*").limit(1).single() as { data: Database['public']['Tables']['home_content']['Row'] | null };
+            if (!sb) throw new Error("No Supabase client");
+            const { data, error } = await sb.from("home_content").select("*").limit(1).single() as { data: Database['public']['Tables']['home_content']['Row'] | null, error: any };
+            
+            if (error) {
+                console.error("Error fetching home_content:", error);
+                throw error;
+            }
+
             if (data) return {
-                // Merge DB values with defaults to ensure all enterprise fields are present
                 hero: data.hero ? { ...homeData.defaultHomeContent.hero, ...data.hero as any } : homeData.defaultHomeContent.hero,
                 stats: Array.isArray(data.stats) && data.stats.length > 0 ? data.stats : homeData.defaultHomeContent.stats,
                 features: Array.isArray(data.services_overview) && data.services_overview.length > 0 ? data.services_overview : homeData.defaultHomeContent.features,
@@ -120,7 +124,9 @@ export const getHomeContent = unstable_cache(
                 testimonials: Array.isArray(data.testimonials) && data.testimonials.length > 0 ? data.testimonials : homeData.defaultHomeContent.testimonials,
                 cta: data.cta ? { ...homeData.defaultHomeContent.cta, ...data.cta as any } : homeData.defaultHomeContent.cta,
             };
-        } catch { }
+        } catch (err) {
+            console.error("Critical error in getHomeContentCached:", err);
+        }
         return homeData.defaultHomeContent;
     },
     ["home-content"],
@@ -131,12 +137,15 @@ export const getServices = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
+            if (!sb) throw new Error("No Supabase client");
             const [servicesRes, benefitsRes, metadataRes] = await Promise.all([
                 sb.from("services").select("*").eq("is_active", true).order("sort_order"),
                 sb.from("benefits").select("*").order("sort_order"),
                 sb.from("page_metadata").select("*").eq("path", "/services").single(),
             ]);
+
+            if (servicesRes.error) console.error("Error fetching services:", servicesRes.error);
+            if (benefitsRes.error) console.error("Error fetching benefits:", benefitsRes.error);
 
             const hero = {
                 ...servicesData.servicesHero,
@@ -160,7 +169,9 @@ export const getServices = unstable_cache(
                 services,
                 benefits: Array.isArray(benefitsRes.data) && benefitsRes.data.length > 0 ? benefitsRes.data : servicesData.benefits,
             };
-        } catch { }
+        } catch (err) {
+            console.error("Critical error in getServicesCached:", err);
+        }
         return {
             hero: servicesData.servicesHero,
             services: servicesData.services,
@@ -175,17 +186,20 @@ export const getAboutContent = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
+            if (!sb) throw new Error("No Supabase client");
             // Use correct table names matching the admin dashboard
-            const [valuesRes, teamRes, techRes, milestonesRes, settingsRes] = await Promise.all([
+            const [valuesRes, teamRes, techRes, milestonesRes, settingsRes, configRes] = await Promise.all([
                 sb.from("company_values").select("*").order("sort_order"),
                 sb.from("team_members").select("*").eq("is_active", true).order("sort_order"),
                 sb.from("tech_stack").select("*").order("sort_order"),
                 sb.from("milestones").select("*").order("sort_order"),
                 sb.from("site_settings").select("*").limit(1).single(),
+                sb.from("site_config").select("*").limit(1).single()
             ]);
 
-            const config = (await sb.from("site_config").select("*").limit(1).single()).data as Database['public']['Tables']['site_config']['Row'] | null;
+            if (valuesRes.error) console.error("Error fetching company_values:", valuesRes.error);
+            if (teamRes.error) console.error("Error fetching team_members:", teamRes.error);
+
             const settings = settingsRes.data as Database['public']['Tables']['site_settings']['Row'] | null;
 
             const founderImageUrl = settings?.founder_image;
@@ -207,7 +221,9 @@ export const getAboutContent = unstable_cache(
                 techStack: techRes.data?.length ? techRes.data : aboutData.techStack,
                 milestones: milestonesRes.data?.length ? milestonesRes.data : aboutData.milestones,
             };
-        } catch { }
+        } catch (err) {
+            console.error("Critical error in getAboutContentCached:", err);
+        }
         return {
             hero: aboutData.aboutHero,
             mission: {
@@ -228,14 +244,19 @@ export const getBlogPosts = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("blog_posts").select("*").eq("is_published", true).order("created_at", { ascending: false }) as { data: Database['public']['Tables']['blog_posts']['Row'][] | null };
+            if (!sb) throw new Error("No Supabase client");
+            const { data, error } = await sb.from("blog_posts").select("*").eq("is_published", true).order("created_at", { ascending: false }) as { data: Database['public']['Tables']['blog_posts']['Row'][] | null, error: any };
+            
+            if (error) console.error("Error fetching blog_posts:", error);
+            
             if (data && data.length > 0) return data.map((p) => ({
                 ...p,
                 date: new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
                 readTime: p.read_time,
             }));
-        } catch { }
+        } catch (err) {
+            console.error("Critical error in getBlogPostsCached:", err);
+        }
         return blogData.posts;
     },
     ["blog-posts"],
@@ -263,10 +284,15 @@ export const getCaseStudies = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
-            const { data } = await sb.from("case_studies").select("*").eq("is_published", true).order("sort_order");
+            if (!sb) throw new Error("No Supabase client");
+            const { data, error } = await sb.from("case_studies").select("*").eq("is_published", true).order("sort_order");
+            
+            if (error) console.error("Error fetching case_studies:", error);
+            
             if (data && data.length > 0) return data;
-        } catch { }
+        } catch (err) {
+            console.error("Critical error in getCaseStudiesCached:", err);
+        }
         return caseStudiesData.caseStudies;
     },
     ["case-studies"],
@@ -317,14 +343,15 @@ export const getAllSearchItems = unstable_cache(
     async () => {
         try {
             const sb = getPublicClient();
-            if (!sb) throw new Error("No Supabase");
+            if (!sb) throw new Error("No Supabase client");
 
             const [blogRes, caseStudiesRes] = await Promise.all([
                 (sb.from("blog_posts" as any) as any).select("title, slug, excerpt").eq("is_published", true),
                 (sb.from("case_studies" as any) as any).select("title, slug, excerpt").eq("is_published", true),
             ]);
 
-
+            if (blogRes.error) console.error("Error fetching blog search items:", blogRes.error);
+            if (caseStudiesRes.error) console.error("Error fetching case search items:", caseStudiesRes.error);
 
             const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];
 
@@ -341,7 +368,9 @@ export const getAllSearchItems = unstable_cache(
             }
 
             if (items.length > 0) return items;
-        } catch { }
+        } catch (err) {
+            console.error("Critical error in getAllSearchItemsCached:", err);
+        }
 
         // Fallback to local static data
         const items: Array<{ title: string; href: string; type: string; excerpt?: string }> = [];

@@ -3,7 +3,7 @@
  * Abstracts away specific LLM provider logic.
  */
 
-export type AIProvider = 'openai' | 'gemini' | 'anthropic' | 'replicate' | 'ollama' | 'modal';
+export type AIProvider = 'openrouter' | 'gemini' | 'anthropic' | 'replicate' | 'ollama' | 'modal';
 
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
@@ -36,29 +36,29 @@ export async function chatCompletion(
   options: ChatOptions = {},
   preferredProvider?: AIProvider
 ): Promise<ChatResponse> {
-  const provider = preferredProvider || (process.env.DEFAULT_AI_PROVIDER as AIProvider) || 'openai';
+  const provider = preferredProvider || (process.env.DEFAULT_AI_PROVIDER as AIProvider) || 'openrouter';
   
   switch (provider) {
-    case 'openai':
-      return callOpenAI(messages, options);
+    case 'openrouter':
+      return callOpenRouter(messages, options);
     case 'gemini':
       return callGemini(messages, options);
-    // Add other providers here...
     default:
       throw new Error(`AI Provider ${provider} not implemented`);
   }
 }
 
-async function callOpenAI(messages: ChatMessage[], options: ChatOptions): Promise<ChatResponse> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const baseUrl = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
-  const model = options.model || process.env.OPENAI_CHAT_MODEL || "gpt-4.1-mini";
+async function callOpenRouter(messages: ChatMessage[], options: ChatOptions): Promise<ChatResponse> {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  const model = options.model || process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001";
 
-  const response = await fetch(`${baseUrl}/chat/completions`, {
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "https://bridgeflow.agency",
+      "X-Title": "BridgeFlow",
     },
     body: JSON.stringify({
       model,
@@ -70,19 +70,19 @@ async function callOpenAI(messages: ChatMessage[], options: ChatOptions): Promis
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`OpenAI Error (${response.status}): ${errorText}`);
+    throw new Error(`OpenRouter Error (${response.status}): ${errorText}`);
   }
 
   const data = await response.json();
   return {
     content: data.choices[0].message.content,
-    provider: 'openai',
+    provider: 'openrouter',
     model,
-    usage: {
+    usage: data.usage ? {
       promptTokens: data.usage.prompt_tokens,
       completionTokens: data.usage.completion_tokens,
       totalTokens: data.usage.total_tokens,
-    }
+    } : undefined,
   };
 }
 

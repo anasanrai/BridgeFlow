@@ -149,34 +149,35 @@ export default function AuditPage() {
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">Website URL</label>
-                                    <div className="relative">
-                                        <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                                        <input
-                                            type="url"
-                                            required
-                                            value={url}
-                                            onChange={(e) => setUrl(e.target.value)}
-                                            placeholder="https://your-business.com"
-                                            className="w-full pl-12 pr-4 py-4 bg-navy-900 border border-white/10 rounded-2xl focus:outline-none focus:border-gold-400/50 transition-colors bg-navy-950/50"
-                                        />
-                                    </div>
-                                </div>
+                                <label className="relative group block">
+                                    <input
+                                        type="url"
+                                        required
+                                        value={url}
+                                        onChange={(e) => setUrl(e.target.value)}
+                                        placeholder=" "
+                                        className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
+                                    />
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+                                        Website URL
+                                    </span>
+                                    <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
+                                </label>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">Business Email</label>
-                                    <div className="relative">
-                                        <Zap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                                        <input
-                                            type="email"
-                                            required
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="you@email.com"
-                                            className="w-full pl-12 pr-4 py-4 bg-navy-900 border border-white/10 rounded-2xl focus:outline-none focus:border-gold-400/50 transition-colors bg-navy-950/50"
-                                        />
-                                    </div>
-                                </div>
+                                <label className="relative group block">
+                                    <input
+                                        type="email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder=" "
+                                        className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
+                                    />
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+                                        Business Email
+                                    </span>
+                                    <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
+                                </label>
 
                                 {status === "error" && (
                                     <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
@@ -187,18 +188,19 @@ export default function AuditPage() {
                                 <button
                                     type="submit"
                                     disabled={status === "loading"}
-                                    className="w-full py-4 gold-gradient text-navy-950 font-bold text-lg rounded-2xl flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-gold-400/20 transition-all active:scale-95 disabled:opacity-70"
+                                    className="w-full relative py-4 gold-gradient text-navy-950 font-bold text-lg rounded-2xl flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-gold-400/20 transition-all group/btn overflow-hidden active:scale-95 disabled:opacity-70"
                                 >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-shimmer-btn transition-transform" />
                                     {status === "loading" ? (
                                         <>
                                             <Loader2 className="w-5 h-5 animate-spin" />
                                             Scanning for leaks...
                                         </>
                                     ) : (
-                                        <>
+                                        <span className="relative z-10 flex items-center gap-3">
                                             Reveal My Revenue Leaks
-                                            <ArrowRight className="w-5 h-5" />
-                                        </>
+                                            <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                                        </span>
                                     )}
                                 </button>
 

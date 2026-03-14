@@ -99,9 +99,12 @@ export default async function About() {
                             <div className="grid grid-cols-2 gap-4">
                                 {values.map((v: any) => (
                                     <Card key={v.title}>
-                                        <span className="text-3xl mb-3 block">
-                                            {v.emoji || "⚡"}
-                                        </span>
+                                        <div className="w-12 h-12 rounded-lg bg-gold-400/10 flex items-center justify-center mb-4">
+                                            <LucideIcon
+                                                name={v.icon || "Zap"}
+                                                className="w-6 h-6 text-gold-400"
+                                            />
+                                        </div>
                                         <h3 className="font-display font-bold mb-1">
                                             {v.title}
                                         </h3>

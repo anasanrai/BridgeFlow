@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface FormState {
   name: string
@@ -89,121 +89,143 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
           Send another message
         </button>
       </div>
-    )
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+     return (
+    <motion.form 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      onSubmit={handleSubmit} 
+      className="space-y-6" 
+      noValidate
+    >
       {/* Name + Email */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1.5">
-            Full Name <span className="text-red-400">*</span>
-          </label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <label className="relative group block">
           <input
             id="name"
             type="text"
-            placeholder="Your name"
+            placeholder=" "
             {...field('name')}
-            className={`w-full px-4 py-3 rounded-xl bg-white/5 border ${
+            className={`w-full px-5 py-4 rounded-xl bg-white/5 border ${
               errors.name ? 'border-red-500/50' : 'border-white/10'
-            } text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition`}
+            } text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer`}
           />
-          {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name}</p>}
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1.5">
-            Email Address <span className="text-red-400">*</span>
-          </label>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+            Full Name <span className="text-red-400">*</span>
+          </span>
+          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
+          {errors.name && <p className="mt-1 text-xs text-red-400 ml-1">{errors.name}</p>}
+        </label>
+
+        <label className="relative group block">
           <input
             id="email"
             type="email"
-            placeholder="you@company.com"
+            placeholder=" "
             {...field('email')}
-            className={`w-full px-4 py-3 rounded-xl bg-white/5 border ${
+            className={`w-full px-5 py-4 rounded-xl bg-white/5 border ${
               errors.email ? 'border-red-500/50' : 'border-white/10'
-            } text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition`}
+            } text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer`}
           />
-          {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
-        </div>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+            Email Address <span className="text-red-400">*</span>
+          </span>
+          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
+          {errors.email && <p className="mt-1 text-xs text-red-400 ml-1">{errors.email}</p>}
+        </label>
       </div>
 
       {/* Phone + Package */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1.5">
-            Phone (optional)
-          </label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <label className="relative group block">
           <input
             id="phone"
             type="tel"
-            placeholder="+1 (555) 000-0000"
+            placeholder=" "
             {...field('phone')}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition"
+            className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
           />
-        </div>
-        <div>
-          <label htmlFor="package_interest" className="block text-sm font-medium text-gray-300 mb-1.5">
-            Package Interest
-          </label>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+            Phone (optional)
+          </span>
+          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
+        </label>
+
+        <label className="relative group block">
           <select
             id="package_interest"
             {...field('package_interest')}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition appearance-none"
+            className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all appearance-none cursor-pointer"
           >
             {PACKAGES.map((p) => (
               <option key={p.value} value={p.value} className="bg-gray-900">
-                {p.label}
+                {p.label || 'Select a package (optional)'}
               </option>
             ))}
           </select>
-        </div>
+          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 group-focus-within:text-gold-400 transition-colors">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </label>
       </div>
 
       {/* Message */}
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1.5">
-          Project Details <span className="text-red-400">*</span>
-        </label>
+      <label className="relative group block">
         <textarea
           id="message"
           rows={5}
-          placeholder="Tell us about your business, what you want to automate, and your current tools..."
+          placeholder=" "
           {...field('message')}
-          className={`w-full px-4 py-3 rounded-xl bg-white/5 border ${
+          className={`w-full px-5 py-4 rounded-xl bg-white/5 border ${
             errors.message ? 'border-red-500/50' : 'border-white/10'
-          } text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition resize-none`}
+          } text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer resize-none`}
         />
-        {errors.message && <p className="mt-1 text-xs text-red-400">{errors.message}</p>}
-      </div>
+        <span className="absolute left-4 top-6 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+          Project Details <span className="text-red-400">*</span>
+        </span>
+        <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
+        {errors.message && <p className="mt-1 text-xs text-red-400 ml-1">{errors.message}</p>}
+      </label>
 
       {status === 'error' && (
-        <div className="rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-sm text-red-400">
+        <motion.div 
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-sm text-red-400"
+        >
           {serverMessage}
-        </div>
+        </motion.div>
       )}
 
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full py-3.5 px-6 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 disabled:cursor-not-allowed text-black font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+        className="w-full relative py-4 px-6 bg-gold-400 hover:bg-gold-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group/btn overflow-hidden"
       >
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-shimmer-btn transition-transform" />
         {status === 'loading' ? (
           <>
-            <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+            <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Sending...
+            Processing...
           </>
         ) : (
-          'Send Message →'
+          <span className="relative z-10 flex items-center gap-2">
+            Send Message <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
+          </span>
         )}
       </button>
 
       <p className="text-center text-xs text-gray-500">
-        🔒 Your information is secure and will never be shared.
+        🔒 Encrypted & Direct Protocol
       </p>
-    </form>
+    </motion.form>
+  )
+}</form>
   )
 }

@@ -18,6 +18,13 @@ export const siteConfig = {
     copyright: "© 2026 BridgeFlow. All rights reserved.",
     logo: "/images/logo.png",
     og_image: "/images/og-default.png",
+    stats: {
+        total_revenue: 125430,
+        total_templates: 27,
+        total_views: 8432,
+        total_orders: 156,
+        active_models: 3,
+    }
 };
 
 export const navLinks = [

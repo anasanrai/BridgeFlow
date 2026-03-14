@@ -16,7 +16,7 @@ export const defaultHomeContent = {
       'BridgeFlow connects your business systems and automates complex workflows without writing a single line of code. Save thousands of hours and eliminate human error.',
     ctaPrimary: { text: 'Start Free Trial', href: '/pricing' },
     ctaSecondary: { text: 'Watch Demo', href: '#demo' },
-    image: '/images/hero-automation.png',
+    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070',
   },
   stats: [
     { label: 'Enterprises Automated', value: 500, suffix: '+', icon: 'building' },
@@ -122,7 +122,7 @@ export const defaultHomeContent = {
       author: 'Sarah Johnson',
       role: 'Operations Director',
       company: 'Tech Innovations Inc',
-      image: '/images/testimonials/sarah.jpg',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200&h=200',
       rating: 5,
     },
     {
@@ -131,7 +131,7 @@ export const defaultHomeContent = {
       author: 'Michael Chen',
       role: 'CTO',
       company: 'Digital Solutions Ltd',
-      image: '/images/testimonials/michael.jpg',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200',
       rating: 5,
     },
     {
@@ -140,7 +140,7 @@ export const defaultHomeContent = {
       author: 'Emma Davis',
       role: 'VP of Technology',
       company: 'Enterprise Systems Group',
-      image: '/images/testimonials/emma.jpg',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200&h=200',
       rating: 5,
     },
   ],

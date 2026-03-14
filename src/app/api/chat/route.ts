@@ -51,10 +51,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const openaiKey = process.env.OPENAI_API_KEY;
+        const openrouterKey = process.env.OPENROUTER_API_KEY;
+        const geminiKey = process.env.GEMINI_API_KEY;
         const modalKey = process.env.MODAL_API_KEY;
         const ollamaKey = process.env.OLLAMA_API_KEY;
-        const geminiKey = process.env.GEMINI_API_KEY;
 
         // Fetch primary AI model preference from DB (non-blocking)
         let primaryModel = "openai";
@@ -70,30 +70,27 @@ export async function POST(req: NextRequest) {
 
         // --- DYNAMIC AI PROVIDER CHAIN ---
 
-        // 1. Try OpenAI-compatible API (primary — always available via env)
-        if (openaiKey) {
-            const reply = await callOpenAI(openaiKey, messages);
+        // 1. OpenRouter (Primary — 300+ models via single API key)
+        if (openrouterKey) {
+            const reply = await callOpenRouter(openrouterKey, messages);
             if (reply) return reply;
         }
 
-        // 2. Try Modal GLM-5
-        if (primaryModel === "modal-glm5" && modalKey) {
-            const reply = await callModalGLM5(modalKey, messages);
-            if (reply) return reply;
-        } else if (modalKey) {
-            const reply = await callModalGLM5(modalKey, messages);
-            if (reply) return reply;
-        }
-
-        // 3. Try Ollama Cloud
-        if (ollamaKey) {
-            const reply = await callOllamaCloud(ollamaKey, messages);
-            if (reply) return reply;
-        }
-
-        // 4. Ultimate Emergency Fallback to Gemini
+        // 2. Gemini (Secondary — direct Google API)
         if (geminiKey) {
             const reply = await callGeminiFallback(geminiKey, messages);
+            if (reply) return reply;
+        }
+
+        // 3. Modal GLM-5 (Fallback)
+        if (modalKey) {
+            const reply = await callModalGLM5(modalKey, messages);
+            if (reply) return reply;
+        }
+
+        // 4. Ollama Cloud (Emergency)
+        if (ollamaKey) {
+            const reply = await callOllamaCloud(ollamaKey, messages);
             if (reply) return reply;
         }
 
@@ -110,22 +107,22 @@ export async function POST(req: NextRequest) {
     }
 }
 
-// ─── OpenAI / OpenAI-compatible API (primary) ───
-async function callOpenAI(apiKey: string, messages: { role: string; content: string }[]) {
+// ─── OpenRouter (Primary — 300+ models via single API) ───
+async function callOpenRouter(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying OpenAI API...");
+        console.log("Trying OpenRouter API...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 15000);
 
-        // Support custom base URL for OpenAI-compatible providers
-        const baseUrl = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
-        const model = process.env.OPENAI_CHAT_MODEL || "gpt-4.1-mini";
+        const model = process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001";
 
-        const response = await fetch(`${baseUrl}/chat/completions`, {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json",
+                "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "https://bridgeflow.agency",
+                "X-Title": "BridgeFlow",
             },
             body: JSON.stringify({
                 model,
@@ -144,14 +141,14 @@ async function callOpenAI(apiKey: string, messages: { role: string; content: str
             const data = await response.json();
             const reply = data?.choices?.[0]?.message?.content;
             if (reply) {
-                return NextResponse.json({ reply, provider: "openai" });
+                return NextResponse.json({ reply, provider: "openrouter" });
             }
         } else {
             const errText = await response.text();
-            console.error("OpenAI API error:", response.status, errText);
+            console.error("OpenRouter API error:", response.status, errText);
         }
     } catch (error) {
-        console.error("OpenAI fetch error:", error);
+        console.error("OpenRouter fetch error:", error);
     }
     return null;
 }

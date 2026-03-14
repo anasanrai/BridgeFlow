@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Search from "../shared/Search";
+import ThemeToggle from "../shared/ThemeToggle";
 
 import Logo from "../shared/Logo";
 
@@ -115,6 +116,7 @@ export default function Navbar({ siteConfig }: { siteConfig: SiteConfig }) {
 
                     {/* Desktop CTA + Search */}
                     <div className="hidden lg:flex items-center gap-2.5">
+                        <ThemeToggle />
                         <Search />
                         <Link
                             href="/audit"
@@ -146,6 +148,7 @@ export default function Navbar({ siteConfig }: { siteConfig: SiteConfig }) {
 
                     {/* Mobile Icons */}
                     <div className="flex lg:hidden items-center gap-2 relative z-50">
+                        <ThemeToggle />
                         <Search />
                         <button
                             onClick={() => setIsOpen(!isOpen)}

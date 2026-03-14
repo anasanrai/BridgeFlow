@@ -18,6 +18,21 @@ export const servicesHero = {
 
 export const services = [
     {
+        icon: "Cpu",
+        title: "BridgeFlow Engine",
+        description:
+            "Our proprietary automation core that powers your entire business infrastructure. A high-performance, fault-tolerant engine designed for mission-critical enterprise workflows.",
+        features: [
+            "Ultra-low latency execution",
+            "Stateful workflow management",
+            "Advanced error recovery & self-healing",
+            "Real-time data synchronization",
+            "Elastic scaling for peak demand",
+            "End-to-end audit logging & security",
+        ],
+        color: "from-blue-600 to-gold-400",
+    },
+    {
         icon: "Zap",
         title: "n8n Workflow Automation",
         description:

@@ -26,28 +26,24 @@ export const mission = {
 export const values = [
     {
         icon: "Target",
-        emoji: "⚡",
         title: "Results-Driven",
         description:
             "Every workflow measured by real business impact — not vanity metrics.",
     },
     {
         icon: "Rocket",
-        emoji: "🚀",
         title: "Speed First",
         description:
             "We ship fast. Most automations are live within 1-2 weeks of kickoff.",
     },
     {
         icon: "Heart",
-        emoji: "🤝",
         title: "Client Obsessed",
         description:
             "We treat every client like our only client. Your success is our success.",
     },
     {
         icon: "Lightbulb",
-        emoji: "🤖",
         title: "AI-Native",
         description:
             "We don't just use AI — we breathe it. Every solution leverages cutting-edge AI.",
@@ -110,7 +106,7 @@ export const milestones = [
         year: "'24",
         title: "Teaching AI",
         description:
-            "Started teaching AI tools and automation to non-technical communities in Nepal — bridging the knowledge gap.",
+            "Started teaching AI tools and automation to non-technical communities — bridging the knowledge gap.",
     },
     {
         year: "'25",
@@ -122,12 +118,12 @@ export const milestones = [
         year: "NOW",
         title: "Founding Clients",
         description:
-            "Onboarding our first founding clients and building N8N Galaxy — our automation SaaS platform. 🚀",
+            "Onboarding our first founding clients and building N8N Galaxy — our automation SaaS platform.",
     },
     {
-        year: "→",
+        year: "Vision",
         title: "The Vision",
         description:
-            "Becoming the leading AI automation partner for growing businesses worldwide — starting from Nepal, scaling globally. 🌍",
+            "Becoming the leading AI automation partner for growing businesses worldwide — delivering excellence at scale.",
     },
 ];

@@ -305,6 +305,49 @@ html.light .group-hover\:text-gold-400:hover {
   color: #b8941e !important;
 }
 
+/* ─── AUTH PAGES ─── */
+html.light .bg-navy-950 {
+  background: var(--bg-primary) !important;
+}
+
+/* Fix floating labels in light mode */
+html.light .peer-focus\:bg-navy-950,
+html.light .peer-\[\:not\(\:placeholder-shown\)\]\:bg-navy-950 {
+  background-color: #ffffff !important;
+}
+
+html.light .placeholder-transparent::placeholder {
+  color: transparent;
+}
+
+html.light .bg-navy-900 {
+  background: var(--bg-secondary) !important;
+}
+
+html.light .glass-strong {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .gold-gradient {
+  color: #1a1a2e !important;
+}
+
+/* Auth page "Or continue with" bg fix */
+html.light span.bg-navy-900 {
+  background: #eef0f4 !important;
+}
+
+/* ─── PRICING BUTTONS ─── */
+html.light .bg-white\/10 {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #1a1a2e !important;
+}
+
+html.light .hover\:bg-white\/20:hover {
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
 /* ─── ADMIN DASHBOARD ─── */
 html.light .bg-navy-900\/95.backdrop-blur-xl.border-r {
   background: #fafafa !important;
@@ -312,6 +355,33 @@ html.light .bg-navy-900\/95.backdrop-blur-xl.border-r {
 
 html.light .min-h-screen.bg-navy-950 {
   background: var(--bg-primary) !important;
+}
+
+/* ─── BLOG / CASE STUDY CARDS ─── */
+html.light .bg-navy-900\/60,
+html.light .bg-navy-900\/40 {
+  background: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* ─── PARAGRAPH / BODY TEXT ─── */
+html.light p {
+  color: #444 !important;
+}
+
+html.light p.text-gold-400,
+html.light span.text-gold-400 {
+  color: #b8941e !important;
+}
+
+html.light p.text-red-400,
+html.light p.text-red-500,
+html.light span.text-red-400 {
+  color: #ef4444 !important;
+}
+
+html.light p.text-emerald-400,
+html.light span.text-emerald-400 {
+  color: #10b981 !important;
 }
 
 /* ─── CALCULATOR PAGE ─── */
@@ -566,13 +636,17 @@ body {
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
 
-  100% {
-    background-position: 200% 0;
-  }
+@keyframes shimmer-btn {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer-btn {
+  animation: shimmer-btn 2s infinite;
 }
 
 @keyframes pulseGlow {

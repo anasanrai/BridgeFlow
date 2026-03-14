@@ -18,7 +18,16 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import ContactForm from "@/components/forms/ContactForm";
-import CalendlyEmbed from "@/components/marketing/CalendlyEmbed";
+import dynamic from "next/dynamic";
+
+const CalendlyEmbed = dynamic(() => import("@/components/marketing/CalendlyEmbed"), {
+    loading: () => (
+        <div className="h-[600px] w-full glass animate-pulse rounded-2xl flex items-center justify-center">
+            <div className="text-gray-500 font-medium">Loading Scheduler...</div>
+        </div>
+    ),
+    ssr: false,
+});
 
 import { getPageSEO, getSiteConfig } from "@/lib/supabase-data";
 
