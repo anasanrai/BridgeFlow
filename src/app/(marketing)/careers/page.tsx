@@ -93,11 +93,11 @@ export default function Careers() {
         <>
             {/* Hero */}
             <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-400/[0.04] rounded-full blur-3xl" />
                 <div className="relative z-10 container-max text-center px-4 sm:px-6">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                             <Users className="w-3.5 h-3.5" />
                             We&apos;re Hiring
                         </span>
@@ -105,7 +105,7 @@ export default function Careers() {
                     <ScrollReveal delay={0.1}>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
                             Join the BridgeFlow{" "}
-                            <span className="gold-text">Team</span>
+                            <span className="text-brand-coral font-bold">Team</span>
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
@@ -137,7 +137,7 @@ export default function Careers() {
                                                 {role.title}
                                             </h3>
                                             <div className="flex flex-wrap items-center gap-3">
-                                                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gold-400 bg-gold-400/10 px-3 py-1 rounded-full">
+                                                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-coral bg-gold-400/10 px-3 py-1 rounded-full">
                                                     <MapPin className="w-3 h-3" />
                                                     {role.location}
                                                 </span>
@@ -149,7 +149,7 @@ export default function Careers() {
                                         </div>
                                         <a
                                             href="#apply"
-                                            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold uppercase tracking-wider gold-gradient text-navy-950 rounded-full hover:shadow-[0_0_25px_rgba(230,180,34,0.3)] hover:scale-105 active:scale-95 transition-all duration-300 flex-shrink-0"
+                                            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold uppercase tracking-wider bg-brand-coral text-neutral-950 font-bold text-neutral-950 rounded-full hover:shadow-[0_0_25px_rgba(230,180,34,0.3)] hover:scale-105 active:scale-95 transition-all duration-300 flex-shrink-0"
                                         >
                                             Apply
                                             <ArrowRight className="w-4 h-4" />
@@ -168,7 +168,7 @@ export default function Careers() {
                                                     key={j}
                                                     className="flex items-start gap-2 text-sm text-gray-400"
                                                 >
-                                                    <Sparkles className="w-3.5 h-3.5 text-gold-400 mt-0.5 flex-shrink-0" />
+                                                    <Sparkles className="w-3.5 h-3.5 text-brand-coral mt-0.5 flex-shrink-0" />
                                                     {req}
                                                 </li>
                                             ))}
@@ -182,7 +182,7 @@ export default function Careers() {
             </section>
 
             {/* Application Form */}
-            <section id="apply" className="section-padding bg-navy-900/20">
+            <section id="apply" className="section-padding bg-neutral-900/20">
                 <div className="container-max max-w-2xl">
                     <SectionHeader
                         badge="Apply Now"
@@ -196,7 +196,7 @@ export default function Careers() {
                             {submitted ? (
                                 <div className="text-center py-10">
                                     <div className="w-16 h-16 rounded-full bg-gold-400/10 border border-gold-400/30 flex items-center justify-center mx-auto mb-5">
-                                        <CheckCircle className="w-8 h-8 text-gold-400" />
+                                        <CheckCircle className="w-8 h-8 text-brand-coral" />
                                     </div>
                                     <h3 className="text-2xl font-display font-bold text-white mb-3">
                                         Application Received!
@@ -219,7 +219,7 @@ export default function Careers() {
                                             value={formData.fullName}
                                             onChange={(e) => updateField("fullName", e.target.value)}
                                             placeholder="Your full name"
-                                            className="w-full px-4 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
+                                            className="w-full px-4 py-3 bg-neutral-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
                                         />
                                     </div>
 
@@ -234,7 +234,7 @@ export default function Careers() {
                                             value={formData.email}
                                             onChange={(e) => updateField("email", e.target.value)}
                                             placeholder="you@example.com"
-                                            className="w-full px-4 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
+                                            className="w-full px-4 py-3 bg-neutral-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
                                         />
                                     </div>
 
@@ -248,7 +248,7 @@ export default function Careers() {
                                             value={formData.linkedin}
                                             onChange={(e) => updateField("linkedin", e.target.value)}
                                             placeholder="https://linkedin.com/in/yourprofile"
-                                            className="w-full px-4 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
+                                            className="w-full px-4 py-3 bg-neutral-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
                                         />
                                     </div>
 
@@ -261,16 +261,16 @@ export default function Careers() {
                                             required
                                             value={formData.role}
                                             onChange={(e) => updateField("role", e.target.value)}
-                                            className="w-full px-4 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white focus:outline-none focus:border-gold-400/50 transition-colors appearance-none"
+                                            className="w-full px-4 py-3 bg-neutral-900/80 border border-white/10 rounded-xl text-white focus:outline-none focus:border-gold-400/50 transition-colors appearance-none"
                                         >
-                                            <option value="" className="bg-navy-950">Select a role...</option>
-                                            <option value="AI Automation Engineer" className="bg-navy-950">
+                                            <option value="" className="bg-neutral-950">Select a role...</option>
+                                            <option value="AI Automation Engineer" className="bg-neutral-950">
                                                 AI Automation Engineer
                                             </option>
-                                            <option value="Growth & Outreach Specialist" className="bg-navy-950">
+                                            <option value="Growth & Outreach Specialist" className="bg-neutral-950">
                                                 Growth &amp; Outreach Specialist
                                             </option>
-                                            <option value="General Application" className="bg-navy-950">
+                                            <option value="General Application" className="bg-neutral-950">
                                                 General Application
                                             </option>
                                         </select>
@@ -287,7 +287,7 @@ export default function Careers() {
                                             value={formData.whyBridgeflow}
                                             onChange={(e) => updateField("whyBridgeflow", e.target.value)}
                                             placeholder="Tell us why you want to join BridgeFlow and what excites you about AI automation..."
-                                            className="w-full px-4 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors resize-none"
+                                            className="w-full px-4 py-3 bg-neutral-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors resize-none"
                                         />
                                     </div>
 
@@ -301,7 +301,7 @@ export default function Careers() {
                                             value={formData.portfolio}
                                             onChange={(e) => updateField("portfolio", e.target.value)}
                                             placeholder="https://github.com/yourusername"
-                                            className="w-full px-4 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
+                                            className="w-full px-4 py-3 bg-neutral-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors"
                                         />
                                     </div>
 
@@ -315,7 +315,7 @@ export default function Careers() {
                                     <button
                                         type="submit"
                                         disabled={submitting}
-                                        className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold uppercase tracking-widest gold-gradient text-navy-950 rounded-full hover:shadow-[0_0_30px_rgba(230,180,34,0.4)] hover:scale-[1.02] active:scale-95 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold uppercase tracking-widest bg-brand-coral text-neutral-950 font-bold text-neutral-950 rounded-full hover:shadow-[0_0_30px_rgba(230,180,34,0.4)] hover:scale-[1.02] active:scale-95 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {submitting ? (
                                             <>

@@ -102,7 +102,7 @@ export default function AuditPage() {
                                     animate={{ y: 0, opacity: 1 }}
                                     exit={{ y: -30, opacity: 0 }}
                                     transition={{ duration: 0.4, ease: "easeInOut" }}
-                                    className="gold-text inline-block"
+                                    className="text-brand-coral font-bold inline-block"
                                 >
                                     {ROTATING_PHRASES[phraseIndex]}
                                 </motion.span>
@@ -132,8 +132,8 @@ export default function AuditPage() {
                     <div className="glass rounded-3xl p-8 md:p-12 relative overflow-hidden card-glow">
                         {status === "success" ? (
                             <div className="text-center py-8">
-                                <div className="w-20 h-20 rounded-full gold-gradient flex items-center justify-center mx-auto mb-6">
-                                    <Zap className="w-10 h-10 text-navy-950" />
+                                <div className="w-20 h-20 rounded-full bg-brand-coral text-neutral-950 font-bold flex items-center justify-center mx-auto mb-6">
+                                    <Zap className="w-10 h-10 text-neutral-950" />
                                 </div>
                                 <h3 className="text-2xl font-bold mb-4">Your Report Is Being Generated!</h3>
                                 <p className="text-gray-400 mb-8">
@@ -157,7 +157,7 @@ export default function AuditPage() {
                                         placeholder=" "
                                         className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
                                     />
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-brand-coral peer-focus:bg-neutral-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-neutral-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
                                         Website URL
                                     </span>
                                     <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
@@ -172,7 +172,7 @@ export default function AuditPage() {
                                         placeholder=" "
                                         className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
                                     />
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-brand-coral peer-focus:bg-neutral-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-neutral-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
                                         Business Email
                                     </span>
                                     <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
@@ -187,7 +187,7 @@ export default function AuditPage() {
                                 <button
                                     type="submit"
                                     disabled={status === "loading"}
-                                    className="w-full relative py-4 gold-gradient text-navy-950 font-bold text-lg rounded-2xl flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-gold-400/20 transition-all group/btn overflow-hidden active:scale-95 disabled:opacity-70"
+                                    className="w-full relative py-4 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold text-lg rounded-2xl flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-brand-coral/20 transition-all group/btn overflow-hidden active:scale-95 disabled:opacity-70"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-shimmer-btn transition-transform" />
                                     {status === "loading" ? (
@@ -237,7 +237,7 @@ export default function AuditPage() {
                             className="glass p-8 rounded-3xl text-center card-glow"
                         >
                             <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-6">
-                                <item.icon className="w-6 h-6 text-gold-400" />
+                                <item.icon className="w-6 h-6 text-brand-coral" />
                             </div>
                             <h3 className="text-xl font-bold mb-3">{item.title}</h3>
                             <p className="text-gray-400 leading-relaxed text-sm">

@@ -19,7 +19,7 @@ export default function GlobalError({
 
     return (
         <html>
-            <body className="bg-navy-950 text-white font-sans antialiased min-h-screen flex items-center justify-center p-4">
+            <body className="bg-neutral-950 text-white font-sans antialiased min-h-screen flex items-center justify-center p-4">
                 <div className="max-w-md w-full glass rounded-3xl p-8 border border-white/10 text-center relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-rose-500" />
 
@@ -42,7 +42,7 @@ export default function GlobalError({
                         </button>
                         <Link
                             href="/"
-                            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-navy-950 transition-all hover:scale-[1.02]"
+                            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-neutral-950 transition-all hover:scale-[1.02]"
                             style={{ background: "linear-gradient(135deg, #06b6d4, #0891b2)" }}
                         >
                             <Home className="w-4 h-4" />

@@ -15,41 +15,41 @@ export default function Error({
     }, [error]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-navy-950 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-neutral-950 px-4">
             <div className="text-center max-w-lg">
                 {/* Icon */}
-                <div className="w-20 h-20 rounded-3xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-8">
-                    <AlertTriangle className="w-10 h-10 text-red-400" />
+                <div className="w-20 h-20 rounded-[30px] bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-8">
+                    <AlertTriangle className="w-10 h-10 text-red-500" />
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-4">
-                    Something went <span className="text-red-400">wrong</span>
+                <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter text-white mb-4">
+                    Exception <span className="text-red-500">Caught</span>
                 </h1>
-                <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+                <p className="text-neutral-400 font-medium text-lg mb-8 leading-relaxed">
                     We hit an unexpected error. Our team has been notified.
                     You can try again or head back to the homepage.
                 </p>
 
                 {error.digest && (
-                    <p className="text-xs text-gray-600 mb-6 font-mono">
-                        Error ID: {error.digest}
+                    <p className="text-[11px] font-black tracking-widest uppercase text-neutral-600 mb-8 border border-white/5 inline-block px-3 py-1 bg-neutral-900/50 rounded-lg">
+                        Error Hash: {error.digest}
                     </p>
                 )}
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button
                         onClick={reset}
-                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-widest gold-gradient text-navy-950 rounded-full hover:shadow-[0_0_30px_rgba(230,180,34,0.4)] hover:scale-105 active:scale-95 transition-all duration-500"
+                        className="inline-flex justify-center items-center gap-2 px-8 py-4 text-sm font-black uppercase tracking-widest bg-white text-neutral-950 rounded-full hover:bg-neutral-200 transition-all transform hover:-translate-y-1"
                     >
                         <RefreshCw className="w-4 h-4" />
-                        Try Again
+                        Reinitialize
                     </button>
                     <a
                         href="/"
-                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-widest border border-white/10 text-gray-300 hover:text-white rounded-full hover:bg-white/5 transition-all duration-300"
+                        className="inline-flex justify-center items-center gap-2 px-8 py-4 text-sm font-black uppercase tracking-widest border border-white/10 text-white rounded-full hover:bg-white/5 transition-all"
                     >
                         <Home className="w-4 h-4" />
-                        Homepage
+                        System Root
                     </a>
                 </div>
             </div>

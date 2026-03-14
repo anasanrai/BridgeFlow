@@ -40,7 +40,7 @@ export default function ThankYouPage() {
 
     return (
         <div className="min-h-screen pt-32 pb-20 aurora-glow overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-radial from-navy-800/40 via-navy-950 to-navy-950" />
+            <div className="absolute inset-0 bg-gradient-radial from-neutral-800/40 via-neutral-950 to-neutral-950" />
 
             <div className="relative z-10 container-max px-4">
                 <div className="max-w-2xl mx-auto text-center">
@@ -49,21 +49,21 @@ export default function ThankYouPage() {
                     </div>
 
                     <h1 className="text-4xl sm:text-5xl font-display font-bold text-white mb-4">
-                        Thank You for Your <span className="gold-text">Purchase!</span>
+                        Thank You for Your <span className="text-brand-coral font-bold">Purchase!</span>
                     </h1>
                     <p className="text-gray-400 text-lg mb-8">
                         Your order has been confirmed successfully.
                     </p>
 
                     {loading ? (
-                        <div className="flex items-center justify-center gap-2 text-gold-400 mb-8">
+                        <div className="flex items-center justify-center gap-2 text-brand-coral mb-8">
                             <Loader2 className="w-5 h-5 animate-spin" />
                             <span className="text-sm font-bold uppercase tracking-widest">Retrieving order details...</span>
                         </div>
                     ) : order ? (
                         <div className="glass rounded-2xl p-6 border border-white/10 mb-12 text-left relative overflow-hidden group">
                             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                <PackageCheck className="w-24 h-24 text-gold-400" />
+                                <PackageCheck className="w-24 h-24 text-brand-coral" />
                             </div>
                             <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-white/5">
                                 <div>
@@ -84,7 +84,7 @@ export default function ThankYouPage() {
                                 </div>
                                 <div className="text-right">
                                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Total Paid</p>
-                                    <p className="text-2xl font-display font-bold gold-text">${(order.amount || 0).toLocaleString()}</p>
+                                    <p className="text-2xl font-display font-bold text-brand-coral font-bold">${(order.amount || 0).toLocaleString()}</p>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +113,7 @@ export default function ThankYouPage() {
                     ].map((step, i) => (
                         <div key={i} className="glass rounded-2xl p-6 border border-white/5 text-center transition-all hover:border-white/10 group">
                             <div className="w-12 h-12 rounded-xl bg-gold-400/10 border border-gold-400/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                                <step.icon className="w-6 h-6 text-gold-400" />
+                                <step.icon className="w-6 h-6 text-brand-coral" />
                             </div>
                             <h3 className="text-white font-bold mb-2 uppercase tracking-wider text-xs">{step.title}</h3>
                             <p className="text-gray-500 text-xs leading-relaxed">{step.desc}</p>
@@ -124,7 +124,7 @@ export default function ThankYouPage() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Link
                         href={order?.metadata?.template_slug ? `/templates/${order.metadata.template_slug}` : "/templates"}
-                        className="flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-bold bg-gold-400 text-navy-950 hover:bg-gold-300 transition-all hover:shadow-[0_0_30px_rgba(230,180,34,0.4)]"
+                        className="flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-bold bg-gold-400 text-neutral-950 hover:bg-gold-300 transition-all hover:shadow-[0_0_30px_rgba(230,180,34,0.4)]"
                     >
                         {order?.metadata?.template_slug ? "Download Template" : "Return to Templates"}
                         <ArrowRight className="w-4 h-4" />

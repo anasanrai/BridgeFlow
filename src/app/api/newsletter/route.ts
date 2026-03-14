@@ -20,6 +20,8 @@ export async function POST(req: NextRequest) {
 
         // Always save to Supabase (primary storage)
         const supabase = createAdminClient();
+        let dbOk = false;
+
         if (supabase) {
             try {
                 // Upsert to avoid duplicate errors
@@ -37,11 +39,11 @@ export async function POST(req: NextRequest) {
                         return apiSuccess({ message: "Already subscribed" });
                     }
                     console.error("Supabase newsletter insert error:", error);
-                    return apiError(error.message, 500);
+                } else {
+                    dbOk = true;
                 }
             } catch (dbErr) {
                 console.error("Supabase newsletter error:", dbErr);
-                return apiError("Failed to subscribe due to a database error.", 500);
             }
         }
 

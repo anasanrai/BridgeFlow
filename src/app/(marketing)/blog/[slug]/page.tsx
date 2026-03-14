@@ -121,7 +121,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             />
 
             <section className="relative pt-32 pb-12 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="relative z-10 container-max px-4 sm:px-6">
                     <ScrollReveal>
                         <Link
@@ -138,7 +138,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                             <div className="max-w-3xl">
                                 <div className="flex flex-wrap items-center gap-3 mb-4">
                                     {p.category && (
-                                        <span className="px-3 py-1 text-xs font-semibold text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                                        <span className="px-3 py-1 text-xs font-semibold text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                                             {p.category}
                                         </span>
                                     )}
@@ -183,7 +183,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                                         sizes="(max-width: 1024px) 100vw, 400px"
                                     />
 
-                                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 to-transparent" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent" />
                                 </div>
                             </ScrollReveal>
                         )}
@@ -212,7 +212,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                         <ScrollReveal>
                             <Card hover={false} className="mt-12">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full gold-gradient flex items-center justify-center text-navy-950 font-bold flex-shrink-0">
+                                    <div className="w-12 h-12 rounded-full bg-brand-coral text-neutral-950 font-bold flex items-center justify-center text-neutral-950 font-bold flex-shrink-0">
                                         AR
                                     </div>
                                     <div>
@@ -237,7 +237,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                                 </Link>
                                 <Link
                                     href="/contact"
-                                    className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold gold-gradient text-navy-950 rounded-full hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold bg-brand-coral text-neutral-950 font-bold text-neutral-950 rounded-full hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300"
                                 >
                                     Get a Free Audit
                                 </Link>

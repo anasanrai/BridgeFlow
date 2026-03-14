@@ -106,14 +106,14 @@ export default function ServicesAdmin() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                        <Briefcase className="w-6 h-6 text-gold-400" />
+                        <Briefcase className="w-6 h-6 text-brand-coral" />
                         Services
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">{services.length} services</p>
                 </div>
                 <button
                     onClick={() => setEditing({ title: "", icon: "Zap", description: "", features: [], color: COLORS[0], is_active: true })}
-                    className="flex items-center gap-2 px-4 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm hover:shadow-lg hover:shadow-gold-400/25 transition-all"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm hover:shadow-lg hover:shadow-gold-400/25 transition-all"
                 >
                     <Plus className="w-4 h-4" /> New Service
                 </button>
@@ -136,7 +136,7 @@ export default function ServicesAdmin() {
                                 <input
                                     value={editing.title || ""}
                                     onChange={(e) => setEditing({ ...editing, title: e.target.value })}
-                                    className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50"
+                                    className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50"
                                     placeholder="Service name"
                                 />
                             </div>
@@ -147,7 +147,7 @@ export default function ServicesAdmin() {
                                     <select
                                         value={editing.icon || "Zap"}
                                         onChange={(e) => setEditing({ ...editing, icon: e.target.value })}
-                                        className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50"
+                                        className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50"
                                     >
                                         {ICONS.map((i) => <option key={i} value={i}>{i}</option>)}
                                     </select>
@@ -157,7 +157,7 @@ export default function ServicesAdmin() {
                                     <select
                                         value={editing.color || COLORS[0]}
                                         onChange={(e) => setEditing({ ...editing, color: e.target.value })}
-                                        className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50"
+                                        className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50"
                                     >
                                         {COLORS.map((c) => <option key={c} value={c}>{c}</option>)}
                                     </select>
@@ -170,7 +170,7 @@ export default function ServicesAdmin() {
                                     value={editing.description || ""}
                                     onChange={(e) => setEditing({ ...editing, description: e.target.value })}
                                     rows={3}
-                                    className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none"
+                                    className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none"
                                     placeholder="Service description..."
                                 />
                             </div>
@@ -179,7 +179,7 @@ export default function ServicesAdmin() {
                                 <label className="block text-sm font-medium text-gray-300 mb-1.5">Features</label>
                                 <div className="space-y-2 mb-3">
                                     {(editing.features || []).map((f, i) => (
-                                        <div key={i} className="flex items-center gap-2 p-2 bg-navy-900/50 rounded-lg border border-white/5">
+                                        <div key={i} className="flex items-center gap-2 p-2 bg-neutral-900/50 rounded-lg border border-white/5">
                                             <GripVertical className="w-4 h-4 text-gray-600" />
                                             <span className="flex-1 text-sm text-gray-300">{f}</span>
                                             <button onClick={() => removeFeature(i)} className="p-1 text-gray-500 hover:text-red-400"><X className="w-3 h-3" /></button>
@@ -191,7 +191,7 @@ export default function ServicesAdmin() {
                                         value={featureInput}
                                         onChange={(e) => setFeatureInput(e.target.value)}
                                         onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addFeature())}
-                                        className="flex-1 px-4 py-2 bg-navy-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50"
+                                        className="flex-1 px-4 py-2 bg-neutral-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50"
                                         placeholder="Add a feature..."
                                     />
                                     <button onClick={addFeature} className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 hover:text-white text-sm">Add</button>
@@ -214,7 +214,7 @@ export default function ServicesAdmin() {
                             <button
                                 onClick={handleSave}
                                 disabled={saving || !editing.title}
-                                className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm disabled:opacity-50"
+                                className="flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm disabled:opacity-50"
                             >
                                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                 {saving ? "Saving..." : "Save"}
@@ -236,7 +236,7 @@ export default function ServicesAdmin() {
                     </p>
                     <button
                         onClick={() => { setEditing({ title: "", icon: "Zap", description: "", features: [], color: "from-amber-500 to-gold-400", sort_order: 0, is_active: true }); setFeatureInput(""); }}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm"
                     >
                         <Plus className="w-4 h-4" /> Add Your First Service
                     </button>

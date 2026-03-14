@@ -60,13 +60,13 @@ export default function ContactsAdmin() {
             {toast && <div className="fixed top-6 right-6 z-50 px-4 py-3 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-sm font-medium">{toast}</div>}
 
             <div className="mb-8">
-                <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><Mail className="w-6 h-6 text-gold-400" />Contact Submissions</h1>
+                <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><Mail className="w-6 h-6 text-brand-coral" />Contact Submissions</h1>
                 <p className="text-sm text-gray-500 mt-1">{contacts.filter(c => c.status === "new").length} new · {contacts.length} total</p>
             </div>
 
             <div className="relative mb-6">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search contacts..." className="w-full pl-11 pr-4 py-2.5 bg-navy-900/50 border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 text-sm" />
+                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search contacts..." className="w-full pl-11 pr-4 py-2.5 bg-neutral-900/50 border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 text-sm" />
             </div>
 
             <div className="flex gap-6">
@@ -105,7 +105,7 @@ export default function ContactsAdmin() {
                             <button onClick={() => setSelected(null)} className="text-gray-400 hover:text-white text-xs">Close</button>
                         </div>
                         <div className="space-y-3 text-sm">
-                            <div><span className="text-gray-500">Email:</span> <a href={`mailto:${selected.email}`} className="text-gold-400 hover:underline">{selected.email}</a></div>
+                            <div><span className="text-gray-500">Email:</span> <a href={`mailto:${selected.email}`} className="text-brand-coral hover:underline">{selected.email}</a></div>
                             {selected.company && <div><span className="text-gray-500">Company:</span> <span className="text-gray-300">{selected.company}</span></div>}
                             {selected.budget && <div><span className="text-gray-500">Budget:</span> <span className="text-gray-300">{selected.budget}</span></div>}
                             <div className="pt-3 border-t border-white/5">

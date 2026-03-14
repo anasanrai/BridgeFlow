@@ -111,7 +111,7 @@ const DOC_SECTIONS = [
 ];
 
 const QUICK_LINKS = [
-    { icon: Zap, label: "Quick Start Guide", href: "#first-workflow", color: "text-gold-400" },
+    { icon: Zap, label: "Quick Start Guide", href: "#first-workflow", color: "text-brand-coral" },
     { icon: Code2, label: "API Reference", href: "/api-reference", color: "text-blue-400" },
     { icon: Webhook, label: "Webhook Setup", href: "#inbound-webhooks", color: "text-emerald-400" },
     { icon: Bot, label: "AI Integration Guide", href: "#building-chatbots", color: "text-purple-400" },
@@ -389,7 +389,7 @@ function CodeBlock({ code }: { code: string }) {
             >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-gray-400" />}
             </button>
-            <pre className="p-4 bg-navy-950/80 rounded-xl border border-white/10 text-sm font-mono text-gray-300 overflow-x-auto">
+            <pre className="p-4 bg-neutral-950/80 rounded-xl border border-white/10 text-sm font-mono text-gray-300 overflow-x-auto">
                 <code>{code}</code>
             </pre>
         </div>
@@ -438,8 +438,8 @@ function renderContent(content: string) {
         } else if (line.startsWith("- ")) {
             elements.push(
                 <div key={key++} className="flex items-start gap-2 text-sm text-gray-400 py-0.5">
-                    <span className="text-gold-400 mt-1.5 flex-shrink-0">•</span>
-                    <span dangerouslySetInnerHTML={{ __html: line.slice(2).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-gold-400 hover:underline">$1</a>') }} />
+                    <span className="text-brand-coral mt-1.5 flex-shrink-0">•</span>
+                    <span dangerouslySetInnerHTML={{ __html: line.slice(2).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-brand-coral hover:underline">$1</a>') }} />
                 </div>
             );
         } else if (line === "") {
@@ -447,7 +447,7 @@ function renderContent(content: string) {
         } else {
             elements.push(
                 <p key={key++} className="text-sm text-gray-400 leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/`(.*?)`/g, '<code class="px-1.5 py-0.5 bg-white/10 rounded text-xs font-mono text-gold-300">$1</code>').replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-gold-400 hover:underline">$1</a>') }}
+                    dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/`(.*?)`/g, '<code class="px-1.5 py-0.5 bg-white/10 rounded text-xs font-mono text-gold-300">$1</code>').replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-brand-coral hover:underline">$1</a>') }}
                 />
             );
         }
@@ -470,11 +470,11 @@ export default function DocsClient() {
         <>
             {/* Hero */}
             <section className="relative pt-32 pb-16 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-400/[0.04] rounded-full blur-3xl" />
                 <div className="relative z-10 container-max text-center px-4 sm:px-6">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                             <BookOpen className="w-3.5 h-3.5" />
                             Documentation
                         </span>
@@ -482,7 +482,7 @@ export default function DocsClient() {
                     <ScrollReveal delay={0.1}>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
                             BridgeFlow{" "}
-                            <span className="gold-text">Documentation</span>
+                            <span className="text-brand-coral font-bold">Documentation</span>
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
@@ -498,7 +498,7 @@ export default function DocsClient() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Search documentation..."
-                                className="w-full pl-11 pr-5 py-4 bg-navy-900/80 border border-white/10 rounded-2xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors text-sm"
+                                className="w-full pl-11 pr-5 py-4 bg-neutral-900/80 border border-white/10 rounded-2xl text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 transition-colors text-sm"
                             />
                         </div>
                     </ScrollReveal>
@@ -506,7 +506,7 @@ export default function DocsClient() {
             </section>
 
             {/* Quick Links */}
-            <section className="border-y border-white/5 bg-navy-900/20">
+            <section className="border-y border-white/5 bg-neutral-900/20">
                 <div className="container-max px-4 sm:px-6 py-6">
                     <div className="flex flex-wrap items-center gap-3">
                         <span className="text-xs font-semibold uppercase tracking-wider text-gray-500 mr-2">Quick Links:</span>
@@ -536,7 +536,7 @@ export default function DocsClient() {
                                     <div key={section.id}>
                                         <button
                                             onClick={() => setActiveSection(activeSection === section.id ? null : section.id)}
-                                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeSection === section.id ? "bg-gold-400/10 text-gold-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
+                                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeSection === section.id ? "bg-gold-400/10 text-brand-coral" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
                                         >
                                             <section.icon className="w-4 h-4 flex-shrink-0" />
                                             {section.title}
@@ -596,9 +596,9 @@ export default function DocsClient() {
                                                             <li key={article.title}>
                                                                 <Link
                                                                     href={article.href}
-                                                                    className="flex items-center gap-2 text-xs text-gray-400 hover:text-gold-400 transition-colors group/link"
+                                                                    className="flex items-center gap-2 text-xs text-gray-400 hover:text-brand-coral transition-colors group/link"
                                                                 >
-                                                                    <ChevronRight className="w-3 h-3 text-gray-600 group-hover/link:text-gold-400 flex-shrink-0" />
+                                                                    <ChevronRight className="w-3 h-3 text-gray-600 group-hover/link:text-brand-coral flex-shrink-0" />
                                                                     <span className="truncate">{article.title}</span>
                                                                     <span className="ml-auto text-gray-600 flex-shrink-0">{article.time}</span>
                                                                 </Link>
@@ -633,7 +633,7 @@ export default function DocsClient() {
 
                             {/* Help CTA */}
                             <div className="mt-16 p-8 rounded-2xl glass border border-white/10 text-center">
-                                <Star className="w-8 h-8 text-gold-400 mx-auto mb-4" />
+                                <Star className="w-8 h-8 text-brand-coral mx-auto mb-4" />
                                 <h3 className="text-xl font-display font-bold text-white mb-2">Need personalised help?</h3>
                                 <p className="text-gray-400 text-sm mb-6 max-w-md mx-auto">
                                     Our team can walk you through any integration, build custom workflows, or answer technical questions directly.
@@ -641,7 +641,7 @@ export default function DocsClient() {
                                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                                     <Link
                                         href="/contact"
-                                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider gold-gradient text-navy-950 rounded-xl hover:shadow-[0_0_25px_rgba(230,180,34,0.3)] hover:scale-105 active:scale-95 transition-all duration-300"
+                                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider bg-brand-coral text-neutral-950 font-bold text-neutral-950 rounded-xl hover:shadow-[0_0_25px_rgba(230,180,34,0.3)] hover:scale-105 active:scale-95 transition-all duration-300"
                                     >
                                         Contact Support
                                         <ArrowRight className="w-4 h-4" />

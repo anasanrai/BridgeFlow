@@ -125,7 +125,7 @@ export default function AboutAdmin() {
                     {member.avatar_url ? (
                         <Image src={member.avatar_url} alt={member.name} width={56} height={56} className="w-full h-full object-cover" />
                     ) : (
-                        <span className="text-gold-400 font-display font-bold text-base">{member.initials}</span>
+                        <span className="text-brand-coral font-display font-bold text-base">{member.initials}</span>
                     )}
                 </div>
                 <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -151,7 +151,7 @@ export default function AboutAdmin() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                        <Users className="w-6 h-6 text-gold-400" />About & Team
+                        <Users className="w-6 h-6 text-brand-coral" />About & Team
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">{team.length} members · {values.length} values · {milestones.length} milestones</p>
                 </div>
@@ -165,7 +165,7 @@ export default function AboutAdmin() {
                     { key: "values" as const, label: "Values" },
                     { key: "milestones" as const, label: "Timeline" }
                 ].map(t => (
-                    <button key={t.key} onClick={() => setTab(t.key)} className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${tab === t.key ? "bg-gold-400/10 text-gold-400" : "text-gray-400 hover:text-white"}`}>
+                    <button key={t.key} onClick={() => setTab(t.key)} className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${tab === t.key ? "bg-gold-400/10 text-brand-coral" : "text-gray-400 hover:text-white"}`}>
                         {t.label}
                     </button>
                 ))}
@@ -175,14 +175,14 @@ export default function AboutAdmin() {
             {tab === "founder" && (
                 <div className="glass rounded-2xl p-8 card-glow max-w-lg">
                     <h2 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                        <Camera className="w-5 h-5 text-gold-400" /> Founder Portrait
+                        <Camera className="w-5 h-5 text-brand-coral" /> Founder Portrait
                     </h2>
                     <p className="text-sm text-gray-400 mb-6">Upload a portrait photo for the founder section on the About page. For best results, use a square image with a transparent or clean background.</p>
 
                     <div className="flex flex-col items-center gap-6">
                         {/* Current photo preview */}
                         <div className="relative group">
-                            <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-gold-400/30 bg-gradient-to-br from-gold-400/10 to-navy-900 shadow-2xl">
+                            <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-gold-400/30 bg-gradient-to-br from-gold-400/10 to-neutral-900 shadow-2xl">
                                 <Image
                                     src={founderImageUrl}
                                     alt="Founder portrait"
@@ -192,8 +192,8 @@ export default function AboutAdmin() {
                                     onError={() => setFounderImageUrl("/images/founder-portrait.png")}
                                 />
                             </div>
-                            <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full gold-gradient flex items-center justify-center shadow-lg">
-                                <span className="text-navy-950 text-xs font-bold">CEO</span>
+                            <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-brand-coral text-neutral-950 font-bold flex items-center justify-center shadow-lg">
+                                <span className="text-neutral-950 text-xs font-bold">CEO</span>
                             </div>
                         </div>
 
@@ -212,7 +212,7 @@ export default function AboutAdmin() {
                             <button
                                 onClick={() => founderImageInputRef.current?.click()}
                                 disabled={founderUploading}
-                                className="w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-gold-400/30 hover:border-gold-400/60 rounded-xl text-gold-400 hover:bg-gold-400/5 transition-all disabled:opacity-50"
+                                className="w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-gold-400/30 hover:border-gold-400/60 rounded-xl text-brand-coral hover:bg-gold-400/5 transition-all disabled:opacity-50"
                             >
                                 {founderUploading ? (
                                     <><Loader2 className="w-5 h-5 animate-spin" /> Uploading...</>
@@ -240,7 +240,7 @@ export default function AboutAdmin() {
                         if (tab === "values") setEditing({ type: "value", data: { icon: "Target", title: "", description: "" } });
                         if (tab === "milestones") setEditing({ type: "milestone", data: { year: "2026", title: "", description: "" } });
                     }}
-                    className="flex items-center gap-2 px-4 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm mb-6"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm mb-6"
                 >
                     <Plus className="w-4 h-4" /> Add {tab === "team" ? "Member" : tab === "values" ? "Value" : "Milestone"}
                 </button>
@@ -261,12 +261,12 @@ export default function AboutAdmin() {
                                 <>
                                     {/* Profile photo upload in modal */}
                                     {editing.data.id && (
-                                        <div className="flex items-center gap-4 p-4 bg-navy-900/50 rounded-xl border border-white/5">
+                                        <div className="flex items-center gap-4 p-4 bg-neutral-900/50 rounded-xl border border-white/5">
                                             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gold-400/30 bg-gradient-to-br from-gold-400/20 to-gold-400/5 flex items-center justify-center flex-shrink-0">
                                                 {(editing.data as Partial<TeamMember>).avatar_url ? (
                                                     <Image src={(editing.data as Partial<TeamMember>).avatar_url!} alt="Avatar" width={64} height={64} className="w-full h-full object-cover" />
                                                 ) : (
-                                                    <span className="text-gold-400 font-bold text-lg">{(editing.data as Partial<TeamMember>).initials}</span>
+                                                    <span className="text-brand-coral font-bold text-lg">{(editing.data as Partial<TeamMember>).initials}</span>
                                                 )}
                                             </div>
                                             <div className="flex-1">
@@ -296,24 +296,24 @@ export default function AboutAdmin() {
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Full Name</label>
-                                            <input value={(editing.data as Partial<TeamMember>).name || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, name: e.target.value, initials: e.target.value.split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2) } })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Anasan Rai" />
+                                            <input value={(editing.data as Partial<TeamMember>).name || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, name: e.target.value, initials: e.target.value.split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2) } })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Anasan Rai" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Initials</label>
-                                            <input value={(editing.data as Partial<TeamMember>).initials || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, initials: e.target.value } })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="AR" maxLength={2} />
+                                            <input value={(editing.data as Partial<TeamMember>).initials || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, initials: e.target.value } })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="AR" maxLength={2} />
                                         </div>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Role / Title</label>
-                                        <input value={(editing.data as Partial<TeamMember>).role || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, role: e.target.value } })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="AI Automation Engineer" />
+                                        <input value={(editing.data as Partial<TeamMember>).role || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, role: e.target.value } })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="AI Automation Engineer" />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Bio</label>
-                                        <textarea value={(editing.data as Partial<TeamMember>).bio || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, bio: e.target.value } })} rows={3} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Short bio..." />
+                                        <textarea value={(editing.data as Partial<TeamMember>).bio || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, bio: e.target.value } })} rows={3} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Short bio..." />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Avatar URL (optional)</label>
-                                        <input value={(editing.data as Partial<TeamMember>).avatar_url || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, avatar_url: e.target.value } })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="https://..." />
+                                        <input value={(editing.data as Partial<TeamMember>).avatar_url || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, avatar_url: e.target.value } })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="https://..." />
                                     </div>
                                 </>
                             )}
@@ -321,11 +321,11 @@ export default function AboutAdmin() {
                                 <>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Title</label>
-                                        <input value={(editing.data as Partial<Value>).title || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, title: e.target.value } })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Value name" />
+                                        <input value={(editing.data as Partial<Value>).title || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, title: e.target.value } })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Value name" />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Description</label>
-                                        <textarea value={(editing.data as Partial<Value>).description || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, description: e.target.value } })} rows={2} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Description..." />
+                                        <textarea value={(editing.data as Partial<Value>).description || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, description: e.target.value } })} rows={2} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Description..." />
                                     </div>
                                 </>
                             )}
@@ -334,23 +334,23 @@ export default function AboutAdmin() {
                                     <div className="grid grid-cols-3 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Year</label>
-                                            <input value={(editing.data as Partial<Milestone>).year || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, year: e.target.value } })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="2026" />
+                                            <input value={(editing.data as Partial<Milestone>).year || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, year: e.target.value } })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="2026" />
                                         </div>
                                         <div className="col-span-2">
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Title</label>
-                                            <input value={(editing.data as Partial<Milestone>).title || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, title: e.target.value } })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Milestone title" />
+                                            <input value={(editing.data as Partial<Milestone>).title || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, title: e.target.value } })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Milestone title" />
                                         </div>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Description</label>
-                                        <textarea value={(editing.data as Partial<Milestone>).description || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, description: e.target.value } })} rows={2} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Description..." />
+                                        <textarea value={(editing.data as Partial<Milestone>).description || ""} onChange={e => setEditing({ ...editing, data: { ...editing.data, description: e.target.value } })} rows={2} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Description..." />
                                     </div>
                                 </>
                             )}
                         </div>
                         <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-white/5">
                             <button onClick={() => setEditing(null)} className="px-4 py-2 text-sm text-gray-400 hover:text-white">Cancel</button>
-                            <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm disabled:opacity-50">
+                            <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm disabled:opacity-50">
                                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? "Saving..." : "Save Changes"}
                             </button>
                         </div>
@@ -419,7 +419,7 @@ export default function AboutAdmin() {
                             <div className="space-y-3">
                                 {milestones.map(m => (
                                     <div key={m.id} className="glass rounded-xl p-4 flex items-center gap-4 card-glow">
-                                        <div className="w-12 h-12 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 font-display font-bold text-xs flex-shrink-0">{m.year}</div>
+                                        <div className="w-12 h-12 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral font-display font-bold text-xs flex-shrink-0">{m.year}</div>
                                         <div className="flex-1 min-w-0">
                                             <h3 className="text-sm font-semibold text-white">{m.title}</h3>
                                             <p className="text-xs text-gray-500 line-clamp-1">{m.description}</p>

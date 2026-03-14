@@ -45,12 +45,15 @@ export async function POST(req: NextRequest) {
             const amount = (session.amount_total || 0) / 100;
 
             if (orderId) {
-                await (sb.from("orders" as any) as any).update({ status: "completed" }).eq("order_id", orderId);
-                const { data: order } = await (sb.from("orders" as any) as any).select("*").eq("order_id", orderId).single();
+                const { error: updateError } = await (sb.from("orders" as any) as any).update({ status: "completed" }).eq("order_id", orderId);
+                if (updateError) console.error("[Stripe Webhook] Error updating order status:", updateError);
+
+                const { data: order, error: selectError } = await (sb.from("orders" as any) as any).select("*").eq("order_id", orderId).single();
+                if (selectError) console.error("[Stripe Webhook] Error fetching order:", selectError);
 
                 if (order && customerEmail) {
                     const orderData = order as Record<string, unknown>;
-                    await (sb.from("purchases" as any) as any).insert({
+                    const { error: insertError } = await (sb.from("purchases" as any) as any).insert({
                         user_email: customerEmail,
                         template_id: (orderData.metadata as Record<string, unknown>)?.template_id as string ?? null,
                         amount,
@@ -59,6 +62,10 @@ export async function POST(req: NextRequest) {
                         transaction_id: session.id,
                         status: "completed",
                     });
+                    
+                    if (insertError) {
+                        console.error("[Stripe Webhook] Error inserting purchase record:", insertError);
+                    }
                 }
             }
         }

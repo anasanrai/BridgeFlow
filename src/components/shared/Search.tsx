@@ -80,7 +80,7 @@ export default function Search() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="p-2 text-gray-400 hover:text-gold-400 hover:bg-white/5 rounded-lg transition-all duration-200 group"
+                className="p-2 text-gray-400 hover:text-brand-coral hover:bg-white/5 rounded-lg transition-all duration-200 group"
                 title="Search (Cmd+K)"
             >
                 <SearchIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -95,7 +95,7 @@ export default function Search() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsOpen(false)}
-                            className="absolute inset-0 bg-navy-950/80 backdrop-blur-md"
+                            className="absolute inset-0 bg-neutral-950/80 backdrop-blur-md"
                         />
 
                         {/* Modal */}
@@ -103,10 +103,10 @@ export default function Search() {
                             initial={{ opacity: 0, scale: 0.95, y: -20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                            className="relative w-full max-w-2xl bg-navy-900/90 border border-white/10 rounded-2xl shadow-2xl shadow-gold-400/10 overflow-hidden"
+                            className="relative w-full max-w-2xl bg-neutral-900/90 border border-white/10 rounded-2xl shadow-2xl shadow-gold-400/10 overflow-hidden"
                         >
                             <div className="p-4 border-b border-white/5 flex items-center gap-3">
-                                <SearchIcon className="w-5 h-5 text-gold-400" />
+                                <SearchIcon className="w-5 h-5 text-brand-coral" />
                                 <input
                                     ref={inputRef}
                                     type="text"
@@ -147,7 +147,7 @@ export default function Search() {
                                                 onClick={() => setIsOpen(false)}
                                                 className="flex items-start gap-4 p-3 rounded-xl hover:bg-white/5 transition-all group"
                                             >
-                                                <div className="mt-1 w-8 h-8 rounded-lg bg-navy-800 border border-white/5 flex items-center justify-center text-gray-400 group-hover:text-gold-400 group-hover:border-gold-400/20 transition-colors">
+                                                <div className="mt-1 w-8 h-8 rounded-lg bg-neutral-800 border border-white/5 flex items-center justify-center text-gray-400 group-hover:text-brand-coral group-hover:border-gold-400/20 transition-colors">
                                                     {result.type === "blog" ? (
                                                         <FileText className="w-4 h-4" />
                                                     ) : (
@@ -155,7 +155,7 @@ export default function Search() {
                                                     )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="text-sm font-semibold text-white group-hover:text-gold-400 transition-colors truncate">
+                                                    <h4 className="text-sm font-semibold text-white group-hover:text-brand-coral transition-colors truncate">
                                                         {result.title}
                                                     </h4>
                                                     <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">
@@ -173,7 +173,7 @@ export default function Search() {
                                 )}
                             </div>
 
-                            <div className="p-3 bg-navy-950/50 border-t border-white/5 flex justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest font-medium">
+                            <div className="p-3 bg-neutral-950/50 border-t border-white/5 flex justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest font-medium">
                                 <span>{results.length} Results</span>
                                 <div className="flex gap-4">
                                     <span className="flex items-center gap-1">

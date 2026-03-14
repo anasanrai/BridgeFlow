@@ -65,16 +65,16 @@ function SearchContent() {
                 <ScrollReveal>
                     <div className="max-w-3xl mx-auto mb-12 text-center">
                         <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">
-                            Search <span className="gold-text">BridgeFlow</span>
+                            Search <span className="text-brand-coral font-bold">BridgeFlow</span>
                         </h1>
                         <div className="relative max-w-2xl mx-auto">
-                            <SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gold-400" />
+                            <SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-brand-coral" />
                             <input
                                 type="text"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 placeholder="Search articles, case studies, technologies..."
-                                className="w-full pl-14 pr-6 py-5 bg-navy-900/50 border border-white/10 rounded-2xl text-white text-xl focus:outline-none focus:border-gold-400/50 transition-all card-glow"
+                                className="w-full pl-14 pr-6 py-5 bg-neutral-900/50 border border-white/10 rounded-2xl text-white text-xl focus:outline-none focus:border-gold-400/50 transition-all card-glow"
                                 autoFocus
                             />
                         </div>
@@ -84,7 +84,7 @@ function SearchContent() {
                 <div className="max-w-4xl mx-auto">
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-24 text-gray-500">
-                            <Loader2 className="w-12 h-12 animate-spin mb-4 text-gold-400" />
+                            <Loader2 className="w-12 h-12 animate-spin mb-4 text-brand-coral" />
                             <p className="text-lg font-medium">Searching the knowledge base...</p>
                         </div>
                     ) : query.length > 0 ? (
@@ -94,7 +94,7 @@ function SearchContent() {
                                     Found <span className="text-white font-bold">{results.length}</span> results for &quot;<span className="text-white">{query}</span>&quot;
                                 </h2>
                                 <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-widest">
-                                    <Sparkles className="w-3 h-3 text-gold-400" />
+                                    <Sparkles className="w-3 h-3 text-brand-coral" />
                                     AI-Powered Search
                                 </div>
                             </div>
@@ -106,7 +106,7 @@ function SearchContent() {
                                             <Link href={result.href}>
                                                 <Card className="p-6 hover:border-gold-400/30 transition-all group relative overflow-hidden">
                                                     <div className="flex items-start gap-6">
-                                                        <div className="w-12 h-12 rounded-xl bg-navy-800 border border-white/5 flex items-center justify-center text-gray-400 group-hover:text-gold-400 group-hover:border-gold-400/20 transition-all">
+                                                        <div className="w-12 h-12 rounded-xl bg-neutral-800 border border-white/5 flex items-center justify-center text-gray-400 group-hover:text-brand-coral group-hover:border-gold-400/20 transition-all">
                                                             {result.type === "blog" ? (
                                                                 <FileText className="w-6 h-6" />
                                                             ) : (
@@ -115,11 +115,11 @@ function SearchContent() {
                                                         </div>
                                                         <div className="flex-1 min-w-0">
                                                             <div className="flex items-center gap-2 mb-1">
-                                                                <span className="text-[10px] font-bold uppercase tracking-widest text-gold-400/60">
+                                                                <span className="text-[10px] font-bold uppercase tracking-widest text-brand-coral/60">
                                                                     {result.type}
                                                                 </span>
                                                             </div>
-                                                            <h3 className="text-xl font-bold text-white group-hover:text-gold-400 transition-colors mb-2">
+                                                            <h3 className="text-xl font-bold text-white group-hover:text-brand-coral transition-colors mb-2">
                                                                 {result.title}
                                                             </h3>
                                                             <p className="text-gray-400 line-clamp-2 text-sm leading-relaxed">
@@ -127,7 +127,7 @@ function SearchContent() {
                                                             </p>
                                                         </div>
                                                         <div className="self-center">
-                                                            <div className="w-10 h-10 rounded-full border border-white/5 flex items-center justify-center text-gray-600 group-hover:text-gold-400 group-hover:border-gold-400/20 group-hover:bg-gold-400/5 transition-all">
+                                                            <div className="w-10 h-10 rounded-full border border-white/5 flex items-center justify-center text-gray-600 group-hover:text-brand-coral group-hover:border-gold-400/20 group-hover:bg-gold-400/5 transition-all">
                                                                 <ArrowRight className="w-5 h-5" />
                                                             </div>
                                                         </div>
@@ -164,7 +164,7 @@ export default function SearchPage() {
     return (
         <Suspense fallback={
             <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="w-12 h-12 animate-spin text-gold-400" />
+                <Loader2 className="w-12 h-12 animate-spin text-brand-coral" />
             </div>
         }>
             <SearchContent />

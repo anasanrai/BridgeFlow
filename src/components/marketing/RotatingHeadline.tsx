@@ -32,7 +32,7 @@ export default function RotatingHeadline() {
             Stop Losing{" "}
             <br className="hidden sm:block" />
             <span
-                className={`gold-text text-glow inline-block transition-all duration-400 ${isVisible
+                className={`text-brand-coral font-bold text-glow inline-block transition-all duration-400 ${isVisible
                     ? "opacity-100 translate-y-0 blur-0"
                     : "opacity-0 translate-y-2 blur-[2px]"
                     }`}

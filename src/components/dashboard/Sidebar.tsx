@@ -115,7 +115,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      <div className="p-4 space-y-1 border-t border-white/5 bg-navy-950/50">
+      <div className="p-4 space-y-1 border-t border-white/5 bg-neutral-950/50">
         {footerNav.map((item) => {
           const isActive = pathname === item.href
           return (

@@ -33,7 +33,7 @@ const ENDPOINTS = [
         id: "auth",
         group: "Authentication",
         icon: Key,
-        color: "text-gold-400",
+        color: "text-brand-coral",
         endpoints: [
             {
                 method: "POST",
@@ -246,7 +246,7 @@ function CodeBlock({ code, language = "bash" }: { code: string; language?: strin
 
     return (
         <div className="relative group rounded-xl overflow-hidden border border-white/10">
-            <div className="flex items-center justify-between px-4 py-2 bg-navy-900/80 border-b border-white/10">
+            <div className="flex items-center justify-between px-4 py-2 bg-neutral-900/80 border-b border-white/10">
                 <span className="text-xs text-gray-500 font-mono">{language}</span>
                 <button
                     onClick={handleCopy}
@@ -256,7 +256,7 @@ function CodeBlock({ code, language = "bash" }: { code: string; language?: strin
                     {copied ? "Copied!" : "Copy"}
                 </button>
             </div>
-            <pre className="p-4 bg-navy-950/80 text-sm font-mono text-gray-300 overflow-x-auto">
+            <pre className="p-4 bg-neutral-950/80 text-sm font-mono text-gray-300 overflow-x-auto">
                 <code>{code}</code>
             </pre>
         </div>
@@ -282,7 +282,7 @@ function EndpointCard({ endpoint }: { endpoint: any }) {
             </button>
 
             {open && (
-                <div className="border-t border-white/10 p-4 space-y-4 bg-navy-950/20">
+                <div className="border-t border-white/10 p-4 space-y-4 bg-neutral-950/20">
                     <p className="text-sm text-gray-400">{endpoint.description}</p>
 
                     {endpoint.params && endpoint.params.length > 0 && (
@@ -309,7 +309,7 @@ function EndpointCard({ endpoint }: { endpoint: any }) {
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
-                                    className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors capitalize ${activeTab === tab ? "bg-gold-400/10 text-gold-400 border border-gold-400/20" : "text-gray-500 hover:text-gray-300"}`}
+                                    className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors capitalize ${activeTab === tab ? "bg-gold-400/10 text-brand-coral border border-gold-400/20" : "text-gray-500 hover:text-gray-300"}`}
                                 >
                                     {tab}
                                 </button>
@@ -333,11 +333,11 @@ export default function ApiReferenceClient() {
         <>
             {/* Hero */}
             <section className="relative pt-32 pb-16 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/[0.04] rounded-full blur-3xl" />
                 <div className="relative z-10 container-max text-center px-4 sm:px-6">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                             <Code2 className="w-3.5 h-3.5" />
                             Developer API
                         </span>
@@ -345,7 +345,7 @@ export default function ApiReferenceClient() {
                     <ScrollReveal delay={0.1}>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
                             BridgeFlow{" "}
-                            <span className="gold-text">API Reference</span>
+                            <span className="text-brand-coral font-bold">API Reference</span>
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
@@ -356,7 +356,7 @@ export default function ApiReferenceClient() {
                     <ScrollReveal delay={0.3}>
                         <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
                             <div className="flex items-center gap-2 text-gray-400">
-                                <Globe className="w-4 h-4 text-gold-400" />
+                                <Globe className="w-4 h-4 text-brand-coral" />
                                 Base URL: <code className="text-gold-300 font-mono bg-white/5 px-2 py-0.5 rounded ml-1">{BASE_URL}</code>
                             </div>
                             <div className="flex items-center gap-2 text-gray-400">
@@ -373,7 +373,7 @@ export default function ApiReferenceClient() {
             </section>
 
             {/* Authentication Notice */}
-            <section className="border-y border-white/5 bg-navy-900/20">
+            <section className="border-y border-white/5 bg-neutral-900/20">
                 <div className="container-max px-4 sm:px-6 py-5">
                     <div className="flex items-start gap-3">
                         <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
@@ -381,7 +381,7 @@ export default function ApiReferenceClient() {
                             <strong className="text-white">Authentication required.</strong> All API requests must include an{" "}
                             <code className="text-gold-300 font-mono bg-white/5 px-1.5 py-0.5 rounded text-xs">Authorization: Bearer YOUR_TOKEN</code>{" "}
                             header. Get your API key from the{" "}
-                            <Link href="/admin/integrations" className="text-gold-400 hover:underline">admin dashboard</Link>.
+                            <Link href="/admin/integrations" className="text-brand-coral hover:underline">admin dashboard</Link>.
                         </p>
                     </div>
                 </div>
@@ -399,23 +399,23 @@ export default function ApiReferenceClient() {
                                     <button
                                         key={group.id}
                                         onClick={() => setActiveGroup(group.id)}
-                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeGroup === group.id ? "bg-gold-400/10 text-gold-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
+                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeGroup === group.id ? "bg-gold-400/10 text-brand-coral" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
                                     >
-                                        <group.icon className={`w-4 h-4 flex-shrink-0 ${activeGroup === group.id ? "text-gold-400" : group.color}`} />
+                                        <group.icon className={`w-4 h-4 flex-shrink-0 ${activeGroup === group.id ? "text-brand-coral" : group.color}`} />
                                         {group.group}
                                     </button>
                                 ))}
                                 <div className="pt-4 border-t border-white/5 mt-4 space-y-1">
                                     <button
                                         onClick={() => setActiveGroup("events")}
-                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeGroup === "events" ? "bg-gold-400/10 text-gold-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
+                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeGroup === "events" ? "bg-gold-400/10 text-brand-coral" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
                                     >
                                         <Bell className="w-4 h-4 flex-shrink-0" />
                                         Events Reference
                                     </button>
                                     <button
                                         onClick={() => setActiveGroup("errors")}
-                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeGroup === "errors" ? "bg-gold-400/10 text-gold-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
+                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${activeGroup === "errors" ? "bg-gold-400/10 text-brand-coral" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
                                     >
                                         <AlertCircle className="w-4 h-4 flex-shrink-0" />
                                         Error Codes
@@ -485,7 +485,7 @@ curl ${BASE_URL}/workflows \\
                                 </h2>
                                 <p className="text-gray-500 text-sm mb-6">Subscribe to these events when registering a webhook endpoint.</p>
                                 <div className="border border-white/10 rounded-xl overflow-hidden">
-                                    <div className="grid grid-cols-[1fr_2fr] text-xs font-bold uppercase tracking-wider text-gray-500 px-4 py-3 bg-navy-900/50 border-b border-white/10">
+                                    <div className="grid grid-cols-[1fr_2fr] text-xs font-bold uppercase tracking-wider text-gray-500 px-4 py-3 bg-neutral-900/50 border-b border-white/10">
                                         <span>Event</span>
                                         <span>Description</span>
                                     </div>
@@ -545,7 +545,7 @@ curl ${BASE_URL}/workflows \\
 
                             {/* CTA */}
                             <div className="p-8 rounded-2xl glass border border-white/10 text-center">
-                                <Shield className="w-8 h-8 text-gold-400 mx-auto mb-4" />
+                                <Shield className="w-8 h-8 text-brand-coral mx-auto mb-4" />
                                 <h3 className="text-xl font-display font-bold text-white mb-2">Need API access?</h3>
                                 <p className="text-gray-400 text-sm mb-6 max-w-md mx-auto">
                                     API access is available for BridgeFlow clients. Get your API key from the admin dashboard or contact our team.
@@ -553,7 +553,7 @@ curl ${BASE_URL}/workflows \\
                                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                                     <Link
                                         href="/contact"
-                                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider gold-gradient text-navy-950 rounded-xl hover:shadow-[0_0_25px_rgba(230,180,34,0.3)] hover:scale-105 active:scale-95 transition-all duration-300"
+                                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider bg-brand-coral text-neutral-950 font-bold text-neutral-950 rounded-xl hover:shadow-[0_0_25px_rgba(230,180,34,0.3)] hover:scale-105 active:scale-95 transition-all duration-300"
                                     >
                                         Request API Access
                                         <ArrowRight className="w-4 h-4" />

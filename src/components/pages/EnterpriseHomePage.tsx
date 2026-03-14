@@ -175,9 +175,9 @@ export default function EnterpriseHomePage({ content }: HomePageProps) {
                 transition={{ delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-3xl lg:text-4xl font-bold text-gold-400 mb-2">
+                <div className="text-3xl lg:text-4xl font-bold text-brand-coral mb-2">
                   {stat.value}
-                  <span className="text-gold-400">{stat.suffix}</span>
+                  <span className="text-brand-coral">{stat.suffix}</span>
                 </div>
                 <p className="text-gray-400 text-sm lg:text-base">{stat.label}</p>
               </motion.div>

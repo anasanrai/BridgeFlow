@@ -59,7 +59,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Protect all product and dashboard routes
-  const protectedRoutes = ['/dashboard', '/cashpilot', '/n8n-galaxy', '/automation-tools'];
+  const protectedRoutes = ['/dashboard', '/admin', '/cashpilot', '/n8n-galaxy', '/automation-tools'];
   const isProtectedPath = protectedRoutes.some(path => pathname.startsWith(path));
 
   if (isProtectedPath) {

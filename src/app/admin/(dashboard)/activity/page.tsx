@@ -25,7 +25,7 @@ export default function ActivityAdmin() {
     return (
         <div>
             <div className="mb-8">
-                <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><Activity className="w-6 h-6 text-gold-400" />Activity Log</h1>
+                <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><Activity className="w-6 h-6 text-brand-coral" />Activity Log</h1>
                 <p className="text-sm text-gray-500 mt-1">Audit trail of all admin actions</p>
             </div>
 
@@ -43,7 +43,7 @@ export default function ActivityAdmin() {
                     <div className="space-y-1">
                         {logs.map((log) => (
                             <div key={log.id} className="flex items-start gap-4 pl-1 py-2">
-                                <div className={`w-4 h-4 rounded-full ${actionColors[log.action] || "bg-gray-400"} flex-shrink-0 mt-1 ring-4 ring-navy-950`} />
+                                <div className={`w-4 h-4 rounded-full ${actionColors[log.action] || "bg-gray-400"} flex-shrink-0 mt-1 ring-4 ring-neutral-950`} />
                                 <div className="flex-1 glass rounded-lg px-4 py-3">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">

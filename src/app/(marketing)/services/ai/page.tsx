@@ -102,7 +102,7 @@ const AI_MODELS = [
     { name: "Gemini 2.0 Flash", provider: "Google", badge: "Fast", color: "text-amber-400 border-amber-400/30 bg-amber-400/10" },
     { name: "Llama 3.3 70B", provider: "Meta / Open Source", badge: "Private", color: "text-purple-400 border-purple-400/30 bg-purple-400/10" },
     { name: "Mistral Large", provider: "Mistral AI", badge: "EU", color: "text-orange-400 border-orange-400/30 bg-orange-400/10" },
-    { name: "Custom Fine-tuned", provider: "Your Data", badge: "Bespoke", color: "text-gold-400 border-gold-400/30 bg-gold-400/10" },
+    { name: "Custom Fine-tuned", provider: "Your Data", badge: "Bespoke", color: "text-brand-coral border-gold-400/30 bg-gold-400/10" },
 ];
 
 const PROCESS_STEPS = [
@@ -146,11 +146,11 @@ export default async function AIServicesPage() {
         <>
             {/* Hero */}
             <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-blue-500/[0.04] rounded-full blur-[120px] animate-pulse" />
                 <div className="relative z-10 container-max text-center px-4 sm:px-6">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                             <Bot className="w-3.5 h-3.5" />
                             AI Integration Services
                         </span>
@@ -158,7 +158,7 @@ export default async function AIServicesPage() {
                     <ScrollReveal delay={0.1}>
                         <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-tight mb-6">
                             Supercharge your business{" "}
-                            <span className="gold-text text-glow">with AI</span>
+                            <span className="text-brand-coral font-bold text-glow">with AI</span>
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
@@ -181,13 +181,13 @@ export default async function AIServicesPage() {
             </section>
 
             {/* Stats Bar */}
-            <section className="section-padding border-y border-white/5 bg-navy-900/30">
+            <section className="section-padding border-y border-white/5 bg-neutral-900/30">
                 <div className="container-max">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                         {STATS.map((stat, i) => (
                             <ScrollReveal key={stat.label} delay={i * 0.1}>
                                 <div className="text-center">
-                                    <div className="text-3xl sm:text-4xl font-display font-bold gold-text mb-1">{stat.value}</div>
+                                    <div className="text-3xl sm:text-4xl font-display font-bold text-brand-coral font-bold mb-1">{stat.value}</div>
                                     <div className="text-sm text-gray-400">{stat.label}</div>
                                 </div>
                             </ScrollReveal>
@@ -217,7 +217,7 @@ export default async function AIServicesPage() {
                                     <ul className="space-y-2">
                                         {cap.features.map((feature) => (
                                             <li key={feature} className="flex items-start gap-2 text-sm text-gray-400">
-                                                <CheckCircle2 className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
+                                                <CheckCircle2 className="w-4 h-4 text-brand-coral flex-shrink-0 mt-0.5" />
                                                 {feature}
                                             </li>
                                         ))}
@@ -230,7 +230,7 @@ export default async function AIServicesPage() {
             </section>
 
             {/* AI Models We Work With */}
-            <section className="section-padding bg-navy-900/20">
+            <section className="section-padding bg-neutral-900/20">
                 <div className="container-max">
                     <SectionHeader
                         badge="Model Stack"
@@ -243,7 +243,7 @@ export default async function AIServicesPage() {
                             <ScrollReveal key={model.name} delay={i * 0.08}>
                                 <div className="flex items-center gap-4 p-4 rounded-xl glass border border-white/5 hover:border-white/10 transition-colors">
                                     <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
-                                        <Sparkles className="w-5 h-5 text-gold-400" />
+                                        <Sparkles className="w-5 h-5 text-brand-coral" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 flex-wrap">
@@ -278,9 +278,9 @@ export default async function AIServicesPage() {
                                         <div className="hidden lg:block absolute top-8 left-full w-full h-px bg-gradient-to-r from-gold-400/30 to-transparent z-0" />
                                     )}
                                     <Card className="relative z-10 text-center h-full">
-                                        <div className="text-4xl font-display font-bold text-gold-400/20 mb-4">{step.step}</div>
+                                        <div className="text-4xl font-display font-bold text-brand-coral/20 mb-4">{step.step}</div>
                                         <div className="w-12 h-12 rounded-xl bg-gold-400/10 border border-gold-400/20 flex items-center justify-center mx-auto mb-4">
-                                            <step.icon className="w-6 h-6 text-gold-400" />
+                                            <step.icon className="w-6 h-6 text-brand-coral" />
                                         </div>
                                         <h3 className="text-base font-display font-bold text-white mb-2">{step.title}</h3>
                                         <p className="text-sm text-gray-400 leading-relaxed">{step.description}</p>
@@ -300,13 +300,13 @@ export default async function AIServicesPage() {
                             <div className="absolute inset-0 bg-hero-glow opacity-30 pointer-events-none" />
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-500/[0.02] blur-[150px] pointer-events-none" />
                             <div className="relative z-10 max-w-3xl mx-auto">
-                                <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                                <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                                     <Star className="w-3.5 h-3.5" />
                                     Limited Spots Available
                                 </div>
                                 <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 leading-tight">
                                     Ready to integrate{" "}
-                                    <span className="gold-text">AI into your business?</span>
+                                    <span className="text-brand-coral font-bold">AI into your business?</span>
                                 </h2>
                                 <p className="text-gray-400 text-lg md:text-xl mb-10 leading-relaxed">
                                     Book a free AI readiness audit and we&apos;ll show you exactly where AI can save you time and money — with a clear implementation plan.

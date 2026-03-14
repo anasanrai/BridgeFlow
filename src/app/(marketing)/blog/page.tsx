@@ -76,16 +76,16 @@ export default async function Blog() {
 
             {/* Hero */}
             <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="relative z-10 container-max text-center px-4 sm:px-6">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                             Blog
                         </span>
                     </ScrollReveal>
                     <ScrollReveal delay={0.1}>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
-                            Insights & <span className="gold-text">Resources</span>
+                            Insights & <span className="text-brand-coral font-bold">Resources</span>
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>

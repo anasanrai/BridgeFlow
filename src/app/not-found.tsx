@@ -3,44 +3,43 @@ import { ArrowRight, Search } from "lucide-react";
 
 export default function NotFound() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-navy-950 px-4 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-neutral-950 px-4 relative overflow-hidden">
             {/* Background glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gold-400/[0.03] rounded-full blur-[120px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-coral/[0.03] rounded-full blur-[120px]" />
 
             <div className="relative z-10 text-center max-w-lg">
                 {/* Large 404 */}
                 <div className="relative mb-8">
-                    <span className="text-[10rem] sm:text-[14rem] font-display font-black leading-none gold-text opacity-10 select-none">
+                    <span className="text-[10rem] sm:text-[14rem] font-black uppercase tracking-tighter text-brand-coral opacity-10 select-none">
                         404
                     </span>
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-24 h-24 rounded-3xl glass border border-white/10 flex items-center justify-center">
-                            <Search className="w-10 h-10 text-gold-400" />
+                        <div className="w-24 h-24 rounded-[30px] border border-white/5 bg-neutral-900/50 flex items-center justify-center">
+                            <Search className="w-10 h-10 text-brand-coral" />
                         </div>
                     </div>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-4">
-                    Page not <span className="gold-text">found</span>
+                <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter text-white mb-4">
+                    Target Not <span className="text-brand-coral">Found</span>
                 </h1>
-                <p className="text-gray-400 text-lg mb-10 leading-relaxed">
-                    The page you&apos;re looking for doesn&apos;t exist or has been moved.
-                    Let&apos;s get you back on track.
+                <p className="text-neutral-400 text-lg mb-10 font-medium">
+                    The requested asset does not exist or has been relocated within the ecosystem.
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-widest gold-gradient text-navy-950 rounded-full hover:shadow-[0_0_30px_rgba(230,180,34,0.4)] hover:scale-105 active:scale-95 transition-all duration-500"
+                        className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-coral text-white text-sm font-black uppercase tracking-widest rounded-full hover:shadow-[0_0_40px_-10px_rgba(255,109,90,0.5)] transition-all transform hover:-translate-y-1"
                     >
-                        Back to Home
+                        Return Home
                         <ArrowRight className="w-4 h-4" />
                     </Link>
                     <Link
                         href="/contact"
-                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-widest border border-white/10 text-gray-300 hover:text-white rounded-full hover:bg-white/5 transition-all duration-300"
+                        className="inline-flex items-center justify-center px-8 py-4 border border-white/10 text-white text-sm font-black uppercase tracking-widest rounded-full hover:bg-white/5 transition-all"
                     >
-                        Contact Us
+                        Contact Support
                     </Link>
                 </div>
 
@@ -49,15 +48,15 @@ export default function NotFound() {
                     {[
                         { label: "Services", href: "/services" },
                         { label: "Pricing", href: "/pricing" },
-                        { label: "AI Calculator", href: "/calculator" },
                         { label: "Templates", href: "/templates" },
                         { label: "Blog", href: "/blog" },
                         { label: "About", href: "/about" },
+                        { label: "Login", href: "/login" },
                     ].map((link) => (
                         <Link
                             key={link.label}
                             href={link.href}
-                            className="px-4 py-2.5 text-xs font-medium text-gray-400 hover:text-white glass rounded-xl border border-white/5 hover:border-gold-400/20 transition-all duration-200"
+                            className="px-4 py-3 text-[11px] font-black text-neutral-400 uppercase tracking-widest hover:text-white rounded-[20px] border border-white/5 bg-neutral-900/30 hover:border-brand-coral/20 transition-all"
                         >
                             {link.label}
                         </Link>

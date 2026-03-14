@@ -27,11 +27,11 @@ function renderContent(text: string) {
         let html = line
             .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
             .replace(/\*(.+?)\*/g, '<em>$1</em>')
-            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-gold-400 underline hover:text-gold-300" target="_blank" rel="noopener">$1</a>');
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-brand-coral underline hover:text-gold-300" target="_blank" rel="noopener">$1</a>');
 
         // Bullet points
         if (line.trim().startsWith("- ") || line.trim().startsWith("• ")) {
-            html = `<span class="flex gap-2"><span class="text-gold-400/60">•</span><span>${html.replace(/^[\s]*[-•]\s*/, '')}</span></span>`;
+            html = `<span class="flex gap-2"><span class="text-brand-coral/60">•</span><span>${html.replace(/^[\s]*[-•]\s*/, '')}</span></span>`;
         }
 
         return (

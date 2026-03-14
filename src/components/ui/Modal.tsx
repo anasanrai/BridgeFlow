@@ -20,13 +20,13 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm"
+                        className="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm"
                     />
                     <motion.div
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.95, opacity: 0 }}
-                        className="relative w-full max-w-lg bg-navy-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+                        className="relative w-full max-w-lg bg-neutral-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
                     >
                         <div className="flex items-center justify-between p-6 border-b border-white/5">
                             {title && <h3 className="text-xl font-bold">{title}</h3>}

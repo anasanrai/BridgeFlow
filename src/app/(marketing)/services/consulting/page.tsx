@@ -162,7 +162,7 @@ const FAQS = [
 
 export default async function ConsultingPage() {
     return (
-        <main className="min-h-screen bg-navy-950">
+        <main className="min-h-screen bg-neutral-950">
             {/* Hero */}
             <section className="relative section-padding pt-32 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-gold-400/5 via-transparent to-transparent" />
@@ -170,14 +170,14 @@ export default async function ConsultingPage() {
                 <div className="container-max relative z-10">
                     {/* Breadcrumb */}
                     <nav className="flex items-center gap-2 text-xs text-gray-500 mb-8">
-                        <Link href="/" className="hover:text-gold-400 transition-colors">Home</Link>
+                        <Link href="/" className="hover:text-brand-coral transition-colors">Home</Link>
                         <ChevronRight className="w-3 h-3" />
-                        <Link href="/services" className="hover:text-gold-400 transition-colors">Services</Link>
+                        <Link href="/services" className="hover:text-brand-coral transition-colors">Services</Link>
                         <ChevronRight className="w-3 h-3" />
-                        <span className="text-gold-400">Consulting</span>
+                        <span className="text-brand-coral">Consulting</span>
                     </nav>
                     <ScrollReveal>
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/20 bg-gold-400/5 text-gold-400 text-xs font-bold uppercase tracking-widest mb-6">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/20 bg-gold-400/5 text-brand-coral text-xs font-bold uppercase tracking-widest mb-6">
                             <Brain className="w-3.5 h-3.5" />
                             AI Automation Consulting
                         </div>
@@ -185,7 +185,7 @@ export default async function ConsultingPage() {
                     <ScrollReveal delay={0.1}>
                         <h1 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.95] mb-6">
                             Build Your{" "}
-                            <span className="gold-text">Automation</span>
+                            <span className="text-brand-coral font-bold">Automation</span>
                             <br />
                             Strategy With Us
                         </h1>
@@ -200,7 +200,7 @@ export default async function ConsultingPage() {
                     <ScrollReveal delay={0.3}>
                         <div className="flex flex-wrap gap-4">
                             <Link href="https://calendly.com/raianasan10/30min" target="_blank" rel="noopener noreferrer">
-                                <Button size="lg" className="gold-gradient text-navy-950 font-bold">
+                                <Button size="lg" className="bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold">
                                     <Calendar className="w-4 h-4 mr-2" />
                                     Book Free Discovery Call
                                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -218,8 +218,8 @@ export default async function ConsultingPage() {
                         {OUTCOMES.map((o, i) => (
                             <ScrollReveal key={o.label} delay={i * 0.08}>
                                 <Card className="text-center !p-6">
-                                    <o.icon className="w-6 h-6 text-gold-400 mx-auto mb-3" />
-                                    <div className="text-3xl font-black gold-text mb-1">{o.stat}</div>
+                                    <o.icon className="w-6 h-6 text-brand-coral mx-auto mb-3" />
+                                    <div className="text-3xl font-black text-brand-coral font-bold mb-1">{o.stat}</div>
                                     <div className="text-xs text-gray-500">{o.label}</div>
                                 </Card>
                             </ScrollReveal>
@@ -242,7 +242,7 @@ export default async function ConsultingPage() {
                             <ScrollReveal key={pkg.name} delay={i * 0.1}>
                                 <div className={`relative rounded-2xl border ${pkg.border} bg-gradient-to-b ${pkg.color} p-8 flex flex-col h-full`}>
                                     {pkg.badge && (
-                                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 gold-gradient text-navy-950 text-xs font-black uppercase tracking-wider rounded-full">
+                                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-brand-coral text-neutral-950 font-bold text-neutral-950 text-xs font-black uppercase tracking-wider rounded-full">
                                             {pkg.badge}
                                         </div>
                                     )}
@@ -252,7 +252,7 @@ export default async function ConsultingPage() {
                                             <span className="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded-full">{pkg.duration}</span>
                                         </div>
                                         <div className="flex items-baseline gap-1 mb-3">
-                                            <span className="text-4xl font-black gold-text">{pkg.price}</span>
+                                            <span className="text-4xl font-black text-brand-coral font-bold">{pkg.price}</span>
                                             <span className="text-sm text-gray-500">/ {pkg.priceNote}</span>
                                         </div>
                                         <p className="text-sm text-gray-400 leading-relaxed">{pkg.description}</p>
@@ -267,13 +267,13 @@ export default async function ConsultingPage() {
                                     </ul>
                                     {pkg.external ? (
                                         <a href={pkg.href} target="_blank" rel="noopener noreferrer" className="block">
-                                            <Button className="w-full gold-gradient text-navy-950 font-bold">
+                                            <Button className="w-full bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold">
                                                 {pkg.cta} <ArrowRight className="w-4 h-4 ml-2" />
                                             </Button>
                                         </a>
                                     ) : (
                                         <Link href={pkg.href}>
-                                            <Button className="w-full gold-gradient text-navy-950 font-bold">
+                                            <Button className="w-full bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold">
                                                 {pkg.cta} <ArrowRight className="w-4 h-4 ml-2" />
                                             </Button>
                                         </Link>
@@ -286,7 +286,7 @@ export default async function ConsultingPage() {
             </section>
 
             {/* Process */}
-            <section className="section-padding bg-navy-900/30">
+            <section className="section-padding bg-neutral-900/30">
                 <div className="container-max">
                     <SectionHeader
                         badge="Our Process"
@@ -301,9 +301,9 @@ export default async function ConsultingPage() {
                             {PROCESS_STEPS.map((step, i) => (
                                 <ScrollReveal key={step.step} delay={i * 0.08}>
                                     <div className="text-center">
-                                        <div className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-800 border border-gold-400/20 mb-4 mx-auto">
-                                            <step.icon className="w-7 h-7 text-gold-400" />
-                                            <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full gold-gradient text-navy-950 text-[10px] font-black flex items-center justify-center">
+                                        <div className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-neutral-800 border border-gold-400/20 mb-4 mx-auto">
+                                            <step.icon className="w-7 h-7 text-brand-coral" />
+                                            <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-coral text-neutral-950 font-bold text-neutral-950 text-[10px] font-black flex items-center justify-center">
                                                 {step.step.slice(1)}
                                             </span>
                                         </div>
@@ -330,7 +330,7 @@ export default async function ConsultingPage() {
                             <ScrollReveal key={i} delay={i * 0.05}>
                                 <Card className="!p-6">
                                     <h3 className="font-semibold text-white mb-2 flex items-start gap-2">
-                                        <span className="text-gold-400 font-black text-sm mt-0.5">Q.</span>
+                                        <span className="text-brand-coral font-black text-sm mt-0.5">Q.</span>
                                         {faq.q}
                                     </h3>
                                     <p className="text-sm text-gray-400 leading-relaxed pl-5">{faq.a}</p>
@@ -342,17 +342,17 @@ export default async function ConsultingPage() {
             </section>
 
             {/* CTA */}
-            <section className="section-padding bg-navy-900/30">
+            <section className="section-padding bg-neutral-900/30">
                 <div className="container-max text-center">
                     <ScrollReveal>
                         <div className="max-w-2xl mx-auto">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/20 bg-gold-400/5 text-gold-400 text-xs font-bold uppercase tracking-widest mb-6">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/20 bg-gold-400/5 text-brand-coral text-xs font-bold uppercase tracking-widest mb-6">
                                 <Star className="w-3.5 h-3.5" />
                                 Free Discovery Call
                             </div>
                             <h2 className="font-display font-black text-4xl sm:text-5xl mb-4">
                                 Ready to Stop Leaving{" "}
-                                <span className="gold-text">Money on the Table?</span>
+                                <span className="text-brand-coral font-bold">Money on the Table?</span>
                             </h2>
                             <p className="text-gray-400 mb-8 leading-relaxed">
                                 Book a free 30-minute discovery call. We&apos;ll audit one of your workflows live
@@ -360,7 +360,7 @@ export default async function ConsultingPage() {
                             </p>
                             <div className="flex flex-wrap gap-4 justify-center">
                                 <a href="https://calendly.com/raianasan10/30min" target="_blank" rel="noopener noreferrer">
-                                    <Button size="lg" className="gold-gradient text-navy-950 font-bold">
+                                    <Button size="lg" className="bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold">
                                         <Calendar className="w-4 h-4 mr-2" />
                                         Book Free Call Now
                                         <ArrowRight className="w-4 h-4 ml-2" />

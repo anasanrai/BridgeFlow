@@ -83,9 +83,9 @@ export default function LiveDemos({ demos }: LiveDemosProps) {
                                     fill
                                     className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                                 />
-                                <div className="absolute inset-0 bg-navy-950/30 group-hover:bg-navy-950/10 transition-colors duration-300" />
-                                <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-navy-950/60 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
-                                    <ZoomIn className="w-4 h-4 text-gold-400" />
+                                <div className="absolute inset-0 bg-neutral-950/30 group-hover:bg-neutral-950/10 transition-colors duration-300" />
+                                <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-neutral-950/60 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
+                                    <ZoomIn className="w-4 h-4 text-brand-coral" />
                                 </div>
                             </button>
                         )}
@@ -115,7 +115,7 @@ export default function LiveDemos({ demos }: LiveDemosProps) {
                                 {(demo.tags || []).map((tag) => (
                                     <span
                                         key={tag}
-                                        className="px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-full"
+                                        className="px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold text-brand-coral bg-gold-400/5 border border-gold-400/10 rounded-full"
                                     >
                                         {tag}
                                     </span>
@@ -129,7 +129,7 @@ export default function LiveDemos({ demos }: LiveDemosProps) {
             {/* Lightbox */}
             {lightboxImage && (
                 <div
-                    className="fixed inset-0 z-[9999] bg-navy-950/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
+                    className="fixed inset-0 z-[9999] bg-neutral-950/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
                     onClick={() => setLightboxImage(null)}
                 >
                     <button

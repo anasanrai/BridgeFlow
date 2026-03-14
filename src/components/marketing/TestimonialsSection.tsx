@@ -40,7 +40,7 @@ export default function TestimonialsSection() {
             <div className="container-max">
                 <ScrollReveal>
                     <div className="text-center mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                             Client Results
                         </span>
                         <h2
@@ -48,7 +48,7 @@ export default function TestimonialsSection() {
                             className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight"
                         >
                             What our clients{" "}
-                            <span className="gold-text">say</span>
+                            <span className="text-brand-coral font-bold">say</span>
                         </h2>
                         <p className="mt-4 text-gray-400 text-lg max-w-2xl mx-auto">
                             Real feedback from businesses we&apos;ve helped automate and scale.
@@ -65,7 +65,7 @@ export default function TestimonialsSection() {
                                     {Array.from({ length: t.rating }).map((_, j) => (
                                         <Star
                                             key={j}
-                                            className="w-4 h-4 text-gold-400 fill-gold-400"
+                                            className="w-4 h-4 text-brand-coral fill-gold-400"
                                             aria-hidden="true"
                                         />
                                     ))}
@@ -73,7 +73,7 @@ export default function TestimonialsSection() {
 
                                 {/* Quote */}
                                 <blockquote className="flex-1">
-                                    <Quote className="w-6 h-6 text-gold-400/30 mb-3" aria-hidden="true" />
+                                    <Quote className="w-6 h-6 text-brand-coral/30 mb-3" aria-hidden="true" />
                                     <p className="text-gray-300 leading-relaxed text-sm lg:text-base">
                                         &ldquo;{t.content}&rdquo;
                                     </p>
@@ -82,7 +82,7 @@ export default function TestimonialsSection() {
                                 {/* Author */}
                                 <div className="flex items-center gap-3 mt-6 pt-5 border-t border-white/5">
                                     <div
-                                        className="w-10 h-10 rounded-full gold-gradient flex items-center justify-center text-navy-950 text-xs font-bold flex-shrink-0"
+                                        className="w-10 h-10 rounded-full bg-brand-coral text-neutral-950 font-bold flex items-center justify-center text-neutral-950 text-xs font-bold flex-shrink-0"
                                         aria-hidden="true"
                                     >
                                         {t.initials}

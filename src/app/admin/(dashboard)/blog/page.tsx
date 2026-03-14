@@ -156,7 +156,7 @@ export default function BlogAdmin() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                        <FileText className="w-6 h-6 text-gold-400" />
+                        <FileText className="w-6 h-6 text-brand-coral" />
                         Blog Posts
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">
@@ -168,7 +168,7 @@ export default function BlogAdmin() {
                         setEditing({ ...blankPost });
                         setActiveTab("content");
                     }}
-                    className="flex items-center gap-2 px-4 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm hover:shadow-lg hover:shadow-gold-400/25 transition-all"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm hover:shadow-lg hover:shadow-gold-400/25 transition-all"
                 >
                     <Plus className="w-4 h-4" />
                     New Post
@@ -195,22 +195,22 @@ export default function BlogAdmin() {
                         <div className="flex items-center gap-4 mb-6 border-b border-white/5">
                             <button
                                 onClick={() => setActiveTab("content")}
-                                className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "content" ? "text-gold-400" : "text-gray-500 hover:text-white"
+                                className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "content" ? "text-brand-coral" : "text-gray-500 hover:text-white"
                                     }`}
                             >
                                 Content
                                 {activeTab === "content" && (
-                                    <span className="absolute bottom-0 left-0 right-0 h-0.5 gold-gradient" />
+                                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-coral text-neutral-950 font-bold" />
                                 )}
                             </button>
                             <button
                                 onClick={() => setActiveTab("seo")}
-                                className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "seo" ? "text-gold-400" : "text-gray-500 hover:text-white"
+                                className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "seo" ? "text-brand-coral" : "text-gray-500 hover:text-white"
                                     }`}
                             >
                                 SEO & Social
                                 {activeTab === "seo" && (
-                                    <span className="absolute bottom-0 left-0 right-0 h-0.5 gold-gradient" />
+                                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-coral text-neutral-950 font-bold" />
                                 )}
                             </button>
                         </div>
@@ -233,7 +233,7 @@ export default function BlogAdmin() {
                                                         : generateSlug(e.target.value),
                                                 })
                                             }
-                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
+                                            className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
                                             placeholder="Post title"
                                         />
                                     </div>
@@ -248,7 +248,7 @@ export default function BlogAdmin() {
                                                 onChange={(e) =>
                                                     setEditing({ ...editing, slug: e.target.value })
                                                 }
-                                                className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors font-mono text-sm"
+                                                className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors font-mono text-sm"
                                                 placeholder="post-slug"
                                             />
                                         </div>
@@ -261,7 +261,7 @@ export default function BlogAdmin() {
                                                 onChange={(e) =>
                                                     setEditing({ ...editing, category: e.target.value })
                                                 }
-                                                className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
+                                                className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
                                             >
                                                 {CATEGORIES.map((c) => (
                                                     <option key={c} value={c}>
@@ -282,7 +282,7 @@ export default function BlogAdmin() {
                                                 onChange={(e) =>
                                                     setEditing({ ...editing, read_time: e.target.value })
                                                 }
-                                                className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
+                                                className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
                                                 placeholder="5 min read"
                                             />
                                         </div>
@@ -328,7 +328,7 @@ export default function BlogAdmin() {
                                                 setEditing({ ...editing, excerpt: e.target.value })
                                             }
                                             rows={2}
-                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors resize-none"
+                                            className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors resize-none"
                                             placeholder="Brief description..."
                                         />
                                     </div>
@@ -344,18 +344,18 @@ export default function BlogAdmin() {
                                                 onChange={(e) =>
                                                     setEditing({ ...editing, image_url: e.target.value })
                                                 }
-                                                className="flex-1 px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors font-mono text-xs min-w-0"
+                                                className="flex-1 px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors font-mono text-xs min-w-0"
                                                 placeholder="https://example.com/cover-image.jpg"
                                             />
                                             <label
                                                 className={`flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer transition-all flex-shrink-0 ${uploadingImage
                                                     ? "border-gold-400/30 bg-gold-400/5"
-                                                    : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
+                                                    : "border-white/10 bg-neutral-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
                                                     }`}
                                                 title="Upload cover image"
                                             >
                                                 {uploadingImage
-                                                    ? <Loader2 className="w-4 h-4 text-gold-400 animate-spin" />
+                                                    ? <Loader2 className="w-4 h-4 text-brand-coral animate-spin" />
                                                     : <Upload className="w-4 h-4 text-gray-400" />
                                                 }
                                                 <input
@@ -372,7 +372,7 @@ export default function BlogAdmin() {
                                             </label>
                                         </div>
                                         {editing.image_url && (
-                                            <div className="mt-2 aspect-video rounded-lg overflow-hidden border border-white/10 bg-navy-950">
+                                            <div className="mt-2 aspect-video rounded-lg overflow-hidden border border-white/10 bg-neutral-950">
                                                 <img
                                                     src={editing.image_url}
                                                     alt="Preview"
@@ -397,7 +397,7 @@ export default function BlogAdmin() {
                                                 })
                                             }
                                             rows={10}
-                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors resize-none font-mono text-sm"
+                                            className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors resize-none font-mono text-sm"
                                             placeholder="Write your blog post content here... (Supports plain text, separate paragraphs with blank lines)"
                                         />
                                         <p className="text-[10px] text-gray-600 mt-1">
@@ -408,7 +408,7 @@ export default function BlogAdmin() {
                             ) : (
                                 <div className="space-y-6">
                                     <div className="p-4 rounded-xl bg-gold-400/5 border border-gold-400/10">
-                                        <h4 className="text-sm font-semibold text-gold-400 mb-2">SEO Optimization</h4>
+                                        <h4 className="text-sm font-semibold text-brand-coral mb-2">SEO Optimization</h4>
                                         <p className="text-xs text-gray-400">
                                             Customize how this post appears in search engine results and social media shares. If left blank, we&apos;ll use the post title and excerpt.
                                         </p>
@@ -424,7 +424,7 @@ export default function BlogAdmin() {
                                             onChange={(e) =>
                                                 setEditing({ ...editing, seo_title: e.target.value })
                                             }
-                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
+                                            className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
                                             placeholder="Custom SEO Title (Browser tab and search results)"
                                         />
                                     </div>
@@ -440,7 +440,7 @@ export default function BlogAdmin() {
                                                 setEditing({ ...editing, seo_description: e.target.value })
                                             }
                                             rows={3}
-                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors resize-none"
+                                            className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors resize-none"
                                             placeholder="Meta description for search engines..."
                                         />
                                     </div>
@@ -454,7 +454,7 @@ export default function BlogAdmin() {
                                             onChange={(e) =>
                                                 setEditing({ ...editing, og_image: e.target.value })
                                             }
-                                            className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
+                                            className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 transition-colors"
                                             placeholder="https://example.com/social-preview.jpg"
                                         />
                                         <p className="text-[10px] text-gray-500 mt-1.5">
@@ -475,7 +475,7 @@ export default function BlogAdmin() {
                             <button
                                 onClick={handleSave}
                                 disabled={saving || !editing.title || !editing.slug}
-                                className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm hover:shadow-lg hover:shadow-gold-400/25 transition-all disabled:opacity-50"
+                                className="flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm hover:shadow-lg hover:shadow-gold-400/25 transition-all disabled:opacity-50"
                             >
                                 {saving ? (
                                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -496,7 +496,7 @@ export default function BlogAdmin() {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search posts..."
-                    className="w-full pl-11 pr-4 py-2.5 bg-navy-900/50 border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 transition-colors text-sm"
+                    className="w-full pl-11 pr-4 py-2.5 bg-neutral-900/50 border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 transition-colors text-sm"
                 />
             </div>
 
@@ -519,7 +519,7 @@ export default function BlogAdmin() {
                     </p>
                     <button
                         onClick={() => setEditing({ ...blankPost })}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm"
                     >
                         <Plus className="w-4 h-4" /> Create Your First Post
                     </button>
@@ -551,16 +551,16 @@ export default function BlogAdmin() {
                                 >
                                     <td className="py-3 px-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-12 h-10 rounded bg-navy-800 border border-white/5 overflow-hidden flex-shrink-0">
+                                            <div className="w-12 h-10 rounded bg-neutral-800 border border-white/5 overflow-hidden flex-shrink-0">
                                                 {post.image_url ? (
                                                     <img src={post.image_url} alt="" className="w-full h-full object-cover" />
                                                 ) : (
-                                                    <div className="w-full h-full gold-gradient opacity-20" />
+                                                    <div className="w-full h-full bg-brand-coral text-neutral-950 font-bold opacity-20" />
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-3">
                                                 {post.featured && (
-                                                    <Star className="w-4 h-4 text-gold-400 flex-shrink-0" />
+                                                    <Star className="w-4 h-4 text-brand-coral flex-shrink-0" />
                                                 )}
                                                 <div>
                                                     <p className="text-sm font-medium text-white line-clamp-1">

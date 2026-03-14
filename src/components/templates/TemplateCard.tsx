@@ -77,7 +77,7 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
                             </div>
                         )}
 
-                        <div className="absolute inset-0 flex items-center justify-center bg-navy-950/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <div className="absolute inset-0 flex items-center justify-center bg-neutral-950/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                             <div className="px-4 py-2 rounded-full glass border border-white/15 text-[10px] font-bold uppercase tracking-widest text-white shadow-2xl backdrop-blur-sm">
                                 View Workflow →
                             </div>
@@ -97,7 +97,7 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
 
                         {template.featured && (
                             <div className="absolute bottom-3 left-3 z-10">
-                                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tight text-navy-950 backdrop-blur-sm" style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}>
+                                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tight text-neutral-950 backdrop-blur-sm" style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}>
                                     ⭐ Most Popular
                                 </span>
                             </div>
@@ -108,7 +108,7 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
                 {/* Card Content */}
                 <div className="flex flex-col flex-1 p-5 gap-3">
                     <Link href={`/templates/${template.slug}`}>
-                        <h3 className="font-display font-bold text-white text-base leading-snug group-hover:text-gold-400 transition-colors line-clamp-2">
+                        <h3 className="font-display font-bold text-white text-base leading-snug group-hover:text-brand-coral transition-colors line-clamp-2">
                             {template.name}
                         </h3>
                     </Link>
@@ -118,7 +118,7 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
                     <N8nNodeIconStrip nodes={template.nodes} />
                     <div className="flex items-center gap-3 pt-1 border-t border-white/5">
                         <div className="flex items-center gap-1 text-[10px] text-gray-500">
-                            <Zap className="w-3 h-3 text-gold-400" />
+                            <Zap className="w-3 h-3 text-brand-coral" />
                             <span className="font-semibold text-gray-400">{template.nodeCount}</span>
                             <span>nodes</span>
                         </div>
@@ -141,7 +141,7 @@ export default function TemplateCard({ template, compact = false }: TemplateCard
                         </Link>
                         <button
                             onClick={() => setShowPayment(true)}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider text-navy-950 transition-all hover:shadow-[0_0_20px_rgba(230,180,34,0.3)] hover:scale-[1.02]"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider text-neutral-950 transition-all hover:shadow-[0_0_20px_rgba(230,180,34,0.3)] hover:scale-[1.02]"
                             style={{ background: "linear-gradient(135deg, #e6b422 0%, #c9a227 100%)" }}
                         >
                             <ShoppingCart className="w-3 h-3" />

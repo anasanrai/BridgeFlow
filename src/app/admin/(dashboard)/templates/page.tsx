@@ -355,7 +355,7 @@ export default function TemplateManager() {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => { setEditingTemplate(null); setShowForm(true); }}
-                        className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 transition-all hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
+                        className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-neutral-950 transition-all hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
                         style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}
                     >
                         <Plus className="w-3.5 h-3.5" /> Add New
@@ -458,7 +458,7 @@ export default function TemplateManager() {
                                     <p className="text-[10px] text-gray-600 line-clamp-1">${t.value.toLocaleString()} value · {t.nodeCount} nodes</p>
                                 </div>
                                 {t.featured && (
-                                    <span className="px-2 py-0.5 rounded-full text-[8px] font-black text-navy-950" style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}>
+                                    <span className="px-2 py-0.5 rounded-full text-[8px] font-black text-neutral-950" style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}>
                                         ⭐
                                     </span>
                                 )}
@@ -489,7 +489,7 @@ export default function TemplateManager() {
                             {/* Access */}
                             <div className="flex items-center gap-1.5">
                                 <span className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-bold border transition-all ${t.jsonAccess === "paid"
-                                    ? "text-gold-400 bg-gold-400/10 border-gold-400/20"
+                                    ? "text-brand-coral bg-gold-400/10 border-gold-400/20"
                                     : "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"}`}>
                                     {t.jsonAccess === "paid" ? <Lock className="w-2.5 h-2.5" /> : <ShieldCheck className="w-2.5 h-2.5" />}
                                     {t.jsonAccess === "paid" ? "Paid" : "Free"}
@@ -731,7 +731,7 @@ export default function TemplateManager() {
                             <button
                                 onClick={handleSaveWorkflow}
                                 disabled={!parsedJson || saving}
-                                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
+                                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-neutral-950 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
                                 style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}
                             >
                                 {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}

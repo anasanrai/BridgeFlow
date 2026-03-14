@@ -131,17 +131,17 @@ export default function AdminPurchasesPage() {
                     <div className="px-4 py-2 rounded-xl glass border border-white/5 flex items-center gap-3">
                         <div className="text-right">
                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">Total Revenue</p>
-                            <p className="text-lg font-display font-bold gold-text">${totalRevenue.toLocaleString()}</p>
+                            <p className="text-lg font-display font-bold text-brand-coral font-bold">${totalRevenue.toLocaleString()}</p>
                         </div>
                         <div className="w-8 h-8 rounded-lg bg-gold-400/10 flex items-center justify-center">
-                            <DollarSign className="w-4 h-4 text-gold-400" />
+                            <DollarSign className="w-4 h-4 text-brand-coral" />
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Toolbar */}
-            <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl border border-white/5 bg-navy-950/40">
+            <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl border border-white/5 bg-neutral-950/40">
                 <div className="flex items-center gap-3 flex-1 min-w-[280px]">
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -150,13 +150,13 @@ export default function AdminPurchasesPage() {
                             placeholder="Search email, txn id, or template..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 rounded-lg bg-navy-950/60 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400/30 transition-all"
+                            className="w-full pl-10 pr-4 py-2 rounded-lg bg-neutral-950/60 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400/30 transition-all"
                         />
                     </div>
                     <select
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
-                        className="px-4 py-2 rounded-lg bg-navy-950/60 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400/30 transition-all appearance-none cursor-pointer"
+                        className="px-4 py-2 rounded-lg bg-neutral-950/60 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400/30 transition-all appearance-none cursor-pointer"
                     >
                         <option value="all">All States</option>
                         <option value="completed">Completed</option>
@@ -167,7 +167,7 @@ export default function AdminPurchasesPage() {
                     </select>
                 </div>
 
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg gold-gradient text-navy-950 text-sm font-bold transition-all hover:scale-105 active:scale-95">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-coral text-neutral-950 font-bold text-neutral-950 text-sm font-bold transition-all hover:scale-105 active:scale-95">
                     <Download className="w-4 h-4" /> Export CSV
                 </button>
             </div>
@@ -202,7 +202,7 @@ export default function AdminPurchasesPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-2">
-                                            <Tag className="w-3.5 h-3.5 text-gold-400" />
+                                            <Tag className="w-3.5 h-3.5 text-brand-coral" />
                                             <span className="text-gray-300 font-bold">{p.templates?.name || p.template_id}</span>
                                         </div>
                                     </td>

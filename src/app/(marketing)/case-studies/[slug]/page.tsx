@@ -50,20 +50,20 @@ export default async function CaseStudyDetail({ params }: Props) {
         "Real Estate": "text-orange-400 bg-orange-400/10 border-orange-400/20",
         "E-Commerce": "text-pink-400 bg-pink-400/10 border-pink-400/20",
     };
-    const industryColor = industryColors[cs.industry] || "text-gold-400 bg-gold-400/10 border-gold-400/20";
+    const industryColor = industryColors[cs.industry] || "text-brand-coral bg-gold-400/10 border-gold-400/20";
 
     return (
         <>
             {/* Hero */}
             <section className="relative pt-32 pb-16 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="relative z-10 container-max px-4 sm:px-6">
                     {/* Breadcrumb */}
                     <ScrollReveal>
                         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
-                            <Link href="/" className="hover:text-gold-400 transition-colors">Home</Link>
+                            <Link href="/" className="hover:text-brand-coral transition-colors">Home</Link>
                             <span>/</span>
-                            <Link href="/case-studies" className="hover:text-gold-400 transition-colors">Case Studies</Link>
+                            <Link href="/case-studies" className="hover:text-brand-coral transition-colors">Case Studies</Link>
                             <span>/</span>
                             <span className="text-gray-400">{cs.title}</span>
                         </div>
@@ -118,13 +118,13 @@ export default async function CaseStudyDetail({ params }: Props) {
             </section>
 
             {/* Results Banner */}
-            <section className="py-12 bg-navy-900/50 border-y border-white/5">
+            <section className="py-12 bg-neutral-900/50 border-y border-white/5">
                 <div className="container-max px-4 sm:px-6">
                     <ScrollReveal>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                             {cs.results.map((result: any, i: number) => (
                                 <div key={i} className="text-center">
-                                    <div className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold gold-text mb-2">
+                                    <div className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-brand-coral font-bold mb-2">
                                         {result.metric}
                                     </div>
                                     <div className="text-sm text-gray-400 capitalize">
@@ -182,7 +182,7 @@ export default async function CaseStudyDetail({ params }: Props) {
                                 <div>
                                     <div className="flex items-center gap-3 mb-5">
                                         <div className="w-10 h-10 rounded-xl bg-gold-400/10 border border-gold-400/20 flex items-center justify-center">
-                                            <TrendingUp className="w-5 h-5 text-gold-400" />
+                                            <TrendingUp className="w-5 h-5 text-brand-coral" />
                                         </div>
                                         <h2 className="text-2xl font-display font-bold">Measurable Results</h2>
                                     </div>
@@ -191,10 +191,10 @@ export default async function CaseStudyDetail({ params }: Props) {
                                             <Card key={i} hover={false} className="!p-6">
                                                 <div className="flex items-start gap-4">
                                                     <div className="w-8 h-8 rounded-lg bg-gold-400/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                        <CheckCircle className="w-4 h-4 text-gold-400" />
+                                                        <CheckCircle className="w-4 h-4 text-brand-coral" />
                                                     </div>
                                                     <div>
-                                                        <div className="text-2xl font-display font-bold gold-text mb-1">
+                                                        <div className="text-2xl font-display font-bold text-brand-coral font-bold mb-1">
                                                             {result.metric}
                                                         </div>
                                                         <div className="text-sm text-gray-400 capitalize">
@@ -219,7 +219,7 @@ export default async function CaseStudyDetail({ params }: Props) {
                                         {cs.tags.map((tag: string) => (
                                             <span
                                                 key={tag}
-                                                className="px-4 py-1.5 text-sm text-gray-300 border border-white/10 rounded-full bg-white/5 hover:border-gold-400/30 hover:text-gold-400 transition-colors"
+                                                className="px-4 py-1.5 text-sm text-gray-300 border border-white/10 rounded-full bg-white/5 hover:border-gold-400/30 hover:text-brand-coral transition-colors"
                                             >
                                                 {tag}
                                             </span>
@@ -245,7 +245,7 @@ export default async function CaseStudyDetail({ params }: Props) {
                                         <ArrowRight className="w-3.5 h-3.5" />
                                     </Button>
                                     <div className="mt-4 pt-4 border-t border-white/10">
-                                        <Link href="/pricing" className="flex items-center justify-between text-sm text-gray-400 hover:text-gold-400 transition-colors group">
+                                        <Link href="/pricing" className="flex items-center justify-between text-sm text-gray-400 hover:text-brand-coral transition-colors group">
                                             <span>View Pricing Plans</span>
                                             <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                                         </Link>
@@ -304,9 +304,9 @@ export default async function CaseStudyDetail({ params }: Props) {
                                         <Card className="h-full transition-all duration-300 group-hover:border-gold-400/30">
                                             <div className="flex items-start justify-between gap-4 mb-3">
                                                 <span className="text-xs text-gray-500 uppercase tracking-wider">{relatedCs.industry}</span>
-                                                <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-gold-400 group-hover:translate-x-1 transition-all" />
+                                                <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-brand-coral group-hover:translate-x-1 transition-all" />
                                             </div>
-                                            <h3 className="text-lg font-display font-bold mb-2 group-hover:text-gold-400 transition-colors">
+                                            <h3 className="text-lg font-display font-bold mb-2 group-hover:text-brand-coral transition-colors">
                                                 {relatedCs.title}
                                             </h3>
                                             <p className="text-sm text-gray-400 leading-relaxed">
@@ -337,7 +337,7 @@ export default async function CaseStudyDetail({ params }: Props) {
                             <div className="absolute inset-0 bg-hero-glow opacity-50" />
                             <div className="relative z-10">
                                 <h2 className="text-3xl sm:text-4xl font-display font-bold mb-4">
-                                    Ready to be our next <span className="gold-text">success story?</span>
+                                    Ready to be our next <span className="text-brand-coral font-bold">success story?</span>
                                 </h2>
                                 <p className="text-gray-400 text-lg max-w-xl mx-auto mb-8">
                                     Every project starts with a conversation. Let&apos;s discuss what automation can do for your business.

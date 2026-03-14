@@ -358,14 +358,14 @@ export function N8nNodeIconStrip({ nodes = [] }: { nodes?: string[] }) {
             {(nodes || []).slice(0, 5).map((node, i) => (
                 <div
                     key={i}
-                    className="w-8 h-8 rounded-full border-2 border-navy-950 bg-gradient-to-br from-navy-800 to-navy-900 flex items-center justify-center text-xs font-semibold hover:scale-110 transition-transform"
+                    className="w-8 h-8 rounded-full border-2 border-neutral-950 bg-gradient-to-br from-neutral-800 to-neutral-900 flex items-center justify-center text-xs font-semibold hover:scale-110 transition-transform"
                     title={node}
                 >
                     {getN8nNodeStyle(node).icon}
                 </div>
             ))}
             {(nodes || []).length > 5 && (
-                <div className="w-8 h-8 rounded-full border-2 border-navy-950 bg-navy-800 flex items-center justify-center text-xs font-semibold text-gray-400">
+                <div className="w-8 h-8 rounded-full border-2 border-neutral-950 bg-neutral-800 flex items-center justify-center text-xs font-semibold text-gray-400">
                     +{(nodes || []).length - 5}
                 </div>
             )}

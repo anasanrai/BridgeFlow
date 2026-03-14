@@ -22,7 +22,7 @@ export default function DashboardPage() {
           <Card key={stat.label} className="p-6">
             <div className="flex items-start justify-between">
               <div className="p-2 bg-gold-400/10 rounded-lg">
-                <stat.icon className="w-6 h-6 text-gold-400" />
+                <stat.icon className="w-6 h-6 text-brand-coral" />
               </div>
               <Badge variant="gold">{stat.trend}</Badge>
             </div>

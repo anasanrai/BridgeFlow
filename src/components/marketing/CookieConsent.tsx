@@ -53,7 +53,7 @@ export default function CookieConsent() {
                 >
                     <div className="glass-strong rounded-2xl p-5 border border-white/10 shadow-2xl shadow-black/40">
                         <div className="flex items-start gap-3 mb-3">
-                            <div className="p-2 rounded-xl bg-gold-400/10 text-gold-400 flex-shrink-0">
+                            <div className="p-2 rounded-xl bg-gold-400/10 text-brand-coral flex-shrink-0">
                                 <Cookie className="w-4 h-4" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -64,7 +64,7 @@ export default function CookieConsent() {
                                     We use essential cookies to make our site work. With your consent, we&apos;ll also use analytics cookies to improve your experience.{" "}
                                     <Link
                                         href="/privacy-policy"
-                                        className="text-gold-400 hover:text-gold-300 underline underline-offset-2"
+                                        className="text-brand-coral hover:text-gold-300 underline underline-offset-2"
                                     >
                                         Privacy Policy
                                     </Link>
@@ -87,7 +87,7 @@ export default function CookieConsent() {
                             </button>
                             <button
                                 onClick={accept}
-                                className="flex-1 px-4 py-2 text-xs font-semibold text-navy-950 gold-gradient rounded-xl hover:shadow-lg hover:shadow-gold-400/20 transition-all duration-200"
+                                className="flex-1 px-4 py-2 text-xs font-semibold text-neutral-950 bg-brand-coral text-neutral-950 font-bold rounded-xl hover:shadow-lg hover:shadow-brand-coral/20 transition-all duration-200"
                             >
                                 Accept All
                             </button>

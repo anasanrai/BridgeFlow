@@ -39,7 +39,7 @@ export function AnimatedCounter({
     return (
         <div className="text-center">
             <div
-                className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold gold-text"
+                className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-brand-coral font-bold"
                 aria-label={`${prefix}${end}${suffix}`}
             >
                 {prefix}

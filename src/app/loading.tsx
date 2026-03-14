@@ -1,12 +1,12 @@
 export default function Loading() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-navy-950">
+        <div className="min-h-screen flex items-center justify-center bg-neutral-950">
             <div className="text-center">
                 {/* Animated logo pulse */}
                 <div className="relative w-16 h-16 mx-auto mb-8">
-                    <div className="absolute inset-0 rounded-2xl gold-gradient animate-pulse opacity-30" />
-                    <div className="absolute inset-1 rounded-xl bg-navy-950 flex items-center justify-center">
-                        <span className="text-lg font-display font-bold gold-text">BF</span>
+                    <div className="absolute inset-0 rounded-2xl bg-brand-coral animate-pulse opacity-20 blur-md" />
+                    <div className="absolute inset-1 rounded-[14px] bg-neutral-900 border border-white/5 flex items-center justify-center">
+                        <span className="text-lg font-black tracking-tighter text-brand-coral">BF</span>
                     </div>
                 </div>
 
@@ -17,7 +17,7 @@ export default function Loading() {
                     <div className="h-3 bg-white/5 rounded-full animate-shimmer w-1/2 mx-auto" style={{ animationDelay: '0.3s' }} />
                 </div>
 
-                <p className="text-xs text-gray-600 uppercase tracking-widest mt-8 font-medium">Loading</p>
+                <p className="text-[11px] text-neutral-500 font-black uppercase tracking-[0.2em] mt-8">Establishing Connection</p>
             </div>
         </div>
     );

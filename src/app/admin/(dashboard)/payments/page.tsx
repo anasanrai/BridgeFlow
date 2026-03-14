@@ -137,13 +137,13 @@ export default function PaymentsPage() {
         { id: "moyasar", label: "Moyasar", icon: Shield, color: "text-emerald-400" },
         { id: "bank", label: "Bank Transfer", icon: Building2, color: "text-emerald-400" },
         { id: "wallets", label: "Digital Wallets", icon: Wallet, color: "text-purple-400" },
-        { id: "general", label: "General", icon: DollarSign, color: "text-gold-400" },
+        { id: "general", label: "General", icon: DollarSign, color: "text-brand-coral" },
     ];
 
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
-                <Loader2 className="w-8 h-8 text-gold-400 animate-spin" />
+                <Loader2 className="w-8 h-8 text-brand-coral animate-spin" />
             </div>
         );
     }
@@ -154,7 +154,7 @@ export default function PaymentsPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-display font-bold text-white flex items-center gap-3">
-                        <CreditCard className="w-7 h-7 text-gold-400" />
+                        <CreditCard className="w-7 h-7 text-brand-coral" />
                         Payment Gateway
                     </h1>
                     <p className="text-gray-400 text-sm mt-1">
@@ -164,7 +164,7 @@ export default function PaymentsPage() {
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-navy-950 bg-gold-400 hover:bg-gold-300 transition-all disabled:opacity-50"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-neutral-950 bg-gold-400 hover:bg-gold-300 transition-all disabled:opacity-50"
                 >
                     {saving ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -208,7 +208,7 @@ export default function PaymentsPage() {
                     <div key={item.label} className="glass rounded-xl p-4 border border-white/10">
                         <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">{item.label}</div>
                         {item.value !== undefined ? (
-                            <div className="text-xl font-display font-bold text-gold-400">{item.value}</div>
+                            <div className="text-xl font-display font-bold text-brand-coral">{item.value}</div>
                         ) : (
                             <div className={`flex items-center gap-2 ${item.enabled ? "text-emerald-400" : "text-gray-600"}`}>
                                 <div className={`w-2 h-2 rounded-full ${item.enabled ? "bg-emerald-400 animate-pulse" : "bg-gray-600"}`} />
@@ -220,7 +220,7 @@ export default function PaymentsPage() {
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-2 p-1 bg-navy-900/50 rounded-xl border border-white/5">
+            <div className="flex gap-2 p-1 bg-neutral-900/50 rounded-xl border border-white/5">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
@@ -270,7 +270,7 @@ export default function PaymentsPage() {
                                 value={settings.paypal_client_id}
                                 onChange={(e) => update("paypal_client_id", e.target.value)}
                                 placeholder="AXxx...your-paypal-client-id"
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50 font-mono"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50 font-mono"
                             />
                         </div>
                         <div>
@@ -283,7 +283,7 @@ export default function PaymentsPage() {
                                     value={settings.paypal_client_secret}
                                     onChange={(e) => update("paypal_client_secret", e.target.value)}
                                     placeholder="••••••••••••••••"
-                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50 font-mono"
+                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50 font-mono"
                                 />
                                 <button
                                     onClick={() => toggleSecret("paypal_secret")}
@@ -300,7 +300,7 @@ export default function PaymentsPage() {
                             <select
                                 value={settings.paypal_mode}
                                 onChange={(e) => update("paypal_mode", e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50"
                             >
                                 <option value="sandbox">Sandbox (Testing)</option>
                                 <option value="live">Live (Production)</option>
@@ -313,7 +313,7 @@ export default function PaymentsPage() {
                             <select
                                 value={settings.paypal_currency}
                                 onChange={(e) => update("paypal_currency", e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50"
                             >
                                 <option value="USD">USD — US Dollar</option>
                                 <option value="EUR">EUR — Euro</option>
@@ -372,7 +372,7 @@ export default function PaymentsPage() {
                                 value={settings.stripe_publishable_key}
                                 onChange={(e) => update("stripe_publishable_key", e.target.value)}
                                 placeholder="pk_live_..."
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
                             />
                         </div>
                         <div>
@@ -385,7 +385,7 @@ export default function PaymentsPage() {
                                     value={settings.stripe_secret_key}
                                     onChange={(e) => update("stripe_secret_key", e.target.value)}
                                     placeholder="sk_live_..."
-                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
+                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
                                 />
                                 <button
                                     onClick={() => toggleSecret("stripe_secret")}
@@ -404,7 +404,7 @@ export default function PaymentsPage() {
                                 value={settings.stripe_webhook_secret}
                                 onChange={(e) => update("stripe_webhook_secret", e.target.value)}
                                 placeholder="whsec_..."
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-indigo-500/50 font-mono"
                             />
                         </div>
                     </div>
@@ -445,7 +445,7 @@ export default function PaymentsPage() {
                                 value={settings.moyasar_publishable_key}
                                 onChange={(e) => update("moyasar_publishable_key", e.target.value)}
                                 placeholder="pk_..."
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
                             />
                         </div>
                         <div>
@@ -458,7 +458,7 @@ export default function PaymentsPage() {
                                     value={settings.moyasar_secret_key}
                                     onChange={(e) => update("moyasar_secret_key", e.target.value)}
                                     placeholder="sk_..."
-                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
+                                    className="w-full px-4 py-3 pr-12 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
                                 />
                                 <button
                                     onClick={() => toggleSecret("moyasar_secret")}
@@ -512,7 +512,7 @@ export default function PaymentsPage() {
                                         value={(settings as any)[field.key] || ""}
                                         onChange={(e) => update(field.key as keyof PaymentSettings, e.target.value)}
                                         placeholder={field.placeholder}
-                                        className="w-full px-4 py-3 pr-12 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
+                                        className="w-full px-4 py-3 pr-12 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 font-mono"
                                     />
                                     {field.secret && (
                                         <button
@@ -535,7 +535,7 @@ export default function PaymentsPage() {
                             value={settings.bank_instructions}
                             onChange={(e) => update("bank_instructions", e.target.value)}
                             rows={3}
-                            className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 resize-none"
+                            className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-emerald-500/50 resize-none"
                         />
                     </div>
                 </div>
@@ -570,7 +570,7 @@ export default function PaymentsPage() {
                             { enabledKey: "wallet_esewa_enabled", valueKey: "wallet_esewa_id", label: "eSewa (Nepal)", placeholder: "9800000000", type: "text", color: "green" },
                             { enabledKey: "wallet_khalti_enabled", valueKey: "wallet_khalti_id", label: "Khalti (Nepal)", placeholder: "9800000000", type: "text", color: "purple" },
                         ].map((wallet) => (
-                            <div key={wallet.enabledKey} className="p-4 rounded-xl border border-white/5 bg-navy-900/30">
+                            <div key={wallet.enabledKey} className="p-4 rounded-xl border border-white/5 bg-neutral-900/30">
                                 <div className="flex items-center justify-between mb-3">
                                     <span className="text-sm font-bold text-white">{wallet.label}</span>
                                     <div
@@ -586,7 +586,7 @@ export default function PaymentsPage() {
                                         value={(settings as any)[wallet.valueKey] || ""}
                                         onChange={(e) => update(wallet.valueKey as keyof PaymentSettings, e.target.value)}
                                         placeholder={wallet.placeholder}
-                                        className="w-full px-4 py-2.5 rounded-lg bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500/50 font-mono"
+                                        className="w-full px-4 py-2.5 rounded-lg bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500/50 font-mono"
                                     />
                                 )}
                             </div>
@@ -600,7 +600,7 @@ export default function PaymentsPage() {
                 <div className="glass rounded-2xl p-6 border border-white/10 space-y-6">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="p-2.5 rounded-xl bg-gold-400/10 border border-gold-400/20">
-                            <DollarSign className="w-5 h-5 text-gold-400" />
+                            <DollarSign className="w-5 h-5 text-brand-coral" />
                         </div>
                         <div>
                             <h2 className="text-lg font-display font-bold text-white">General Settings</h2>
@@ -616,7 +616,7 @@ export default function PaymentsPage() {
                             <select
                                 value={settings.currency}
                                 onChange={(e) => update("currency", e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50"
                             >
                                 <option value="USD">USD — US Dollar</option>
                                 <option value="EUR">EUR — Euro</option>
@@ -638,7 +638,7 @@ export default function PaymentsPage() {
                                 step="0.1"
                                 value={settings.tax_rate}
                                 onChange={(e) => update("tax_rate", parseFloat(e.target.value) || 0)}
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50"
                             />
                         </div>
                         <div>
@@ -650,7 +650,7 @@ export default function PaymentsPage() {
                                 value={settings.invoice_prefix}
                                 onChange={(e) => update("invoice_prefix", e.target.value)}
                                 placeholder="BF"
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50 font-mono"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50 font-mono"
                             />
                             <p className="text-xs text-gray-500 mt-1">Invoices will be numbered: {settings.invoice_prefix}-001, {settings.invoice_prefix}-002...</p>
                         </div>
@@ -663,15 +663,15 @@ export default function PaymentsPage() {
                                 value={settings.payment_terms}
                                 onChange={(e) => update("payment_terms", e.target.value)}
                                 placeholder="Payment due within 7 days of invoice"
-                                className="w-full px-4 py-3 rounded-xl bg-navy-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50"
+                                className="w-full px-4 py-3 rounded-xl bg-neutral-900/50 border border-white/10 text-white text-sm focus:outline-none focus:border-gold-400/50"
                             />
                         </div>
                     </div>
 
                     <div className="p-4 rounded-xl bg-gold-400/5 border border-gold-400/10">
                         <div className="flex items-center gap-2 mb-2">
-                            <Shield className="w-4 h-4 text-gold-400" />
-                            <span className="text-sm font-bold text-gold-400">Security Note</span>
+                            <Shield className="w-4 h-4 text-brand-coral" />
+                            <span className="text-sm font-bold text-brand-coral">Security Note</span>
                         </div>
                         <p className="text-xs text-gray-400">
                             All payment credentials are stored securely in your Supabase database and are never exposed in client-side code.
@@ -686,7 +686,7 @@ export default function PaymentsPage() {
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-navy-950 bg-gold-400 hover:bg-gold-300 transition-all disabled:opacity-50"
+                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-neutral-950 bg-gold-400 hover:bg-gold-300 transition-all disabled:opacity-50"
                 >
                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : saved ? <CheckCircle2 className="w-4 h-4" /> : <Save className="w-4 h-4" />}
                     {saving ? "Saving..." : saved ? "Saved!" : "Save Payment Settings"}

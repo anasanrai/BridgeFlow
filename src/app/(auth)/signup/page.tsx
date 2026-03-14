@@ -29,14 +29,14 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-navy-950 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-950 relative overflow-hidden">
       {/* Background Orbs — gold brand */}
       <div className="absolute top-0 -left-4 w-72 h-72 bg-gold-400/10 rounded-full blur-[128px] pointer-events-none" />
       <div className="absolute bottom-0 -right-4 w-72 h-72 bg-gold-400/5 rounded-full blur-[128px] pointer-events-none" />
 
       <div className="w-full max-w-md relative">
         {/* Back to home */}
-        <Link href="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-gold-400 text-sm font-medium mb-6 transition-colors">
+        <Link href="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-brand-coral text-sm font-medium mb-6 transition-colors">
           <ArrowRight className="w-4 h-4 rotate-180" />
           Back to BridgeFlow
         </Link>
@@ -57,7 +57,7 @@ export default function SignupPage() {
                   placeholder=" "
                   className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
                 />
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-brand-coral peer-focus:bg-neutral-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-neutral-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
                   Full Name
                 </span>
                 <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
@@ -71,7 +71,7 @@ export default function SignupPage() {
                   placeholder=" "
                   className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
                 />
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-brand-coral peer-focus:bg-neutral-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-neutral-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
                   Email Address
                 </span>
                 <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
@@ -85,7 +85,7 @@ export default function SignupPage() {
                   placeholder=" "
                   className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
                 />
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-brand-coral peer-focus:bg-neutral-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-neutral-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
                   Password
                 </span>
                 <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
@@ -100,7 +100,7 @@ export default function SignupPage() {
                <button
                 disabled={loading}
                 type="submit"
-                className="w-full relative gold-gradient text-navy-950 rounded-xl py-4 font-bold hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group/btn overflow-hidden shadow-lg shadow-gold-400/20"
+                className="w-full relative bg-brand-coral text-neutral-950 font-bold text-neutral-950 rounded-xl py-4 font-bold hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group/btn overflow-hidden shadow-lg shadow-brand-coral/20"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-shimmer-btn transition-transform" />
                 {loading ? (
@@ -122,7 +122,7 @@ export default function SignupPage() {
               <p className="text-gray-400">{success}</p>
               <Link 
                 href="/login" 
-                className="inline-block text-gold-400 hover:text-gold-300 font-medium transition-colors mt-4"
+                className="inline-block text-brand-coral hover:text-gold-300 font-medium transition-colors mt-4"
               >
                 Return to Login
               </Link>
@@ -136,7 +136,7 @@ export default function SignupPage() {
                   <div className="w-full border-t border-white/10"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-navy-900 px-3 text-gray-500">Or join with</span>
+                  <span className="bg-neutral-900 px-3 text-gray-500">Or join with</span>
                 </div>
               </div>
 
@@ -169,7 +169,7 @@ export default function SignupPage() {
           {!success && (
             <p className="mt-6 text-center text-gray-400 text-sm">
               Already have an account?{" "}
-              <Link href="/login" className="text-gold-400 font-bold hover:underline">
+              <Link href="/login" className="text-brand-coral font-bold hover:underline">
                 Log In
               </Link>
             </p>

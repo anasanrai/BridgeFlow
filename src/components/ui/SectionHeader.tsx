@@ -26,14 +26,14 @@ export function SectionHeader({
         >
             {badge && (
                 <ScrollReveal>
-                    <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                    <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                         {badge}
                     </span>
                 </ScrollReveal>
             )}
             <ScrollReveal delay={0.1}>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
-                    {title} {highlight && <span className="gold-text">{highlight}</span>}
+                    {title} {highlight && <span className="text-brand-coral font-bold">{highlight}</span>}
                 </h2>
             </ScrollReveal>
             {description && (

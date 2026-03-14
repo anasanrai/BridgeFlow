@@ -73,14 +73,14 @@ export default function MediaManagerAdmin() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                        <FolderOpen className="w-6 h-6 text-gold-400" />
+                        <FolderOpen className="w-6 h-6 text-brand-coral" />
                         Media & Assets
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">Manage realistic brand assets, videos, and copywriting</p>
                 </div>
                 <button
                     onClick={() => setEditing({ title: "", type: "image", category: "General", url: "" })}
-                    className="flex items-center gap-2 px-4 py-2.5 gold-gradient text-navy-950 font-bold rounded-lg text-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-lg text-sm"
                 >
                     <Plus className="w-4 h-4" /> Add Asset
                 </button>
@@ -107,7 +107,7 @@ export default function MediaManagerAdmin() {
                                         <button
                                             key={t.id}
                                             onClick={() => setEditing({ ...editing, type: t.id as any })}
-                                            className={`flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${editing.type === t.id ? 'bg-gold-400/10 border-gold-400/50 text-gold-400' : 'bg-white/5 border-white/5 text-gray-400'}`}
+                                            className={`flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${editing.type === t.id ? 'bg-gold-400/10 border-gold-400/50 text-brand-coral' : 'bg-white/5 border-white/5 text-gray-400'}`}
                                         >
                                             <t.icon className="w-5 h-5" />
                                             <span className="text-[10px] font-bold">{t.label}</span>
@@ -119,7 +119,7 @@ export default function MediaManagerAdmin() {
                             <div>
                                 <label className="block text-[10px] text-gray-500 font-bold uppercase mb-1.5">Asset Title</label>
                                 <input
-                                    className="w-full bg-navy-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none"
+                                    className="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none"
                                     value={editing.title}
                                     onChange={e => setEditing({ ...editing, title: e.target.value })}
                                     placeholder="e.g., Hero Background Video"
@@ -130,7 +130,7 @@ export default function MediaManagerAdmin() {
                                 <div>
                                     <label className="block text-[10px] text-gray-500 font-bold uppercase mb-1.5">Content / Copy</label>
                                     <textarea
-                                        className="w-full bg-navy-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none h-32 resize-none"
+                                        className="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none h-32 resize-none"
                                         value={editing.content || ""}
                                         onChange={e => setEditing({ ...editing, content: e.target.value })}
                                         placeholder="Paste enterprise copy here..."
@@ -140,7 +140,7 @@ export default function MediaManagerAdmin() {
                                 <div>
                                     <label className="block text-[10px] text-gray-500 font-bold uppercase mb-1.5">Public URL</label>
                                     <input
-                                        className="w-full bg-navy-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none"
+                                        className="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none"
                                         value={editing.url || ""}
                                         onChange={e => setEditing({ ...editing, url: e.target.value })}
                                         placeholder="https://..."
@@ -151,7 +151,7 @@ export default function MediaManagerAdmin() {
                             <div>
                                 <label className="block text-[10px] text-gray-500 font-bold uppercase mb-1.5">Category</label>
                                 <input
-                                    className="w-full bg-navy-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none"
+                                    className="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:border-gold-400/50 outline-none"
                                     value={editing.category}
                                     onChange={e => setEditing({ ...editing, category: e.target.value })}
                                     placeholder="e.g., Branding, Services, UI"
@@ -164,7 +164,7 @@ export default function MediaManagerAdmin() {
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="flex-1 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm flex items-center justify-center gap-2"
+                                className="flex-1 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm flex items-center justify-center gap-2"
                             >
                                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                 Save Asset
@@ -185,7 +185,7 @@ export default function MediaManagerAdmin() {
                         </p>
                         <button
                             onClick={() => setEditing({ title: "", type: "image", category: "General", url: "" })}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm"
                         >
                             <Plus className="w-4 h-4" /> Add Your First Asset
                         </button>
@@ -217,7 +217,7 @@ export default function MediaManagerAdmin() {
                             )}
 
                             {item.type === 'text' && (
-                                <div className="mt-4 p-3 bg-navy-950/50 rounded-lg border border-white/5 text-[10px] text-gray-500 line-clamp-3 italic">
+                                <div className="mt-4 p-3 bg-neutral-950/50 rounded-lg border border-white/5 text-[10px] text-gray-500 line-clamp-3 italic">
                                     "{item.content}"
                                 </div>
                             )}

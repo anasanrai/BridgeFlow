@@ -52,7 +52,7 @@ export default function SubscribersAdmin() {
 
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><Bell className="w-6 h-6 text-gold-400" />Subscribers</h1>
+                    <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><Bell className="w-6 h-6 text-brand-coral" />Subscribers</h1>
                     <p className="text-sm text-gray-500 mt-1">{active} active · {subs.length} total</p>
                 </div>
                 <button onClick={exportCSV} className="flex items-center gap-2 px-4 py-2.5 glass text-gray-300 font-medium rounded-lg text-sm hover:text-white transition-colors border border-white/10">
@@ -62,7 +62,7 @@ export default function SubscribersAdmin() {
 
             <div className="relative mb-6">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search emails..." className="w-full pl-11 pr-4 py-2.5 bg-navy-900/50 border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 text-sm" />
+                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search emails..." className="w-full pl-11 pr-4 py-2.5 bg-neutral-900/50 border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 text-sm" />
             </div>
 
             {loading ? <div className="space-y-3">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-12 glass rounded-lg animate-pulse" />)}</div> : filtered.length === 0 ? (

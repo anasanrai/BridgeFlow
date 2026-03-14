@@ -70,7 +70,7 @@ export default function TemplatePaymentModal({
                                 </div>
                                 <div className="flex justify-between items-center text-lg font-bold text-white">
                                     <span>Total Due</span>
-                                    <span className="text-gold-400">${(templateValue || 0).toLocaleString()}</span>
+                                    <span className="text-brand-coral">${(templateValue || 0).toLocaleString()}</span>
                                 </div>
                             </div>
 

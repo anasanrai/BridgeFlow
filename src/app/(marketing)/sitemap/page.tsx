@@ -45,7 +45,7 @@ export default async function SitemapPage() {
                 <ScrollReveal>
                     <div className="max-w-3xl mb-16">
                         <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">
-                            Site <span className="gold-text">Map</span>
+                            Site <span className="text-brand-coral font-bold">Map</span>
                         </h1>
                         <p className="text-lg text-gray-400">
                             A complete directory of all pages, articles, and resources available on the BridgeFlow platform.
@@ -59,7 +59,7 @@ export default async function SitemapPage() {
                             <div className="space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-xl bg-gold-400/10 border border-gold-400/20 flex items-center justify-center">
-                                        <section.icon className="w-5 h-5 text-gold-400" />
+                                        <section.icon className="w-5 h-5 text-brand-coral" />
                                     </div>
                                     <h2 className="text-xl font-display font-bold text-white">{section.title}</h2>
                                 </div>
@@ -68,7 +68,7 @@ export default async function SitemapPage() {
                                         <li key={link.href}>
                                             <Link 
                                                 href={link.href}
-                                                className="text-gray-400 hover:text-gold-400 transition-colors flex items-center gap-2 group"
+                                                className="text-gray-400 hover:text-brand-coral transition-colors flex items-center gap-2 group"
                                             >
                                                 <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                                                 {link.label}
@@ -103,7 +103,7 @@ export default async function SitemapPage() {
                                 ))}
                                 {posts.length > 15 && (
                                     <li>
-                                        <Link href="/blog" className="text-gold-400 text-sm font-semibold hover:underline">View all articles →</Link>
+                                        <Link href="/blog" className="text-brand-coral text-sm font-semibold hover:underline">View all articles →</Link>
                                     </li>
                                 )}
                             </ul>
@@ -132,7 +132,7 @@ export default async function SitemapPage() {
                                     </li>
                                 ))}
                                 <li>
-                                    <Link href="/case-studies" className="text-gold-400 text-sm font-semibold hover:underline">View all case studies →</Link>
+                                    <Link href="/case-studies" className="text-brand-coral text-sm font-semibold hover:underline">View all case studies →</Link>
                                 </li>
                             </ul>
                         </div>

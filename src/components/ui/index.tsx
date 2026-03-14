@@ -68,14 +68,14 @@ export function SectionHeader({
         >
             {badge && (
                 <ScrollReveal>
-                    <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                    <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                         {badge}
                     </span>
                 </ScrollReveal>
             )}
             <ScrollReveal delay={0.1}>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
-                    {title} {highlight && <span className="gold-text">{highlight}</span>}
+                    {title} {highlight && <span className="text-brand-coral font-bold">{highlight}</span>}
                 </h2>
             </ScrollReveal>
             {description && (
@@ -129,7 +129,7 @@ export function AnimatedCounter({
     return (
         <div className="text-center">
             <div
-                className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold gold-text"
+                className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-brand-coral font-bold"
                 aria-label={`${prefix}${end}${suffix}`}
             >
                 {prefix}
@@ -190,11 +190,11 @@ export function Button({
 
     const variants = {
         primary:
-            "gold-gradient text-navy-950 hover:shadow-[0_0_40px_rgba(230,180,34,0.5)] hover:scale-[1.03] active:scale-95",
+            "bg-brand-coral text-neutral-950 font-bold text-neutral-950 hover:shadow-[0_0_40px_rgba(230,180,34,0.5)] hover:scale-[1.03] active:scale-95",
         secondary:
-            "glass-strong border border-gold-400/30 text-gold-400 hover:bg-gold-400/10 hover:border-gold-400/50 hover:shadow-[0_0_20px_rgba(230,180,34,0.1)] hover:scale-[1.03] active:scale-95",
+            "glass-strong border border-gold-400/30 text-brand-coral hover:bg-gold-400/10 hover:border-gold-400/50 hover:shadow-[0_0_20px_rgba(230,180,34,0.1)] hover:scale-[1.03] active:scale-95",
         ghost: "text-gray-400 hover:text-white hover:bg-white/5 active:scale-95",
-        outline: "border border-white/10 text-white hover:border-gold-400/50 hover:text-gold-400 hover:bg-gold-400/5 active:scale-95",
+        outline: "border border-white/10 text-white hover:border-gold-400/50 hover:text-brand-coral hover:bg-gold-400/5 active:scale-95",
     };
 
     const sizes = {

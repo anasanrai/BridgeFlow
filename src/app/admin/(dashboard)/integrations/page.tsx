@@ -196,7 +196,7 @@ export default function IntegrationsAdmin() {
 
             <div className="mb-12">
                 <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                    <Link2 className="w-6 h-6 text-gold-400" />
+                    <Link2 className="w-6 h-6 text-brand-coral" />
                     Integrations & Webhooks
                 </h1>
                 <p className="text-sm text-gray-500 mt-1">Connect BridgeFlow with n8n, Zapier, and your custom apps</p>
@@ -207,14 +207,14 @@ export default function IntegrationsAdmin() {
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                            <Key className="w-5 h-5 text-gold-400" />
+                            <Key className="w-5 h-5 text-brand-coral" />
                             API Tokens
                         </h2>
                         <p className="text-xs text-gray-500">Provide these tokens to external apps to access BridgeFlow API</p>
                     </div>
                     <button
                         onClick={addToken}
-                        className="flex items-center gap-2 px-4 py-2 bg-gold-400/10 text-gold-400 hover:bg-gold-400/20 font-bold rounded-lg text-xs border border-gold-400/20 transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-gold-400/10 text-brand-coral hover:bg-gold-400/20 font-bold rounded-lg text-xs border border-gold-400/20 transition-all"
                     >
                         <Plus className="w-3.5 h-3.5" /> Generate Token
                     </button>
@@ -222,7 +222,7 @@ export default function IntegrationsAdmin() {
 
                 <div className="space-y-3">
                     {tokens.length === 0 ? (
-                        <div className="text-center py-8 bg-navy-900/50 rounded-xl border border-dashed border-white/10">
+                        <div className="text-center py-8 bg-neutral-900/50 rounded-xl border border-dashed border-white/10">
                             <Key className="w-8 h-8 mx-auto mb-3 text-gray-700" />
                             <p className="text-sm text-gray-400 font-medium mb-1">No API tokens yet</p>
                             <p className="text-xs text-gray-600 max-w-xs mx-auto">
@@ -231,7 +231,7 @@ export default function IntegrationsAdmin() {
                         </div>
                     ) : (
                         tokens.map((token) => (
-                            <div key={token.id} className="flex items-center justify-between p-4 bg-navy-900/50 rounded-xl border border-white/5 group">
+                            <div key={token.id} className="flex items-center justify-between p-4 bg-neutral-900/50 rounded-xl border border-white/5 group">
                                 <div className="flex items-center gap-4">
                                     <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center text-gray-500">
                                         <Key className="w-4 h-4" />
@@ -239,7 +239,7 @@ export default function IntegrationsAdmin() {
                                     <div>
                                         <div className="text-sm font-bold text-white">{token.name}</div>
                                         <div className="flex items-center gap-2 mt-0.5">
-                                            <code className="text-[10px] text-gold-400/80 font-mono bg-navy-950 px-1.5 py-0.5 rounded">
+                                            <code className="text-[10px] text-brand-coral/80 font-mono bg-neutral-950 px-1.5 py-0.5 rounded">
                                                 {token.token.substring(0, 8)}••••••••••••••••
                                             </code>
                                             <button
@@ -292,7 +292,7 @@ export default function IntegrationsAdmin() {
 
                 <div className="grid gap-4">
                     {webhooks.length === 0 ? (
-                        <div className="text-center py-8 bg-navy-900/50 rounded-xl border border-dashed border-white/10">
+                        <div className="text-center py-8 bg-neutral-900/50 rounded-xl border border-dashed border-white/10">
                             <Zap className="w-8 h-8 mx-auto mb-3 text-gray-700" />
                             <p className="text-sm text-gray-400 font-medium mb-1">No webhooks configured yet</p>
                             <p className="text-xs text-gray-600 max-w-xs mx-auto">
@@ -301,7 +301,7 @@ export default function IntegrationsAdmin() {
                         </div>
                     ) : (
                         webhooks.map((webhook, idx) => (
-                            <div key={idx} className="p-5 bg-navy-900/30 rounded-xl border border-white/5 space-y-4 overflow-hidden relative">
+                            <div key={idx} className="p-5 bg-neutral-900/30 rounded-xl border border-white/5 space-y-4 overflow-hidden relative">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <div className={`w-2 h-2 rounded-full ${webhook.is_active ? 'bg-emerald-400 animate-pulse' : 'bg-gray-600'}`} />
@@ -346,7 +346,7 @@ export default function IntegrationsAdmin() {
                                                     setWebhooks(news);
                                                 }}
                                                 placeholder="https://n8n.your-domain.com/webhook/..."
-                                                className="w-full pl-8 pr-3 py-2 bg-navy-950/50 border border-white/10 rounded text-xs text-white focus:border-blue-500/50 outline-none"
+                                                className="w-full pl-8 pr-3 py-2 bg-neutral-950/50 border border-white/10 rounded text-xs text-white focus:border-blue-500/50 outline-none"
                                             />
                                         </div>
                                     </div>
@@ -357,7 +357,7 @@ export default function IntegrationsAdmin() {
                                             <input
                                                 value={webhook.secret}
                                                 disabled
-                                                className="w-full pl-8 pr-3 py-2 bg-navy-950/50 border border-white/10 rounded text-xs text-gray-400 outline-none"
+                                                className="w-full pl-8 pr-3 py-2 bg-neutral-950/50 border border-white/10 rounded text-xs text-gray-400 outline-none"
                                             />
                                         </div>
                                     </div>
@@ -395,18 +395,18 @@ export default function IntegrationsAdmin() {
                 <div className="mt-8 p-6 bg-gradient-to-br from-gold-400/5 to-orange-500/5 border-2 border-gold-400/20 rounded-xl">
                     <div className="flex items-start gap-4">
                         <div className="w-12 h-12 rounded-xl bg-gold-400/10 border border-gold-400/20 flex items-center justify-center flex-shrink-0">
-                            <Zap className="w-6 h-6 text-gold-400" />
+                            <Zap className="w-6 h-6 text-brand-coral" />
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
                                 <span className="text-sm font-bold text-white">Free Audit — n8n Agent Webhook</span>
-                                <span className="px-2 py-0.5 bg-gold-400/10 text-gold-400 text-[10px] font-bold rounded-full border border-gold-400/20">PRIMARY</span>
+                                <span className="px-2 py-0.5 bg-gold-400/10 text-brand-coral text-[10px] font-bold rounded-full border border-gold-400/20">PRIMARY</span>
                                 {auditWebhookStatus === "success" && <span className="flex items-center gap-1 text-[10px] text-emerald-400"><CheckCircle className="w-3 h-3" /> Live</span>}
                                 {auditWebhookStatus === "error" && <span className="flex items-center gap-1 text-[10px] text-red-400"><AlertCircle className="w-3 h-3" /> Failed</span>}
                             </div>
                             <p className="text-xs text-gray-400 mb-4 leading-relaxed">
                                 Connect your n8n workflow agent to the &quot;Free Audit&quot; button. When a visitor submits their website URL,
-                                BridgeFlow will POST <code className="text-gold-400/80 bg-navy-950 px-1 py-0.5 rounded text-[10px]">&#123; url, email, timestamp &#125;</code> to this webhook.
+                                BridgeFlow will POST <code className="text-brand-coral/80 bg-neutral-950 px-1 py-0.5 rounded text-[10px]">&#123; url, email, timestamp &#125;</code> to this webhook.
                                 Your n8n agent then runs the audit and sends the report automatically.
                             </p>
                             <div className="flex items-center gap-3 mb-3">
@@ -416,11 +416,11 @@ export default function IntegrationsAdmin() {
                                         value={freeAuditWebhookUrl}
                                         onChange={(e) => setFreeAuditWebhookUrl(e.target.value)}
                                         placeholder="https://your-n8n.app.n8n.cloud/webhook/free-audit"
-                                        className="w-full pl-10 pr-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-600 focus:border-gold-400/50 focus:outline-none"
+                                        className="w-full pl-10 pr-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-600 focus:border-gold-400/50 focus:outline-none"
                                     />
                                 </div>
                                 <button onClick={handleSaveFreeAuditWebhook} disabled={savingAudit}
-                                    className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-lg text-xs disabled:opacity-50 flex-shrink-0">
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-lg text-xs disabled:opacity-50 flex-shrink-0">
                                     {savingAudit ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                                     {savingAudit ? "Saving..." : "Save"}
                                 </button>
@@ -432,7 +432,7 @@ export default function IntegrationsAdmin() {
                             </div>
                             {/* Existing saved audit webhooks */}
                             {webhooks.filter(w => w.events.includes("free_audit") || w.events.includes("audit.requested")).map(w => (
-                                <div key={w.id} className="flex items-center gap-3 p-3 bg-navy-950/80 rounded-lg border border-white/5 mt-2">
+                                <div key={w.id} className="flex items-center gap-3 p-3 bg-neutral-950/80 rounded-lg border border-white/5 mt-2">
                                     <div className={`w-2 h-2 rounded-full flex-shrink-0 ${w.is_active ? "bg-emerald-400" : "bg-gray-600"}`} />
                                     <span className="text-xs text-gray-400 flex-1 truncate font-mono">{w.url}</span>
                                     <span className="text-[10px] text-gray-600">{w.name}</span>
@@ -460,11 +460,11 @@ export default function IntegrationsAdmin() {
                                         value={n8nWebhookUrl}
                                         onChange={(e) => setN8nWebhookUrl(e.target.value)}
                                         placeholder="https://your-n8n-instance.app.n8n.cloud/webhook/abc123"
-                                        className="w-full pl-10 pr-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-600 focus:border-blue-500/50 focus:outline-none"
+                                        className="w-full pl-10 pr-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-600 focus:border-blue-500/50 focus:outline-none"
                                     />
                                 </div>
                                 <button onClick={handleSaveN8nWebhook} disabled={savingN8n}
-                                    className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-lg text-xs disabled:opacity-50">
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-lg text-xs disabled:opacity-50">
                                     {savingN8n ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                                     {savingN8n ? "Saving..." : "Save"}
                                 </button>

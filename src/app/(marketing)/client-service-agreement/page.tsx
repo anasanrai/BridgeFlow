@@ -12,23 +12,23 @@ const lastUpdated = "March 1, 2025";
 
 export default function ClientServiceAgreement() {
     return (
-        <div className="min-h-screen bg-navy-950">
+        <div className="min-h-screen bg-neutral-950">
             {/* Header */}
             <section className="relative pt-32 pb-12 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/30 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/30 via-neutral-950 to-neutral-950" />
                 <div className="relative z-10 container-max px-4 sm:px-6 lg:px-8 max-w-4xl">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-gold-400 transition-colors mb-8 uppercase tracking-wider font-semibold"
+                        className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-brand-coral transition-colors mb-8 uppercase tracking-wider font-semibold"
                     >
                         <ArrowLeft className="w-3.5 h-3.5" />
                         Back to Home
                     </Link>
                     <div className="flex items-center gap-3 mb-4">
                         <div className="p-2.5 rounded-xl bg-gold-400/10 border border-gold-400/20">
-                            <FileText className="w-6 h-6 text-gold-400" />
+                            <FileText className="w-6 h-6 text-brand-coral" />
                         </div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-gold-400">Legal</span>
+                        <span className="text-xs font-bold uppercase tracking-wider text-brand-coral">Legal</span>
                     </div>
                     <h1 className="text-4xl sm:text-5xl font-display font-bold text-white mb-4">
                         Client Service Agreement
@@ -58,7 +58,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 1 — Services */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">1</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">1</span>
                             Services
                         </h2>
                         <p className="text-gray-400 leading-relaxed mb-4">
@@ -85,7 +85,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 2 — Payment Terms */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">2</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">2</span>
                             Payment Terms
                         </h2>
 
@@ -129,7 +129,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 3 — IP */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">3</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">3</span>
                             Intellectual Property Rights
                         </h2>
                         <h3 className="text-base font-bold text-white mb-2">3.1 Pre-Existing Intellectual Property</h3>
@@ -148,7 +148,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 4 — Confidentiality */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">4</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">4</span>
                             Confidentiality
                         </h2>
                         <p className="text-gray-400 leading-relaxed">
@@ -160,7 +160,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 5 — Term & Termination */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">5</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">5</span>
                             Term and Termination
                         </h2>
                         <p className="text-gray-400 leading-relaxed mb-3">
@@ -176,7 +176,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 6 — Satisfaction Guarantee */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">6</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">6</span>
                             Satisfaction Guarantee
                         </h2>
                         <p className="text-gray-400 leading-relaxed">
@@ -189,7 +189,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 7 — Limitation of Liability */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">7</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">7</span>
                             Limitation of Liability
                         </h2>
                         <p className="text-gray-400 leading-relaxed">
@@ -201,7 +201,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 8 — Governing Law */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">8</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">8</span>
                             Governing Law
                         </h2>
                         <p className="text-gray-400 leading-relaxed">
@@ -213,7 +213,7 @@ export default function ClientServiceAgreement() {
                     {/* Section 9 — Entire Agreement */}
                     <div className="glass rounded-2xl p-8 border border-white/5">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-gold-400 text-xs font-bold">9</span>
+                            <span className="w-7 h-7 rounded-lg bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-brand-coral text-xs font-bold">9</span>
                             Entire Agreement
                         </h2>
                         <p className="text-gray-400 leading-relaxed">
@@ -225,7 +225,7 @@ export default function ClientServiceAgreement() {
                     {/* Contact */}
                     <div className="glass rounded-2xl p-8 border border-gold-400/10 bg-gold-400/[0.02]">
                         <h2 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <Mail className="w-5 h-5 text-gold-400" />
+                            <Mail className="w-5 h-5 text-brand-coral" />
                             Ready to Get Started?
                         </h2>
                         <p className="text-gray-400 leading-relaxed mb-4">
@@ -233,7 +233,7 @@ export default function ClientServiceAgreement() {
                         </p>
                         <Link
                             href="/contact"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-navy-950 bg-gold-400 hover:bg-gold-300 transition-all"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-neutral-950 bg-gold-400 hover:bg-gold-300 transition-all"
                         >
                             Start a Project
                         </Link>

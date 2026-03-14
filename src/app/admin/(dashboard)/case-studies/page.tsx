@@ -65,14 +65,14 @@ export default function CaseStudiesAdmin() {
 
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><FolderOpen className="w-6 h-6 text-gold-400" />Case Studies</h1>
+                    <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2"><FolderOpen className="w-6 h-6 text-brand-coral" />Case Studies</h1>
                     <p className="text-sm text-gray-500 mt-1">{studies.length} case studies</p>
                 </div>
                 <button onClick={() => {
                     setEditing({ title: "", slug: "", industry: "", client: "", excerpt: "", challenge: "", solution: "", results: [], tags: [], is_published: true, seo_title: "", seo_description: "", og_image: "" });
                     setActiveTab("content");
                 }}
-                    className="flex items-center gap-2 px-4 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm"><Plus className="w-4 h-4" /> New Case Study</button>
+                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm"><Plus className="w-4 h-4" /> New Case Study</button>
             </div>
 
             {/* Editor Modal */}
@@ -86,11 +86,11 @@ export default function CaseStudiesAdmin() {
 
                         {/* Tabs */}
                         <div className="flex items-center gap-4 mb-6 border-b border-white/5">
-                            <button onClick={() => setActiveTab("content")} className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "content" ? "text-gold-400" : "text-gray-500 hover:text-white"}`}>
-                                Content {activeTab === "content" && <span className="absolute bottom-0 left-0 right-0 h-0.5 gold-gradient" />}
+                            <button onClick={() => setActiveTab("content")} className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "content" ? "text-brand-coral" : "text-gray-500 hover:text-white"}`}>
+                                Content {activeTab === "content" && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-coral text-neutral-950 font-bold" />}
                             </button>
-                            <button onClick={() => setActiveTab("seo")} className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "seo" ? "text-gold-400" : "text-gray-500 hover:text-white"}`}>
-                                SEO & Social {activeTab === "seo" && <span className="absolute bottom-0 left-0 right-0 h-0.5 gold-gradient" />}
+                            <button onClick={() => setActiveTab("seo")} className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === "seo" ? "text-brand-coral" : "text-gray-500 hover:text-white"}`}>
+                                SEO & Social {activeTab === "seo" && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-coral text-neutral-950 font-bold" />}
                             </button>
                         </div>
 
@@ -100,42 +100,42 @@ export default function CaseStudiesAdmin() {
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Title</label>
-                                            <input value={editing.title || ""} onChange={e => setEditing({ ...editing, title: e.target.value, slug: editing.id ? editing.slug : generateSlug(e.target.value) })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" />
+                                            <input value={editing.title || ""} onChange={e => setEditing({ ...editing, title: e.target.value, slug: editing.id ? editing.slug : generateSlug(e.target.value) })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Slug</label>
-                                            <input value={editing.slug || ""} onChange={e => setEditing({ ...editing, slug: e.target.value })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white font-mono text-sm focus:outline-none focus:border-gold-400/50" />
+                                            <input value={editing.slug || ""} onChange={e => setEditing({ ...editing, slug: e.target.value })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white font-mono text-sm focus:outline-none focus:border-gold-400/50" />
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Client</label>
-                                            <input value={editing.client || ""} onChange={e => setEditing({ ...editing, client: e.target.value })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" />
+                                            <input value={editing.client || ""} onChange={e => setEditing({ ...editing, client: e.target.value })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1.5">Industry</label>
-                                            <input value={editing.industry || ""} onChange={e => setEditing({ ...editing, industry: e.target.value })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" />
+                                            <input value={editing.industry || ""} onChange={e => setEditing({ ...editing, industry: e.target.value })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" />
                                         </div>
                                     </div>
                                     <div><label className="block text-sm font-medium text-gray-300 mb-1.5">Excerpt</label>
-                                        <textarea value={editing.excerpt || ""} onChange={e => setEditing({ ...editing, excerpt: e.target.value })} rows={2} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" /></div>
+                                        <textarea value={editing.excerpt || ""} onChange={e => setEditing({ ...editing, excerpt: e.target.value })} rows={2} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" /></div>
                                     <div><label className="block text-sm font-medium text-gray-300 mb-1.5">Challenge</label>
-                                        <textarea value={editing.challenge || ""} onChange={e => setEditing({ ...editing, challenge: e.target.value })} rows={3} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" /></div>
+                                        <textarea value={editing.challenge || ""} onChange={e => setEditing({ ...editing, challenge: e.target.value })} rows={3} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" /></div>
                                     <div><label className="block text-sm font-medium text-gray-300 mb-1.5">Solution</label>
-                                        <textarea value={editing.solution || ""} onChange={e => setEditing({ ...editing, solution: e.target.value })} rows={3} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" /></div>
+                                        <textarea value={editing.solution || ""} onChange={e => setEditing({ ...editing, solution: e.target.value })} rows={3} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" /></div>
 
                                     {/* Results */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Results Metrics</label>
                                         {(editing.results || []).map((r, i) => (
-                                            <div key={i} className="flex items-center gap-2 mb-2 p-2 bg-navy-900/50 rounded-lg border border-white/5">
-                                                <TrendingUp className="w-4 h-4 text-gold-400" /><span className="font-semibold text-white text-sm">{r.metric}</span><span className="text-gray-400 text-sm">{r.label}</span>
+                                            <div key={i} className="flex items-center gap-2 mb-2 p-2 bg-neutral-900/50 rounded-lg border border-white/5">
+                                                <TrendingUp className="w-4 h-4 text-brand-coral" /><span className="font-semibold text-white text-sm">{r.metric}</span><span className="text-gray-400 text-sm">{r.label}</span>
                                                 <button onClick={() => removeResult(i)} className="ml-auto p-1 text-gray-500 hover:text-red-400"><X className="w-3 h-3" /></button>
                                             </div>
                                         ))}
                                         <div className="flex gap-2">
-                                            <input value={metricInput.metric} onChange={e => setMetricInput({ ...metricInput, metric: e.target.value })} className="w-24 px-3 py-2 bg-navy-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="300%" />
-                                            <input value={metricInput.label} onChange={e => setMetricInput({ ...metricInput, label: e.target.value })} className="flex-1 px-3 py-2 bg-navy-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="increase in leads" />
+                                            <input value={metricInput.metric} onChange={e => setMetricInput({ ...metricInput, metric: e.target.value })} className="w-24 px-3 py-2 bg-neutral-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="300%" />
+                                            <input value={metricInput.label} onChange={e => setMetricInput({ ...metricInput, label: e.target.value })} className="flex-1 px-3 py-2 bg-neutral-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="increase in leads" />
                                             <button onClick={addResult} className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 text-sm">Add</button>
                                         </div>
                                     </div>
@@ -145,13 +145,13 @@ export default function CaseStudiesAdmin() {
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">Tags</label>
                                         <div className="flex flex-wrap gap-2 mb-2">
                                             {(editing.tags || []).map((t, i) => (
-                                                <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gold-400/10 text-gold-400 border border-gold-400/20">
+                                                <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gold-400/10 text-brand-coral border border-gold-400/20">
                                                     {t}<button onClick={() => removeTag(i)} className="hover:text-red-400"><X className="w-3 h-3" /></button>
                                                 </span>
                                             ))}
                                         </div>
                                         <div className="flex gap-2">
-                                            <input value={tagInput} onChange={e => setTagInput(e.target.value)} onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addTag())} className="flex-1 px-3 py-2 bg-navy-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="Add tag..." />
+                                            <input value={tagInput} onChange={e => setTagInput(e.target.value)} onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addTag())} className="flex-1 px-3 py-2 bg-neutral-900/80 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold-400/50" placeholder="Add tag..." />
                                             <button onClick={addTag} className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 text-sm">Add</button>
                                         </div>
                                     </div>
@@ -164,27 +164,27 @@ export default function CaseStudiesAdmin() {
                             ) : (
                                 <div className="space-y-6">
                                     <div className="p-4 rounded-xl bg-gold-400/5 border border-gold-400/10">
-                                        <h4 className="text-sm font-semibold text-gold-400 mb-2">SEO Optimization</h4>
+                                        <h4 className="text-sm font-semibold text-brand-coral mb-2">SEO Optimization</h4>
                                         <p className="text-xs text-gray-400">Customize search appearance. If blank, we use the title and industry.</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">SEO Title</label>
-                                        <input value={editing.seo_title || ""} onChange={e => setEditing({ ...editing, seo_title: e.target.value })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Custom SEO Title" />
+                                        <input value={editing.seo_title || ""} onChange={e => setEditing({ ...editing, seo_title: e.target.value })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="Custom SEO Title" />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">SEO Description</label>
-                                        <textarea value={editing.seo_description || ""} onChange={e => setEditing({ ...editing, seo_description: e.target.value })} rows={3} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Meta description..." />
+                                        <textarea value={editing.seo_description || ""} onChange={e => setEditing({ ...editing, seo_description: e.target.value })} rows={3} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50 resize-none" placeholder="Meta description..." />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1.5">OG Image URL</label>
-                                        <input value={editing.og_image || ""} onChange={e => setEditing({ ...editing, og_image: e.target.value })} className="w-full px-4 py-2.5 bg-navy-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="https://..." />
+                                        <input value={editing.og_image || ""} onChange={e => setEditing({ ...editing, og_image: e.target.value })} className="w-full px-4 py-2.5 bg-neutral-900/80 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gold-400/50" placeholder="https://..." />
                                     </div>
                                 </div>
                             )}
                         </div>
                         <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-white/5">
                             <button onClick={() => { setEditing(null); setActiveTab("content"); }} className="px-4 py-2 text-sm text-gray-400 hover:text-white">Cancel</button>
-                            <button onClick={handleSave} disabled={saving || !editing.title} className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm disabled:opacity-50">
+                            <button onClick={handleSave} disabled={saving || !editing.title} className="flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm disabled:opacity-50">
                                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? "Saving..." : "Save"}
                             </button>
                         </div>
@@ -202,7 +202,7 @@ export default function CaseStudiesAdmin() {
                             <p className="text-xs text-gray-500">{s.client} · {s.industry}</p>
                             <div className="flex gap-2 mt-2 flex-wrap">
                                 {(s.results || []).slice(0, 3).map((r, i) => (
-                                    <span key={i} className="text-[10px] px-2 py-0.5 rounded bg-gold-400/10 text-gold-400 font-medium">{r.metric} {r.label}</span>
+                                    <span key={i} className="text-[10px] px-2 py-0.5 rounded bg-gold-400/10 text-brand-coral font-medium">{r.metric} {r.label}</span>
                                 ))}
                             </div>
                         </div>
@@ -222,7 +222,7 @@ export default function CaseStudiesAdmin() {
                     </p>
                     <button
                         onClick={() => setEditing({ title: "", slug: "", industry: "", client: "", excerpt: "", challenge: "", solution: "", results: [], tags: [], is_published: true, sort_order: 0 })}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm"
                     >
                         <Plus className="w-4 h-4" /> Add Your First Case Study
                     </button>

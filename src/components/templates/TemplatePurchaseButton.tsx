@@ -29,7 +29,7 @@ export default function TemplatePurchaseButton({
             <button
                 onClick={() => setShowPayment(true)}
                 className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold transition-all duration-300 ${variant === "primary"
-                    ? "text-navy-950 hover:shadow-[0_0_20px_rgba(230,180,34,0.4)] hover:scale-[1.02]"
+                    ? "text-neutral-950 hover:shadow-[0_0_20px_rgba(230,180,34,0.4)] hover:scale-[1.02]"
                     : "text-white glass border border-white/10 hover:bg-white/10"
                     } ${className}`}
                 style={variant === "primary" ? { background: "linear-gradient(135deg, #e6b422 0%, #c9a227 100%)" } : {}}

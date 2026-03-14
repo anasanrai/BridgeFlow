@@ -36,10 +36,10 @@ export default async function CaseStudies() {
         <>
             {/* Hero */}
             <section className="relative pt-32 pb-20 aurora-glow overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/50 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/50 via-neutral-950 to-neutral-950" />
                 <div className="relative z-10 container-max text-center px-4 sm:px-6">
                     <ScrollReveal>
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-gold-400 border border-gold-400/20 rounded-full bg-gold-400/5">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider text-brand-coral border border-gold-400/20 rounded-full bg-gold-400/5">
                             Case Studies
                         </span>
                     </ScrollReveal>
@@ -47,7 +47,7 @@ export default async function CaseStudies() {
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
                             Real results from{" "}
                             <br className="hidden sm:block" />
-                            <span className="gold-text">real businesses</span>
+                            <span className="text-brand-coral font-bold">real businesses</span>
                         </h1>
                     </ScrollReveal>
                     <ScrollReveal delay={0.2}>
@@ -60,20 +60,20 @@ export default async function CaseStudies() {
             </section>
 
             {/* Stats Bar */}
-            <section className="py-10 bg-navy-900/50 border-y border-white/5">
+            <section className="py-10 bg-neutral-900/50 border-y border-white/5">
                 <div className="container-max px-4 sm:px-6">
                     <ScrollReveal>
                         <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto text-center">
                             <div>
-                                <div className="text-3xl font-display font-bold gold-text mb-1">{caseStudies.length}+</div>
+                                <div className="text-3xl font-display font-bold text-brand-coral font-bold mb-1">{caseStudies.length}+</div>
                                 <div className="text-sm text-gray-400">Case Studies</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-display font-bold gold-text mb-1">340%</div>
+                                <div className="text-3xl font-display font-bold text-brand-coral font-bold mb-1">340%</div>
                                 <div className="text-sm text-gray-400">Avg. Client ROI</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-display font-bold gold-text mb-1">98%</div>
+                                <div className="text-3xl font-display font-bold text-brand-coral font-bold mb-1">98%</div>
                                 <div className="text-sm text-gray-400">Satisfaction Rate</div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@ export default async function CaseStudies() {
                     )}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                         {caseStudies.map((cs: any, i: number) => {
-                            const colorClass = industryColors[cs.industry] || "text-gold-400 bg-gold-400/10 border-gold-400/20";
+                            const colorClass = industryColors[cs.industry] || "text-brand-coral bg-gold-400/10 border-gold-400/20";
                             return (
                                 <ScrollReveal key={cs.slug} delay={i * 0.05}>
                                     <Link href={`/case-studies/${cs.slug}`} className="block group h-full">
@@ -106,9 +106,9 @@ export default async function CaseStudies() {
                                                     <Building2 className="w-3 h-3" />
                                                     {cs.industry}
                                                 </span>
-                                                <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-gold-400 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
+                                                <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-brand-coral group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
                                             </div>
-                                            <h2 className="text-lg font-display font-bold mb-2 group-hover:text-gold-400 transition-colors leading-snug">
+                                            <h2 className="text-lg font-display font-bold mb-2 group-hover:text-brand-coral transition-colors leading-snug">
                                                 {cs.title}
                                             </h2>
                                             <p className="text-sm text-gray-400 leading-relaxed mb-5 flex-1">
@@ -117,7 +117,7 @@ export default async function CaseStudies() {
                                             <div className="grid grid-cols-2 gap-3 mb-5 p-4 rounded-xl bg-white/3 border border-white/5">
                                                 {cs.results.slice(0, 4).map((r: any, ri: number) => (
                                                     <div key={ri}>
-                                                        <div className="text-lg font-display font-bold gold-text leading-tight">{r.metric}</div>
+                                                        <div className="text-lg font-display font-bold text-brand-coral font-bold leading-tight">{r.metric}</div>
                                                         <div className="text-xs text-gray-500 capitalize leading-tight mt-0.5">{r.label}</div>
                                                     </div>
                                                 ))}
@@ -129,7 +129,7 @@ export default async function CaseStudies() {
                                             </div>
                                             <div className="flex items-center justify-between pt-4 border-t border-white/5">
                                                 <span className="text-xs text-gray-500">{cs.client}</span>
-                                                <span className="text-xs font-semibold text-gold-400 group-hover:underline">Read Case Study →</span>
+                                                <span className="text-xs font-semibold text-brand-coral group-hover:underline">Read Case Study →</span>
                                             </div>
                                         </Card>
                                     </Link>
@@ -144,7 +144,7 @@ export default async function CaseStudies() {
                             <div className="absolute inset-0 bg-hero-glow opacity-50" />
                             <div className="relative z-10">
                                 <h2 className="text-3xl sm:text-4xl font-display font-bold mb-4">
-                                    Want results like <span className="gold-text">these?</span>
+                                    Want results like <span className="text-brand-coral font-bold">these?</span>
                                 </h2>
                                 <p className="text-gray-400 text-lg max-w-xl mx-auto mb-8">
                                     Every project starts with a conversation. Let&apos;s discuss

@@ -282,7 +282,7 @@ export default function AdminSettings() {
     if (loading) {
         return (
             <div className="flex items-center justify-center p-20">
-                <Loader2 className="w-8 h-8 animate-spin text-gold-400" />
+                <Loader2 className="w-8 h-8 animate-spin text-brand-coral" />
             </div>
         );
     }
@@ -355,7 +355,7 @@ export default function AdminSettings() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-3xl font-display font-bold text-white flex items-center gap-3">
-                        <Settings className="w-8 h-8 text-gold-400" />
+                        <Settings className="w-8 h-8 text-brand-coral" />
                         Platform Settings
                     </h1>
                     <p className="text-gray-400 mt-2 text-sm max-w-2xl">
@@ -365,7 +365,7 @@ export default function AdminSettings() {
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center gap-2 px-6 py-3 gold-gradient text-navy-950 font-bold rounded-xl text-sm hover:shadow-lg hover:shadow-gold-400/30 transition-all disabled:opacity-50 transform hover:-translate-y-0.5"
+                    className="flex items-center gap-2 px-6 py-3 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm hover:shadow-lg hover:shadow-gold-400/30 transition-all disabled:opacity-50 transform hover:-translate-y-0.5"
                 >
                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                     {saving ? "Deploying..." : "Save All"}
@@ -373,13 +373,13 @@ export default function AdminSettings() {
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex flex-wrap gap-2 mb-8 p-1 rounded-xl bg-navy-900/50 border border-white/5 w-fit">
+            <div className="flex flex-wrap gap-2 mb-8 p-1 rounded-xl bg-neutral-900/50 border border-white/5 w-fit">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === tab.id
-                            ? "gold-gradient text-navy-950 shadow-lg shadow-gold-400/20"
+                            ? "bg-brand-coral text-neutral-950 font-bold text-neutral-950 shadow-lg shadow-brand-coral/20"
                             : "text-gray-400 hover:text-white hover:bg-white/5"
                             }`}
                     >
@@ -413,7 +413,7 @@ export default function AdminSettings() {
                                             onClick={() => setSettings({ ...settings!, primary_ai_model: model.id })}
                                             className={`p-5 rounded-xl border-2 transition-all cursor-pointer flex items-start gap-4 ${isActive
                                                 ? `${model.border} ${model.bg} shadow-lg ${model.glow} transform scale-[1.01]`
-                                                : "border-white/5 bg-navy-900/50 hover:bg-white/5 hover:border-white/10"
+                                                : "border-white/5 bg-neutral-900/50 hover:bg-white/5 hover:border-white/10"
                                                 }`}
                                         >
                                             <div className={`p-2 rounded-lg ${isActive ? "bg-white/10" : "bg-black/20"}`}>
@@ -469,7 +469,7 @@ export default function AdminSettings() {
                                             value={settings?.custom_webhook_name || ""}
                                             onChange={(e) => setSettings({ ...settings!, custom_webhook_name: e.target.value })}
                                             placeholder="e.g. GPT-4o, Claude 3.5, Llama 3.3"
-                                            className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-cyan-400/50 focus:outline-none"
+                                            className="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-cyan-400/50 focus:outline-none"
                                         />
                                     </div>
                                     <div>
@@ -480,7 +480,7 @@ export default function AdminSettings() {
                                                 value={settings?.custom_webhook_url || ""}
                                                 onChange={(e) => setSettings({ ...settings!, custom_webhook_url: e.target.value })}
                                                 placeholder="https://your-endpoint.com/api/chat"
-                                                className="flex-1 px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-cyan-400/50 focus:outline-none font-mono"
+                                                className="flex-1 px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-cyan-400/50 focus:outline-none font-mono"
                                             />
                                             <button
                                                 onClick={async () => {
@@ -506,7 +506,7 @@ export default function AdminSettings() {
                                             className={`mt-2 p-3 rounded-xl border-2 transition-all cursor-pointer flex items-center gap-3 ${
                                                 settings?.primary_ai_model === "custom-webhook"
                                                     ? "border-cyan-500/50 bg-cyan-500/10 shadow-lg shadow-cyan-500/10"
-                                                    : "border-white/5 bg-navy-900/50 hover:bg-white/5 hover:border-white/10"
+                                                    : "border-white/5 bg-neutral-900/50 hover:bg-white/5 hover:border-white/10"
                                             }`}
                                         >
                                             <Cpu className={`w-4 h-4 ${settings?.primary_ai_model === "custom-webhook" ? "text-cyan-400" : "text-gray-500"}`} />
@@ -531,7 +531,7 @@ export default function AdminSettings() {
                                 </div>
                                 <h2 className="text-lg font-display font-bold text-white">Site Status</h2>
                             </div>
-                            <label className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-navy-900/50 cursor-pointer hover:bg-white/5 transition-colors">
+                            <label className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-neutral-900/50 cursor-pointer hover:bg-white/5 transition-colors">
                                 <div className="relative flex items-center pt-1">
                                     <input
                                         type="checkbox"
@@ -548,20 +548,20 @@ export default function AdminSettings() {
                             </label>
                         </div>
 
-                        <div className="premium-card p-6 rounded-2xl gold-gradient relative overflow-hidden group">
+                        <div className="premium-card p-6 rounded-2xl bg-brand-coral text-neutral-950 font-bold relative overflow-hidden group">
                             <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform">
-                                <Server className="w-24 h-24 text-navy-950" />
+                                <Server className="w-24 h-24 text-neutral-950" />
                             </div>
-                            <h3 className="font-display font-bold text-navy-950 text-lg mb-1 relative z-10">System Status</h3>
-                            <p className="text-navy-900/70 text-sm mb-4 relative z-10">All systems operational</p>
+                            <h3 className="font-display font-bold text-neutral-950 text-lg mb-1 relative z-10">System Status</h3>
+                            <p className="text-neutral-900/70 text-sm mb-4 relative z-10">All systems operational</p>
                             <div className="space-y-3 relative z-10">
-                                <div className="flex justify-between items-center pb-3 border-b border-navy-950/10">
-                                    <span className="text-navy-950/80 text-sm font-medium">Uptime</span>
-                                    <span className="text-navy-950 font-bold">99.99%</span>
+                                <div className="flex justify-between items-center pb-3 border-b border-neutral-950/10">
+                                    <span className="text-neutral-950/80 text-sm font-medium">Uptime</span>
+                                    <span className="text-neutral-950 font-bold">99.99%</span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-navy-950/80 text-sm font-medium">Fallback Stack</span>
-                                    <span className="text-navy-950 font-bold">Active</span>
+                                    <span className="text-neutral-950/80 text-sm font-medium">Fallback Stack</span>
+                                    <span className="text-neutral-950 font-bold">Active</span>
                                 </div>
                             </div>
                         </div>
@@ -592,7 +592,7 @@ export default function AdminSettings() {
                                         value={smtpConfig.smtp_host}
                                         onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_host: e.target.value })}
                                         placeholder="smtp.hostinger.com"
-                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                        className="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -602,7 +602,7 @@ export default function AdminSettings() {
                                         value={smtpConfig.smtp_port}
                                         onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_port: e.target.value })}
                                         placeholder="465"
-                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                        className="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -614,7 +614,7 @@ export default function AdminSettings() {
                                         value={smtpConfig.smtp_user}
                                         onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_user: e.target.value })}
                                         placeholder="hello@bridgeflow.agency"
-                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                        className="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -624,7 +624,7 @@ export default function AdminSettings() {
                                         value={smtpConfig.smtp_pass}
                                         onChange={(e) => setSmtpConfig({ ...smtpConfig, smtp_pass: e.target.value })}
                                         placeholder="••••••••"
-                                        className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                        className="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -635,7 +635,7 @@ export default function AdminSettings() {
                                     value={smtpConfig.from_email}
                                     onChange={(e) => setSmtpConfig({ ...smtpConfig, from_email: e.target.value })}
                                     placeholder="hello@bridgeflow.agency"
-                                    className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                    className="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
                                 />
                             </div>
 
@@ -683,7 +683,7 @@ export default function AdminSettings() {
                             </div>
                             <button
                                 onClick={addSocialLink}
-                                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors"
+                                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-brand-coral bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors"
                             >
                                 <Plus className="w-3.5 h-3.5" /> Add
                             </button>
@@ -693,12 +693,12 @@ export default function AdminSettings() {
                             {socialLinks.map((link, idx) => {
                                 const PlatformIcon = SOCIAL_PLATFORMS.find(p => p.name === link.platform)?.icon || Globe;
                                 return (
-                                    <div key={idx} className="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-navy-900/50">
+                                    <div key={idx} className="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-neutral-900/50">
                                         <PlatformIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
                                         <select
                                             value={link.platform}
                                             onChange={(e) => updateSocialLink(idx, "platform", e.target.value)}
-                                            className="bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white w-32 focus:outline-none focus:border-gold-400/50"
+                                            className="bg-neutral-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white w-32 focus:outline-none focus:border-gold-400/50"
                                         >
                                             {SOCIAL_PLATFORMS.map(p => (
                                                 <option key={p.name} value={p.name}>{p.name}</option>
@@ -709,7 +709,7 @@ export default function AdminSettings() {
                                             value={link.href}
                                             onChange={(e) => updateSocialLink(idx, "href", e.target.value)}
                                             placeholder="https://..."
-                                            className="flex-1 bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                            className="flex-1 bg-neutral-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
                                         />
                                         <button
                                             onClick={() => removeSocialLink(idx)}
@@ -741,7 +741,7 @@ export default function AdminSettings() {
                             </div>
                             <button
                                 onClick={addLiveDemo}
-                                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors"
+                                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-brand-coral bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors"
                             >
                                 <Plus className="w-3.5 h-3.5" /> + ADD
                             </button>
@@ -755,7 +755,7 @@ export default function AdminSettings() {
 
                         <div className="space-y-5">
                             {liveDemons.map((demo, idx) => (
-                                <div key={idx} className="p-5 rounded-xl border border-white/5 bg-navy-900/50 space-y-3">
+                                <div key={idx} className="p-5 rounded-xl border border-white/5 bg-neutral-900/50 space-y-3">
                                     <div className="flex items-center justify-between">
                                         <span className="text-xs uppercase tracking-wider text-gray-500 font-bold">Demo #{idx + 1}</span>
                                         <button
@@ -774,7 +774,7 @@ export default function AdminSettings() {
                                                 value={demo.title}
                                                 onChange={(e) => updateLiveDemo(idx, "title", e.target.value)}
                                                 placeholder="e.g. Real Estate Lead Pipeline"
-                                                className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                                className="w-full bg-neutral-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
                                             />
                                         </div>
                                         <div>
@@ -784,7 +784,7 @@ export default function AdminSettings() {
                                                 value={demo.loomId}
                                                 onChange={(e) => updateLiveDemo(idx, "loomId", e.target.value)}
                                                 placeholder="91bc462a0af645c5b2b73f540b5eb0cc"
-                                                className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                                className="w-full bg-neutral-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
                                             />
                                         </div>
                                     </div>
@@ -796,7 +796,7 @@ export default function AdminSettings() {
                                             onChange={(e) => updateLiveDemo(idx, "description", e.target.value)}
                                             placeholder="Describe what this automation does..."
                                             rows={2}
-                                            className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 resize-none"
+                                            className="w-full bg-neutral-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 resize-none"
                                         />
                                     </div>
 
@@ -809,17 +809,17 @@ export default function AdminSettings() {
                                                 value={demo.image}
                                                 onChange={(e) => updateLiveDemo(idx, "image", e.target.value)}
                                                 placeholder="/images/workflow-1.png or https://..."
-                                                className="flex-1 bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 min-w-0"
+                                                className="flex-1 bg-neutral-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50 min-w-0"
                                             />
                                             <label
                                                 className={`flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer transition-all flex-shrink-0 ${uploading[`demo-${idx}`]
                                                     ? "border-gold-400/30 bg-gold-400/5"
-                                                    : "border-white/10 bg-navy-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
+                                                    : "border-white/10 bg-neutral-900/80 hover:border-gold-400/30 hover:bg-gold-400/5"
                                                     }`}
                                                 title="Upload workflow screenshot"
                                             >
                                                 {uploading[`demo-${idx}`]
-                                                    ? <Loader2 className="w-4 h-4 text-gold-400 animate-spin" />
+                                                    ? <Loader2 className="w-4 h-4 text-brand-coral animate-spin" />
                                                     : <Upload className="w-4 h-4 text-gray-400" />
                                                 }
                                                 <input
@@ -836,7 +836,7 @@ export default function AdminSettings() {
                                             </label>
                                         </div>
                                         {demo.image && (
-                                            <div className="mt-2 aspect-[16/6] rounded-lg overflow-hidden border border-white/10 bg-navy-950">
+                                            <div className="mt-2 aspect-[16/6] rounded-lg overflow-hidden border border-white/10 bg-neutral-950">
                                                 <img
                                                     src={demo.image}
                                                     alt="Preview"
@@ -855,7 +855,7 @@ export default function AdminSettings() {
                                             value={demo.tags.join(", ")}
                                             onChange={(e) => updateLiveDemo(idx, "tags", e.target.value.split(",").map(t => t.trim()).filter(Boolean))}
                                             placeholder="n8n, Gmail, Slack, AI Scoring"
-                                            className="w-full bg-navy-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
+                                            className="w-full bg-neutral-900/80 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gold-400/50"
                                         />
                                     </div>
 
@@ -901,7 +901,7 @@ export default function AdminSettings() {
                                 { label: "Database", value: "Supabase PostgreSQL" },
                                 { label: "Hosting", value: process.env.NODE_ENV === "production" ? "Vercel" : "Local" },
                             ].map((item) => (
-                                <div key={item.label} className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-navy-900/50">
+                                <div key={item.label} className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-neutral-900/50">
                                     <span className="text-sm text-gray-400 font-medium">{item.label}</span>
                                     <span className="text-sm text-white font-bold font-mono">{item.value}</span>
                                 </div>
@@ -924,7 +924,7 @@ export default function AdminSettings() {
                             {envVars.map((env) => {
                                 const isConfigured = env.required;
                                 return (
-                                    <div key={env.key} className="flex items-center justify-between p-3.5 rounded-xl border border-white/5 bg-navy-900/50 hover:bg-white/5 transition-colors">
+                                    <div key={env.key} className="flex items-center justify-between p-3.5 rounded-xl border border-white/5 bg-neutral-900/50 hover:bg-white/5 transition-colors">
                                         <div className="flex items-center gap-3">
                                             <code className="text-xs text-gray-300 font-mono bg-white/5 px-2 py-1 rounded">{env.key}</code>
                                             {env.required && (
@@ -960,7 +960,7 @@ export default function AdminSettings() {
                             <button
                                 onClick={loadDiagnostics}
                                 disabled={diagLoading}
-                                className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold-400 bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors disabled:opacity-50"
+                                className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider text-brand-coral bg-gold-400/5 border border-gold-400/10 rounded-lg hover:bg-gold-400/10 transition-colors disabled:opacity-50"
                             >
                                 {diagLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Database className="w-3.5 h-3.5" />}
                                 {diagLoading ? "Scanning..." : "Run Diagnostics"}
@@ -969,7 +969,7 @@ export default function AdminSettings() {
                         {systemDiag ? (
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {systemDiag.tables.map((table: any) => (
-                                    <div key={table.name} className="p-4 rounded-xl border border-white/5 bg-navy-900/50 text-center">
+                                    <div key={table.name} className="p-4 rounded-xl border border-white/5 bg-neutral-900/50 text-center">
                                         <div className="text-2xl font-display font-bold text-white mb-1">{table.rows}</div>
                                         <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">{table.name}</div>
                                     </div>

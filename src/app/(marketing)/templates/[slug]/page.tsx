@@ -122,7 +122,7 @@ export default async function TemplateDetailPage({ params }: Props) {
     return (
         <>
             <section className="relative pt-32 pb-12 overflow-hidden aurora-glow">
-                <div className="absolute inset-0 bg-gradient-radial from-navy-800/40 via-navy-950 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-radial from-neutral-800/40 via-neutral-950 to-neutral-950" />
                 <div
                     className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-15 blur-3xl pointer-events-none"
                     style={{ background: "radial-gradient(ellipse, #06b6d4 0%, transparent 70%)" }}
@@ -131,7 +131,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                 <div className="relative z-10 container-max px-4 sm:px-6 lg:px-8">
                     <Link
                         href="/templates"
-                        className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-gold-400 transition-colors mb-8 uppercase tracking-wider font-semibold"
+                        className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-brand-coral transition-colors mb-8 uppercase tracking-wider font-semibold"
                     >
                         <ArrowLeft className="w-3.5 h-3.5" />
                         All Templates
@@ -150,7 +150,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                             {template.difficulty}
                         </span>
                         {template.featured && (
-                            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold text-navy-950" style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}>
+                            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold text-neutral-950" style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}>
                                 ⭐ MOST POPULAR
                             </span>
                         )}
@@ -179,9 +179,9 @@ export default async function TemplateDetailPage({ params }: Props) {
                                         style={{ background: "rgba(12,12,28,0.9)", border: "1px solid rgba(255,255,255,0.07)" }}
                                     >
                                         <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ background: "rgba(230,180,34,0.1)", border: "1px solid rgba(230,180,34,0.15)" }}>
-                                            <s.icon className="w-5 h-5 text-gold-400" />
+                                            <s.icon className="w-5 h-5 text-brand-coral" />
                                         </div>
-                                        <div className="text-2xl font-display font-bold gold-text">{s.value}</div>
+                                        <div className="text-2xl font-display font-bold text-brand-coral font-bold">{s.value}</div>
                                         <div className="text-xs text-gray-500 mt-1 uppercase tracking-wider">{s.label}</div>
                                     </div>
                                 ))}
@@ -248,7 +248,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                                 />
                                 <div className="p-6">
                                     <div className="text-center mb-6">
-                                        <div className="text-4xl font-display font-bold gold-text mb-1">
+                                        <div className="text-4xl font-display font-bold text-brand-coral font-bold mb-1">
                                             ${(template.value || 0).toLocaleString()}
                                         </div>
                                         <div className="text-xs text-gray-500">Estimated value saved</div>
@@ -288,7 +288,7 @@ export default async function TemplateDetailPage({ params }: Props) {
                 </div>
             </section>
 
-            <section className="section-padding bg-navy-900/30 border-t border-white/5">
+            <section className="section-padding bg-neutral-900/30 border-t border-white/5">
                 <div className="container-max px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                         <div>
@@ -302,9 +302,9 @@ export default async function TemplateDetailPage({ params }: Props) {
 
                     {template.jsonAccess === "paid" ? (
                         <div className="relative rounded-2xl overflow-hidden glass border border-white/10 p-12 text-center group">
-                            <div className="absolute inset-0 bg-navy-950/40 backdrop-blur-md z-10 flex flex-col items-center justify-center p-6">
+                            <div className="absolute inset-0 bg-neutral-950/40 backdrop-blur-md z-10 flex flex-col items-center justify-center p-6">
                                 <div className="w-16 h-16 rounded-full bg-gold-400/10 border border-gold-400/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                                    <Lock className="w-8 h-8 text-gold-400" />
+                                    <Lock className="w-8 h-8 text-brand-coral" />
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-3 tracking-tight">Premium Workflow File</h3>
                                 <p className="text-gray-400 text-sm max-w-sm mx-auto mb-8">
@@ -347,7 +347,7 @@ export default async function TemplateDetailPage({ params }: Props) {
             </section>
 
             {Array.isArray(related) && related.length > 0 && (
-                <section className="section-padding bg-navy-900/20">
+                <section className="section-padding bg-neutral-900/20">
                     <div className="container-max px-4 sm:px-6 lg:px-8">
                         <h2 className="text-2xl font-display font-bold text-white mb-8">Related Templates</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -59,7 +59,7 @@ export default function FilterBar() {
                                     key={cat}
                                     onClick={() => setActiveCategory(cat)}
                                     className={`px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider border transition-all duration-300 whitespace-nowrap ${activeCategory === cat
-                                        ? "text-navy-950 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+                                        ? "text-neutral-950 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]"
                                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
                                         }`}
                                     style={activeCategory === cat
@@ -80,7 +80,7 @@ export default function FilterBar() {
                                     placeholder="Search by node or industry..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full pl-9 pr-4 py-2.5 text-[11px] font-medium rounded-xl border border-white/10 text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-cyan-400/40 focus:ring-1 focus:ring-cyan-400/20 transition-all bg-navy-900/50"
+                                    className="w-full pl-9 pr-4 py-2.5 text-[11px] font-medium rounded-xl border border-white/10 text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-cyan-400/40 focus:ring-1 focus:ring-cyan-400/20 transition-all bg-neutral-900/50"
                                 />
                             </div>
 
@@ -89,7 +89,7 @@ export default function FilterBar() {
                                 <select
                                     value={sortOrder}
                                     onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-                                    className="w-full pl-9 pr-10 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-xl border border-white/10 text-gray-300 focus:outline-none focus:border-cyan-400/40 transition-all bg-navy-900/50 appearance-none cursor-pointer"
+                                    className="w-full pl-9 pr-10 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-xl border border-white/10 text-gray-300 focus:outline-none focus:border-cyan-400/40 transition-all bg-neutral-900/50 appearance-none cursor-pointer"
                                 >
                                     <option value="newest">Latest</option>
                                     <option value="popular">Popular</option>

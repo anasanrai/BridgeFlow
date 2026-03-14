@@ -39,7 +39,7 @@ export default function AdminLogin() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-navy-950 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-neutral-950 relative overflow-hidden">
             {/* Background effects */}
             <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-400/[0.03] rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
@@ -58,7 +58,7 @@ export default function AdminLogin() {
                                 priority
                             />
                         </div>
-                        <span className="text-2xl font-display font-bold text-gold-400" style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}>
+                        <span className="text-2xl font-display font-bold text-brand-coral" style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}>
                             BridgeFlow
                         </span>
                     </div>
@@ -84,7 +84,7 @@ export default function AdminLogin() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Enter admin password"
-                                    className="w-full pl-11 pr-11 py-3 bg-navy-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/25 transition-all"
+                                    className="w-full pl-11 pr-11 py-3 bg-neutral-900/80 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/25 transition-all"
                                     required
                                     autoFocus
                                 />
@@ -112,7 +112,7 @@ export default function AdminLogin() {
                         <button
                             type="submit"
                             disabled={loading || !password}
-                            className="w-full flex items-center justify-center gap-2 py-3 gold-gradient text-navy-950 font-semibold rounded-xl hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300 disabled:opacity-50"
+                            className="w-full flex items-center justify-center gap-2 py-3 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-xl hover:shadow-lg hover:shadow-gold-400/25 transition-all duration-300 disabled:opacity-50"
                         >
                             {loading ? (
                                 <>

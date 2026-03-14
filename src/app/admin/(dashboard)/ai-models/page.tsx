@@ -177,7 +177,7 @@ export default function AIModelsAdmin() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                        <Cpu className="w-6 h-6 text-gold-400" />
+                        <Cpu className="w-6 h-6 text-brand-coral" />
                         AI Model Stack
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">Manage fallback models and AI Brain orchestration</p>
@@ -193,7 +193,7 @@ export default function AIModelsAdmin() {
             {/* AI Brain Control */}
             <div className="glass rounded-xl p-6 card-glow mb-8 overflow-hidden relative">
                 <div className="absolute top-0 right-0 p-8 opacity-10">
-                    <Brain className="w-24 h-24 text-gold-400" />
+                    <Brain className="w-24 h-24 text-brand-coral" />
                 </div>
                 <div className="relative z-10">
                     <div className="flex items-center justify-between mb-6">
@@ -207,7 +207,7 @@ export default function AIModelsAdmin() {
                         <button
                             onClick={handleSaveAudit}
                             disabled={saving}
-                            className="px-4 py-2 gold-gradient text-navy-950 font-bold rounded-lg text-xs"
+                            className="px-4 py-2 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-lg text-xs"
                         >
                             {saving ? "Saving..." : "Save Config"}
                         </button>
@@ -216,14 +216,14 @@ export default function AIModelsAdmin() {
                     {auditSettings && (
                         <div className="space-y-6">
                             <div className="grid md:grid-cols-2 gap-6">
-                                <div className="flex items-center justify-between p-4 bg-navy-900/50 rounded-xl border border-white/5">
+                                <div className="flex items-center justify-between p-4 bg-neutral-900/50 rounded-xl border border-white/5">
                                     <div>
                                         <div className="text-sm font-semibold text-white">Enable AI Brain</div>
                                         <div className="text-[10px] text-gray-500 uppercase tracking-wider">Background Audit Engine</div>
                                     </div>
                                     <button
                                         onClick={() => setAuditSettings({ ...auditSettings, ai_brain_enabled: !auditSettings.ai_brain_enabled })}
-                                        className={`w-12 h-6 rounded-full transition-colors relative ${auditSettings.ai_brain_enabled ? 'bg-gold-500' : 'bg-gray-700'}`}
+                                        className={`w-12 h-6 rounded-full transition-colors relative ${auditSettings.ai_brain_enabled ? 'bg-brand-coral' : 'bg-gray-700'}`}
                                     >
                                         <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${auditSettings.ai_brain_enabled ? 'right-1' : 'left-1'}`} />
                                     </button>
@@ -234,29 +234,29 @@ export default function AIModelsAdmin() {
                                         type="number"
                                         value={auditSettings.background_audit_interval}
                                         onChange={(e) => setAuditSettings({ ...auditSettings, background_audit_interval: parseInt(e.target.value) })}
-                                        className="w-full px-4 py-2 bg-navy-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
+                                        className="w-full px-4 py-2 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm focus:border-gold-400/50 focus:outline-none"
                                     />
                                 </div>
                             </div>
 
-                            <div className="p-5 bg-navy-900/30 rounded-xl border border-white/5">
+                            <div className="p-5 bg-neutral-900/30 rounded-xl border border-white/5">
                                 <label className="block text-xs font-semibold text-gray-400 mb-4 uppercase tracking-widest">Brain Routing Strategy</label>
                                 <div className="grid grid-cols-2 gap-4">
                                     <button
                                         onClick={() => setAuditSettings({ ...auditSettings, brain_mode: 'DIRECT' })}
                                         className={`flex flex-col gap-1 p-4 rounded-xl border transition-all text-left ${(auditSettings.brain_mode || 'DIRECT') === 'DIRECT'
                                                 ? 'bg-gold-400/10 border-gold-400/40'
-                                                : 'bg-navy-900/50 border-white/5 hover:border-white/10'
+                                                : 'bg-neutral-900/50 border-white/5 hover:border-white/10'
                                             }`}
                                     >
-                                        <div className={`text-sm font-bold ${(auditSettings.brain_mode || 'DIRECT') === 'DIRECT' ? 'text-gold-400' : 'text-white'}`}>Direct Model</div>
+                                        <div className={`text-sm font-bold ${(auditSettings.brain_mode || 'DIRECT') === 'DIRECT' ? 'text-brand-coral' : 'text-white'}`}>Direct Model</div>
                                         <div className="text-[10px] text-gray-500">Use primary model from stack below</div>
                                     </button>
                                     <button
                                         onClick={() => setAuditSettings({ ...auditSettings, brain_mode: 'WEBHOOK' })}
                                         className={`flex flex-col gap-1 p-4 rounded-xl border transition-all text-left ${auditSettings.brain_mode === 'WEBHOOK'
                                                 ? 'bg-purple-400/10 border-purple-400/40'
-                                                : 'bg-navy-900/50 border-white/5 hover:border-white/10'
+                                                : 'bg-neutral-900/50 border-white/5 hover:border-white/10'
                                             }`}
                                     >
                                         <div className={`text-sm font-bold ${auditSettings.brain_mode === 'WEBHOOK' ? 'text-purple-400' : 'text-white'}`}>n8n Webhook / RAG</div>
@@ -270,7 +270,7 @@ export default function AIModelsAdmin() {
                                         <input
                                             value={auditSettings.n8n_webhook_url || ""}
                                             onChange={(e) => setAuditSettings({ ...auditSettings, n8n_webhook_url: e.target.value })}
-                                            className="w-full px-4 py-2.5 bg-navy-900 border border-white/10 rounded-lg text-white text-sm font-mono placeholder:text-gray-700 focus:border-purple-400/50 focus:outline-none transition-all"
+                                            className="w-full px-4 py-2.5 bg-neutral-900 border border-white/10 rounded-lg text-white text-sm font-mono placeholder:text-gray-700 focus:border-purple-400/50 focus:outline-none transition-all"
                                             placeholder="https://n8n.yourdomain.com/webhook/..."
                                         />
                                         <p className="mt-2 text-[10px] text-gray-600">
@@ -297,14 +297,14 @@ export default function AIModelsAdmin() {
                         {/* Status Badges */}
                         <div className="flex items-center justify-between mb-6">
                             <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${model.is_primary
-                                ? 'gold-gradient text-navy-950 shadow-lg shadow-gold-400/20'
-                                : 'bg-white/5 text-gray-400 group-hover:text-gold-400 group-hover:bg-gold-400/10'
+                                ? 'bg-brand-coral text-neutral-950 font-bold text-neutral-950 shadow-lg shadow-brand-coral/20'
+                                : 'bg-white/5 text-gray-400 group-hover:text-brand-coral group-hover:bg-gold-400/10'
                                 }`}>
                                 <Cpu className="w-6 h-6" />
                             </div>
                             <div className="flex flex-wrap items-center gap-2 justify-end">
                                 {model.is_primary && (
-                                    <span className="flex items-center gap-1.5 text-[10px] text-gold-400 font-bold uppercase tracking-wider bg-gold-400/10 px-2 py-1 rounded-full border border-gold-400/20">
+                                    <span className="flex items-center gap-1.5 text-[10px] text-brand-coral font-bold uppercase tracking-wider bg-gold-400/10 px-2 py-1 rounded-full border border-gold-400/20">
                                         <Sparkles className="w-3 h-3" /> Primary
                                     </span>
                                 )}
@@ -336,7 +336,7 @@ export default function AIModelsAdmin() {
                                         newModels[idx].name = e.target.value;
                                         setModels(newModels);
                                     }}
-                                    className="w-full bg-navy-900/50 border border-white/5 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-400/50 transition-colors"
+                                    className="w-full bg-neutral-900/50 border border-white/5 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-400/50 transition-colors"
                                     placeholder="Model Display Name"
                                 />
                             </div>
@@ -351,7 +351,7 @@ export default function AIModelsAdmin() {
                                             newModels[idx].provider = e.target.value;
                                             setModels(newModels);
                                         }}
-                                        className="w-full bg-navy-900/50 border border-white/5 rounded-lg px-3 py-2 text-[11px] text-gray-300 font-mono uppercase focus:outline-none focus:border-gold-400/50 transition-colors"
+                                        className="w-full bg-neutral-900/50 border border-white/5 rounded-lg px-3 py-2 text-[11px] text-gray-300 font-mono uppercase focus:outline-none focus:border-gold-400/50 transition-colors"
                                         placeholder="e.g. OPENAI"
                                     />
                                 </div>
@@ -364,7 +364,7 @@ export default function AIModelsAdmin() {
                                             newModels[idx].model_id = e.target.value;
                                             setModels(newModels);
                                         }}
-                                        className="w-full bg-navy-900/50 border border-white/5 rounded-lg px-3 py-2 text-[11px] text-gray-300 font-mono focus:outline-none focus:border-gold-400/50 transition-colors"
+                                        className="w-full bg-neutral-900/50 border border-white/5 rounded-lg px-3 py-2 text-[11px] text-gray-300 font-mono focus:outline-none focus:border-gold-400/50 transition-colors"
                                         placeholder="e.g. gpt-4"
                                     />
                                 </div>
@@ -382,7 +382,7 @@ export default function AIModelsAdmin() {
                                         newModels[idx].api_key_env = e.target.value;
                                         setModels(newModels);
                                     }}
-                                    className="w-full bg-navy-900/50 border border-white/5 rounded-lg px-3 py-2 text-[11px] text-gold-400/80 font-mono focus:outline-none focus:border-gold-400/50 transition-colors"
+                                    className="w-full bg-neutral-900/50 border border-white/5 rounded-lg px-3 py-2 text-[11px] text-brand-coral/80 font-mono focus:outline-none focus:border-gold-400/50 transition-colors"
                                     placeholder="API_KEY_NAME"
                                 />
                             </div>
@@ -402,8 +402,8 @@ export default function AIModelsAdmin() {
                                             }}
                                             className="sr-only peer"
                                         />
-                                        <div className="w-10 h-5 bg-navy-800 rounded-full border border-white/10 peer-checked:bg-gold-500/20 peer-checked:border-gold-500/50 transition-all" />
-                                        <div className="absolute top-1 left-1 w-3 h-3 bg-gray-500 rounded-full transition-all peer-checked:left-6 peer-checked:bg-gold-500" />
+                                        <div className="w-10 h-5 bg-neutral-800 rounded-full border border-white/10 peer-checked:bg-brand-coral/20 peer-checked:border-gold-500/50 transition-all" />
+                                        <div className="absolute top-1 left-1 w-3 h-3 bg-gray-500 rounded-full transition-all peer-checked:left-6 peer-checked:bg-brand-coral" />
                                     </div>
                                     <span className="text-xs font-semibold text-gray-400 group-hover/toggle:text-gray-200 transition-colors">Primary</span>
                                 </label>
@@ -420,7 +420,7 @@ export default function AIModelsAdmin() {
                                             }}
                                             className="sr-only peer"
                                         />
-                                        <div className="w-10 h-5 bg-navy-800 rounded-full border border-white/10 peer-checked:bg-emerald-500/20 peer-checked:border-emerald-500/50 transition-all" />
+                                        <div className="w-10 h-5 bg-neutral-800 rounded-full border border-white/10 peer-checked:bg-emerald-500/20 peer-checked:border-emerald-500/50 transition-all" />
                                         <div className="absolute top-1 left-1 w-3 h-3 bg-gray-500 rounded-full transition-all peer-checked:left-6 peer-checked:bg-emerald-500" />
                                     </div>
                                     <span className="text-xs font-semibold text-gray-400 group-hover/toggle:text-gray-200 transition-colors">Active</span>
@@ -441,7 +441,7 @@ export default function AIModelsAdmin() {
                             <div className="flex-1" />
                             <button
                                 onClick={() => handleSaveModel(model)}
-                                className="flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-xs shadow-lg shadow-gold-400/10 hover:shadow-gold-400/25 transition-all"
+                                className="flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-xs shadow-lg shadow-gold-400/10 hover:shadow-gold-400/25 transition-all"
                             >
                                 <Save className="w-4 h-4" /> Save Model
                             </button>

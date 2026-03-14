@@ -85,7 +85,7 @@ export default function SEOAdmin() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-2xl font-display font-bold text-white flex items-center gap-2">
-                        <Globe className="w-6 h-6 text-gold-400" />
+                        <Globe className="w-6 h-6 text-brand-coral" />
                         SEO Management
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">
@@ -94,7 +94,7 @@ export default function SEOAdmin() {
                 </div>
                 <button
                     onClick={() => setEditing({ path: "", title: "", description: "", og_image: "" })}
-                    className="flex items-center gap-2 px-4 py-2.5 gold-gradient text-navy-950 font-semibold rounded-lg text-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-semibold rounded-lg text-sm"
                 >
                     <Plus className="w-4 h-4" />
                     Add Page Override
@@ -111,7 +111,7 @@ export default function SEOAdmin() {
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             placeholder="Search by path or title..."
-                            className="w-full pl-11 pr-4 py-2.5 bg-navy-900/50 border border-white/10 rounded-lg text-white"
+                            className="w-full pl-11 pr-4 py-2.5 bg-neutral-900/50 border border-white/10 rounded-lg text-white"
                         />
                     </div>
 
@@ -126,7 +126,7 @@ export default function SEOAdmin() {
                             <p className="text-sm text-gray-500 max-w-sm mx-auto mb-5">
                                 Add custom meta titles, descriptions, and OG images for each page. Use the &quot;Suggested Paths&quot; panel on the right to quickly get started.
                             </p>
-                            <button onClick={() => setEditing({ path: "/" })} className="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm">
+                            <button onClick={() => setEditing({ path: "/" })} className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm">
                                 <Plus className="w-4 h-4" /> Add Homepage SEO
                             </button>
                         </div>
@@ -137,7 +137,7 @@ export default function SEOAdmin() {
                                     <div className="flex items-start justify-between">
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-mono text-gold-400 bg-gold-400/10 px-2 py-0.5 rounded">
+                                                <span className="text-sm font-mono text-brand-coral bg-gold-400/10 px-2 py-0.5 rounded">
                                                     {m.path}
                                                 </span>
                                                 <h3 className="font-semibold text-white">{m.title}</h3>
@@ -170,7 +170,7 @@ export default function SEOAdmin() {
                 {/* Quick Info / Tips */}
                 <div className="space-y-6">
                     <div className="glass rounded-xl p-6 border border-gold-400/20">
-                        <h4 className="flex items-center gap-2 text-gold-400 font-semibold mb-4 text-sm uppercase tracking-wider">
+                        <h4 className="flex items-center gap-2 text-brand-coral font-semibold mb-4 text-sm uppercase tracking-wider">
                             <Info className="w-4 h-4" />
                             SEO Quick Tips
                         </h4>
@@ -220,7 +220,7 @@ export default function SEOAdmin() {
                                         value={editing.path || ""}
                                         onChange={e => setEditing({ ...editing, path: e.target.value })}
                                         placeholder="/about-us"
-                                        className="w-full px-4 py-3 bg-navy-950 border border-white/10 rounded-xl text-white font-mono text-sm focus:border-gold-400/50 outline-none transition-all"
+                                        className="w-full px-4 py-3 bg-neutral-950 border border-white/10 rounded-xl text-white font-mono text-sm focus:border-gold-400/50 outline-none transition-all"
                                     />
                                 </div>
 
@@ -235,7 +235,7 @@ export default function SEOAdmin() {
                                         value={editing.title || ""}
                                         onChange={e => setEditing({ ...editing, title: e.target.value })}
                                         placeholder="Title | BridgeFlow Agency"
-                                        className="w-full px-4 py-3 bg-navy-950 border border-white/10 rounded-xl text-white focus:border-gold-400/50 outline-none transition-all"
+                                        className="w-full px-4 py-3 bg-neutral-950 border border-white/10 rounded-xl text-white focus:border-gold-400/50 outline-none transition-all"
                                     />
                                 </div>
 
@@ -251,7 +251,7 @@ export default function SEOAdmin() {
                                         onChange={e => setEditing({ ...editing, description: e.target.value })}
                                         rows={3}
                                         placeholder="Brief summary of the page for search results..."
-                                        className="w-full px-4 py-3 bg-navy-950 border border-white/10 rounded-xl text-white resize-none focus:border-gold-400/50 outline-none transition-all"
+                                        className="w-full px-4 py-3 bg-neutral-950 border border-white/10 rounded-xl text-white resize-none focus:border-gold-400/50 outline-none transition-all"
                                     />
                                 </div>
 
@@ -261,7 +261,7 @@ export default function SEOAdmin() {
                                         value={editing.og_image || ""}
                                         onChange={e => setEditing({ ...editing, og_image: e.target.value })}
                                         placeholder="https://"
-                                        className="w-full px-4 py-3 bg-navy-950 border border-white/10 rounded-xl text-white focus:border-gold-400/50 outline-none transition-all"
+                                        className="w-full px-4 py-3 bg-neutral-950 border border-white/10 rounded-xl text-white focus:border-gold-400/50 outline-none transition-all"
                                     />
                                 </div>
                             </div>
@@ -286,11 +286,11 @@ export default function SEOAdmin() {
                                 <div>
                                     <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Social Preview (OG)</h4>
                                     <div className="bg-[#1c1e21] rounded-xl overflow-hidden border border-white/10">
-                                        <div className="aspect-[1.91/1] bg-navy-900 border-b border-white/5 overflow-hidden flex items-center justify-center">
+                                        <div className="aspect-[1.91/1] bg-neutral-900 border-b border-white/5 overflow-hidden flex items-center justify-center">
                                             {editing.og_image ? (
                                                 <img src={editing.og_image} alt="OG Preview" className="w-full h-full object-cover" />
                                             ) : (
-                                                <div className="text-gold-400/20 font-display font-bold text-4xl">BF</div>
+                                                <div className="text-brand-coral/20 font-display font-bold text-4xl">BF</div>
                                             )}
                                         </div>
                                         <div className="p-4 bg-white/5">
@@ -308,7 +308,7 @@ export default function SEOAdmin() {
                             <button
                                 onClick={handleSave}
                                 disabled={saving || !editing.path}
-                                className="flex items-center gap-2 px-8 py-2.5 gold-gradient text-navy-950 font-bold rounded-xl text-sm shadow-lg shadow-gold-400/20 disabled:opacity-50"
+                                className="flex items-center gap-2 px-8 py-2.5 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-xl text-sm shadow-lg shadow-brand-coral/20 disabled:opacity-50"
                             >
                                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                 {saving ? "Saving..." : "Save Settings"}

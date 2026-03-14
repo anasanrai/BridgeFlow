@@ -139,7 +139,7 @@ export default function AICalculator() {
                     className="object-cover object-center opacity-40"
                     priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-navy-950/50 via-navy-950/70 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/50 via-neutral-950/70 to-neutral-950" />
             </div>
             {/* Soft glows layered on top */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold-400/8 blur-[120px] -z-[5] animate-pulse" />
@@ -159,7 +159,7 @@ export default function AICalculator() {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-60" />
                             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-gold-400" />
                         </span>
-                        <span className="text-sm font-semibold text-gold-400 uppercase tracking-wider">
+                        <span className="text-sm font-semibold text-brand-coral uppercase tracking-wider">
                             AI ROI Calculator
                         </span>
                     </motion.div>
@@ -173,7 +173,7 @@ export default function AICalculator() {
                     >
                         Stop Paying for
                         <br />
-                        <span className="gold-text">Work AI Can Do</span>
+                        <span className="text-brand-coral font-bold">Work AI Can Do</span>
                         <br />
                         <span className="text-3xl sm:text-4xl md:text-5xl text-gray-400 font-semibold">
                             in Seconds
@@ -208,8 +208,8 @@ export default function AICalculator() {
                         </div>
                         <div className="flex-1 flex flex-col items-center justify-center py-4 px-6 border-r border-white/10">
                             <div className="flex items-center gap-2 mb-1">
-                                <DollarSign className="w-4 h-4 text-gold-400" />
-                                <div className="text-2xl sm:text-3xl font-bold text-gold-400">$130K+</div>
+                                <DollarSign className="w-4 h-4 text-brand-coral" />
+                                <div className="text-2xl sm:text-3xl font-bold text-brand-coral">$130K+</div>
                             </div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Avg Yearly ROI</div>
                         </div>
@@ -254,7 +254,7 @@ export default function AICalculator() {
                             {/* Task selector */}
                             <div className="glass rounded-3xl p-6 md:p-8 card-glow">
                                 <h3 className="text-lg font-display font-bold mb-1 flex items-center gap-2">
-                                    <Bot className="w-5 h-5 text-gold-400" />
+                                    <Bot className="w-5 h-5 text-brand-coral" />
                                     Select Tasks to Automate
                                 </h3>
                                 <p className="text-sm text-gray-500 mb-5">
@@ -276,8 +276,8 @@ export default function AICalculator() {
                                             >
                                                 <div
                                                     className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-200 ${active
-                                                        ? "gold-gradient text-navy-950"
-                                                        : "bg-white/5 text-gray-400 group-hover:text-gold-400"
+                                                        ? "bg-brand-coral text-neutral-950 font-bold text-neutral-950"
+                                                        : "bg-white/5 text-gray-400 group-hover:text-brand-coral"
                                                         }`}
                                                 >
                                                     <IconComp className="w-5 h-5" />
@@ -298,7 +298,7 @@ export default function AICalculator() {
                                                         }`}
                                                 >
                                                     {active && (
-                                                        <svg className="w-3 h-3 text-navy-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                                        <svg className="w-3 h-3 text-neutral-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                                         </svg>
                                                     )}
@@ -315,10 +315,10 @@ export default function AICalculator() {
                                 <div>
                                     <div className="flex items-center justify-between mb-3">
                                         <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
-                                            <Clock className="w-4 h-4 text-gold-400" />
+                                            <Clock className="w-4 h-4 text-brand-coral" />
                                             Daily Task Frequency
                                         </label>
-                                        <span className="text-sm font-bold text-gold-400 tabular-nums bg-gold-400/10 px-3 py-1 rounded-lg">
+                                        <span className="text-sm font-bold text-brand-coral tabular-nums bg-gold-400/10 px-3 py-1 rounded-lg">
                                             {frequency} tasks/day
                                         </span>
                                     </div>
@@ -328,7 +328,7 @@ export default function AICalculator() {
                                         max={100}
                                         value={frequency}
                                         onChange={(e) => setFrequency(Number(e.target.value))}
-                                        className="w-full accent-[#e6b422] h-2 rounded-full bg-white/10 appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#e6b422] [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(230,180,34,0.4)] [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-navy-950 [&::-webkit-slider-thumb]:cursor-pointer"
+                                        className="w-full accent-[#e6b422] h-2 rounded-full bg-white/10 appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#e6b422] [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(230,180,34,0.4)] [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-neutral-950 [&::-webkit-slider-thumb]:cursor-pointer"
                                     />
                                     <div className="flex justify-between text-[10px] text-gray-600 mt-1">
                                         <span>1</span>
@@ -343,10 +343,10 @@ export default function AICalculator() {
                                 <div>
                                     <div className="flex items-center justify-between mb-3">
                                         <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
-                                            <DollarSign className="w-4 h-4 text-gold-400" />
+                                            <DollarSign className="w-4 h-4 text-brand-coral" />
                                             Average Hourly Rate (Employee Cost)
                                         </label>
-                                        <span className="text-sm font-bold text-gold-400 tabular-nums bg-gold-400/10 px-3 py-1 rounded-lg">
+                                        <span className="text-sm font-bold text-brand-coral tabular-nums bg-gold-400/10 px-3 py-1 rounded-lg">
                                             ${hourlyRate}/hr
                                         </span>
                                     </div>
@@ -357,7 +357,7 @@ export default function AICalculator() {
                                         step={5}
                                         value={hourlyRate}
                                         onChange={(e) => setHourlyRate(Number(e.target.value))}
-                                        className="w-full accent-[#e6b422] h-2 rounded-full bg-white/10 appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#e6b422] [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(230,180,34,0.4)] [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-navy-950 [&::-webkit-slider-thumb]:cursor-pointer"
+                                        className="w-full accent-[#e6b422] h-2 rounded-full bg-white/10 appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#e6b422] [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(230,180,34,0.4)] [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-neutral-950 [&::-webkit-slider-thumb]:cursor-pointer"
                                     />
                                     <div className="flex justify-between text-[10px] text-gray-600 mt-1">
                                         <span>$10</span>
@@ -388,7 +388,7 @@ export default function AICalculator() {
                                             exit={{ opacity: 0, y: -10 }}
                                             transition={{ duration: 0.2 }}
                                         >
-                                            <div className="text-4xl md:text-5xl font-display font-bold gold-text text-glow mb-1">
+                                            <div className="text-4xl md:text-5xl font-display font-bold text-brand-coral font-bold text-glow mb-1">
                                                 {formatCurrency(results.savedCostMonth)}
                                             </div>
                                             <div className="text-sm text-gray-400">
@@ -492,7 +492,7 @@ export default function AICalculator() {
                             {/* CTA */}
                             <a
                                 href="/contact"
-                                className="group flex items-center justify-center gap-3 w-full py-4 gold-gradient text-navy-950 font-bold rounded-2xl hover:shadow-lg hover:shadow-gold-400/20 transition-all duration-200 active:scale-95"
+                                className="group flex items-center justify-center gap-3 w-full py-4 bg-brand-coral text-neutral-950 font-bold text-neutral-950 font-bold rounded-2xl hover:shadow-lg hover:shadow-brand-coral/20 transition-all duration-200 active:scale-95"
                             >
                                 Start Saving with AI
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -528,7 +528,7 @@ export default function AICalculator() {
                             className="glass p-8 rounded-3xl text-center card-glow"
                         >
                             <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-6">
-                                <item.icon className="w-6 h-6 text-gold-400" />
+                                <item.icon className="w-6 h-6 text-brand-coral" />
                             </div>
                             <h3 className="text-xl font-bold mb-3">{item.title}</h3>
                             <p className="text-gray-400 leading-relaxed text-sm">

@@ -7,7 +7,7 @@ export function Navbar() {
   const { user } = useUser()
 
   return (
-    <header className="h-16 border-b border-white/5 bg-navy-950/50 backdrop-blur-md flex items-center justify-between px-8">
+    <header className="h-16 border-b border-white/5 bg-neutral-950/50 backdrop-blur-md flex items-center justify-between px-8">
       <div className="flex-1 max-w-xl">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -22,7 +22,7 @@ export function Navbar() {
       <div className="flex items-center gap-6">
         <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
           <Bell className="w-5 h-5" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-gold-400 rounded-full border-2 border-navy-950" />
+          <span className="absolute top-2 right-2 w-2 h-2 bg-gold-400 rounded-full border-2 border-neutral-950" />
         </button>
 
         <div className="flex items-center gap-3 pl-6 border-l border-white/5">
@@ -31,7 +31,7 @@ export function Navbar() {
             <p className="text-xs text-gray-500 capitalize">Pro Plan</p>
           </div>
           <div className="w-8 h-8 rounded-full bg-gold-400/20 flex items-center justify-center border border-gold-400/30">
-            <User className="w-4 h-4 text-gold-400" />
+            <User className="w-4 h-4 text-brand-coral" />
           </div>
         </div>
       </div>

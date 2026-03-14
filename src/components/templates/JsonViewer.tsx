@@ -35,7 +35,7 @@ export default function JsonViewer({ json }: JsonViewerProps) {
                 </button>
                 <button
                     onClick={handleCopy}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gold-400/10 hover:bg-gold-400/20 border border-gold-400/20 text-sm text-gold-400 transition-all"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gold-400/10 hover:bg-gold-400/20 border border-gold-400/20 text-sm text-brand-coral transition-all"
                 >
                     {copied ? (
                         <>
@@ -53,7 +53,7 @@ export default function JsonViewer({ json }: JsonViewerProps) {
 
             {/* JSON Display */}
             {expanded && (
-                <div className="relative rounded-xl overflow-hidden border border-white/10 bg-navy-950/50">
+                <div className="relative rounded-xl overflow-hidden border border-white/10 bg-neutral-950/50">
                     <pre className="p-6 text-xs font-mono text-gray-300 overflow-x-auto max-h-96 overflow-y-auto">
                         <code>{jsonString}</code>
                     </pre>

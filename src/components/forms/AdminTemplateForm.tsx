@@ -329,7 +329,7 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                                         }`}
                                 />
                             </button>
-                            <span className={`text-xs font-bold ${featured ? "text-gold-400" : "text-gray-500"}`}>
+                            <span className={`text-xs font-bold ${featured ? "text-brand-coral" : "text-gray-500"}`}>
                                 {featured ? "⭐ FEATURED" : "Normal"}
                             </span>
                         </label>
@@ -366,7 +366,7 @@ export default function AdminTemplateForm({ template, onClose, onSaved }: AdminT
                         <button
                             type="submit"
                             disabled={saving || !name.trim()}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 transition-all disabled:opacity-50 hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
+                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-neutral-950 transition-all disabled:opacity-50 hover:shadow-[0_0_20px_rgba(230,180,34,0.3)]"
                             style={{ background: "linear-gradient(135deg, #e6b422, #c9a227)" }}
                         >
                             {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
