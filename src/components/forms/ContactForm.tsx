@@ -1,11 +1,14 @@
 'use client'
 
+import { useState, FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { CheckCircle, AlertCircle, Loader2, Mail, Phone, User, MessageSquare, Package } from 'lucide-react'
 
 interface FormState {
   name: string
   email: string
   phone: string
+  company: string
   package_interest: string
   message: string
 }
@@ -24,6 +27,7 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
     name: '',
     email: '',
     phone: '',
+    company: '',
     package_interest: defaultPackage || '',
     message: '',
   })
@@ -40,6 +44,7 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
       errs.email = 'Enter a valid email address'
     }
     if (!form.message.trim()) errs.message = 'Tell us about your project'
+    if (form.message.trim().length < 10) errs.message = 'Message must be at least 10 characters'
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -63,7 +68,7 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
 
       setStatus('success')
       setServerMessage(data.message || 'Message sent! We\'ll respond within 24 hours.')
-      setForm({ name: '', email: '', phone: '', package_interest: '', message: '' })
+      setForm({ name: '', email: '', phone: '', company: '', package_interest: '', message: '' })
     } catch (err: unknown) {
       setStatus('error')
       setServerMessage(err instanceof Error ? err.message : 'An error occurred. Please try again.')
@@ -78,141 +83,186 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
 
   if (status === 'success') {
     return (
-      <div className="rounded-2xl border border-green-500/30 bg-green-500/5 p-8 text-center">
-        <div className="text-4xl mb-4">✅</div>
-        <h3 className="text-xl font-bold text-white mb-2">Message received!</h3>
-        <p className="text-gray-400">{serverMessage}</p>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-8 text-center"
+      >
+        <div className="flex justify-center mb-4">
+          <CheckCircle className="w-16 h-16 text-emerald-400" />
+        </div>
+        <h3 className="text-2xl font-bold text-white mb-2">Message Received! 🎉</h3>
+        <p className="text-gray-400 mb-6">{serverMessage}</p>
         <button
           onClick={() => setStatus('idle')}
-          className="mt-6 text-sm text-amber-400 hover:underline"
+          className="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
         >
-          Send another message
+          Send another message →
         </button>
-      </div>
-     return (
-    <motion.form 
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.form
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      onSubmit={handleSubmit} 
-      className="space-y-6" 
+      onSubmit={handleSubmit}
+      className="space-y-6"
       noValidate
     >
       {/* Name + Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <label className="relative group block">
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
+            <User className="w-4 h-4" />
+          </div>
           <input
             id="name"
             type="text"
-            placeholder=" "
+            placeholder="Full Name"
             {...field('name')}
-            className={`w-full px-5 py-4 rounded-xl bg-white/5 border ${
-              errors.name ? 'border-red-500/50' : 'border-white/10'
-            } text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer`}
+            className={`w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border ${
+              errors.name ? 'border-red-500/50 focus:border-red-500/50' : 'border-white/10 focus:border-gold-400/50'
+            } text-white placeholder-gray-600 focus:outline-none focus:ring-1 ${
+              errors.name ? 'focus:ring-red-500/30' : 'focus:ring-gold-400/20'
+            } transition-all`}
           />
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
-            Full Name <span className="text-red-400">*</span>
-          </span>
-          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
-          {errors.name && <p className="mt-1 text-xs text-red-400 ml-1">{errors.name}</p>}
-        </label>
+          {errors.name && (
+            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" /> {errors.name}
+            </p>
+          )}
+        </div>
 
-        <label className="relative group block">
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
+            <Mail className="w-4 h-4" />
+          </div>
           <input
             id="email"
             type="email"
-            placeholder=" "
+            placeholder="Email Address"
             {...field('email')}
-            className={`w-full px-5 py-4 rounded-xl bg-white/5 border ${
-              errors.email ? 'border-red-500/50' : 'border-white/10'
-            } text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer`}
+            className={`w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border ${
+              errors.email ? 'border-red-500/50 focus:border-red-500/50' : 'border-white/10 focus:border-gold-400/50'
+            } text-white placeholder-gray-600 focus:outline-none focus:ring-1 ${
+              errors.email ? 'focus:ring-red-500/30' : 'focus:ring-gold-400/20'
+            } transition-all`}
           />
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
-            Email Address <span className="text-red-400">*</span>
-          </span>
-          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
-          {errors.email && <p className="mt-1 text-xs text-red-400 ml-1">{errors.email}</p>}
-        </label>
+          {errors.email && (
+            <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" /> {errors.email}
+            </p>
+          )}
+        </div>
       </div>
 
-      {/* Phone + Package */}
+      {/* Phone + Company */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <label className="relative group block">
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
+            <Phone className="w-4 h-4" />
+          </div>
           <input
             id="phone"
             type="tel"
-            placeholder=" "
+            placeholder="Phone (optional)"
             {...field('phone')}
-            className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer"
+            className="w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all"
           />
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
-            Phone (optional)
-          </span>
-          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
-        </label>
+        </div>
 
-        <label className="relative group block">
-          <select
-            id="package_interest"
-            {...field('package_interest')}
-            className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all appearance-none cursor-pointer"
-          >
-            {PACKAGES.map((p) => (
-              <option key={p.value} value={p.value} className="bg-gray-900">
-                {p.label || 'Select a package (optional)'}
-              </option>
-            ))}
-          </select>
-          <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 group-focus-within:text-gold-400 transition-colors">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
+            <User className="w-4 h-4" />
           </div>
-        </label>
+          <input
+            id="company"
+            type="text"
+            placeholder="Company (optional)"
+            {...field('company')}
+            className="w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all"
+          />
+        </div>
+      </div>
+
+      {/* Package Interest */}
+      <div className="relative group">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none z-10">
+          <Package className="w-4 h-4" />
+        </div>
+        <select
+          id="package_interest"
+          {...field('package_interest')}
+          className="w-full pl-12 pr-12 py-4 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all appearance-none cursor-pointer"
+        >
+          {PACKAGES.map((p) => (
+            <option key={p.value} value={p.value} className="bg-navy-900">
+              {p.label}
+            </option>
+          ))}
+        </select>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 group-focus-within:text-gold-400 transition-colors">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
 
       {/* Message */}
-      <label className="relative group block">
+      <div className="relative group">
+        <div className="absolute left-4 top-4 text-gray-500 group-focus-within:text-gold-400 transition-colors pointer-events-none">
+          <MessageSquare className="w-4 h-4" />
+        </div>
         <textarea
           id="message"
           rows={5}
-          placeholder=" "
+          placeholder="Tell us about your project..."
           {...field('message')}
-          className={`w-full px-5 py-4 rounded-xl bg-white/5 border ${
-            errors.message ? 'border-red-500/50' : 'border-white/10'
-          } text-white placeholder-transparent focus:outline-none focus:border-gold-400/50 focus:ring-0 transition-all peer resize-none`}
+          className={`w-full pl-12 pr-5 py-4 rounded-xl bg-white/5 border ${
+            errors.message ? 'border-red-500/50 focus:border-red-500/50' : 'border-white/10 focus:border-gold-400/50'
+          } text-white placeholder-gray-600 focus:outline-none focus:ring-1 ${
+            errors.message ? 'focus:ring-red-500/30' : 'focus:ring-gold-400/20'
+          } transition-all resize-none`}
         />
-        <span className="absolute left-4 top-6 text-sm text-gray-500 transition-all peer-focus:-top-2 peer-focus:left-3 peer-focus:text-xs peer-focus:text-gold-400 peer-focus:bg-navy-950 peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:bg-navy-950 peer-[:not(:placeholder-shown)]:px-2 pointer-events-none">
-          Project Details <span className="text-red-400">*</span>
-        </span>
-        <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-gold-400/0 to-transparent group-focus-within:via-gold-400 transition-all duration-500" />
-        {errors.message && <p className="mt-1 text-xs text-red-400 ml-1">{errors.message}</p>}
-      </label>
+        {errors.message && (
+          <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+            <AlertCircle className="w-3 h-3" /> {errors.message}
+          </p>
+        )}
+        <p className="mt-2 text-xs text-gray-500">
+          {form.message.length}/500 characters
+        </p>
+      </div>
 
-      {status === 'error' && (
-        <motion.div 
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-sm text-red-400"
-        >
-          {serverMessage}
-        </motion.div>
-      )}
+      {/* Error Message */}
+      <AnimatePresence>
+        {status === 'error' && (
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            className="rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-sm text-red-400 flex items-center gap-2"
+          >
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            {serverMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full relative py-4 px-6 bg-gold-400 hover:bg-gold-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group/btn overflow-hidden"
+        className="w-full relative py-4 px-6 bg-gold-400 hover:bg-gold-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group/btn overflow-hidden shadow-lg hover:shadow-gold-400/25"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-shimmer-btn transition-transform" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
         {status === 'loading' ? (
           <>
-            <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-            Processing...
+            <Loader2 className="w-5 h-5 animate-spin" />
+            <span className="relative z-10">Processing...</span>
           </>
         ) : (
           <span className="relative z-10 flex items-center gap-2">
@@ -221,11 +271,9 @@ export default function ContactForm({ defaultPackage }: { defaultPackage?: strin
         )}
       </button>
 
-      <p className="text-center text-xs text-gray-500">
-        🔒 Encrypted & Direct Protocol
+      <p className="text-center text-xs text-gray-500 flex items-center justify-center gap-1">
+        🔒 Your data is encrypted and secure
       </p>
     </motion.form>
-  )
-}</form>
   )
 }
