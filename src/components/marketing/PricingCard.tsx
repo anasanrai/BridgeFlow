@@ -15,7 +15,7 @@ interface Plan {
     spotsRemaining?: string | null;
     description: string;
     popular?: boolean;
-    badge?: string;
+    badge?: string | null;
     features: string[];
     cta: { text: string; href: string };
 }
@@ -62,7 +62,7 @@ export default function PricingCard({ plan, index }: PricingCardProps) {
                                 : "bg-white/5 text-gray-400 border border-white/10"
                                 }`}>
                                 {plan.popular && <Sparkles className="w-3 h-3" />}
-                                {plan.badge}
+                                {plan.badge ?? ''}
                             </span>
                         </div>
                     )}

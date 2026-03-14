@@ -14,7 +14,6 @@ import {
     Zap,
     Copy,
     Check,
-    ChevronRight,
     ChevronDown,
     ArrowRight,
     ExternalLink,
@@ -264,7 +263,7 @@ function CodeBlock({ code, language = "bash" }: { code: string; language?: strin
     );
 }
 
-function EndpointCard({ endpoint }: { endpoint: typeof ENDPOINTS[0]["endpoints"][0] }) {
+function EndpointCard({ endpoint }: { endpoint: any }) {
     const [open, setOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<"request" | "response">("request");
 
@@ -286,11 +285,11 @@ function EndpointCard({ endpoint }: { endpoint: typeof ENDPOINTS[0]["endpoints"]
                 <div className="border-t border-white/10 p-4 space-y-4 bg-navy-950/20">
                     <p className="text-sm text-gray-400">{endpoint.description}</p>
 
-                    {endpoint.params.length > 0 && (
+                    {endpoint.params && endpoint.params.length > 0 && (
                         <div>
                             <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Parameters</h4>
                             <div className="space-y-2">
-                                {endpoint.params.map((param) => (
+                                {endpoint.params.map((param: any) => (
                                     <div key={param.name} className="flex items-start gap-3 text-sm">
                                         <code className="text-gold-300 font-mono text-xs bg-white/5 px-2 py-0.5 rounded flex-shrink-0">{param.name}</code>
                                         <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded flex-shrink-0 ${param.required ? "bg-red-500/10 text-red-400" : "bg-gray-500/10 text-gray-500"}`}>
@@ -327,7 +326,7 @@ function EndpointCard({ endpoint }: { endpoint: typeof ENDPOINTS[0]["endpoints"]
     );
 }
 
-export default function ApiReference() {
+export default function ApiReferenceClient() {
     const [activeGroup, setActiveGroup] = useState<string | null>("auth");
 
     return (

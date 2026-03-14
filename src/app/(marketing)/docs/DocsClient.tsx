@@ -456,7 +456,7 @@ function renderContent(content: string) {
     return elements;
 }
 
-export default function Docs() {
+export default function DocsClient() {
     const [search, setSearch] = useState("");
     const [activeSection, setActiveSection] = useState<string | null>(null);
 

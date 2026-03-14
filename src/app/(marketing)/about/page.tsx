@@ -148,7 +148,7 @@ export default async function About() {
                                         </div>
                                         {/* Gold accent badge */}
                                         <div className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full gold-gradient flex items-center justify-center text-navy-950 text-xs font-bold shadow-lg border-2 border-navy-950">
-                                            🇳🇵
+                                            🇸🇦
                                         </div>
                                     </div>
                                     {/* Info */}
@@ -163,8 +163,8 @@ export default async function About() {
                                             {teamMember?.role || "AI Automation Engineer"}
                                         </p>
                                         <p className="text-gray-500 text-sm flex items-center justify-center sm:justify-start gap-1.5 mb-4">
-                                            <MapPin className="w-3.5 h-3.5" />
-                                            Kathmandu, Nepal · Remote-first, Global
+                                             <MapPin className="w-3.5 h-3.5" />
+                                             Riyadh, KSA · Remote-first, Global
                                         </p>
                                         {/* Social Links */}
                                         <div className="flex items-center justify-center sm:justify-start gap-3">

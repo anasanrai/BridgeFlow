@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Save, Eye, EyeOff, Plus, Trash2, Check, AlertCircle } from 'lucide-react'
-import EnterpriseHomePage from '@/components/pages/EnterprisHomePage'
+import EnterpriseHomePage from '@/components/pages/EnterpriseHomePage'
 import { defaultHomeContent } from '@/data/home'
 
 export default function AdminHomeEditor() {

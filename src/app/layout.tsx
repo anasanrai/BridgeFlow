@@ -111,8 +111,8 @@ export default async function RootLayout({
         },
         "address": {
             "@type": "PostalAddress",
-            "addressLocality": "Kathmandu",
-            "addressCountry": "NP",
+            "addressLocality": "Riyadh",
+            "addressCountry": "SA",
         },
         "contactPoint": {
             "@type": "ContactPoint",

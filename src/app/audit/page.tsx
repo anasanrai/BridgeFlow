@@ -148,7 +148,6 @@ export default function AuditPage() {
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                <div>
                                 <label className="relative group block">
                                     <input
                                         type="url"

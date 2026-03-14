@@ -14,7 +14,7 @@ export const siteConfig = {
         "BridgeFlow is a premier AI automation agency specializing in building high-performance, enterprise-grade workflows and intelligent decision systems for the world's most ambitious companies.",
     url: "https://www.bridgeflow.agency",
     email: "hello@bridgeflow.agency",
-    location: "Remote-first, Global",
+    location: "Riyadh, KSA · Remote-first, Global",
     copyright: "© 2026 BridgeFlow. All rights reserved.",
     logo: "/images/logo.png",
     og_image: "/images/og-default.png",
@@ -32,10 +32,7 @@ export const navLinks = [
     { href: "/services", label: "Services" },
     { href: "/templates", label: "Templates" },
     { href: "/pricing", label: "Pricing" },
-    { href: "/calculator", label: "AI Calculator" },
     { href: "/about", label: "About" },
-    { href: "/case-studies", label: "Case Studies" },
-    { href: "/blog", label: "Blog" },
     { href: "/contact", label: "Contact" },
 ];
 

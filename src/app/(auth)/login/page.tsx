@@ -53,7 +53,7 @@ export default function LoginPage() {
     }
   }
 
-  const handleOAuthSignIn = async (provider: string) => {
+  const handleOAuthSignIn = async (provider: "github" | "google") => {
     setOAuthLoading(provider);
     setError(null);
     try {

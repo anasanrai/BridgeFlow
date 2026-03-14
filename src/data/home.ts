@@ -8,21 +8,21 @@
 
 export const defaultHomeContent = {
   hero: {
-    badge: 'Enterprise Automation Platform',
-    title: 'Automate Your Business',
-    titleLine2: 'With Zero Code Required',
-    highlight: 'Enterprise-Grade Workflow Automation',
+    badge: 'n8n Workflow Automation Agency',
+    title: 'Automate Your Business. Launch in Days.',
+    titleLine2: '',
+    highlight: '',
     description:
-      'BridgeFlow connects your business systems and automates complex workflows without writing a single line of code. Save thousands of hours and eliminate human error.',
-    ctaPrimary: { text: 'Start Free Trial', href: '/pricing' },
-    ctaSecondary: { text: 'Watch Demo', href: '#demo' },
+      'BridgeFlow builds custom n8n automation workflows tailored to your business — from lead capture to AI-powered pipelines. Deploy in days, not months.',
+    ctaPrimary: { text: 'View Packages', href: '/pricing' },
+    ctaSecondary: { text: 'Free Audit', href: '/audit' },
     image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070',
   },
   stats: [
-    { label: 'Enterprises Automated', value: 500, suffix: '+', icon: 'building' },
-    { label: 'Hours Saved', value: 2, suffix: 'M+', icon: 'clock' },
-    { label: 'Workflows Active', value: 50, suffix: 'K+', icon: 'zap' },
-    { label: 'Uptime', value: 99, suffix: '.99%', icon: 'shield' },
+    { label: 'Workflows Built', value: 7, suffix: '+', icon: 'zap' },
+    { label: 'Client Satisfaction', value: 100, suffix: '%', icon: 'shield' },
+    { label: 'Avg. Delivery', value: 5, suffix: ' Days', icon: 'clock' },
+    { label: 'n8n Compatible', value: 100, suffix: '%', icon: 'building' },
   ],
   trustedBy: {
     title: 'Trusted by Industry Leaders',
@@ -115,35 +115,7 @@ export const defaultHomeContent = {
       icon: 'trending',
     },
   ],
-  testimonials: [
-    {
-      content:
-        'BridgeFlow has transformed how we handle our business processes. Weve saved thousands of hours and reduced errors significantly.',
-      author: 'Sarah Johnson',
-      role: 'Operations Director',
-      company: 'Tech Innovations Inc',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200&h=200',
-      rating: 5,
-    },
-    {
-      content:
-        'The ease of use combined with powerful features makes BridgeFlow a game-changer for enterprise automation.',
-      author: 'Michael Chen',
-      role: 'CTO',
-      company: 'Digital Solutions Ltd',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200',
-      rating: 5,
-    },
-    {
-      content:
-        'Best decision weve made for our automation strategy. The ROI is incredible and the support is exceptional.',
-      author: 'Emma Davis',
-      role: 'VP of Technology',
-      company: 'Enterprise Systems Group',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200&h=200',
-      rating: 5,
-    },
-  ],
+  testimonials: [],
   cta: {
     title: 'Ready to Transform Your Business?',
     description:

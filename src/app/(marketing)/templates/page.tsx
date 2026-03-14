@@ -7,12 +7,17 @@ async function getTemplates() {
   const supabase = createServerSideClient()
   if (!supabase) return []
 
-
   const { data, error } = await supabase
     .from('templates')
-    .select('*')
-    .eq('status', 'published')
-    .order('order', { ascending: true })
+    .select(`
+      id, slug, name, tagline, description,
+      level, price, is_free, image_url,
+      nodes_used, node_count, download_count,
+      average_rating, review_count, is_featured,
+      is_active
+    `)
+    .eq('is_active', true)
+    .order('is_featured', { ascending: false })
 
   if (error) {
     console.error('[Templates] Fetch error:', error)
@@ -24,16 +29,18 @@ async function getTemplates() {
     id: String(t.id || ''),
     name: t.name || 'Untitled Template',
     slug: t.slug || '',
-    categories: Array.isArray(t.categories) ? t.categories : [],
-    difficulty: t.difficulty || 'Beginner',
-    nodes: Array.isArray(t.nodes) ? t.nodes : [],
+    tagline: t.tagline || '',
+    description: t.description || '',
+    level: t.level || 'Beginner',
+    price: Number(t.price || 0),
+    is_free: Boolean(t.is_free),
+    image_url: t.image_url || '/images/placeholder.png',
+    nodes_used: Array.isArray(t.nodes_used) ? t.nodes_used : [],
     node_count: Number(t.node_count || 0),
-    setup_time: String(t.setup_time || '15 min'),
-    value: Number(t.value || 0),
-    description: t.description || t.short_description || '',
-    what_it_does: Array.isArray(t.what_it_does) ? t.what_it_does : [],
-    featured: Boolean(t.featured),
-    image_url: t.image_url || "/images/placeholder.png",
+    download_count: Number(t.download_count || 0),
+    average_rating: Number(t.average_rating || 0),
+    review_count: Number(t.review_count || 0),
+    is_featured: Boolean(t.is_featured),
   }));
 }
 
@@ -51,27 +58,31 @@ export default async function TemplatesPage() {
             n8n Workflow Marketplace
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Automate your{' '}
+            n8n Workflow{' '}
             <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              business patterns.
+              Templates
             </span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-            Stop building from scratch. Every template includes the full n8n workflow JSON,
-            setup documentation, and lifetime support — ready to deploy in minutes.
+            Ready-to-deploy automations for every business. Every template includes the full n8n
+            workflow JSON, setup documentation, and lifetime support.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
             <span className="flex items-center gap-1.5">
               <span className="text-amber-400">✓</span>
-              {(templates || []).length} templates available
+              {templates.length} templates available
             </span>
             <span className="flex items-center gap-1.5">
               <span className="text-amber-400">✓</span>
-              100% ready to deploy
+              Free &amp; Paid
             </span>
             <span className="flex items-center gap-1.5">
               <span className="text-amber-400">✓</span>
-              Lifetime support included
+              Instant download
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="text-amber-400">✓</span>
+              n8n compatible
             </span>
           </div>
         </div>
@@ -79,9 +90,7 @@ export default async function TemplatesPage() {
 
       {/* Templates Grid */}
       <section className="max-w-7xl mx-auto px-4 pb-24">
-        <Suspense fallback={<TemplatesSkeleton />}>
-          <TemplatesGrid initialTemplates={templates} />
-        </Suspense>
+        <TemplatesGrid initialTemplates={templates} />
       </section>
     </main>
   )

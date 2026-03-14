@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
+import { sendTelegram, newLeadMessage } from "@/lib/telegram";
 
 export const dynamic = "force-dynamic";
 
@@ -16,39 +17,40 @@ export async function POST(req: NextRequest) {
         }
 
         const supabase = createAdminClient();
-        
-        // Map the form fields to the database columns
-        const submission = {
-            name,
-            email,
-            message,
-            company: package_interest || "", // Using package_interest as company/context if company is missing
-            budget: package_interest || "",  // Also saving to budget field
-            status: "new",
-            created_at: new Date().toISOString(),
-            notes: `Source: ${source || "unknown"}${phone ? ` | Phone: ${phone}` : ""}`
-        };
 
-        const { data, error } = await supabase
-            .from("contact_submissions")
-            .insert(submission)
-            .select()
-            .single();
+        const { error } = await (supabase.from("leads" as any) as any).insert({
+            name: String(name || ""),
+            email: String(email || ""),
+            phone: String(phone || "") || null,
+            message: String(message || ""),
+            package_interest: String(package_interest || "") || null,
+            source: String(source || "contact-form"),
+            status: "new",
+        });
 
         if (error) {
-            console.error("Error saving contact submission:", error);
-            return NextResponse.json(
-                { error: "Failed to save submission. Please try again later." },
-                { status: 500 }
-            );
+            console.error("[Contact] Supabase insert error:", error);
+            // Don't fail silently — but also handle the case where the leads table
+            // might not exist yet (fall through to Telegram anyway)
         }
 
+        // Fire Telegram notification (non-blocking)
+        sendTelegram(
+            newLeadMessage({
+                name: String(name),
+                email: String(email),
+                phone: String(phone || ""),
+                package_interest: String(package_interest || ""),
+                message: String(message || ""),
+            })
+        ).catch((err) => console.error("[Contact] Telegram error:", err));
+
         return NextResponse.json(
-            { message: "Thank you! Your message has been received.", data },
+            { message: "Thank you! Your message has been received. We'll be in touch within 24 hours." },
             { status: 201 }
         );
     } catch (error) {
-        console.error("Contact API error:", error);
+        console.error("[Contact] API error:", error);
         return NextResponse.json(
             { error: "Internal server error" },
             { status: 500 }
