@@ -20,27 +20,60 @@ function formatTime() {
     return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-// Simple markdown-like rendering for bold, italic, links, and lists
+// Parse inline markdown (**bold**, *italic*, [link](url)) into safe React elements
+function parseInline(text: string): React.ReactNode[] {
+    const parts: React.ReactNode[] = [];
+    const regex = /\*\*(.+?)\*\*|\*(.+?)\*|\[([^\]]+)\]\(([^)]+)\)/g;
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(text)) !== null) {
+        if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+
+        if (match[1] !== undefined) {
+            parts.push(<strong key={match.index}>{match[1]}</strong>);
+        } else if (match[2] !== undefined) {
+            parts.push(<em key={match.index}>{match[2]}</em>);
+        } else {
+            // Only allow http/https and relative links — block javascript: and data: URIs
+            const href = /^(https?:\/\/|\/)/.test(match[4]) ? match[4] : "#";
+            parts.push(
+                <a
+                    key={match.index}
+                    href={href}
+                    className="text-brand-coral underline hover:text-brand-coral/70"
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                >
+                    {match[3]}
+                </a>
+            );
+        }
+        lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+    return parts;
+}
+
+// Safe markdown renderer — no dangerouslySetInnerHTML
 function renderContent(text: string) {
     return text.split("\n").map((line, i) => {
-        // Convert **bold** and *italic*
-        let html = line
-            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.+?)\*/g, '<em>$1</em>')
-            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-brand-coral underline hover:text-gold-300" target="_blank" rel="noopener">$1</a>');
+        const isBullet = line.trim().startsWith("- ") || line.trim().startsWith("• ");
+        const clean = isBullet ? line.trim().replace(/^[-•]\s*/, "") : line;
+        const content = parseInline(clean);
 
-        // Bullet points
-        if (line.trim().startsWith("- ") || line.trim().startsWith("• ")) {
-            html = `<span class="flex gap-2"><span class="text-brand-coral/60">•</span><span>${html.replace(/^[\s]*[-•]\s*/, '')}</span></span>`;
+        if (isBullet) {
+            return (
+                <p key={i} className={i > 0 ? "mt-1.5" : ""}>
+                    <span className="flex gap-2">
+                        <span className="text-brand-coral/60" aria-hidden="true">•</span>
+                        <span>{content}</span>
+                    </span>
+                </p>
+            );
         }
-
-        return (
-            <p
-                key={i}
-                className={i > 0 ? "mt-1.5" : ""}
-                dangerouslySetInnerHTML={{ __html: html }}
-            />
-        );
+        return <p key={i} className={i > 0 ? "mt-1.5" : ""}>{content}</p>;
     });
 }
 

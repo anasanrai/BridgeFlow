@@ -6,6 +6,9 @@ import LayoutShell from "@/components/LayoutShell";
 import { getSiteConfig } from "@/lib/supabase-data";
 import TelemetryProvider from "@/components/TelemetryProvider";
 import CookieConsent from "@/components/shared/CookieConsent";
+import { validateEnv } from "@/lib/env";
+
+validateEnv();
 
 // Use next/font ONLY — do NOT also import via CSS @import
 const inter = Inter({

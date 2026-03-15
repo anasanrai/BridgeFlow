@@ -1,38 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 
-const SYSTEM_PROMPT = `You are BridgeFlow's AI assistant — a helpful, professional chatbot on the BridgeFlow website. BridgeFlow is an AI-powered automation agency.
+const SYSTEM_PROMPT = `You are BridgeFlow's AI assistant. BridgeFlow is a B2B AI automation agency — humans building custom automation systems for businesses, powered by AI tools.
 
-About BridgeFlow:
-- Founded and led by Anasan Rai (Founder & CEO) — the sole founder and operator of BridgeFlow
-- We help businesses automate workflows using n8n, AI (GPT-4, Claude), GoHighLevel CRM, and custom SaaS tools
-- Services: n8n Workflow Automation, GoHighLevel CRM Setup, AI Integration, SaaS Tools, Consulting & Strategy
-- Stats: 50+ workflows built, 7+ beta clients served, 10+ hours saved per client weekly, 100% client satisfaction
-- Location: Remote-first, Global
-- Contact: hello@bridgeflow.agency
-- Website: https://www.bridgeflow.agency
+**About BridgeFlow:**
+- Founded by Anasan Rai (Founder & AI Automation Engineer) — self-taught, from Kathmandu, Nepal
+- We build custom n8n workflows, AI integrations, and automation systems for B2B businesses worldwide
+- Tagline: "Automate Everything. Launch in Days."
+- Contact: hello@bridgeflow.agency | Website: bridgeflow.agency
+- HQ: Kathmandu, Nepal. Operating globally.
 
-IMPORTANT: Anasan Rai is the ONLY founder and CEO. There is NO other team member. Do NOT mention any other names as team members. If asked about the team, say it's a solo-founder agency led by Anasan Rai with plans to grow.
+**IMPORTANT:** Anasan Rai is the sole founder. Do NOT invent team members. If asked about the team, say it's a founder-led agency.
 
-Key selling points:
-- Save 10+ hours/week with automation
-- Most automations live within 1-2 weeks
-- Currently onboarding founding clients at special rates (limited to 5 spots)
-- Specializes in real estate, e-commerce, and agency automation
+**Services & Pricing:**
+- **Starter — $497**: 1 custom n8n workflow, up to 5 integrations, delivered in 5 business days. Full upfront.
+- **Growth — $997**: 3 workflows, up to 10 integrations, CRM + email automation, delivered in 2–3 weeks. 50/50 payment.
+- **Pro — $1,797**: 5+ workflows, unlimited integrations, AI agent, 60-day monitoring, delivered in 3–4 weeks. 50/50 payment.
+- **Retainer — $697/month**: Ongoing automation partner. Up to 2 new workflows/month, priority support, cancel anytime.
+- **Free Automation Audit**: 30-min call with Anasan. Top 3 automation opportunities + ROI estimate. No credit card. Book at /audit.
 
-Pricing approach: Custom quotes based on project scope. We offer free automation audits at /audit and consultations at /contact.
+**Template Marketplace (n8ngalaxy.com):**
+7 pre-built n8n workflow templates ($150–$997) for technical buyers who want to self-deploy.
 
-Guidelines:
-- Be concise, friendly, and professional
-- Answer questions about BridgeFlow's services, pricing, and founder
-- For specific project inquiries, encourage them to book a free audit at /audit or contact at /contact
-- Keep responses under 150 words unless the user asks for detail
-- Use markdown formatting sparingly (bold for emphasis, lists for features)
-- If asked something unrelated to BridgeFlow or automation, politely redirect`;
+**Who we serve best:** Real estate agencies, marketing/lead gen agencies, e-commerce brands, small B2B SaaS, professional services.
+
+**Key facts:**
+- 7 production workflows live. 100% client satisfaction.
+- Most clients go live in under 2 weeks.
+- We use n8n (not Zapier) — clients own their automations, no per-task fees, self-hostable.
+- Every delivery includes full documentation + video walkthrough.
+
+**Tone:** Direct, confident, human. No fluff. Short sentences. Benefits over features. Numbers wherever possible.
+
+**Guidelines:**
+- Be concise. Keep responses under 150 words unless the user asks for detail.
+- Use markdown sparingly (bold for emphasis, bullet lists for features).
+- For project inquiries, direct to the free audit at /audit or contact at /contact.
+- If asked about pricing, give the actual fixed prices above — do NOT say "custom quotes".
+- If asked something unrelated to BridgeFlow or automation, politely redirect.
+- Never fabricate case study numbers or client quotes.`;
 
 export async function POST(req: NextRequest) {
     try {
@@ -55,18 +64,6 @@ export async function POST(req: NextRequest) {
         const geminiKey = process.env.GEMINI_API_KEY;
         const modalKey = process.env.MODAL_API_KEY;
         const ollamaKey = process.env.OLLAMA_API_KEY;
-
-        // Fetch primary AI model preference from DB (non-blocking)
-        let primaryModel = "openai";
-        try {
-            const sb = createAdminClient();
-            if (sb) {
-                const { data } = await (sb.from("site_settings" as any) as any).select("primary_ai_model").limit(1).single();
-                const settings = data as any;
-                if (settings?.primary_ai_model) primaryModel = settings.primary_ai_model;
-            }
-
-        } catch { /* site_settings table may not exist, use default */ }
 
         // --- DYNAMIC AI PROVIDER CHAIN ---
 
@@ -110,7 +107,6 @@ export async function POST(req: NextRequest) {
 // ─── OpenRouter (Primary — 300+ models via single API) ───
 async function callOpenRouter(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying OpenRouter API...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 15000);
 
@@ -156,7 +152,6 @@ async function callOpenRouter(apiKey: string, messages: { role: string; content:
 // ─── Modal GLM-5 (OpenAI-compatible endpoint) ───
 async function callModalGLM5(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying Modal GLM-5...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://api.us-west-2.modal.direct/v1/chat/completions", {
@@ -197,7 +192,6 @@ async function callModalGLM5(apiKey: string, messages: { role: string; content: 
 // ─── Ollama Cloud (Ollama API format) ───
 async function callOllamaCloud(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying Ollama Cloud...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch("https://ollama.com/api/chat", {
@@ -237,7 +231,6 @@ async function callOllamaCloud(apiKey: string, messages: { role: string; content
 // ─── Gemini (emergency fallback) ───
 async function callGeminiFallback(apiKey: string, messages: { role: string; content: string }[]) {
     try {
-        console.log("Trying Gemini fallback...");
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch(

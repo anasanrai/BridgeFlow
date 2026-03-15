@@ -1,3 +1,40 @@
+// ── JSON field interfaces ──────────────────────────────────────────────────────
+
+export interface BillingAddress {
+  street?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postal_code?: string | null;
+  country?: string | null;
+}
+
+export interface PaymentMethod {
+  type?: string | null;
+  last4?: string | null;
+  brand?: string | null;
+  exp_month?: number | null;
+  exp_year?: number | null;
+}
+
+export interface SocialLinks {
+  twitter?: string | null;
+  linkedin?: string | null;
+  github?: string | null;
+  instagram?: string | null;
+  facebook?: string | null;
+  youtube?: string | null;
+  [key: string]: string | null | undefined;
+}
+
+export interface SeoDefaults {
+  title?: string | null;
+  description?: string | null;
+  og_image?: string | null;
+  keywords?: string[] | null;
+}
+
+// ── Database schema ────────────────────────────────────────────────────────────
+
 export interface Database {
   public: {
     Tables: {
@@ -7,8 +44,8 @@ export interface Database {
           email: string | null;
           full_name: string | null;
           avatar_url: string | null;
-          billing_address: any | null;
-          payment_method: any | null;
+          billing_address: BillingAddress | null;
+          payment_method: PaymentMethod | null;
           created_at: string;
           updated_at: string;
         };
@@ -17,8 +54,8 @@ export interface Database {
           email?: string | null;
           full_name?: string | null;
           avatar_url?: string | null;
-          billing_address?: any | null;
-          payment_method?: any | null;
+          billing_address?: BillingAddress | null;
+          payment_method?: PaymentMethod | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -27,8 +64,8 @@ export interface Database {
           email?: string | null;
           full_name?: string | null;
           avatar_url?: string | null;
-          billing_address?: any | null;
-          payment_method?: any | null;
+          billing_address?: BillingAddress | null;
+          payment_method?: PaymentMethod | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -42,8 +79,8 @@ export interface Database {
           contact_email: string | null;
           contact_phone: string | null;
           address: string | null;
-          social_links: any;
-          seo_defaults: any;
+          social_links: SocialLinks;
+          seo_defaults: SeoDefaults;
           updated_at: string;
         };
       };
@@ -51,21 +88,21 @@ export interface Database {
         Row: {
           id: string;
           founder_image: string | null;
-          social_links: any;
-          live_demos: any;
-          payment_settings: any;
+          social_links: SocialLinks;
+          live_demos: Record<string, unknown>;
+          payment_settings: Record<string, unknown>;
           updated_at: string;
         };
       };
       home_content: {
         Row: {
           id: string;
-          hero: any;
-          stats: any;
-          services_overview: any;
-          process_steps: any;
-          testimonials: any;
-          cta: any;
+          hero: Record<string, unknown>;
+          stats: Record<string, unknown>;
+          services_overview: Record<string, unknown>;
+          process_steps: Record<string, unknown>;
+          testimonials: Record<string, unknown>;
+          cta: Record<string, unknown>;
           seo_title: string | null;
           seo_description: string | null;
           og_image: string | null;
@@ -78,7 +115,7 @@ export interface Database {
           title: string;
           icon: string | null;
           description: string | null;
-          features: any;
+          features: string[];
           color: string | null;
           sort_order: number | null;
           is_active: boolean | null;

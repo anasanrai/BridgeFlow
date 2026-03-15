@@ -61,9 +61,11 @@ const nextConfig = {
                             [
                                 "connect-src 'self'",
                                 "https://*.supabase.co",
-                                "https://api.openai.com",
-                                "https://api.us-west-2.modal.direct",
+                                "https://openrouter.ai",
                                 "https://generativelanguage.googleapis.com",
+                                "https://api.us-west-2.modal.direct",
+                                "https://ollama.com",
+                                "https://*.upstash.io",
                             ].join(" "),
                             "frame-ancestors 'none'",
                             "base-uri 'self'",
